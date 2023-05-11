@@ -1,0 +1,29 @@
+.onLand-container {
+  width: 750px;
+  min-height: 100vh;
+  background: #fff;
+  padding-top: 200px;
+  .onLand-container-top {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    .onLand-container-top-img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .onLand-container-center {
+    margin-top: 180px;
+    font-size: 24px;
+    .btn-container{
+      padding: 0 20px;
+    }
+    .onload-footer {
+      position: fixed;
+      bottom: 100px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}

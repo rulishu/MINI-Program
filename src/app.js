@@ -1,12 +1,27 @@
-import { useDidShow, useDidHide } from '@tarojs/taro'
-import './app.less'
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import dva from './utils/dva';
+import models from './models';
+import './app.scss';
+import './assets/styles/custom_theme.scss';
 
-export default function App(props) {
-  // 对应 onShow
-  useDidShow(() => {})
+const dvaApp = dva.createApp({
+  initialState: {},
+  models,
+});
 
-  // 对应 onHide
-  useDidHide(() => {})
+const store = dvaApp.getStore();
 
-  return props.children
+class App extends Component {
+  componentDidMount() {}
+
+  componentDidShow() {}
+
+  componentDidHide() {}
+
+  render() {
+    return <Provider store={store}>{this.props.children}</Provider>;
+  }
 }
+
+export default App;
