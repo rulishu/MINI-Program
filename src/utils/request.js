@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro';
 import { logError } from './logError';
-import config from '../utils/config';
+import proxy from './proxy';
+// import { checkAuth } from './navigateTo';
 
 const HTTP_STATUS = {
   SUCCESS: 200,
@@ -14,79 +15,85 @@ const HTTP_STATUS = {
   GATEWAY_TIMEOUT: 504,
 };
 
-const token = Taro.getStorageSync('token');
+// const checkAuth = () => {
+//   const token = Taro.getStorageSync('userToken');
+//   const saveTokenTime = Taro.getStorageSync('save-token-time') || new Date().getTime();
+//   const newTime = new Date().getTime() - Number(saveTokenTime);
+//   if ((token && newTime > 86400000) || !token) {
+//     Taro.clearStorage();
+//     Taro.reLaunch({ url: '/pages/login/index' });
+//     return false;
+//   }
+//   return true;
+// };
 
-// 获取api地址
-const _getHostType = () => {
-  if (config.production || config.testProduction) {
-    return config.hosts.filter((itm) => itm.type === 'production');
-  } else {
-    return config.hosts[0];
-  }
-};
+/**忽略判断 token */
+// const ignoreAPI = [
+//   // 登录
+//   '/jcgl-user/wx/login/login',
+// ];
 
 export default {
-  baseOptions(params, method = 'GET', headers) {
-    let { url, data } = params;
-    if (!token) {
-      Taro.clearStorage();
-      Taro.navigateTo({ url: '/pages/OnLand/index' });
-    }
-    let header = {
-      Accept: 'application/json',
-      'content-type': 'application/json', // 默认值
-      userToken: token,
-      ...headers,
-    };
-    let hosts;
-    let base;
-    hosts = _getHostType();
-    if (Array.isArray(hosts) && hosts.length > 1) {
-      hosts.forEach((singleHost) => {
-        if (url.indexOf(singleHost.label) > -1) {
-          // 测试
-          if (config.testProduction) {
-            base = singleHost.urlTextService;
+  async baseOptions(params, method = 'GET') {
+    const { url, data, headers } = params;
+    const token = Taro.getStorageSync('userToken');
+    try {
+      // if (!ignoreAPI.includes(url)) {
+      //   const check = checkAuth();
+      //   if (!check) {
+      //     return;
+      //   }
+      // }
+      let header = {
+        Accept: 'application/json',
+        'content-type': 'application/json', // 默认值
+        userToken: token,
+        ...headers,
+      };
+
+      const option = {
+        url: proxy(url),
+        data: data,
+        method: method,
+        header: { ...header },
+        success(res) {
+          if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
+            return logError('api', '请求资源不存在');
+          } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
+            return logError('api', '服务端出现了问题');
+          } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
+            return logError('api', '没有权限访问');
+          } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
+            return res.data;
           }
-          // 生产
-          if (config.production) {
-            base = singleHost.urlProdService;
-          }
-        }
+        },
+        error(e) {
+          logError('api', '请求接口出现问题', e);
+        },
+      };
+      const restlt = await Taro.request(option);
+      if (restlt.header.userToken) {
+        Taro.setStorageSync('token', restlt.header.userToken);
+        //24 小时 86400
+        Taro.setStorageSync('save-token-time', `${new Date().getTime()}`);
+      }
+      return restlt.data;
+    } catch (err) {
+      Taro.hideLoading();
+      Taro.showModal({
+        title: '温馨提示',
+        content: `${url}请求错误，${err.errMsg || err.message}`,
+        showCancel: false,
+        // confirmText:
       });
-    } else {
-      base = hosts.url;
+      throw new Error(err.errMsg || err.message);
     }
-    const option = {
-      isShowLoading: false,
-      loadingText: '正在加载',
-      url: base + url,
-      data: data,
-      method: method,
-      header: { ...header },
-      success(res) {
-        if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
-          return logError('api', '请求资源不存在');
-        } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
-          return logError('api', '服务端出现了问题');
-        } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
-          return logError('api', '没有权限访问');
-        } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
-          return res.data;
-        }
-      },
-      error(e) {
-        logError('api', '请求接口出现问题', e);
-      },
-    };
-    return Taro.request(option);
   },
-  get(url, data = '') {
-    let option = { url, data };
+  get(url, data = '', options) {
+    let option = { url, data, ...options };
     return this.baseOptions(option);
   },
-  post: function (url, data, contentType) {
-    let params = { url, data, contentType };
-    return this.baseOptions(params, 'POST');
+  post: function (url, data, options) {
+    return this.baseOptions({ url, data, ...options }, 'POST');
   },
 };
