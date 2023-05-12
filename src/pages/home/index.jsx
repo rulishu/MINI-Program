@@ -2,6 +2,9 @@ import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import './index.scss';
 import pic1 from '../../assets/images/jiutan.png';
+import Navs from './navs';
+import Lists from './lists';
+import Cards from './cards';
 
 const Index = () => {
   const menus = [
@@ -35,6 +38,11 @@ const Index = () => {
               </View>
             </View>
           ))}
+        </View>
+        <View>
+          <Navs />
+          <Lists />
+          <Cards />
         </View>
       </View>
     </View>
