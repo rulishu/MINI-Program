@@ -64,10 +64,19 @@ page {
     }
   }
   .nav{
-    margin-top:40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    .nav-item{
+      margin-top:10px;
+      width:702px;
+     height:400px;
+     background-color: #D8D8D8;
+     border-radius:16px;
+     display:flex;
+     align-items:center;
+     justify-content: center;
+    }
     .page-homes-nav-image{
       width:290px;
       height:424px;
@@ -94,8 +103,8 @@ page {
     
       }
     }
-
   }
+
   .list{
     margin-top:20px;
     display:flex;
@@ -151,7 +160,7 @@ page {
   }
  
 .card{
-    margin-top: 20px;
+    margin-top: 40px;
      display:flex;
      align-items: center;
      flex-direction: column;
@@ -230,6 +239,69 @@ page {
       color: #FFFFFF;
     }
   }
+  }
+}
+.foot{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width:100%;
+  .foot-items{
+    padding:20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+    .foot-item{
+      width:302px;
+      height:302px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .foot-price{
+      position: absolute;
+      top:0;
+      right:0;
+      width:104px;
+      height:50px;
+      border-top-right-radius:16px;
+      border-bottom-left-radius:16px;
+      background-color: #A85230;
+      display:flex;
+      align-items:center;
+      justify-content: center;
+    }
+    .price{
+      display:flex;
+      align-items:center;
+      justify-content: center;
+    }
+    .price-text{
+      font-size: 24px;
+      line-height: 32px;
+      color: #FFFFFF;
+    }
+  }
+  .foot-content{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px 0;
+    .foot-title{
+      font-size: 30px;
+      line-height: 48px;
+      color: #0D0F23;
+    }
+    .foot-text{
+      font-size: 22px;
+      line-height: 48px;
+      color: #0D0F23;
+    }
+
   }
 }
 }

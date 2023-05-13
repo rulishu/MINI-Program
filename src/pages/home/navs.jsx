@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Image } from '@tarojs/components';
+import { View, Text } from '@tarojs/components'; //Image
 import './index.scss';
 
 const Navs = () => {
   return (
     <View className="nav">
-      <View>
+      {/* <View>
         <Image
           mode="widthFix"
           // eslint-disable-next-line global-require
@@ -40,6 +40,9 @@ const Navs = () => {
             ></Image>
           </View>
         </View>
+      </View> */}
+      <View class="nav-item">
+        <Text>限时抢购</Text>
       </View>
     </View>
   );
