@@ -1,32 +1,38 @@
 import React from 'react';
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import { Icon } from '@nutui/nutui-react-taro';
+import my3 from '@/assets/images/my3.png';
+import my8 from '@/assets/images/my8.png';
+import my10 from '@/assets/images/my10.png';
+import my14 from '@/assets/images/my14.png';
+import my19 from '@/assets/images/my19.png';
+
 import './index.scss';
 
 const Index = () => {
   const list = [
     {
-      icon: 'my2',
+      icon: my3,
       title: '待付款',
       num: 233,
     },
     {
-      icon: 'my2',
+      icon: my8,
       title: '待发货',
       num: 12,
     },
     {
-      icon: 'my2',
+      icon: my10,
       title: '待收货',
       num: 78.23,
     },
     {
-      icon: 'my2',
+      icon: my14,
       title: '待评价',
       num: 1278.23,
     },
     {
-      icon: 'my2',
+      icon: my19,
       title: '退款/售后',
       num: 1278.23,
     },
@@ -47,7 +53,7 @@ const Index = () => {
         <View className="my-orders-list">
           {list.map((item, index) => (
             <View key={index} className="my-orders-list-item">
-              <Icon name={item.icon} size="24"></Icon>
+              <Image mode="widthFix" src={item.icon} style={{ width: 24, height: 24 }}></Image>
               <View className="my-orders-list-item-num">
                 <Text>{item.title}</Text>
               </View>
