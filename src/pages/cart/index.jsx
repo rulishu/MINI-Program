@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import { Swipe, Cell, Button } from '@nutui/nutui-react-taro';
+import { Swipe, Cell, Button, Checkbox } from '@nutui/nutui-react-taro';
 import './index.scss';
 
 const Index = () => {
+  // eslint-disable-next-line no-unused-vars
+  const [checked, setChecked] = useState(true);
   return (
     <View className="index">
       {/* 地址 */}
@@ -54,6 +56,19 @@ const Index = () => {
           </Cell>
         </View>
       </Swipe>
+
+      {/* 领劵结算 */}
+      <View className="foot">
+        <View className="cartFooter">
+          <View className="cartFooterCheck">
+            <Checkbox textPosition="left" label="复选框" checked={checked} />
+            <Text>已选中1件,卷后合计¥1790</Text>
+          </View>
+          <Button type="primary" shape="square" style={{ borderRadius: 8 }}>
+            领劵结算
+          </Button>
+        </View>
+      </View>
     </View>
   );
 };

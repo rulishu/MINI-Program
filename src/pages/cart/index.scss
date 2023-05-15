@@ -61,3 +61,24 @@ page {
 .swipeButtonBorderRight{
   border: 5px dashed rgba(128, 128, 128);
 }
+// 结算
+.foot{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  .cartFooter{
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    padding: 20px 40px 60px 40px;
+    height: 200px;
+    background-color: rgb(255, 255,255);
+    .cartFooterCheck{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding-bottom: 40px;
+    }
+  }
+}
+
