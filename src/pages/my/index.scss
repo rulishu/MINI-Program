@@ -1,4 +1,187 @@
 page {
   height: 100%;
-  background: #F5F5F5;
+  background: #E6E8EA;
 }
+.goOut{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.my-title{
+  margin:84.62rpx 38.46rpx 42.31rpx 38.46rpx;
+  font-weight: 500;
+  color: #B08B57;
+  line-height: 38rpx;
+}
+.head-info{
+  margin-left:44.23rpx;
+  display:flex;
+  flex-direction: row;
+  .my-headIcon{
+    width: 114rpx;
+    height: 113rpx;
+    background-color:#ffffff;
+  }
+  .head-infos{
+    margin-left:36.54rpx;
+    width:50%;
+  .head-info-name{
+    font-size: 31rpx;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #000000;
+    line-height: 42rpx;
+  }
+  .head-info-id{
+    color:#808183;
+    font-size: 19rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    line-height: 27rpx;
+  }
+  }
+}
+.option-icon{
+  margin-left:80rpx;
+  width: 200rpx;
+  display:flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+}
+.head-list{
+  margin: 63.42rpx 36.54rpx 21.15rpx 36.54rpx;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+.head-list-item{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  .head-list-item-title{
+    font-size: 31rpx;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #B08B57;
+    line-height: 42rpx;
+    margin-bottom:10rpx;
+  }
+  .head-list-item-num{
+    font-size: 23rpx;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: rgba(0,0,0,0.5);
+    line-height: 33rpx;
+  }
+}
+}
+.card{
+  margin:12rpx 40.38rpx;
+  .my-orders-card{
+    width:100%;
+    background-color: #ffffff;
+    border-radius: 15rpx;
+    .my-orders{
+      display:flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 25rpx 25rpx;
+    }
+    .my-orders-all{
+      font-size: 23rpx;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(0,0,0,0.5);
+      line-height: 33rpx;
+    }
+    .my-orders-list{
+      display:flex;
+      flex-direction: row;
+      justify-content: space-around;
+      padding:25rpx;
+      .my-orders-list-item{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+          .my-orders-list-item-num{
+            margin-top:10rpx;
+            font-size: 23rpx;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: rgba(0,0,0,0.85);
+            line-height: 33rpx;
+          }
+      }
+    }
+    .logistics{
+      padding:25rpx 25rpx;
+      .my-orders-logistics{
+        padding:13rpx 20rpx;
+        // height:140rpx;
+        background: rgba(0,0,0,0.04);
+        border-radius: 15rpx;
+        .my-orders-logistics-title{
+          font-size: 23rpx;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: rgba(0,0,0,0.5);
+          line-height: 33rpx;
+
+        }
+        .my-orders-logistics-info{
+          margin-top:12rpx;
+          display:flex;
+          flex-direction: row;
+          .my-orders-logistics-headIcon{
+            width: 65rpx;
+            height: 65rpx;
+            background-color:#ffffff;
+          }
+          .my-orders-logistics-content{
+            margin-left:20rpx;
+            font-size: 23rpx;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: rgba(0,0,0,0.5);
+            line-height: 33rpx;
+          }
+
+        }
+        
+      }
+    }
+   
+    
+  }
+}
+.option{
+  margin:12rpx 40.38rpx;
+  .option-list{
+    padding:20rpx;
+    background-color: #ffffff;
+    border-radius: 15rpx;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    .option-list-item{
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width:25%;
+      margin-bottom:26rpx;
+
+      .option-list-item-title{
+        font-size: 23rpx;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: rgba(0,0,0,0.85);
+        line-height: 33rpx;
+      }
+
+    }
+
+  }
+}
+
