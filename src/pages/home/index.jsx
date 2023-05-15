@@ -1,19 +1,20 @@
 import React from 'react';
-import { View, Text, Image } from '@tarojs/components';
+import { View, Image } from '@tarojs/components'; // Text,
 import './index.scss';
-import pic1 from '../../assets/images/jiutan.png';
+// import pic1 from '../../assets/images/jiutan.png';
 import Navs from './navs';
-import Lists from './lists';
+// import Lists from './lists';
 import Cards from './cards';
+import Foots from './foots';
 
 const Index = () => {
-  const menus = [
-    { image: pic1, title: '米面粮油', bg: 'rgba(246, 86, 93, 0.08)' },
-    { image: pic1, title: '定制酒', bg: ' rgba(110, 162, 255, 0.08)' },
-    { image: pic1, title: '养生茶饮', bg: 'rgba(249, 161, 218, 0.08)' },
-    { image: pic1, title: '品质生鲜', bg: 'rgba(255, 132, 13, 0.08)' },
-    { image: pic1, title: '南北干货', bg: 'rgba(255, 132, 13, 0.08)' },
-  ];
+  // const menus = [
+  //   { image: pic1, title: '米面粮油', bg: 'rgba(246, 86, 93, 0.08)' },
+  //   { image: pic1, title: '定制酒', bg: ' rgba(110, 162, 255, 0.08)' },
+  //   { image: pic1, title: '养生茶饮', bg: 'rgba(249, 161, 218, 0.08)' },
+  //   { image: pic1, title: '品质生鲜', bg: 'rgba(255, 132, 13, 0.08)' },
+  //   { image: pic1, title: '南北干货', bg: 'rgba(255, 132, 13, 0.08)' },
+  // ];
   return (
     <View className="index">
       <Image
@@ -23,7 +24,7 @@ const Index = () => {
         className="page-homes-header-image"
       ></Image>
       <View className="page-homes-body">
-        <View className="menu-conatiner">
+        {/* <View className="menu-conatiner">
           {menus.map((menu, i) => (
             <View key={i} className="page-grid-boxconatiner">
               <View className="box-conatiner">
@@ -38,11 +39,12 @@ const Index = () => {
               </View>
             </View>
           ))}
-        </View>
+        </View> */}
         <View>
           <Navs />
-          <Lists />
+          {/* <Lists /> */}
           <Cards />
+          <Foots />
         </View>
       </View>
     </View>
