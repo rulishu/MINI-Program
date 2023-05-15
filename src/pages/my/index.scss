@@ -7,8 +7,24 @@ page {
   align-items: center;
   justify-content: center;
 }
+.heads{
+  display:flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items:center;
+  // margin: 20rpx 40rpx;
+  margin: 180rpx 40rpx 20rpx 40rpx;
+}
+.option-icon{
+  // margin-left:80rpx;
+  // width: 200rpx;
+  display:flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+}
 .my-title{
-  margin:84.62rpx 38.46rpx 42.31rpx 38.46rpx;
+  // margin:84.62rpx 38.46rpx 42.31rpx 38.46rpx;
   font-weight: 500;
   color: #B08B57;
   line-height: 38rpx;
@@ -41,14 +57,7 @@ page {
   }
   }
 }
-.option-icon{
-  margin-left:80rpx;
-  width: 200rpx;
-  display:flex;
-  flex-direction: row;
-  justify-content:space-between;
-  align-items: center;
-}
+
 .head-list{
   margin: 63.42rpx 36.54rpx 21.15rpx 36.54rpx;
   display:flex;

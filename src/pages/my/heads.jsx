@@ -25,8 +25,16 @@ const Index = () => {
 
   return (
     <View>
-      <View className="my-title">
-        <Text>我的</Text>
+      <View className="heads">
+        <View className="my-title">
+          <Text>我的</Text>
+        </View>
+        <View className="option-icon">
+          <View>
+            <Icon name="comment" size="20" style={{ marginRight: 20 }}></Icon>
+            <Icon name="setting" size="20"></Icon>
+          </View>
+        </View>
       </View>
       <View className="head-info">
         <View className="my-headIcon"></View>
@@ -41,21 +49,15 @@ const Index = () => {
             <Text>加入融辉第 1389 天</Text>
           </View>
         </View>
-        <View className="option-icon">
-          <View>
-            <Icon name="comment" size="20" style={{ marginRight: 8 }}></Icon>
-            <Icon name="setting" size="20"></Icon>
-          </View>
-        </View>
       </View>
       <View className="head-list">
         {list.map((item, index) => (
           <View key={index} className="head-list-item">
             <View className="head-list-item-title">
-              <Text>{item.title}</Text>
+              <Text>{item.num}</Text>
             </View>
             <View className="head-list-item-num">
-              <Text>{item.num}</Text>
+              <Text>{item.title}</Text>
             </View>
           </View>
         ))}

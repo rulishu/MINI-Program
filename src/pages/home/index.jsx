@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image } from '@tarojs/components'; // Text,
+import { View, Image, Input, Text } from '@tarojs/components';
 import './index.scss';
 // import pic1 from '../../assets/images/jiutan.png';
 import Navs from './navs';
@@ -23,6 +23,50 @@ const Index = () => {
         src={require('@/assets/images/homebg.png')}
         className="page-homes-header-image"
       ></Image>
+      <View className="search">
+        <View className="search-input">
+          <Input type="text" placeholder="搜索" />
+          <View className="search-icon">
+            <Image
+              mode="widthFix"
+              // eslint-disable-next-line global-require
+              src={require('@/assets/images/search.png')}
+              className="page-homes-header-search-image"
+            ></Image>
+          </View>
+        </View>
+      </View>
+      <View className="qd">
+        <View className="search-qd-icon">
+          <Image
+            mode="widthFix"
+            // eslint-disable-next-line global-require
+            src={require('@/assets/images/search1.png')}
+            className="page-homes-header-search1-image"
+          ></Image>
+        </View>
+        <View className="qd-content">
+          <Text>签到</Text>
+        </View>
+      </View>
+      <View className="listen">
+        <View>
+          <Image
+            mode="widthFix"
+            // eslint-disable-next-line global-require
+            src={require('@/assets/images/search2.png')}
+            className="search2-image"
+          ></Image>
+        </View>
+        <View style={{ marginLeft: 10 }}>
+          <Image
+            mode="widthFix"
+            // eslint-disable-next-line global-require
+            src={require('@/assets/images/search3.png')}
+            className="search2-image"
+          ></Image>
+        </View>
+      </View>
       <View className="page-homes-body">
         {/* <View className="menu-conatiner">
           {menus.map((menu, i) => (
