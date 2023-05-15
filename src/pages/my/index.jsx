@@ -5,7 +5,7 @@ import { Button } from '@nutui/nutui-react-taro';
 import './index.scss';
 import Heads from './heads';
 import Orders from './orders';
-// import Seals from './seals';
+import Seals from './seals';
 import Option from './option';
 
 const Index = () => {
@@ -17,7 +17,7 @@ const Index = () => {
     <View>
       <Heads />
       <Orders />
-      {/* <Seals /> */}
+      <Seals />
       <Option />
       <View className="goOut">
         <Button type="primary" onTap={onLout}>

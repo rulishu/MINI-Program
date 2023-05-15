@@ -41,6 +41,7 @@ const Index = () => {
         <View className="head-infos">
           <View className="head-info-name">
             <Text>阿加西</Text>
+            <Text className="head-info-name-xf">续费</Text>
           </View>
           <View className="head-info-id">
             <Text>经销商 ID：HZ-02-8876</Text>

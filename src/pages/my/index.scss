@@ -47,6 +47,14 @@ page {
     font-weight: 500;
     color: #000000;
     line-height: 42rpx;
+    .head-info-name-xf{
+      margin-left:8rpx;
+      font-size: 27rpx;
+      font-family: PingFangSC-Regular, PingFang SC;
+      font-weight: 400;
+      color: #B08B57;
+      line-height: 38rpx;
+    }
   }
   .head-info-id{
     color:#808183;
@@ -59,10 +67,10 @@ page {
 }
 
 .head-list{
-  margin: 63.42rpx 36.54rpx 21.15rpx 36.54rpx;
+  margin: 63.42rpx 36.54rpx 40rpx 36.54rpx;
   display:flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 .head-list-item{
   display:flex;
   flex-direction: column;
@@ -111,6 +119,7 @@ page {
       .my-orders-list-item{
         display:flex;
         flex-direction: column;
+        justify-content: space-between;
         align-items: center;
           .my-orders-list-item-num{
             margin-top:10rpx;
@@ -182,6 +191,7 @@ page {
       margin-bottom:26rpx;
 
       .option-list-item-title{
+        margin-top:20rpx;
         font-size: 23rpx;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
