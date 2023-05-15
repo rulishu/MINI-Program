@@ -1,6 +1,6 @@
 const config = {
   development: {
-    '/': 'http://192.168.188.84:8888',
+    '/': 'https://rh-api.nihaosi.com',
     // '/': 'https://wx.expiims.com',
     // '/cs-basic-file-api/file': 'http://192.168.188.51:8881',
     // '/': 'https://wx.phleky.com',
@@ -9,7 +9,7 @@ const config = {
     // http://wx.phleky.com/
   },
   production: {
-    '/': 'http://192.168.188.84:8888',
+    '/': 'https://rh-api.nihaosi.com',
     // '/': 'https://wx.phleky.com',
     // '/': 'https://wx.expiims.com',
   },

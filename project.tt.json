@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "./",
   "projectname": "tarojs",
-  "appid": "testAppId",
+  "appid": "wx84036e439dff9885",
   "setting": {
     "es6": false,
     "minified": false

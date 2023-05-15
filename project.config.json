@@ -2,14 +2,31 @@
   "miniprogramRoot": "dist/",
   "projectname": "mini-program",
   "description": "",
-  "appid": "touristappid",
+  "appid": "wx84036e439dff9885",
   "setting": {
     "urlCheck": true,
     "es6": false,
     "enhance": false,
     "compileHotReLoad": false,
     "postcss": false,
-    "minified": false
+    "minified": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "packNpmRelationList": []
   },
-  "compileType": "miniprogram"
+  "compileType": "miniprogram",
+  "libVersion": "2.31.1",
+  "srcMiniprogramRoot": "dist/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "condition": {},
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
 }

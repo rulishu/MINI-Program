@@ -36,7 +36,7 @@ const HTTP_STATUS = {
 export default {
   async baseOptions(params, method = 'GET') {
     const { url, data, headers } = params;
-    const token = Taro.getStorageSync('userToken');
+    const token = Taro.getStorageSync('token');
     try {
       // if (!ignoreAPI.includes(url)) {
       //   const check = checkAuth();
@@ -47,7 +47,7 @@ export default {
       let header = {
         Accept: 'application/json',
         'content-type': 'application/json', // 默认值
-        userToken: token,
+        Authorization: `Bearer ${token}`,
         ...headers,
       };
 
@@ -72,8 +72,8 @@ export default {
         },
       };
       const restlt = await Taro.request(option);
-      if (restlt.header.userToken) {
-        Taro.setStorageSync('token', restlt.header.userToken);
+      if (restlt.header.token) {
+        Taro.setStorageSync('token', restlt.header.token);
         //24 小时 86400
         Taro.setStorageSync('save-token-time', `${new Date().getTime()}`);
       }

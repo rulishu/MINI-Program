@@ -32,6 +32,12 @@ const WeAppy = () => {
             }
           },
         });
+      } else {
+        Taro.showToast({
+          title: '获取手机号失败！',
+          icon: 'none',
+          duration: 2000,
+        });
       }
     } catch (err) {
       // eslint-disable-next-line no-console

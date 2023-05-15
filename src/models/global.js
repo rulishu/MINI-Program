@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { login, getPhone } from '@/server/global';
+import { getPhone } from '@/server/global';
 
 export default {
   namespace: 'global', // 这是模块名
@@ -43,22 +43,35 @@ export default {
     *getPhone({ payload }, { call, put }) {
       Taro.showLoading({ title: '获取用户信息...', mask: true });
       try {
-        const accountInfo = Taro.getAccountInfoSync();
+        // const accountInfo = Taro.getAccountInfoSync();
         const params = {
           ...payload,
-          appId: accountInfo.miniProgram.appId,
+          appId: 'jcgl-mall-admin',
+          // appId: accountInfo.miniProgram.appId,
         };
         const result = yield call(getPhone, params);
         if (result && result.code === 200) {
           Taro.hideLoading();
-          const { data } = result || {};
+          const { userDto, access_token, refresh_token } = result.result || {};
+          Taro.setStorage({
+            key: 'userInfo',
+            data: userDto,
+          });
+          Taro.setStorage({
+            key: 'token',
+            data: access_token,
+          });
+          Taro.setStorage({
+            key: 'refresh_token',
+            data: refresh_token,
+          });
           yield put({
             type: 'update',
             payload: {
-              userInfo: { ...data },
+              userInfo: { ...userDto },
             },
           });
-          yield call(login, { appId: params.appId, jsCode: params.jsCode });
+          Taro.switchTab({ url: '/pages/home/index' });
         }
       } catch (err) {}
     },
