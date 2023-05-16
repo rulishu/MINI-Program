@@ -10,10 +10,11 @@ import categories1 from '@/assets/tabar/categories1.svg';
 import select1 from '@/assets/tabar/select1.svg';
 import car1 from '@/assets/tabar/car1.svg';
 import my1 from '@/assets/tabar/my1.svg';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
-  const [activeIndex, setActiveIndex] = useState(2);
+  const [activeIndex, setActiveIndex] = useState(0);
   const list = [
     {
       title: '首页',
@@ -52,10 +53,20 @@ const Index = () => {
     <Tabbar
       className="tab"
       bottom
-      visible={0}
       activeVisible={activeIndex}
-      onSwitch={(child, id) => {
+      onSwitch={async (child, id) => {
         setActiveIndex(id);
+        if (id === 0) {
+          Taro.switchTab({ url: '/pages/home/index' });
+        } else if (id === 1) {
+          Taro.switchTab({ url: '/pages/categories/index' });
+        } else if (id === 2) {
+          Taro.switchTab({ url: '/pages/select/index' });
+        } else if (id === 3) {
+          Taro.switchTab({ url: '/pages/cart/index' });
+        } else if (id === 4) {
+          Taro.switchTab({ url: '/pages/my/index' });
+        }
       }}
       activeColor="#B08B57"
       size="22"
