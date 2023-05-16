@@ -1,14 +1,32 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import { Swipe, Cell, Button, Checkbox, Price, InputNumber } from '@nutui/nutui-react-taro';
+import {
+  Swipe,
+  Cell,
+  Button,
+  Checkbox,
+  Price,
+  InputNumber,
+  ConfigProvider,
+} from '@nutui/nutui-react-taro';
+import { useDispatch } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState(true);
   const [inputState, setInputState] = useState({
     val: 1,
   });
+
+  useEffect(() => {
+    dispatch({
+      type: 'cart/goodsAll',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View className="index">
       {/* 地址 */}
