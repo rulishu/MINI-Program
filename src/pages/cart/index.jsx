@@ -113,7 +113,7 @@ const Index = () => {
           <Empty className="empty" description="购物车空空如也～">
             <Button
               onClick={() => {
-                Taro.redirectTo({ url: '/pages/categories/index' });
+                Taro.switchTab({ url: '/pages/categories/index' });
                 dispatch({
                   type: 'global/update',
                   payload: {
@@ -125,8 +125,7 @@ const Index = () => {
               type="primary"
               style={{ marginTop: 20 }}
             >
-              {' '}
-              去逛逛{' '}
+              去逛逛
             </Button>
           </Empty>
         </View>
