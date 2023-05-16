@@ -1,11 +1,14 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import { Swipe, Cell, Button, Checkbox } from '@nutui/nutui-react-taro';
+import { Swipe, Cell, Button, Checkbox, Price, InputNumber } from '@nutui/nutui-react-taro';
 import './index.scss';
 
 const Index = () => {
-  // eslint-disable-next-line no-unused-vars
   const [checked, setChecked] = useState(true);
+  const [inputState, setInputState] = useState({
+    val: 1,
+  });
   return (
     <View className="index">
       {/* 地址 */}
@@ -13,7 +16,7 @@ const Index = () => {
         <Image
           mode="widthFix"
           // eslint-disable-next-line global-require
-          src={require('@/assets/images/map.png')}
+          src={require('@/assets/tabar/map.png')}
           className="cartHeaderMap"
         ></Image>
         <Text className="cartHeaderText">
@@ -25,7 +28,7 @@ const Index = () => {
       <Swipe
         rightAction={
           <>
-            <Button shape="square" type="primary" className="swipeButtonBorderLeft">
+            <Button shape="square" className="swipeButtonBorderLeft">
               分享
             </Button>
             <Button shape="square" type="danger" className="swipeButtonBorderRight">
@@ -36,21 +39,28 @@ const Index = () => {
       >
         <View className="swipeCell">
           <Cell className="swipeCellBorder">
-            <View className="cartCardWrap">
+            <View>
               <Text className="cartCardText">奋斗之露,厚德载物</Text>
-              <View className="cartCard">
-                <Image
-                  mode="widthFix"
-                  // eslint-disable-next-line global-require
-                  src={require('@/assets/images/home5.png')}
-                  className="cartCardLeft"
-                ></Image>
-                <View className="cartCardRight">
-                  <Text className="cartCardRightContent">20年佳酿 53度酱香型白酒</Text>
-                  <Text className="cartCardRightContent"> 满1500减100 </Text>
-                  <Text className="cartCardRightContent"> ¥ 1890.00 </Text>
-                  <Text className="cartCardRightContent"> ➖ 01 ➕ </Text>
-                </View>
+              <Checkbox textPosition="left" checked={checked} />
+            </View>
+            <View className="cartCard">
+              <Image
+                mode="widthFix"
+                // eslint-disable-next-line global-require
+                src={require('@/assets/images/home5.png')}
+                className="cartCardLeft"
+              ></Image>
+              <View className="cartCardRight">
+                <Text className="cartCardRightTitle">20年佳酿 53度酱香型白酒</Text>
+                <Text className="cartCardRightContent"> 满1500减100 </Text>
+                <Price
+                  className="cartCardRightPrice"
+                  price={1890}
+                  size="normal"
+                  needSymbol
+                  thousands
+                />
+                <InputNumber className="cartCardRightAdd" modelValue={inputState.val} />
               </View>
             </View>
           </Cell>
@@ -60,11 +70,19 @@ const Index = () => {
       {/* 领劵结算 */}
       <View className="foot">
         <View className="cartFooter">
-          <View className="cartFooterCheck">
-            <Checkbox textPosition="left" label="复选框" checked={checked} />
-            <Text>已选中1件,卷后合计¥1790</Text>
+          <View className="cartFooterCard">
+            <Checkbox
+              className="cartFooterCheck"
+              textPosition="right"
+              label="全选"
+              checked={checked}
+            />
+            <View>
+              <Text className="cartFooterText">已选中1件,卷后合计:</Text>
+              <Price price={1790} size="normal" needSymbol thousands style={{ color: '#0D0F23' }} />
+            </View>
           </View>
-          <Button type="primary" shape="square" style={{ borderRadius: 8 }}>
+          <Button className="cartFooterButton" shape="square" style={{ borderRadius: 12 }}>
             领劵结算
           </Button>
         </View>
