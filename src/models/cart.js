@@ -13,14 +13,14 @@ export default {
     *goodsAll(_, { call, put }) {
       try {
         const result = yield call(goodsAll);
-        // if (result) {
-        //   yield put({
-        //     type: 'update',
-        //     payload: {
-        //       vipTypeList: result?.data || [],
-        //     },
-        //   });
-        // }
+        if (result) {
+          yield put({
+            type: 'update',
+            payload: {
+              vipTypeList: result.result || [],
+            },
+          });
+        }
       } catch (err) {}
     },
   },
