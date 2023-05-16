@@ -1,30 +1,53 @@
-import React, { useState } from 'react';
-import { View, Text } from '@tarojs/components';
+import React, { useState, useEffect } from 'react';
+import { View } from '@tarojs/components';
+import { Tabs } from '@nutui/nutui-react-taro';
+import { useDispatch, useSelector } from 'react-redux';
+import Right from './right';
 import './index.scss';
-import { menu } from './dataSource';
 
 const Index = () => {
-  const [value, setValue] = useState(0);
+  const { categoriesList } = useSelector((state) => state.categories);
+  const dispatch = useDispatch();
+  const [tab5value, setTab5value] = useState('0');
+  useEffect(() => {
+    dispatch({
+      type: 'categories/getList',
+      payload: {
+        categoryId: categoriesList.at(0)?.id,
+      },
+    });
+  }, []);
   return (
-    <View className="left">
-      <View>
-        {menu.map((item, index) => (
-          <View
-            key={index}
-            className={value === index ? 'left-content left-content-selected' : 'left-content'}
-            onTap={() => setValue(index)}
-          >
-            {value === index ? (
-              <View className="left-selected"></View>
-            ) : (
-              <View className="left-noselected"></View>
-            )}
-            <View>
-              <Text className="left-title">{item.title}</Text>
-            </View>
-          </View>
+    <View className="all">
+      <Tabs
+        value={tab5value}
+        color="#C3A769"
+        onChange={({ paneKey }) => {
+          setTab5value(paneKey);
+          dispatch({ type: 'categories/getCategoriesList' });
+          dispatch({
+            type: 'categories/getList',
+            payload: {
+              categoryId: parseInt(categoriesList[parseInt(paneKey)]?.id),
+              onShelf: 2,
+            },
+          });
+        }}
+        titleScroll
+        leftAlign
+        tabStyle={
+          {
+            // display: 'flex', alignItems: 'flex-start',
+          }
+        }
+        direction="vertical"
+      >
+        {categoriesList.map((item) => (
+          <Tabs.TabPane key={item} title={item.categoryName}>
+            <Right />
+          </Tabs.TabPane>
         ))}
-      </View>
+      </Tabs>
     </View>
   );
 };
