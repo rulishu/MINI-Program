@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabbar, TabbarItem } from '@nutui/nutui-react-taro';
 import homeIcon from '@/assets/tabar/homeIcon.svg';
 import categories from '@/assets/tabar/categories.svg';
@@ -12,61 +12,56 @@ import car1 from '@/assets/tabar/car1.svg';
 import my1 from '@/assets/tabar/my1.svg';
 import Taro from '@tarojs/taro';
 import './index.scss';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Index = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const { activeIndex } = useSelector((state) => state.global);
+  const dispatch = useDispatch();
   const list = [
     {
       title: '首页',
-      url: '../../pages/home/index',
       icon: homeIcon,
       iconActive: homeIcon1,
+      href: '/pages/home/index',
     },
     {
       title: '商品',
-      url: '../../pages/categories/index',
-
       icon: select,
       iconActive: select1,
+      href: '/pages/categories/index',
     },
     {
       title: '封坛',
-      url: '../../pages/select/index',
       icon: categories,
       iconActive: categories1,
+      href: '/pages/select/index',
     },
     {
       title: '购物车',
-      url: '../../pages/cart/index',
       icon: car,
       iconActive: car1,
+      href: '/pages/cart/index',
     },
     {
       title: '我的',
-      url: '../../pages/my/index',
       icon: my,
       iconActive: my1,
+      href: '/pages/my/index',
     },
   ];
-
   return (
     <Tabbar
       className="tab"
       bottom
       activeVisible={activeIndex}
       onSwitch={async (child, id) => {
-        setActiveIndex(id);
-        if (id === 0) {
-          Taro.switchTab({ url: '/pages/home/index' });
-        } else if (id === 1) {
-          Taro.switchTab({ url: '/pages/categories/index' });
-        } else if (id === 2) {
-          Taro.switchTab({ url: '/pages/select/index' });
-        } else if (id === 3) {
-          Taro.switchTab({ url: '/pages/cart/index' });
-        } else if (id === 4) {
-          Taro.switchTab({ url: '/pages/my/index' });
-        }
+        dispatch({
+          type: 'global/update',
+          payload: {
+            activeIndex: id,
+          },
+        });
+        await Taro.switchTab({ url: list[id].href });
       }}
       activeColor="#B08B57"
       size="22"

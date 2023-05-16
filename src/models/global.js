@@ -8,6 +8,7 @@ export default {
     name: '欢迎来到Taro-Ui',
     userInfo: {},
     vipTypeList: [],
+    activeIndex: 0,
   },
 
   effects: {
