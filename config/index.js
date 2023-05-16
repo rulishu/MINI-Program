@@ -55,6 +55,11 @@ const config = {
         },
       },
     },
+    mini: {
+      optimizeMainPackage: {
+        enable: true,
+      },
+    },
   },
   h5: {
     publicPath: '/',
