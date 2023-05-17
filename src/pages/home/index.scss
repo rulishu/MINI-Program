@@ -17,7 +17,7 @@ page {
 }
 .search{
   position: absolute;
-  top: 180rpx;
+  top: 160rpx;
   left: 20rpx;
   .page-homes-header-search-image{
     width:40px;
@@ -34,7 +34,7 @@ page {
 .qd{
   position: absolute;
   right: 150rpx;
-  top: 188rpx;
+  top: 168rpx;
   display:flex;
   flex-direction: row;
   align-items:center;
@@ -64,7 +64,7 @@ page {
 .listen{
   position: absolute;
   right: 20rpx;
-  top: 188rpx;
+  top: 168rpx;
   display:flex;
   flex-direction: row;
   align-items:center;
@@ -242,6 +242,7 @@ page {
     border-radius: 16px;
     height: 400px;
     display: flex;
+    overflow: hidden;
     justify-content: center;
     .page-homes-card-image{
       width: 660px;
@@ -266,6 +267,12 @@ page {
 
     .card-head{
       margin-left: 30px;
+      margin-right: 30px;
+      white-space:nowrap;        // 强制一行显示
+	    overflow:hidden;          // 超出隐藏
+	    text-overflow:ellipsis;   // 省略号
+      width: 80%;
+
     }
     .card-title{
       font-size: 28px;
@@ -275,7 +282,6 @@ page {
     .card-text{
       font-size: 24px;
       color: #666666;
-
     }
     .card-price{
       font-size: 40px;
@@ -361,11 +367,19 @@ page {
       font-size: 30px;
       line-height: 48px;
       color: #0D0F23;
+      white-space:nowrap;        // 强制一行显示
+	    overflow:hidden;          // 超出隐藏
+	    text-overflow:ellipsis;   // 省略号
+      width: 200rpx;
     }
     .foot-text{
       font-size: 22px;
       line-height: 48px;
       color: #0D0F23;
+      white-space:nowrap;        // 强制一行显示
+	    overflow:hidden;          // 超出隐藏
+	    text-overflow:ellipsis;   // 省略号
+      width: 300rpx;
     }
 
   }
