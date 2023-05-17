@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, Text } from '@tarojs/components';
 import { Swipe, Cell, Button, Checkbox, Price, InputNumber, Empty } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,11 +8,10 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { vipTypeList } = useSelector((state) => state.cart);
-  const [checked, setChecked] = useState(true);
-  const [inputState, setInputState] = useState({
-    val: 1,
-  });
+  const { shoppingList } = useSelector((state) => state.cart);
+  const [checked, setChecked] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     dispatch({
@@ -21,11 +20,24 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleChange = (data) => {
+    setAmount(data?.goodsAmount);
+    setPrice(data?.totalPrice);
+  };
+  const onChange = (check) => {
+    if (check === true) {
+      setChecked(true);
+    }
+    if (check === false) {
+      setChecked(false);
+    }
+  };
+  let shoppingItem = shoppingList.flat();
   return (
     <View className="index">
       {/* 地址 */}
-      {vipTypeList.length > 0 ? (
-        <>
+      {shoppingList.length > 0 ? (
+        <View style={{ paddingBottom: 190 }}>
           <View className="cartHeader">
             <Image
               mode="widthFix"
@@ -39,75 +51,86 @@ const Index = () => {
           </View>
 
           {/* 商品信息 */}
-          <Swipe
-            rightAction={
+          {shoppingItem.map((itm) => {
+            return (
               <>
-                <Button shape="square" className="swipeButtonBorderLeft">
-                  分享
-                </Button>
-                <Button shape="square" type="danger" className="swipeButtonBorderRight">
-                  删除
-                </Button>
-              </>
-            }
-          >
-            <View className="swipeCell">
-              <Cell className="swipeCellBorder">
-                <View>
-                  <Text className="cartCardText">奋斗之露,厚德载物</Text>
-                  <Checkbox textPosition="left" checked={checked} />
-                </View>
-                <View className="cartCard">
-                  <Image
-                    mode="widthFix"
-                    // eslint-disable-next-line global-require
-                    src={require('@/assets/images/home5.png')}
-                    className="cartCardLeft"
-                  ></Image>
-                  <View className="cartCardRight">
-                    <Text className="cartCardRightTitle">20年佳酿 53度酱香型白酒</Text>
-                    <Text className="cartCardRightContent"> 满1500减100 </Text>
-                    <Price
-                      className="cartCardRightPrice"
-                      price={1890}
-                      size="normal"
-                      needSymbol
-                      thousands
-                    />
-                    <InputNumber className="cartCardRightAdd" modelValue={inputState.val} />
+                <Swipe
+                  rightAction={
+                    <>
+                      <Button shape="square" className="swipeButtonBorderLeft">
+                        分享
+                      </Button>
+                      <Button shape="square" type="danger" className="swipeButtonBorderRight">
+                        删除
+                      </Button>
+                    </>
+                  }
+                >
+                  <View className="swipeCell">
+                    <Cell className="swipeCellBorder">
+                      <View style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Text className="cartCardText">奋斗之露,厚德载物</Text>
+                        <Checkbox checked={checked} onChange={() => handleChange(itm)} />
+                      </View>
+                      <View className="cartCard">
+                        <Image
+                          mode="widthFix"
+                          // eslint-disable-next-line global-require
+                          src={itm?.mainGraph}
+                          className="cartCardLeft"
+                        ></Image>
+                        <View className="cartCardRight">
+                          <Text className="cartCardRightTitle">{itm?.goodsName}</Text>
+                          <Text className="cartCardRightContent">{itm?.goodsSpecification} </Text>
+                          <Price
+                            className="cartCardRightPrice"
+                            price={itm?.goodsUnitPrice}
+                            size="normal"
+                            needSymbol
+                            thousands
+                          />
+                          <InputNumber className="cartCardRightAdd" modelValue={itm?.goodsAmount} />
+                        </View>
+                      </View>
+                    </Cell>
+                  </View>
+                </Swipe>
+
+                {/* 领劵结算 */}
+                <View className="foot">
+                  <View className="cartFooter">
+                    <View className="cartFooterCard">
+                      <Checkbox
+                        className="cartFooterCheck"
+                        textPosition="right"
+                        label="全选"
+                        checked={false}
+                        onChange={onChange}
+                      />
+                      <View>
+                        <Text className="cartFooterText">已选中{amount}件,卷后合计:</Text>
+                        <Price
+                          price={price}
+                          size="normal"
+                          needSymbol
+                          thousands
+                          style={{ color: '#0D0F23' }}
+                        />
+                      </View>
+                    </View>
+                    <Button
+                      className="cartFooterButton"
+                      shape="square"
+                      style={{ borderRadius: 12 }}
+                    >
+                      领劵结算
+                    </Button>
                   </View>
                 </View>
-              </Cell>
-            </View>
-          </Swipe>
-
-          {/* 领劵结算 */}
-          <View className="foot">
-            <View className="cartFooter">
-              <View className="cartFooterCard">
-                <Checkbox
-                  className="cartFooterCheck"
-                  textPosition="right"
-                  label="全选"
-                  checked={checked}
-                />
-                <View>
-                  <Text className="cartFooterText">已选中1件,卷后合计:</Text>
-                  <Price
-                    price={1790}
-                    size="normal"
-                    needSymbol
-                    thousands
-                    style={{ color: '#0D0F23' }}
-                  />
-                </View>
-              </View>
-              <Button className="cartFooterButton" shape="square" style={{ borderRadius: 12 }}>
-                领劵结算
-              </Button>
-            </View>
-          </View>
-        </>
+              </>
+            );
+          })}
+        </View>
       ) : (
         <View>
           <Empty className="empty" description="购物车空空如也～">
