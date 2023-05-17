@@ -1,30 +1,61 @@
-import React, { useState } from 'react';
-import { View, Text } from '@tarojs/components';
+import React, { useState, useEffect } from 'react';
+import { View } from '@tarojs/components';
+import { Tabs } from '@nutui/nutui-react-taro';
+import { useDispatch, useSelector } from 'react-redux';
+import Right from './right';
 import './index.scss';
-import { menu } from './dataSource';
 
 const Index = () => {
-  const [value, setValue] = useState(0);
+  const { categoriesList } = useSelector((state) => state.categories);
+  const dispatch = useDispatch();
+  const [tab5value, setTab5value] = useState('0');
+  useEffect(() => {
+    getSub();
+  }, []);
+  const getSub = async () => {
+    if (categoriesList.length > 0) {
+      await dispatch({
+        type: 'categories/getList',
+        payload: {
+          categoryId: categoriesList.at(0)?.id,
+          onShelf: 2,
+          pageNum: 1,
+          pageSize: 20,
+        },
+      });
+    }
+  };
   return (
-    <View className="left">
-      <View>
-        {menu.map((item, index) => (
-          <View
-            key={index}
-            className={value === index ? 'left-content left-content-selected' : 'left-content'}
-            onTap={() => setValue(index)}
-          >
-            {value === index ? (
-              <View className="left-selected"></View>
-            ) : (
-              <View className="left-noselected"></View>
-            )}
-            <View>
-              <Text className="left-title">{item.title}</Text>
-            </View>
-          </View>
+    <View>
+      <Tabs
+        value={tab5value}
+        color="#B08B57"
+        style={{ height: '100vh' }}
+        autoHeight
+        tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: 120 }}
+        onChange={({ paneKey }) => {
+          setTab5value(paneKey);
+          dispatch({ type: 'categories/getCategoriesList' });
+          dispatch({
+            type: 'categories/getList',
+            payload: {
+              categoryId: parseInt(categoriesList[parseInt(paneKey)]?.id),
+              onShelf: 2,
+              pageNum: 1,
+              pageSize: 20,
+            },
+          });
+        }}
+        titleScroll
+        leftAlign
+        direction="vertical"
+      >
+        {categoriesList.map((item) => (
+          <Tabs.TabPane key={item} title={item.categoryName}>
+            <Right categoryName={item.categoryName} />
+          </Tabs.TabPane>
         ))}
-      </View>
+      </Tabs>
     </View>
   );
 };

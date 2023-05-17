@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from '@tarojs/components';
+import { useDispatch } from 'react-redux';
 import './index.scss';
 import Left from './left';
-import Right from './right';
 
 const Index = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: 'categories/getCategoriesList' });
+    // eslint-disable-next-line global-require
+  }, []);
+
   return (
     <View className="all">
-      <View className="all-left">
-        <Left />
-      </View>
-      <View className="all-right">
-        <Right />
-      </View>
+      <Left />
     </View>
   );
 };
