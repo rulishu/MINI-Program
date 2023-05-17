@@ -7,6 +7,7 @@ export default defineAppConfig({
     'pages/select/index',
     'pages/cart/index',
     'pages/my/index',
+    'pages/goods/index',
   ],
   window: {
     backgroundTextStyle: 'light',
