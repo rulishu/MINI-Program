@@ -39,7 +39,7 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              subList: result.result,
+              subList: result.result.records,
             },
           });
         }

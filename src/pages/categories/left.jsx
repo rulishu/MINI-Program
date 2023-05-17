@@ -10,18 +10,29 @@ const Index = () => {
   const dispatch = useDispatch();
   const [tab5value, setTab5value] = useState('0');
   useEffect(() => {
-    dispatch({
-      type: 'categories/getList',
-      payload: {
-        categoryId: categoriesList.at(0)?.id,
-      },
-    });
+    getSub();
   }, []);
+  const getSub = async () => {
+    if (categoriesList.length > 0) {
+      await dispatch({
+        type: 'categories/getList',
+        payload: {
+          categoryId: categoriesList.at(0)?.id,
+          onShelf: 2,
+          pageNum: 1,
+          pageSize: 20,
+        },
+      });
+    }
+  };
   return (
-    <View className="all">
+    <View>
       <Tabs
         value={tab5value}
-        color="#C3A769"
+        color="#B08B57"
+        style={{ height: '100vh' }}
+        autoHeight
+        tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: 120 }}
         onChange={({ paneKey }) => {
           setTab5value(paneKey);
           dispatch({ type: 'categories/getCategoriesList' });
@@ -30,21 +41,18 @@ const Index = () => {
             payload: {
               categoryId: parseInt(categoriesList[parseInt(paneKey)]?.id),
               onShelf: 2,
+              pageNum: 1,
+              pageSize: 20,
             },
           });
         }}
         titleScroll
         leftAlign
-        tabStyle={
-          {
-            // display: 'flex', alignItems: 'flex-start',
-          }
-        }
         direction="vertical"
       >
         {categoriesList.map((item) => (
           <Tabs.TabPane key={item} title={item.categoryName}>
-            <Right />
+            <Right categoryName={item.categoryName} />
           </Tabs.TabPane>
         ))}
       </Tabs>
