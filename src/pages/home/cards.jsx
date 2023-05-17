@@ -4,18 +4,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Cards = () => {
-  const { homeList } = useSelector((state) => state.home);
+  const { homeList, categoriesList } = useSelector((state) => state.home);
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({
-      type: 'home/getList',
-      payload: {
-        pageNum: 1,
-        pageSize: 20,
-      },
-    });
+    getSub();
     // eslint-disable-next-line global-require
-  }, []);
+  }, [categoriesList.length]);
+
+  const getSub = async () => {
+    if (categoriesList.length > 0) {
+      await dispatch({
+        type: 'home/getList',
+        payload: {
+          pageNum: 1,
+          pageSize: 20,
+          categoryId: categoriesList.at(0)?.id,
+        },
+      });
+    }
+  };
 
   return (
     <View className="card">
@@ -33,7 +41,7 @@ const Cards = () => {
             <View className="card-content">
               <View className="card-head">
                 <Text className="card-title">{item.categoryName}</Text>
-                <Text className="card-text">{item.remark}</Text>
+                <Text className="card-text">{item.details}</Text>
               </View>
               <View className="card-foot">
                 <Text className="card-price">¥{item.price}.00</Text>

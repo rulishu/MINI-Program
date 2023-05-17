@@ -41,7 +41,6 @@ page {
   .my-headIcon{
     width: 114rpx;
     height: 113rpx;
-    background-color:#ffffff;
   }
   .head-infos{
     margin-left:36.54rpx;
@@ -52,6 +51,8 @@ page {
     font-weight: 500;
     color: #000000;
     line-height: 42rpx;
+    display:flex;
+    align-items: center;
     .head-info-name-xf{
       margin-left:8rpx;
       font-size: 27rpx;
@@ -67,8 +68,22 @@ page {
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     line-height: 27rpx;
+    display: flex;
+    align-items: center;
   }
   }
+}
+.semicircle{
+  position:absolute;
+  right: -100rpx;
+  top: -120rpx;
+  .semicircle-info{
+    width: 390rpx;
+    height: 380rpx;
+    border: 31rpx solid #B08B57;
+    border-radius: 300px;
+  }
+
 }
 
 .head-list{
@@ -107,7 +122,7 @@ page {
       display:flex;
       flex-direction: row;
       justify-content: space-between;
-      padding: 25rpx 25rpx;
+      padding: 25rpx 25rpx 0 25rpx;
     }
     .my-orders-title{
       font-size: 27rpx;
@@ -144,7 +159,7 @@ page {
       }
     }
     .logistics{
-      padding:25rpx 25rpx;
+      padding:0 25rpx 25rpx 25rpx;
       .my-orders-logistics{
         padding:13rpx 20rpx;
         // height:140rpx;
@@ -209,6 +224,8 @@ page {
         font-weight: 500;
         color: rgba(0,0,0,0.85);
         line-height: 33rpx;
+        display: flex;
+        align-items: center;
       }
 
     }
