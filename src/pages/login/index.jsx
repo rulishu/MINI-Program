@@ -12,7 +12,7 @@ const Login = () => {
   return (
     <View class="onLand-container">
       <View class="onLand-container-top">
-        <Image width="150" height="80" src={log} />
+        <Image width="300px" height="100px" src={log} />
       </View>
       {/* <View>
         <Text className="onLand-app-name">圆满通运</Text>

@@ -2,12 +2,33 @@ import React from 'react';
 import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { Button } from '@nutui/nutui-react-taro';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const WeAppy = () => {
   const dispatch = useDispatch();
+  const { isGetPhone } = useSelector((state) => state.global);
 
+  const login = () => {
+    Taro.login({
+      success: async (res) => {
+        if (res.code) {
+          dispatch({
+            type: 'global/newLogin',
+            payload: {
+              jsCode: res.code,
+            },
+          });
+        } else {
+          Taro.showToast({
+            title: '登录失败！',
+            icon: 'none',
+            duration: 2000,
+          });
+        }
+      },
+    });
+  };
   const onGetphonenumber = (event) => {
     try {
       const detail = event.detail || {};
@@ -47,9 +68,15 @@ const WeAppy = () => {
 
   return (
     <View className="btn-container">
-      <Button type="primary" block open-type="getPhoneNumber" onGetphonenumber={onGetphonenumber}>
-        手机号授权
-      </Button>
+      {isGetPhone ? (
+        <Button type="primary" block open-type="getPhoneNumber" onGetphonenumber={onGetphonenumber}>
+          手机号授权
+        </Button>
+      ) : (
+        <Button color="#09bb07" block onClick={login}>
+          微信一键登录
+        </Button>
+      )}
       <View className="onload-footer">
         <View>
           登录即代表您同意
