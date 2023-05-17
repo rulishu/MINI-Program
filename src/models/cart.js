@@ -6,18 +6,19 @@ export default {
   namespace: 'cart', // 这是模块名
   state: {
     // 初始化数据
-    vipTypeList: [],
+    shoppingList: [],
   },
 
   effects: {
     *goodsAll(_, { call, put }) {
       try {
         const result = yield call(goodsAll);
+        let dataList = result.result.map((item) => item.goodsDtoList);
         if (result) {
           yield put({
             type: 'update',
             payload: {
-              vipTypeList: result.result || [],
+              shoppingList: dataList || [],
             },
           });
         }
