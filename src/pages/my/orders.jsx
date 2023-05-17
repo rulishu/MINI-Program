@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Icon } from '@nutui/nutui-react-taro';
-import my3 from '@/assets/images/my3.png';
-import my8 from '@/assets/images/my8.png';
-import my10 from '@/assets/images/my10.png';
-import my14 from '@/assets/images/my14.png';
-import my19 from '@/assets/images/my19.png';
+import my3 from '@/assets/images/my3.svg';
+import my8 from '@/assets/images/my8.svg';
+import my10 from '@/assets/images/my10.svg';
+import my14 from '@/assets/images/my14.svg';
+import my19 from '@/assets/images/my19.svg';
 
 import './index.scss';
 
@@ -43,7 +43,7 @@ const Index = () => {
       <View className="my-orders-card">
         <View className="my-orders">
           <View>
-            <Text>我的订单</Text>
+            <Text className="my-orders-title">我的订单</Text>
           </View>
           <View className="my-orders-all">
             <Text>全部订单</Text>

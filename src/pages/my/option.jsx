@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import my13 from '@/assets/images/my13.png';
-import my12 from '@/assets/images/my12.png';
-import my9 from '@/assets/images/my9.png';
-import my7 from '@/assets/images/my7.png';
-import my18 from '@/assets/images/my18.png';
-import my11 from '@/assets/images/my11.png';
-import my14 from '@/assets/images/my14.png';
-import my17 from '@/assets/images/my17.png';
-import my15 from '@/assets/images/my15.png';
-import my2 from '@/assets/images/my2.png';
+import my13 from '@/assets/images/my13.svg';
+import my12 from '@/assets/images/my12.svg';
+import my9 from '@/assets/images/my9.svg';
+import my7 from '@/assets/images/my7.svg';
+import my18 from '@/assets/images/my18.svg';
+import my11 from '@/assets/images/my11.svg';
+import my14 from '@/assets/images/my14.svg';
+import my17 from '@/assets/images/my17.svg';
+import my15 from '@/assets/images/my15.svg';
+import my2 from '@/assets/images/my2.svg';
+import my21 from '@/assets/images/my21.svg';
 
 import './index.scss';
 
@@ -57,7 +58,7 @@ const Index = () => {
       title: '升级成代理',
     },
     {
-      icon: my2,
+      icon: my21,
       title: '积分商城',
     },
   ];
