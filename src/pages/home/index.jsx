@@ -90,6 +90,7 @@ const Index = () => {
           <Cards />
           <Foots />
         </View>
+        <View className="tab-footer"></View>
       </View>
     </View>
   );

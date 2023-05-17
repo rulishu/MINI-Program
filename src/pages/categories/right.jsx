@@ -8,7 +8,7 @@ const Index = (props) => {
   const { subList } = useSelector((state) => state.categories);
 
   return (
-    <View className="right" style={{ paddingBottom: 70, width: '64vw', margin: -10 }}>
+    <View className="right" style={{ paddingBottom: 70, margin: -10 }}>
       <View style={{ marginBottom: 8 }}>
         <Text className="right-title">{categoryName}</Text>
       </View>

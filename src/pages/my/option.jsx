@@ -10,7 +10,6 @@ import my14 from '@/assets/images/my14.svg';
 import my17 from '@/assets/images/my17.svg';
 import my15 from '@/assets/images/my15.svg';
 import my2 from '@/assets/images/my2.svg';
-import my21 from '@/assets/images/my21.svg';
 
 import './index.scss';
 
@@ -58,7 +57,7 @@ const Index = () => {
       title: '升级成代理',
     },
     {
-      icon: my21,
+      icon: my2,
       title: '积分商城',
     },
   ];
