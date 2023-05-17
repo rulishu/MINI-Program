@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image, Input, Text } from '@tarojs/components';
 import './index.scss';
+import { useDispatch } from 'react-redux';
 // import pic1 from '../../assets/images/jiutan.png';
 import Navs from './navs';
 // import Lists from './lists';
@@ -8,6 +9,11 @@ import Cards from './cards';
 import Foots from './foots';
 
 const Index = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: 'home/getCategoriesList' });
+    // eslint-disable-next-line global-require
+  }, []);
   // const menus = [
   //   { image: pic1, title: '米面粮油', bg: 'rgba(246, 86, 93, 0.08)' },
   //   { image: pic1, title: '定制酒', bg: ' rgba(110, 162, 255, 0.08)' },
