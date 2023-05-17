@@ -32,7 +32,7 @@ const Index = () => {
         color="#B08B57"
         style={{ height: '100vh' }}
         autoHeight
-        tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: 120 }}
+        tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: '30vw' }}
         onChange={({ paneKey }) => {
           setTab5value(paneKey);
           dispatch({ type: 'categories/getCategoriesList' });
@@ -52,7 +52,10 @@ const Index = () => {
       >
         {categoriesList.map((item) => (
           <Tabs.TabPane key={item} title={item.categoryName}>
-            <Right categoryName={item.categoryName} />
+            <Right
+              categoryName={item.categoryName}
+              style={{ width: '70vw', backgroundColor: '#ffffff' }}
+            />
           </Tabs.TabPane>
         ))}
       </Tabs>

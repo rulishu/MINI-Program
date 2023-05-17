@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Icon } from '@nutui/nutui-react-taro';
-import my3 from '@/assets/images/my3.png';
-import my5 from '@/assets/images/my5.png';
-import my20 from '@/assets/images/my20.png';
-import my1 from '@/assets/images/my1.png';
-import my10 from '@/assets/images/my10.png';
-import my16 from '@/assets/images/my16.png';
+import my3 from '@/assets/images/my3.svg';
+import my5 from '@/assets/images/my5.svg';
+import my20 from '@/assets/images/my20.svg';
+import my1 from '@/assets/images/my1.svg';
+import my10 from '@/assets/images/my10.svg';
+import my16 from '@/assets/images/my16.svg';
 
 import './index.scss';
 

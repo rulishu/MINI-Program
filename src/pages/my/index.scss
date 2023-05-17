@@ -7,6 +7,11 @@ page {
   align-items: center;
   justify-content: center;
 }
+.tab-footer{
+  height: 70px;
+  padding-bottom:50rpx;
+  padding-top:20rpx;
+}
 .heads{
   display:flex;
   flex-direction: row;
@@ -103,6 +108,13 @@ page {
       flex-direction: row;
       justify-content: space-between;
       padding: 25rpx 25rpx;
+    }
+    .my-orders-title{
+      font-size: 27rpx;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #000000;
+      line-height: 38rpx;
     }
     .my-orders-all{
       font-size: 23rpx;
