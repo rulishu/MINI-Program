@@ -10,6 +10,7 @@ export default defineAppConfig({
     'pages/goodInfo/index',
     'pages/editUser/index',
     'pages/address/index',
+    'pages/addAddress/index',
   ],
   window: {
     backgroundTextStyle: 'light',

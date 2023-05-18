@@ -3,9 +3,14 @@ import { View, Text, Image } from '@tarojs/components';
 import { data } from './item';
 import { Avatar, Button } from '@nutui/nutui-react-taro';
 import editIcon from '../../assets/images/edit.svg';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
+  // 添加
+  const add = () => {
+    Taro.navigateTo({ url: '/pages/addAddress/index' });
+  };
   return (
     <View>
       <View className="address">
@@ -40,7 +45,7 @@ const Index = () => {
         })}
       </View>
       <View className="add-address">
-        <Button size="small" color="#B08B57" className="add-address-btn">
+        <Button size="small" color="#B08B57" className="add-address-btn" onTap={() => add()}>
           <Text className="add-address-btn-text">添加收货地址</Text>
         </Button>
       </View>
