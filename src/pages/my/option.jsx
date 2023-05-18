@@ -10,10 +10,17 @@ import my14 from '@/assets/images/my14.svg';
 import my17 from '@/assets/images/my17.svg';
 import my15 from '@/assets/images/my15.svg';
 import my2 from '@/assets/images/my2.svg';
+import Taro from '@tarojs/taro';
 
 import './index.scss';
 
 const Index = () => {
+  // 跳转
+  const go = (item) => {
+    if (item.title === '地址管理') {
+      Taro.navigateTo({ url: item.url });
+    }
+  };
   const list = [
     {
       icon: my13,
@@ -31,6 +38,7 @@ const Index = () => {
     {
       icon: my7,
       title: '地址管理',
+      url: '/pages/address/index',
     },
     {
       icon: my18,
@@ -66,7 +74,7 @@ const Index = () => {
     <View className="option">
       <View className="option-list">
         {list.map((item, index) => (
-          <View key={index} className="option-list-item">
+          <View key={index} className="option-list-item" onTap={() => go(item)}>
             <Image mode="widthFix" src={item.icon} style={{ width: 24, height: 24 }}></Image>
             <View className="option-list-item-title">
               <Text>{item.title}</Text>
