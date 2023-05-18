@@ -1,16 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import {
-  Swipe,
-  Cell,
-  Button,
-  Checkbox,
-  Price,
-  InputNumber,
-  Empty,
-  ConfigProvider,
-} from '@nutui/nutui-react-taro';
+import { Swipe, Cell, Button, Checkbox, Price, InputNumber, Empty } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -40,10 +31,6 @@ const Index = () => {
     if (check === false) {
       setChecked(false);
     }
-  };
-
-  const darkTheme = {
-    NutuiEmptyDescriptionFontSize: 12,
   };
   let shoppingItem = shoppingList.flat();
   return (
@@ -145,8 +132,8 @@ const Index = () => {
           })}
         </View>
       ) : (
-        <ConfigProvider theme={darkTheme}>
-          <Empty className="empty" description="购物车空空如也～" imageSize={180}>
+        <View>
+          <Empty className="empty" description="购物车空空如也～">
             <Button
               onClick={() => {
                 Taro.switchTab({ url: '/pages/categories/index' });
@@ -157,14 +144,14 @@ const Index = () => {
                   },
                 });
               }}
+              size="small"
               type="primary"
-              style={{ marginTop: 20, fontSize: 12 }}
-              className="emptyButton"
+              style={{ marginTop: 20 }}
             >
               去逛逛
             </Button>
           </Empty>
-        </ConfigProvider>
+        </View>
       )}
     </View>
   );
