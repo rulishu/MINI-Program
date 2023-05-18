@@ -4,7 +4,6 @@ import './index.scss';
 import Heads from './heads';
 import Card from './card';
 import Content from './content';
-import Footer from './footer';
 
 const Index = () => {
   return (
@@ -12,7 +11,6 @@ const Index = () => {
       <Heads />
       <Card />
       <Content />
-      <Footer />
     </Cell>
   );
 };

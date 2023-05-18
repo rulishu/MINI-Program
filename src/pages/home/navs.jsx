@@ -7,8 +7,8 @@ const Navs = () => {
   return (
     <View
       className="nav"
-      onClick={() => {
-        Taro.navigateTo({ url: '/pages/goods/index' });
+      onTap={() => {
+        Taro.navigateTo({ url: '/pages/goodInfo/index' });
       }}
     >
       {/* <View>

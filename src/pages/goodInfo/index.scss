@@ -98,6 +98,7 @@ page {
   }
 }
 .contentFooter{
+  width: 100%;
   margin-top: 62px;
   height: 128px;
   background: #F7F7F7;
@@ -105,6 +106,7 @@ page {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  // border: 1px solid red;
   .contentFooterText{
     .contentFooterOne{
       font-family: PingFangSC-Regular;
@@ -123,5 +125,66 @@ page {
       letter-spacing: 0px;
       color: #666666;
     }
+  }
+}
+
+// 图片详情
+.contentDetail{
+  width: 100%;
+  border-radius: 20px 20px 0px 0px;
+  background: #FFFFFF;
+  height: 100%;
+  // border: 1px solid red;
+  .contentDetailBox{
+    margin-top: 60px;
+    margin-left: 20px;
+    .contentDetailText{
+      font-family: PingFangSC-Medium;
+      font-size: 35px;
+      font-weight: normal;
+      line-height: 24px;
+      letter-spacing: 0px;
+      color: #0D0F23;
+    }
+  }
+  .contentDetailImage{
+    margin: 56px 20px 20px 20px;
+    background: #D8D8D8;
+    height: 80%;
+  }
+}
+// 按钮
+.contentButton{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.16);
+  background: #FFFFFF;
+  height: 150px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  .contentButtonOne{
+    border-radius: 12px;
+    background: #F7F7F7;
+    margin-right: 20px;
+    height: 80px;
+    width: 80px;
+    font-size: 25px;
+  }
+  .contentButtonTwo{
+    width: 563px;
+    border-radius: 12px;
+    background: #A85230;
+    height: 80px;
+    font-family: PingFangSC-Medium;
+    font-size: 25px;
+    font-weight: normal;
+    line-height: 24px;
+    text-align: center;
+    letter-spacing: 0px;
+    color: #FFFFFF;
   }
 }

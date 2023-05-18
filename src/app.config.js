@@ -7,7 +7,7 @@ export default defineAppConfig({
     'pages/select/index',
     'pages/cart/index',
     'pages/my/index',
-    'pages/goods/index',
+    'pages/goodInfo/index',
     'pages/editUser/index',
   ],
   window: {
