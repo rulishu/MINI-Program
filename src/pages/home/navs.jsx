@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components'; //Image
-import Taro from '@tarojs/taro';
+// import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Navs = () => {
@@ -8,7 +8,7 @@ const Navs = () => {
     <View
       className="nav"
       onTap={() => {
-        Taro.navigateTo({ url: '/pages/goodInfo/index' });
+        // Taro.navigateTo({ url: '/pages/goodInfo/index' });
       }}
     >
       {/* <View>
