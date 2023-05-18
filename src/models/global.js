@@ -43,6 +43,7 @@ export default {
             type: 'update',
             payload: {
               userInfo: { ...userDto },
+              activeIndex: 0,
             },
           });
           Taro.switchTab({ url: '/pages/home/index' });
@@ -82,6 +83,7 @@ export default {
             type: 'update',
             payload: {
               userInfo: { ...userDto },
+              activeIndex: 0,
             },
           });
           Taro.switchTab({ url: '/pages/home/index' });

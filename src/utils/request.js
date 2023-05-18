@@ -58,8 +58,15 @@ export default {
         header: { ...header },
         success(res) {
           if (res?.data && res?.data?.code === 401) {
-            Taro.navigateTo({ url: '/pages/login/index' });
-            Taro.clearStorageSync();
+            Taro.showModal({
+              title: '登录失效',
+              content: '请重新登录',
+              showCancel: false,
+              success: () => {
+                Taro.navigateTo({ url: '/pages/login/index' });
+                Taro.clearStorageSync();
+              },
+            });
           }
           if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
             return logError('api', '请求资源不存在');
