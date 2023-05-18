@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-// import Taro from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
 // import { Button } from '@nutui/nutui-react-taro';
 import { useDispatch } from 'react-redux';
@@ -12,7 +12,16 @@ import Option from './option';
 const Index = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({ type: 'my/getUserInfo' });
+    const token = Taro.getStorageSync('token');
+    const userInfo = Taro.getStorageSync('userInfo');
+    if (token !== '') {
+      dispatch({
+        type: 'my/getUserInfos',
+        payload: {
+          id: userInfo.id,
+        },
+      });
+    }
     // eslint-disable-next-line global-require
   }, []);
   // const onLout = () => {

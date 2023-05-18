@@ -8,7 +8,7 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
-  const { userInfo } = useSelector((state) => state.my);
+  const { userInfos } = useSelector((state) => state.my);
 
   const time = (date) => {
     //date作为一个时间变量传进来
@@ -40,6 +40,14 @@ const Index = () => {
 
   //编辑信息
   const edit = () => {
+    const token = Taro.getStorageSync('token');
+    if (token === '') {
+      return Taro.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
     Taro.navigateTo({ url: '/pages/editUser/index' });
   };
 
@@ -58,11 +66,16 @@ const Index = () => {
       </View>
       <View className="head-info">
         <View className="my-headIcon" onTap={() => edit()}>
-          <Avatar shape="square" size="large" icon="my" iconSize="24" />
+          <Avatar
+            shape="square"
+            size="large"
+            icon={userInfos.headUrl === '' ? 'my' : userInfos.headUrl}
+            iconSize="60"
+          />
         </View>
         <View className="head-infos">
           <View className="head-info-name">
-            <Text>游客</Text>
+            <Text>{userInfos.nickName || '游客'}</Text>
             <Image
               mode="widthFix"
               src={vip}
@@ -71,7 +84,7 @@ const Index = () => {
             <Text className="head-info-name-xf">续费</Text>
           </View>
           <View className="head-info-id">
-            <Text>经销商 ID：{userInfo.id}</Text>
+            <Text>经销商 ID：{userInfos.id || '暂无信息'}</Text>
             <Image
               mode="widthFix"
               src={myfz}
@@ -79,7 +92,7 @@ const Index = () => {
             ></Image>
           </View>
           <View className="head-info-id">
-            <Text>加入融辉第 {time(userInfo.createTime)} 天</Text>
+            <Text>加入融辉第 {time(userInfos.createTime) || 0} 天</Text>
           </View>
         </View>
       </View>

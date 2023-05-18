@@ -20,17 +20,18 @@ page {
 }
 .avatar{
   display: flex;
+   align-items: center;
 }
 .foot{
     color: #CBCBCB;
     margin:0 40rpx;
-    font-size:28rpx;
+    font-size:24rpx;
 }
 .foot-btn{
   margin:40rpx;
 }
 .foot-btn-size{
-  width: 60rpx; 
-  height: 60rpx ;
+  width: 48rpx; 
+  height: 48rpx ;
   background-color: #fff,
 }

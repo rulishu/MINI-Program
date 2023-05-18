@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-vars */
 // import Taro from '@tarojs/taro';
-import { getUserInfo } from '@/server/my';
+import { getUserInfo, editUserInfo } from '@/server/my';
 
 export default {
   namespace: 'my', // 这是模块名
   state: {
     // 初始化数据
-    userInfo: {},
+    userInfos: {},
   },
 
   effects: {
     // 查询个人信息
-    *getUserInfo({ payload }, { call, put }) {
+    *getUserInfos({ payload }, { call, put }) {
       try {
         const params = { ...payload };
         const result = yield call(getUserInfo, params);
@@ -19,9 +19,24 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              userInfo: result.result || '',
+              userInfos: result.result || '',
             },
           });
+        }
+      } catch (err) {}
+    },
+
+    //编辑个人信息
+    *editUserInfo({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(editUserInfo, params);
+        if (result && result.code === 200) {
+          // yield put({
+          //   type: 'update',
+          //   payload: {
+          //   },
+          // });
         }
       } catch (err) {}
     },
