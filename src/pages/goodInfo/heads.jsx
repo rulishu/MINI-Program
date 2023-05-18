@@ -8,13 +8,23 @@ const Index = () => {
   return (
     <View className="heads">
       <View className="title">
-        <Icon name="rect-left" size="15" onClick={() => Taro.navigateBack({ delta: 1 })}></Icon>
-        <Text className="titleText">奋斗之露 · 喜庆</Text>
+        <View style={{ marginRight: 19 }}>
+          <Icon name="rect-left" size="15" onClick={() => Taro.navigateBack({ delta: 1 })}></Icon>
+        </View>
+        <View>
+          <Text className="titleText">奋斗之露 · 喜庆</Text>
+        </View>
       </View>
       <View className="detailIcon">
-        <Icon name="share-n" size="15"></Icon>
-        <Icon name="message" size="15"></Icon>
-        <Icon name="cart" size="15"></Icon>
+        <View style={{ marginRight: 19 }}>
+          <Icon name="share-n" size="15"></Icon>
+        </View>
+        <View style={{ marginRight: 19 }}>
+          <Icon name="message" size="15"></Icon>
+        </View>
+        <View>
+          <Icon name="cart" size="15"></Icon>
+        </View>
       </View>
     </View>
   );

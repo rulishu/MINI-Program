@@ -1,5 +1,5 @@
 page {
-  height: 100%;
+  width: 100%;
   background: #F5F5F5;
 }
 // 标题
@@ -8,14 +8,16 @@ page {
   flex-direction: row;
   align-items:center;
   justify-content: space-between;
-  margin: 100rpx 20rpx 20rpx 20rpx;
+  padding:80rpx 20rpx 0rpx 20rpx;
+  height:62px;
+  background-color: #ffffff;
   .title{
     display: flex;
     flex-direction: row;
     align-items: center;
     .titleText{
       font-family: PingFangSC-Medium;
-      font-size: 28px;
+      font-size: 36px;
       font-weight: normal;
       line-height: 31px;
       letter-spacing: 0px;
@@ -30,16 +32,13 @@ page {
 
 // 图片
 .cardHeader{
-  margin: 0, 28px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   .cardHeaderImage{
-    width: 384px;
-    height: 484px;
-    margin: 10px, 10px;
-
+    width: 568px;
+    height: 568px;
   }
 }
 .cardImages{
@@ -47,100 +46,99 @@ page {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  // margin-top: 10px;
   .cardImagesItem{
-    width: 64rpx;
-    height: 64rpx;
-    border-radius: 8px;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
     box-sizing: border-box;
-    margin: 10px 5px;
+    margin-right: 16px;
+    margin-top: 12px;
   }
-  .cardImagesText{
+  .cardImagesTextBox{
     width: 120px;
-    height: 50px;
-    border-radius: 8px;
+    height: 48px;
+    border-radius: 16px;
     background: #F7F7F7;
+    margin-left: 12px;
     text-align: center;
-    margin-left: 10px;
+    .cardImagesText{
+      font-family: PingFangSC-Regular;
+      font-size: 22px;
+      font-weight: normal;
+      line-height: 17px;
+      letter-spacing: 0px;
+      color: #A0A1B4;
+    }
   }
 }
 
 // 文本
-.contentText{
-  margin-top: 28px;
-  .contentTextOne{
-    font-family: PingFangSC-Regular;
-    font-size: 38px;
-    font-weight: normal;
-    line-height: 31px;
-    letter-spacing: 0px;
-    color: #0D0F23;
-    margin-bottom: 28px;
-  }
-  .contentTextTwo{
-    font-family: PingFangSC-Regular;
-    font-size: 25px;
-    font-weight: normal;
-    line-height: 24px;
-    letter-spacing: 0px;
-    color: #0D0F23;
-    margin-bottom: 28px;
-  }
-  .contentTextThrid{
-    font-family: PingFangSC-Regular;
-    font-size: 21px;
-    font-weight: normal;
-    line-height: 19px;
-    letter-spacing: 0px;
-    color: #997A40;
-    display: flex;
-    justify-content: space-between;
-  }
+.contentTextOne{
+  font-family: PingFangSC-Regular;
+  font-size: 36px;
+  font-weight: normal;
+  line-height: 31px;
+  letter-spacing: 0px;
+  color: #0D0F23;
+  margin-bottom: 28px;
 }
+.contentTextTwo{
+  font-family: PingFangSC-Regular;
+  font-size: 30px;
+  font-weight: normal;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: #0D0F23;
+  margin-bottom: 28px;
+}
+.contentTextThrid{
+  font-family: PingFangSC-Regular;
+  font-size: 22px;
+  font-weight: normal;
+  line-height: 19px;
+  letter-spacing: 0px;
+  color: #997A40;
+  display: flex;
+  justify-content: space-between;
+}
+// 规格
 .contentFooter{
-  width: 100%;
-  margin-top: 62px;
   height: 128px;
   background: #F7F7F7;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  // border: 1px solid red;
-  .contentFooterText{
-    .contentFooterOne{
-      font-family: PingFangSC-Regular;
-      font-size: 35px;
-      font-weight: normal;
-      line-height: 24px;
-      letter-spacing: 0px;
-      color: #0D0F23;
-      margin-right: 60px;
-    }
-    .contentFooterTwo{
-      font-family: PingFangSC-Regular;
-      font-size: 22px;
-      font-weight: normal;
-      line-height: 24px;
-      letter-spacing: 0px;
-      color: #666666;
-    }
+  .contentFooterOne{
+    font-family: PingFangSC-Regular;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #0D0F23;
+    padding-right: 56px;
+  }
+  .contentFooterTwo{
+    font-family: PingFangSC-Regular;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #666666;
   }
 }
-
-// 图片详情
+// 商品详情
 .contentDetail{
-  width: 100%;
-  border-radius: 20px 20px 0px 0px;
-  background: #FFFFFF;
-  height: 100%;
-  // border: 1px solid red;
+  background: #ffffff;
+  border-top-left-radius:40px ;
+  border-top-right-radius:40px ;
   .contentDetailBox{
-    margin-top: 60px;
-    margin-left: 20px;
+    padding-top: 64px;
+    margin-left: 40px;
+    margin-bottom: 64px;
     .contentDetailText{
       font-family: PingFangSC-Medium;
-      font-size: 35px;
+      font-size: 30px;
       font-weight: normal;
       line-height: 24px;
       letter-spacing: 0px;
@@ -148,11 +146,13 @@ page {
     }
   }
   .contentDetailImage{
-    margin: 56px 20px 20px 20px;
+    margin: 32px 40px 152px 40px;
     background: #D8D8D8;
-    height: 80%;
+    // padding-bottom: 40px;
   }
 }
+
+
 // 按钮
 .contentButton{
   position: fixed;
@@ -160,25 +160,24 @@ page {
   left: 0;
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.16);
   background: #FFFFFF;
-  height: 150px;
+  height: 192px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   .contentButtonOne{
-    border-radius: 12px;
+    border-radius: 24px;
     background: #F7F7F7;
     margin-right: 20px;
-    height: 80px;
-    width: 80px;
-    font-size: 25px;
+    height: 112px;
+    width: 112px;
   }
   .contentButtonTwo{
-    width: 563px;
-    border-radius: 12px;
+    width: 526px;
+    height: 112px;
+    border-radius: 24px;
     background: #A85230;
-    height: 80px;
     font-family: PingFangSC-Medium;
     font-size: 25px;
     font-weight: normal;
