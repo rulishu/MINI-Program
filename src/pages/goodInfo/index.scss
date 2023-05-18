@@ -29,7 +29,6 @@ page {
     align-items: center;
   }
 }
-
 // 图片
 .cardHeader{
   display: flex;
@@ -71,7 +70,6 @@ page {
     }
   }
 }
-
 // 文本
 .contentTextOne{
   font-family: PingFangSC-Regular;
@@ -151,8 +149,6 @@ page {
     // padding-bottom: 40px;
   }
 }
-
-
 // 按钮
 .contentButton{
   position: fixed;
@@ -188,3 +184,93 @@ page {
     color: #FFFFFF;
   }
 }
+
+
+// 立即购买
+.popupInfo{
+  padding-top: 92px;
+  padding-left: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .infoImage{
+    width: 208px;
+    height: 208px;
+  }
+  .infoTextBox{
+    margin-left: 32px;
+    .infoTextOne{
+      font-family: PingFangSC-Medium;
+      font-size: 36px;
+      font-weight: normal;
+      line-height: 31px;
+      letter-spacing: 0px;
+      color: #A85230;
+    }
+    .infoTextTwo{
+      font-family: PingFangSC-Regular;
+      font-size: 22px;
+      font-weight: normal;
+      line-height: 19px;
+      letter-spacing: 0px;
+      color: #997A40;
+    }
+  }
+}
+.infoSpecs{
+  margin-top: 32px;
+  margin-left: 40px;
+  .infoSpecsTitle{
+    font-family: PingFangSC-Medium;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #0D0F23;
+  }
+  .infoSpecsDes{
+    margin-top: 24px;
+    .infoSpecsButOne{
+      background: #A85230;
+      box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
+      border-radius: 16px;
+
+      font-family: PingFangSC-Medium;
+      font-size: 22px;
+      font-weight: normal;
+      line-height: 19px;
+      text-align: center;
+      letter-spacing: 0px;
+      color: #FFFFFF;
+    }
+    .infoSpecsButTwo{
+      margin-left: 32px;
+      background: #FFFFFF;
+      box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
+      border-radius: 16px;
+      
+      font-family: PingFangSC-Regular;
+      font-size: 22px;
+      font-weight: normal;
+      line-height: 19px;
+      text-align: center;
+      letter-spacing: 0px;
+      color: #A85230;
+    }
+  }
+}
+.infoNumber{
+  margin-top: 68px;
+  margin-left: 40px;
+  .numberText{
+    font-family: PingFangSC-Regular;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #0D0F23;
+  }
+}
+
+
+
