@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import Taro from '@tarojs/taro';
+// import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
-import { Button } from '@nutui/nutui-react-taro';
+// import { Button } from '@nutui/nutui-react-taro';
 import { useDispatch } from 'react-redux';
 import './index.scss';
 import Heads from './heads';
@@ -15,21 +15,21 @@ const Index = () => {
     dispatch({ type: 'my/getUserInfo' });
     // eslint-disable-next-line global-require
   }, []);
-  const onLout = () => {
-    Taro.clearStorageSync();
-    Taro.navigateTo({ url: '/pages/login/index' });
-  };
+  // const onLout = () => {
+  //   Taro.clearStorageSync();
+  //   Taro.navigateTo({ url: '/pages/login/index' });
+  // };
   return (
     <View>
       <Heads />
       <Orders />
       {/* <Seals /> */}
       <Option />
-      <View className="goOut">
+      {/* <View className="goOut">
         <Button type="primary" onTap={onLout}>
           退出
         </Button>
-      </View>
+      </View> */}
       <View className="tab-footer"></View>
     </View>
   );
