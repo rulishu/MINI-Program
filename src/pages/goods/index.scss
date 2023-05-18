@@ -1,0 +1,127 @@
+page {
+  height: 100%;
+  background: #F5F5F5;
+}
+// 标题
+.heads{
+  display:flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content: space-between;
+  margin: 100rpx 20rpx 20rpx 20rpx;
+  .title{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .titleText{
+      font-family: PingFangSC-Medium;
+      font-size: 28px;
+      font-weight: normal;
+      line-height: 31px;
+      letter-spacing: 0px;
+      color: #0D0F23;
+    }
+  }
+  .detailIcon{
+    display: flex;
+    align-items: center;
+  }
+}
+
+// 图片
+.cardHeader{
+  margin: 0, 28px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  .cardHeaderImage{
+    width: 384px;
+    height: 484px;
+    margin: 10px, 10px;
+
+  }
+}
+.cardImages{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  // margin-top: 10px;
+  .cardImagesItem{
+    width: 64rpx;
+    height: 64rpx;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin: 10px 5px;
+  }
+  .cardImagesText{
+    width: 120px;
+    height: 50px;
+    border-radius: 8px;
+    background: #F7F7F7;
+    text-align: center;
+    margin-left: 10px;
+  }
+}
+
+// 文本
+.contentText{
+  margin-top: 28px;
+  .contentTextOne{
+    font-family: PingFangSC-Regular;
+    font-size: 38px;
+    font-weight: normal;
+    line-height: 31px;
+    letter-spacing: 0px;
+    color: #0D0F23;
+    margin-bottom: 28px;
+  }
+  .contentTextTwo{
+    font-family: PingFangSC-Regular;
+    font-size: 25px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #0D0F23;
+    margin-bottom: 28px;
+  }
+  .contentTextThrid{
+    font-family: PingFangSC-Regular;
+    font-size: 21px;
+    font-weight: normal;
+    line-height: 19px;
+    letter-spacing: 0px;
+    color: #997A40;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+.contentFooter{
+  margin-top: 62px;
+  height: 128px;
+  background: #F7F7F7;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  .contentFooterText{
+    .contentFooterOne{
+      font-family: PingFangSC-Regular;
+      font-size: 35px;
+      font-weight: normal;
+      line-height: 24px;
+      letter-spacing: 0px;
+      color: #0D0F23;
+      margin-right: 60px;
+    }
+    .contentFooterTwo{
+      font-family: PingFangSC-Regular;
+      font-size: 22px;
+      font-weight: normal;
+      line-height: 24px;
+      letter-spacing: 0px;
+      color: #666666;
+    }
+  }
+}
