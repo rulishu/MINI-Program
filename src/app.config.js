@@ -8,6 +8,7 @@ export default defineAppConfig({
     'pages/cart/index',
     'pages/my/index',
     'pages/goodInfo/index',
+    'pages/editUser/index',
   ],
   window: {
     backgroundTextStyle: 'light',

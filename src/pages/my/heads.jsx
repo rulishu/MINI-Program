@@ -4,6 +4,7 @@ import { Icon, Avatar } from '@nutui/nutui-react-taro';
 import { useSelector } from 'react-redux';
 import vip from '../../assets/images/vip.svg';
 import myfz from '../../assets/images/myfz.svg';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
@@ -37,6 +38,11 @@ const Index = () => {
     },
   ];
 
+  //编辑信息
+  const edit = () => {
+    Taro.navigateTo({ url: '/pages/editUser/index' });
+  };
+
   return (
     <View>
       <View className="heads">
@@ -51,7 +57,7 @@ const Index = () => {
         </View>
       </View>
       <View className="head-info">
-        <View className="my-headIcon">
+        <View className="my-headIcon" onTap={() => edit()}>
           <Avatar shape="square" size="large" icon="my" iconSize="24" />
         </View>
         <View className="head-infos">
