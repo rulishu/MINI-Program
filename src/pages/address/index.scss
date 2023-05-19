@@ -35,6 +35,18 @@ page {
         font-weight: 600;
         color: rgba(0,0,0,0.85);
         line-height: 38rpx;
+        .address-item-left-info-top-mr{
+          padding: 0 23rpx;
+          background: #B08B57;
+          border-radius: 32rpx;
+          .address-item-left-info-top-mr-text{
+            font-size: 23rpx;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #FFFFFF;
+            line-height: 33rpx;
+          }
+        }
        }
        .address-item-left-info-bottom{
         font-size: 23rpx;

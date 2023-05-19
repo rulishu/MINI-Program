@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { data } from './item';
 import { Avatar, Button } from '@nutui/nutui-react-taro';
 import editIcon from '../../assets/images/edit.svg';
 import Taro from '@tarojs/taro';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
+  const { addressList } = useSelector((state) => state.address);
+  useEffect(() => {
+    const userInfo = Taro.getStorageSync('userInfo');
+    dispatch({
+      type: 'address/getAddress',
+      payload: {
+        id: userInfo.id,
+      },
+    });
+    // eslint-disable-next-line global-require
+  }, []);
   // 添加
   const add = () => {
     Taro.navigateTo({ url: '/pages/addAddress/index' });
@@ -14,26 +26,31 @@ const Index = () => {
   return (
     <View>
       <View className="address">
-        {data.map((item, index) => {
+        {addressList?.map((item, index) => {
           return (
             <View key={index} className="address-item">
               <View className="address-item-left">
                 <View>
                   <Avatar bgColor="#B08B57">
-                    <Text className="address-item-left-avatar-text">{item.name.at(0)}</Text>
+                    <Text className="address-item-left-avatar-text">{item.consignee?.at(0)}</Text>
                   </Avatar>
                 </View>
                 <View className="address-item-left-info">
                   <View className="address-item-left-info-top">
                     <View style={{ marginRight: 8 }}>
-                      <Text>{item.name}</Text>
+                      <Text>{item.consignee}</Text>
                     </View>
-                    <View>
+                    <View style={{ marginRight: 8 }}>
                       <Text>{item.phone}</Text>
                     </View>
+                    {item.isDefault === 1 && (
+                      <View className="address-item-left-info-top-mr">
+                        <Text className="address-item-left-info-top-mr-text">默认</Text>
+                      </View>
+                    )}
                   </View>
                   <View className="address-item-left-info-bottom">
-                    <Text>{item.address}</Text>
+                    <Text>{item.province + item.city + item.area}</Text>
                   </View>
                 </View>
               </View>
