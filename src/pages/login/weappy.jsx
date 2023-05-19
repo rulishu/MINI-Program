@@ -21,7 +21,7 @@ const WeAppy = () => {
           });
         } else {
           Taro.showToast({
-            title: '登录失败！',
+            title: '获取微信信息失败',
             icon: 'none',
             duration: 2000,
           });

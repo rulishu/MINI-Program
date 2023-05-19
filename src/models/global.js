@@ -48,6 +48,11 @@ export default {
           });
           Taro.switchTab({ url: '/pages/home/index' });
         } else {
+          Taro.showToast({
+            title: '请稍后再试',
+            icon: 'none',
+            duration: 2000,
+          });
           Taro.hideLoading();
         }
       } catch (err) {
@@ -88,6 +93,11 @@ export default {
           });
           Taro.switchTab({ url: '/pages/home/index' });
         } else {
+          Taro.showToast({
+            title: '请授权获取手机号',
+            icon: 'none',
+            duration: 2000,
+          });
           Taro.hideLoading();
           yield put({
             type: 'update',
