@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Avatar, Button } from '@nutui/nutui-react-taro';
+import { Avatar, Button, Swipe } from '@nutui/nutui-react-taro';
 import editIcon from '../../assets/images/edit.svg';
 import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
+  const closeRef = useRef(null);
   const dispatch = useDispatch();
   const { addressList } = useSelector((state) => state.address);
+  const userInfo = Taro.getStorageSync('userInfo');
   useEffect(() => {
-    const userInfo = Taro.getStorageSync('userInfo');
     dispatch({
       type: 'address/getAddress',
       payload: {
@@ -35,41 +36,94 @@ const Index = () => {
     });
   };
 
+  // 删除
+  const del = async (item) => {
+    await dispatch({
+      type: 'address/deleteAddress',
+      payload: {
+        id: item,
+      },
+    });
+    await dispatch({
+      type: 'address/getAddress',
+      payload: {
+        id: userInfo.id,
+      },
+    });
+  };
+
+  // 设为默认
+  const setDefault = async (item) => {
+    await dispatch({
+      type: 'address/editAddress',
+      payload: {
+        ...item,
+        isDefault: 1,
+      },
+    });
+    await dispatch({
+      type: 'address/getAddress',
+      payload: {
+        id: userInfo.id,
+      },
+    });
+  };
+
   return (
     <View>
       <View className="address">
         {addressList?.map((item, index) => {
           return (
-            <View key={index} className="address-item">
-              <View className="address-item-left">
-                <View>
-                  <Avatar bgColor="#B08B57">
-                    <Text className="address-item-left-avatar-text">{item.consignee?.at(0)}</Text>
-                  </Avatar>
-                </View>
-                <View className="address-item-left-info">
-                  <View className="address-item-left-info-top">
-                    <View style={{ marginRight: 8 }}>
-                      <Text>{item.consignee}</Text>
-                    </View>
-                    <View style={{ marginRight: 8 }}>
-                      <Text>{item.phone}</Text>
-                    </View>
-                    {item.isDefault === 1 && (
-                      <View className="address-item-left-info-top-mr">
-                        <Text className="address-item-left-info-top-mr-text">默认</Text>
+            <Swipe
+              ref={closeRef}
+              key={index}
+              rightAction={
+                <>
+                  <Button shape="square" color="#BFBFBF" onClick={() => setDefault(item)}>
+                    <Text style={{ color: '#000000', fontWeight: 400, fontSize: 13 }}>
+                      设为默认
+                    </Text>
+                  </Button>
+                  <Button shape="square" type="danger" onClick={() => del(item.id)}>
+                    <Text style={{ color: '#FFFFFF', fontWeight: 400, fontSize: 13 }}>删除</Text>
+                  </Button>
+                </>
+              }
+              onActionClick={() => {
+                closeRef.current.close();
+              }}
+            >
+              <View className="address-item">
+                <View className="address-item-left">
+                  <View>
+                    <Avatar bgColor="#B08B57">
+                      <Text className="address-item-left-avatar-text">{item.consignee?.at(0)}</Text>
+                    </Avatar>
+                  </View>
+                  <View className="address-item-left-info">
+                    <View className="address-item-left-info-top">
+                      <View style={{ marginRight: 8 }}>
+                        <Text>{item.consignee}</Text>
                       </View>
-                    )}
-                  </View>
-                  <View className="address-item-left-info-bottom">
-                    <Text>{item.province + item.city + item.area}</Text>
+                      <View style={{ marginRight: 8 }}>
+                        <Text>{item.phone}</Text>
+                      </View>
+                      {item.isDefault === 1 && (
+                        <View className="address-item-left-info-top-mr">
+                          <Text className="address-item-left-info-top-mr-text">默认</Text>
+                        </View>
+                      )}
+                    </View>
+                    <View className="address-item-left-info-bottom">
+                      <Text>{item.province + item.city + item.area}</Text>
+                    </View>
                   </View>
                 </View>
+                <View className="address-item-right" onTap={() => edit(item)}>
+                  <Image mode="widthFix" src={editIcon} style={{ width: 24, height: 24 }}></Image>
+                </View>
               </View>
-              <View className="address-item-right" onTap={() => edit(item)}>
-                <Image mode="widthFix" src={editIcon} style={{ width: 24, height: 24 }}></Image>
-              </View>
-            </View>
+            </Swipe>
           );
         })}
       </View>

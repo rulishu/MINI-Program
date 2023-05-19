@@ -19,3 +19,8 @@ export const treeList = (params) => {
 export const editAddress = (params) => {
   return request.post(`/jcgl-mall/app/receiving/address/update`, params);
 };
+
+// 删除收货地址
+export const deleteAddress = (params) => {
+  return request.get(`/jcgl-mall/app/receiving/address/delete`, params);
+};
