@@ -23,6 +23,18 @@ const Index = () => {
   const add = () => {
     Taro.navigateTo({ url: '/pages/addAddress/index' });
   };
+
+  //编辑
+  const edit = async (item) => {
+    Taro.navigateTo({ url: '/pages/editAddress/index' });
+    await dispatch({
+      type: 'address/update',
+      payload: {
+        reData: item,
+      },
+    });
+  };
+
   return (
     <View>
       <View className="address">
@@ -54,7 +66,7 @@ const Index = () => {
                   </View>
                 </View>
               </View>
-              <View className="address-item-right">
+              <View className="address-item-right" onTap={() => edit(item)}>
                 <Image mode="widthFix" src={editIcon} style={{ width: 24, height: 24 }}></Image>
               </View>
             </View>

@@ -11,6 +11,7 @@ export default defineAppConfig({
     'pages/editUser/index',
     'pages/address/index',
     'pages/addAddress/index',
+    'pages/editAddress/index',
   ],
   window: {
     backgroundTextStyle: 'light',
