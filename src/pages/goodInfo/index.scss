@@ -302,29 +302,19 @@ page {
     letter-spacing: 0px;
     color: #0D0F23;
   }
-  .numberButtonOne{
-    background: #FFFFFF;
-    box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
-    border-radius: 24px;
-    width: 88px;
-    height: 88px;
-    margin-right: 32px;
-  }
-  .numberInput{
+  .nut-icon{
     background: #F7F7F7;
-    border-radius: 24px;
-    width: 248px;
-    height: 88px;
-    text-align: center;
+    padding: 12px 22px;
+    border-radius: 12px;
   }
-  .numberButtonTwo{
-    background: #A85230;
-    box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
-    border-radius: 24px;
-    width: 88px;
-    height: 88px;
+  .nut-number-input{
+    height: 44px !important;
+    width: 124px !important;
     margin-left: 32px;
+    margin-right: 32px;
+    border-radius: 12px;
   }
+
 }
 
 // 结算
