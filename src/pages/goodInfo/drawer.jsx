@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Popup, Button, InputNumber } from '@nutui/nutui-react-taro';
+import { Popup, Button, Input } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Index = () => {
@@ -56,13 +56,16 @@ const Index = () => {
           <View>
             <Text className="numberText">数量</Text>
           </View>
-          <View style={{ marginTop: 12 }}>
-            <InputNumber
+          <View style={{ marginTop: 12, display: 'flex', flexDirection: 'row' }}>
+            {/* <InputNumber
               className="cartCardRightAdd"
               modelValue={1}
               buttonSize="26"
               inputWidth="124"
-            />
+            /> */}
+            <Button className="numberButtonOne">-</Button>
+            <Input className="numberInput" placeholder="1"></Input>
+            <Button className="numberButtonTwo">+</Button>
           </View>
         </View>
       </View>
