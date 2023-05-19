@@ -7,21 +7,27 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { visible, payVisible } = useSelector((state) => state.goodInfo);
+  const { visible, payVisible, queryInfo } = useSelector((state) => state.goodInfo);
   return (
     <View>
       <View
         style={{ paddingTop: 28, paddingLeft: 20, backgroundColor: '#ffffff', paddingBottom: 32 }}
       >
         <View className="contentTextOne">
-          <Text>奋斗之露·喜庆·5年佳酿</Text>
+          <Text>{queryInfo?.categoryName}</Text>
         </View>
         <View className="contentTextTwo">
-          <Text>53度酱香型白酒 </Text>
+          <Text>{queryInfo?.itemName} </Text>
         </View>
         <View className="contentTextThrid">
-          <Text>500ml*6瓶/箱</Text>
-          <Price price={1890} size="normal" needSymbol thousands style={{ marginRight: 26 }} />
+          <Text>{queryInfo?.specifications}</Text>
+          <Price
+            price={queryInfo?.price}
+            size="normal"
+            needSymbol
+            thousands
+            style={{ marginRight: 26 }}
+          />
         </View>
       </View>
 
@@ -31,7 +37,16 @@ const Index = () => {
             <Text className="contentFooterOne">规格</Text>
             <Text className="contentFooterTwo">请选择商品规格</Text>
           </View>
-          <View>
+          <View
+            onTap={() =>
+              dispatch({
+                type: 'goodInfo/update',
+                payload: {
+                  visible: true,
+                },
+              })
+            }
+          >
             <Icon name="rect-right" size="10" style={{ marginRight: 30 }}></Icon>
           </View>
         </View>
@@ -40,7 +55,7 @@ const Index = () => {
           <View className="contentDetailBox">
             <Text className="contentDetailText">商品详情</Text>
           </View>
-          <View className="contentDetailImage">111</View>
+          <View className="contentDetailImage">{queryInfo?.details}</View>
         </View>
       </View>
 

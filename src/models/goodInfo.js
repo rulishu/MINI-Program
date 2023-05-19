@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 // import Taro from '@tarojs/taro';
-// import { goodsAll } from '@/server/cart';
+import { infoDetails } from '@/server/goodInfo';
 
 export default {
   namespace: 'goodInfo', // 这是模块名
@@ -8,23 +8,26 @@ export default {
     // 初始化数据
     visible: false,
     payVisible: false,
+    queryInfo: {},
   },
 
   effects: {
-    // *goodsAll(_, { call, put }) {
-    //   try {
-    //     const result = yield call(goodsAll);
-    //     let dataList = result.result.map((item) => item.goodsDtoList);
-    //     if (result) {
-    //       yield put({
-    //         type: 'update',
-    //         payload: {
-    //           shoppingList: dataList || [],
-    //         },
-    //       });
-    //     }
-    //   } catch (err) { }
-    // },
+    *infoDetails({ payload }, { call, put }) {
+      try {
+        const params = {
+          ...payload,
+        };
+        const result = yield call(infoDetails, params);
+        if (result) {
+          yield put({
+            type: 'update',
+            payload: {
+              queryInfo: result.result,
+            },
+          });
+        }
+      } catch (err) {}
+    },
   },
 
   reducers: {
