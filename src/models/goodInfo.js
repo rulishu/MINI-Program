@@ -7,6 +7,7 @@ export default {
   state: {
     // 初始化数据
     visible: false,
+    payVisible: false,
   },
 
   effects: {

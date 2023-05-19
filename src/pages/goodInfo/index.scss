@@ -183,6 +183,19 @@ page {
     letter-spacing: 0px;
     color: #FFFFFF;
   }
+  .contentButtonPay{
+    width: 526px;
+    height: 112px;
+    border-radius: 24px;
+    background: #A85230;
+    font-family: PingFangSC-Medium;
+    font-size: 25px;
+    font-weight: normal;
+    line-height: 24px;
+    text-align: center;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+  }
 }
 
 
@@ -270,7 +283,99 @@ page {
     letter-spacing: 0px;
     color: #0D0F23;
   }
+  .numberButtonOne{
+    background: #FFFFFF;
+    box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
+    border-radius: 24px;
+    width: 88px;
+    height: 88px;
+    margin-right: 32px;
+  }
+  .numberInput{
+    background: #F7F7F7;
+    border-radius: 24px;
+    width: 248px;
+    height: 88px;
+    text-align: center;
+  }
+  .numberButtonTwo{
+    background: #A85230;
+    box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
+    border-radius: 24px;
+    width: 88px;
+    height: 88px;
+    margin-left: 32px;
+  }
 }
+
+// 结算
+.payDetailTitle{
+  margin-top: 80px;
+  margin-left: 60px;
+  font-family: PingFangSC-Regular;
+  font-size: 36px;
+  font-weight: normal;
+  line-height: 31px;
+  letter-spacing: 0px;
+  color: #0D0F23;
+}
+.payDetailBox{
+  margin: 14px 40px 0 40px;
+
+  font-family: PingFangSC-Regular;
+  font-size: 30px;
+  font-weight: normal;
+  line-height: 22px;
+  letter-spacing: 0px;
+  color: #A0A1B4;
+  padding-left: 42px;
+  padding-right: 40px;
+  padding-bottom: 40px;
+  .payDetailItemPrice{
+    font-family: PingFangSC-Regular;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 24px;
+    text-align: right;
+    letter-spacing: 0px;
+    color: #0D0F23;
+  }
+}
+.payDetailReduceBox{
+  margin-left: 144px;
+  margin-right: 80px;
+  .payDetailReduce{
+    font-family: PingFangSC-Regular;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #A0A1B4;
+    display: flex;
+    justify-content: space-between;
+  }
+  .payDetailTotal{
+    font-family: PingFangSC-Regular;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #A0A1B4;
+    margin-top: 32px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .payDetailItemPrice{
+    font-family: PingFangSC-Regular;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 24px;
+    text-align: right;
+    letter-spacing: 0px;
+    color: #0D0F23;
+  }
+}
+
 
 
 

@@ -7,7 +7,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { visible } = useSelector((state) => state.goodInfo);
+  const { visible, payVisible } = useSelector((state) => state.goodInfo);
   return (
     <View>
       <View
@@ -44,28 +44,49 @@ const Index = () => {
         </View>
       </View>
 
-      <View
-        className="contentButton"
-        style={{ boxShadow: !visible ? '0px 0px 8px 0px rgba(0, 0, 0, 0.16)' : '' }}
-      >
-        <Button className="contentButtonOne" size="normal">
-          <Text style={{ fontSize: 15, lineHeight: 24 }}> + </Text>
-        </Button>
-        <Button
-          type="primary"
-          className="contentButtonTwo"
-          onClick={() => {
-            dispatch({
-              type: 'goodInfo/update',
-              payload: {
-                visible: true,
-              },
-            });
-          }}
+      {!payVisible ? (
+        <View
+          className="contentButton"
+          style={{ boxShadow: !visible ? '0px 0px 8px 0px rgba(0, 0, 0, 0.16)' : '' }}
         >
-          <Text style={{ fontSize: 15, lineHeight: 24 }}>立即购买</Text>
-        </Button>
-      </View>
+          <Button className="contentButtonOne" size="normal">
+            <Text style={{ fontSize: 15, lineHeight: 24 }}> + </Text>
+          </Button>
+          <Button
+            type="primary"
+            className="contentButtonTwo"
+            onClick={() => {
+              if (visible === false) {
+                dispatch({
+                  type: 'goodInfo/update',
+                  payload: {
+                    visible: true,
+                  },
+                });
+              } else {
+                dispatch({
+                  type: 'goodInfo/update',
+                  payload: {
+                    visible: false,
+                    payVisible: true,
+                  },
+                });
+              }
+            }}
+          >
+            <Text style={{ fontSize: 15, lineHeight: 24 }}>立即购买</Text>
+          </Button>
+        </View>
+      ) : (
+        <View
+          className="contentButton"
+          style={{ boxShadow: !payVisible ? '0px 0px 8px 0px rgba(0, 0, 0, 0.16)' : '' }}
+        >
+          <Button type="primary" className="contentButtonPay" onClick={() => {}}>
+            <Text style={{ fontSize: 15, lineHeight: 24 }}>结算</Text>
+          </Button>
+        </View>
+      )}
     </View>
   );
 };

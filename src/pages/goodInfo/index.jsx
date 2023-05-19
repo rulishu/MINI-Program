@@ -5,6 +5,7 @@ import Card from './card';
 import Content from './content';
 import { View } from '@tarojs/components';
 import Drawer from './drawer';
+import Payment from './payment';
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
       <Card />
       <Content />
       <Drawer />
+      <Payment />
     </View>
   );
 };
