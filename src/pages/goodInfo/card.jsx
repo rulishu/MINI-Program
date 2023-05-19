@@ -12,7 +12,7 @@ const Index = () => {
         <Image
           mode="widthFix"
           // eslint-disable-next-line global-require
-          src={require('@/assets/images/home8.png')}
+          src={require('@/assets/images/wine.png')}
           className="cardHeaderImage"
         ></Image>
         <Icon name="rect-right" size="20" style={{ marginLeft: 10 }}></Icon>

@@ -1,23 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import { Button, Input, Switch, Cascader } from '@nutui/nutui-react-taro';
-import { selectList } from './item';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
+  const { treeDate } = useSelector((state) => state.address);
+  useEffect(() => {
+    dispatch({ type: 'address/treeList' });
+  }, []);
+
+  // js tree数据处理
+  const mapTree = (org) => {
+    const haveChildren = Array.isArray(org.children) && org.children.length > 0;
+    return {
+      text: org.areaName,
+      value: org.areaName,
+      code: org.areaCode,
+      children: haveChildren ? org.children.map((i) => mapTree(i)) : [],
+    };
+  };
+  const addressTree = treeDate.map((org) => mapTree(org));
+
+  // 级联选择器
   const [isVisibleDemo1, setIsVisibleDemo1] = useState(false);
   const [value1, setValue1] = useState([]);
-  const change1 = (value) => {
+
+  const [province, setProvince] = useState('');
+  const [city, setCity] = useState('');
+  const [area, setArea] = useState('');
+  const change1 = (value, path) => {
     setValue1(value);
+    setProvince(path?.at(0)?.code);
+    setCity(path?.at(1)?.code);
+    setArea(path?.at(2)?.code);
   };
-  const onPathChange = () => {};
+
+  const [state, setState] = useState({
+    consignee: '',
+    phone: '',
+    addressDetails: '',
+    isDefault: undefined,
+  });
+
+  const onOk = async () => {
+    const userInfo = Taro.getStorageSync('userInfo');
+    await dispatch({
+      type: 'address/addAddress',
+      payload: {
+        userId: parseInt(userInfo.id),
+        consignee: state.consignee,
+        phone: state.phone,
+        province: value1?.at(0),
+        provinceCode: parseInt(province),
+        city: value1?.at(1),
+        cityCode: parseInt(city),
+        area: value1?.at(2),
+        areaCode: parseInt(area),
+        addressDetails: state.addressDetails,
+        isDefault: state.isDefault ? 1 : 0,
+      },
+    });
+    wx.navigateBack({
+      delta: 1,
+    });
+    await dispatch({
+      type: 'address/getAddress',
+      payload: {
+        id: userInfo.id,
+      },
+    });
+  };
   return (
     <View>
       <View className="address">
-        <Input name="text" label="收货人" placeholder="请输入收货人" />
-        <Input name="tel" label="手机号码" placeholder="请输入手机号" type="tel" />
         <Input
-          name="text"
+          name="consignee"
+          label="收货人"
+          placeholder="请输入收货人"
+          onChange={(val) => setState({ ...state, consignee: val })}
+        />
+        <Input
+          name="phone"
+          label="手机号码"
+          placeholder="请输入手机号"
+          type="tel"
+          onChange={(val) => setState({ ...state, phone: val })}
+        />
+        <Input
+          name="area"
           label="所在地区"
           placeholder="请选择省、市、区、街道"
           defaultValue={value1}
@@ -27,27 +100,32 @@ const Index = () => {
           visible={isVisibleDemo1}
           value={value1}
           title="地址选择"
-          options={selectList}
+          options={addressTree}
           closeable
           onClose={() => {
             setIsVisibleDemo1(false);
           }}
           onChange={change1}
-          onPathChange={onPathChange}
         />
-        <Input name="text" label="详细地址" placeholder="请输入小区楼栋/乡村名称" />
+        <Input
+          name="addressDetails"
+          label="详细地址"
+          placeholder="请输入小区楼栋/乡村名称"
+          onChange={(val) => setState({ ...state, addressDetails: val })}
+        />
         <Input
           label="设置为默认收货地址"
+          name="isDefault"
           placeholder=" "
           clearable
           inputAlign="right"
           border={false}
           labelWidth="150"
-          slotButton={<Switch />}
+          slotButton={<Switch onChange={(value) => setState({ ...state, isDefault: value })} />}
         />
       </View>
       <View className="add-address">
-        <Button size="small" color="#B08B57" className="add-address-btn">
+        <Button size="small" color="#B08B57" className="add-address-btn" onClick={() => onOk()}>
           <Text className="add-address-btn-text">保存</Text>
         </Button>
       </View>
