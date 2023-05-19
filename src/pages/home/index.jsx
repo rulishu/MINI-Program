@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, Input, Text } from '@tarojs/components';
 import './index.scss';
+import Taro from '@tarojs/taro';
 import { useDispatch } from 'react-redux';
+import { Ellipsis, Icon } from '@nutui/nutui-react-taro';
 // import pic1 from '../../assets/images/jiutan.png';
 import Navs from './navs';
 // import Lists from './lists';
@@ -10,8 +12,33 @@ import Foots from './foots';
 
 const Index = () => {
   const dispatch = useDispatch();
+  const [addressInfo, setAddressInfo] = useState('');
   useEffect(() => {
     dispatch({ type: 'home/getCategoriesList' });
+    Taro.getLocation({
+      type: 'wgs84',
+      success: function (res) {
+        // 纬度
+        const latitude = res.latitude;
+        // 经度
+        const longitude = res.longitude;
+        // 请求腾讯地图逆地址解析接口
+        wx.request({
+          url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
+          success(val) {
+            const role = val.data.result.address;
+            setAddressInfo(role);
+          },
+        });
+      },
+      fail: function () {
+        Taro.showToast({
+          title: '获取用户位置信息失败！',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
     // eslint-disable-next-line global-require
   }, []);
   // const menus = [
@@ -23,12 +50,19 @@ const Index = () => {
   // ];
   return (
     <View className="index">
-      <Image
-        mode="widthFix"
-        // eslint-disable-next-line global-require
-        src={require('@/assets/images/homebg.png')}
-        className="page-homes-header-image"
-      ></Image>
+      <View>
+        <Image
+          mode="widthFix"
+          // eslint-disable-next-line global-require
+          src={require('@/assets/images/homebg.png')}
+          className="page-homes-header-image"
+        ></Image>
+      </View>
+
+      <View className="address">
+        <Icon name="locationg3" size="18" style={{ marginLeft: 8, marginRight: 8 }} />
+        <Ellipsis content={addressInfo ? addressInfo : '定位失败'} direction="end"></Ellipsis>
+      </View>
       <View className="search">
         <View className="search-input">
           <Input type="text" placeholder="搜索" />
