@@ -62,12 +62,12 @@ const Index = () => {
           <View>
             <Text className="numberText">数量</Text>
           </View>
-          <View style={{ marginTop: 12, display: 'flex', flexDirection: 'row' }}>
+          <View style={{ marginTop: 12, marginLeft: 20, display: 'flex', flexDirection: 'row' }}>
             <InputNumber
               className="cartCardRightAdd"
               modelValue={1}
-              buttonSize="26"
-              inputWidth="124"
+              // buttonSize="26"
+              // inputWidth="124"
             />
             {/* <Button className="numberButtonOne">-</Button>
             <Input className="numberInput" placeholder="1"></Input>
