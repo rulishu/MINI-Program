@@ -1,13 +1,16 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components';
 import { Price, Icon, Button } from '@nutui/nutui-react-taro';
-// import Taro from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const { visible, payVisible, queryInfo } = useSelector((state) => state.goodInfo);
+  const settlement = () => {
+    Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+  };
   return (
     <View>
       <View
@@ -97,7 +100,7 @@ const Index = () => {
           className="contentButton"
           style={{ boxShadow: !payVisible ? '0px 0px 8px 0px rgba(0, 0, 0, 0.16)' : '' }}
         >
-          <Button type="primary" className="contentButtonPay" onClick={() => {}}>
+          <Button type="primary" className="contentButtonPay" onClick={() => settlement()}>
             <Text style={{ fontSize: 15, lineHeight: 24 }}>结算</Text>
           </Button>
         </View>

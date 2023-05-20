@@ -42,11 +42,12 @@ const Index = () => {
   const edit = () => {
     const token = Taro.getStorageSync('token');
     if (token === '') {
-      return Taro.showToast({
+      Taro.showToast({
         title: '请先登录',
         icon: 'none',
         duration: 2000,
       });
+      return Taro.navigateTo({ url: '/pages/login/index' });
     }
     Taro.navigateTo({ url: '/pages/editUser/index' });
   };

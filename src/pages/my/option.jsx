@@ -17,6 +17,15 @@ import './index.scss';
 const Index = () => {
   // 跳转
   const go = (item) => {
+    const token = Taro.getStorageSync('token');
+    if (token === '') {
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 2000,
+      });
+      return Taro.navigateTo({ url: '/pages/login/index' });
+    }
     if (item.title === '地址管理') {
       Taro.navigateTo({ url: item.url });
     }
