@@ -2,10 +2,13 @@ import React from 'react';
 import { Icon, Button } from '@nutui/nutui-react-taro';
 import { View, Text, Image } from '@tarojs/components';
 import { list, list1 } from './item';
-
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
+  const onPay = () => {
+    Taro.navigateTo({ url: '/pages/paySuccess/index' });
+  };
   return (
     <View className="confirm">
       <View className="confirm-order">
@@ -129,7 +132,12 @@ const Index = () => {
             </View>
           </View>
           <View>
-            <Button className="footer-bottom">
+            <Button
+              className="footer-bottom"
+              onClick={() => {
+                onPay();
+              }}
+            >
               <Text style={{ fontSize: 15, lineHeight: 24 }}>确认订单</Text>
             </Button>
           </View>
