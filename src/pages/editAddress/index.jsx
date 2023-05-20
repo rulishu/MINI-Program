@@ -47,6 +47,39 @@ const Index = () => {
 
   const onOk = async () => {
     const userInfo = Taro.getStorageSync('userInfo');
+    const re = /^1[3,4,5,6,7,8,9][0-9]{9}$/;
+    const isPhone = re.test(state.phone);
+    if (state.consignee === '') {
+      return Taro.showToast({
+        title: '请输入收货人',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (state.phone === '') {
+      return Taro.showToast({
+        title: '请输入手机号',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (!isPhone) {
+      return Taro.showToast({
+        title: '请输入正确的手机号',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (state.province === '' && state.city === '' && state.area === '') {
+      return Taro.showToast({
+        title: '请选择省、市、区、街道',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (state.addressDetails === '') {
+      return Taro.showToast({
+        title: '请输入详细地址',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
     await dispatch({
       type: 'address/editAddress',
       payload: {
