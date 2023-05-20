@@ -11,7 +11,7 @@ const Index = () => {
   const [tab5value, setTab5value] = useState('0');
   useEffect(() => {
     getSub();
-  }, []);
+  }, [categoriesList.at(0)?.id]);
   const getSub = async () => {
     if (categoriesList.length > 0) {
       await dispatch({

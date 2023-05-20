@@ -3,6 +3,9 @@ import { Icon, Button } from '@nutui/nutui-react-taro';
 import { View, Text, Image } from '@tarojs/components';
 import { list, list1 } from './item';
 import Taro from '@tarojs/taro';
+import order2 from '@/assets/images/order2.svg';
+import order3 from '@/assets/images/order3.svg';
+
 import './index.scss';
 
 const Index = () => {
@@ -46,7 +49,7 @@ const Index = () => {
           </View>
           <View className="address">
             <View>
-              <Icon name="locationg3" size="18" style={{ marginLeft: 8, marginRight: 8 }} />
+              <Icon name="locationg3" size="18" style={{ marginRight: 8 }} />
             </View>
             <View className="address-info">
               <Text>[收货地址] 浙江省杭州市滨江区 长河街道 春波路春波小区13幢1单元701室</Text>
@@ -121,13 +124,13 @@ const Index = () => {
         <View className="footer-conter">
           <View className="footer-top">
             <View style={{ width: '48%' }}>
-              <Button className="footer-top-btn" shape="square" icon="comment">
-                联系客服
+              <Button className="footer-top-btn" shape="square" icon={order3}>
+                <Text style={{ color: '#A85230' }}>联系客服</Text>
               </Button>
             </View>
             <View style={{ width: '48%' }}>
-              <Button className="footer-top-btn" shape="square" icon="star">
-                收藏
+              <Button className="footer-top-btn" shape="square" icon={order2}>
+                <Text style={{ color: '#A85230' }}>收藏</Text>
               </Button>
             </View>
           </View>
