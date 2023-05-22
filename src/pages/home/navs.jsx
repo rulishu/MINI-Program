@@ -1,16 +1,10 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components'; //Image
-import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Navs = () => {
   return (
-    <View
-      className="nav"
-      onTap={() => {
-        Taro.navigateTo({ url: '/pages/goodInfo/index' });
-      }}
-    >
+    <View className="nav">
       {/* <View>
         <Image
           mode="widthFix"
