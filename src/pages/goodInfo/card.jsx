@@ -22,19 +22,20 @@ const Index = () => {
         <Icon
           name="rect-left"
           size="20"
-          style={{ marginRight: 10, color: '#A0A1B4' }}
+          // style={{ marginRight: 10, color: '#A0A1B4' }}
+          className="rect-left"
           onClick={() => swiperRef.current.prev()}
         ></Icon>
         <Swiper
           ref={swiperRef}
           loop
           initPage={init}
-          // onChange={(e) => setCurrent2(e + 1)}
+          // onChange={(e) => setInit(e)}
           className="cardHeaderImage"
         >
-          {queryInfo?.skuImages?.map((item) => {
+          {queryInfo?.skuImages?.map((item, idx) => {
             return (
-              <SwiperItem key={item}>
+              <SwiperItem key={idx}>
                 <img src={item} alt="" />
               </SwiperItem>
             );
