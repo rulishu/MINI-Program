@@ -8,7 +8,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { visible, payVisible, queryInfo } = useSelector((state) => state.goodInfo);
+  const { visible, payVisible, queryInfo, productDetails } = useSelector((state) => state.goodInfo);
   const settlement = () => {
     Taro.navigateTo({ url: '/pages/confirmOrder/index' });
   };
@@ -87,11 +87,26 @@ const Index = () => {
                   },
                 });
               } else {
+                if (productDetails?.goodsTotalNum < 1) {
+                  return Taro.showToast({
+                    title: '至少选择一个商品',
+                    icon: 'none',
+                    duration: 2000,
+                  });
+                }
                 dispatch({
                   type: 'goodInfo/update',
                   payload: {
                     visible: false,
                     payVisible: true,
+                  },
+                });
+                //确认订单
+                dispatch({
+                  type: 'goodInfo/orderConfirm',
+                  payload: {
+                    count: productDetails?.goodsTotalNum,
+                    skuId: Number(queryInfo.id),
                   },
                 });
               }

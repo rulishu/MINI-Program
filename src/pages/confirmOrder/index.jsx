@@ -1,14 +1,83 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icon, Button } from '@nutui/nutui-react-taro';
 import { View, Text, Image } from '@tarojs/components';
-import { list, list1 } from './item';
+import { list1 } from './item';
 import Taro from '@tarojs/taro';
 import order2 from '@/assets/images/order2.svg';
 import order3 from '@/assets/images/order3.svg';
+import { useSelector, useDispatch } from 'react-redux';
+import order1 from '@/assets/images/order1.svg';
 
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const token = Taro.getStorageSync('token');
+    const userInfo = Taro.getStorageSync('userInfo');
+    if (token === '') {
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 2000,
+      });
+      return Taro.navigateTo({ url: '/pages/login/index' });
+    }
+    dispatch({
+      type: 'address/getAddress',
+      payload: {
+        id: userInfo.id,
+      },
+    });
+    // eslint-disable-next-line global-require
+  }, []);
+  const { addressList } = useSelector((state) => state.address);
+
+  // 默认地址
+  const defultAddress = addressList
+    .filter((item) => {
+      return item.isDefault === 1;
+    })
+    .at(0);
+  const { productDetails, confirmList } = useSelector((state) => state.goodInfo);
+  const confirmListInfo = confirmList?.at(0);
+
+  const list = [
+    {
+      icon: order1,
+      title: '商品总价',
+      price: confirmListInfo?.count * confirmListInfo?.price,
+    },
+    {
+      icon: order1,
+      title: '仓储费',
+      price: 0,
+    },
+    {
+      icon: order1,
+      title: '保险费',
+      price: 0,
+    },
+    {
+      icon: order1,
+      title: '优惠券',
+      price: 0,
+    },
+    {
+      icon: '',
+      title: '共减',
+      isICon: false,
+      price: 0,
+    },
+    {
+      icon: '',
+      title: '合计',
+      isICon: false,
+      price: confirmListInfo?.count * confirmListInfo?.price,
+    },
+  ];
+
+  // 支付
   const onPay = () => {
     Taro.navigateTo({ url: '/pages/paySuccess/index' });
   };
@@ -17,7 +86,7 @@ const Index = () => {
       <View className="confirm-order">
         <View className="goods-info">
           <View className="card-title-goods">
-            <Text>奋斗之露·厚德载物</Text>
+            <Text>{productDetails.categoryName}</Text>
           </View>
           <View className="goods-info-head">
             <View className="goods-info-head-left">
@@ -25,38 +94,44 @@ const Index = () => {
                 {/* eslint-disable-next-line global-require */}
                 <Image
                   mode="widthFix"
-                  src={require('@/assets/images/home4.png')}
+                  src={confirmListInfo?.defaultImage}
                   style={{ width: 82, height: 108 }}
                 ></Image>
               </View>
               <View className="goods-info-head-info">
                 <View className="goods-info-head-info-title">
-                  <Text>奋斗之露</Text>
+                  <Text>{productDetails?.goodsName}</Text>
                 </View>
                 <View className="goods-info-head-info-doc">
-                  <Text>53度酱型白酒 </Text>
+                  <Text>{productDetails.details}</Text>
                 </View>
               </View>
             </View>
             <View className="goods-info-head-right">
               <View className="goods-info-head-right-price">
-                <Text>￥1890.00</Text>
+                <Text>￥{productDetails.goodPrice}.00</Text>
               </View>
               <View className="goods-info-head-right-num">
-                <Text>x1</Text>
+                <Text>x{productDetails.goodsTotalNum}</Text>
               </View>
             </View>
           </View>
           <View className="address">
-            <View>
+            <View onTap={() => Taro.navigateTo({ url: '/pages/address/index' })}>
               <Icon name="locationg3" size="18" style={{ marginRight: 8 }} />
             </View>
             <View className="address-info">
-              <Text>[收货地址] 浙江省杭州市滨江区 长河街道 春波路春波小区13幢1单元701室</Text>
+              <Text>
+                [收货地址]{' '}
+                {defultAddress?.province +
+                  defultAddress?.city +
+                  defultAddress?.area +
+                  defultAddress?.addressDetails}
+              </Text>
             </View>
           </View>
           <View className="address-price">
-            <Text>快递￥10.00</Text>
+            <Text>快递￥0.00</Text>
           </View>
           <View className="card-list">
             {list1.map((item, index) => {
@@ -79,7 +154,7 @@ const Index = () => {
                       item.isPrice === false ? 'card-list-item-right2' : 'card-list-item-right'
                     }
                   >
-                    <Text>{item.price}</Text>
+                    <Text>{item?.price}</Text>
                   </View>
                 </View>
               );
@@ -101,7 +176,7 @@ const Index = () => {
                       ) : (
                         <Image
                           mode="widthFix"
-                          src={item.icon}
+                          src={order1}
                           style={{ width: 13, height: 13 }}
                         ></Image>
                       )}
@@ -111,7 +186,7 @@ const Index = () => {
                     </View>
                   </View>
                   <View className="card-list-item-right">
-                    <Text>{item.price}</Text>
+                    <Text>￥{item?.price}.00</Text>
                   </View>
                 </View>
               );
