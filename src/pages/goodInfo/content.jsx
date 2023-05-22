@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import { Price, Icon, Button } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
+import jia from '@/assets/images/jia.svg';
 import './index.scss';
 
 const Index = () => {
@@ -58,17 +59,21 @@ const Index = () => {
           <View className="contentDetailBox">
             <Text className="contentDetailText">商品详情</Text>
           </View>
-          <View className="contentDetailImage">{queryInfo?.details}</View>
+          <View className="contentDetailImage">
+            {queryInfo?.skuImages?.map((item, index) => (
+              <Image src={item} key={index} className="contentDetailImage-info" />
+            ))}
+          </View>
         </View>
+        <View className="foots"></View>
       </View>
-
       {!payVisible ? (
         <View
           className="contentButton"
           style={{ boxShadow: !visible ? '0px 0px 8px 0px rgba(0, 0, 0, 0.16)' : '' }}
         >
-          <Button className="contentButtonOne" size="normal">
-            <Text style={{ fontSize: 15, lineHeight: 24 }}> + </Text>
+          <Button className="contentButtonOne" size="normal" icon={jia}>
+            {/* <Text style={{ fontSize: 15, lineHeight: 24 }}> + </Text> */}
           </Button>
           <Button
             type="primary"

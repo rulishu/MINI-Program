@@ -11,7 +11,7 @@ const Index = () => {
   return (
     <Popup
       visible={payVisible}
-      style={{ height: 380, borderRadius: 24 }}
+      style={{ height: 443, borderRadius: 24 }}
       position="bottom"
       onClose={() => {
         dispatch({
@@ -33,11 +33,12 @@ const Index = () => {
               paddingTop: 21,
               alignItems: 'center',
               justifyContent: 'space-between',
+              margin: '10px 0',
             }}
           >
             <View>
-              <Icon name="shop"></Icon>
-              <Text>商品总价</Text>
+              <Icon name="shop" size="12"></Icon>
+              <Text style={{ marginLeft: 18 }}>商品总价</Text>
             </View>
             <View>
               <Price
@@ -56,11 +57,12 @@ const Index = () => {
               paddingTop: 17,
               alignItems: 'center',
               justifyContent: 'space-between',
+              margin: '10px 0',
             }}
           >
             <View>
-              <Icon name="jdl"></Icon>
-              <Text>仓储费</Text>
+              <Icon name="jdl" size="12"></Icon>
+              <Text style={{ marginLeft: 18 }}>仓储费</Text>
             </View>
             <View>
               <Price
@@ -79,11 +81,12 @@ const Index = () => {
               paddingTop: 17,
               alignItems: 'center',
               justifyContent: 'space-between',
+              margin: '10px 0',
             }}
           >
             <View>
-              <Icon name="date"></Icon>
-              <Text>保险费</Text>
+              <Icon name="date" size="12"></Icon>
+              <Text style={{ marginLeft: 18 }}>保险费</Text>
             </View>
             <View>
               <Price
@@ -103,11 +106,12 @@ const Index = () => {
                 paddingTop: 17,
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                margin: '10px 0',
               }}
             >
               <View>
-                <Icon name="home"></Icon>
-                <Text>优惠卷</Text>
+                <Icon name="home" size="12"></Icon>
+                <Text style={{ marginLeft: 18 }}>优惠卷</Text>
               </View>
               <View>
                 <Price

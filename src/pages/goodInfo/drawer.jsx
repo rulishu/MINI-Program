@@ -75,6 +75,7 @@ const Index = () => {
           </View>
         </View>
       </View>
+      <View className="foots"></View>
     </Popup>
   );
 };
