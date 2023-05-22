@@ -109,8 +109,17 @@ page {
     // position: fixed;
     // top: 0;
     // left: 0;
-    border: 1px solid red;
-    height: 180px;
+
+    .headerNavLayout{
+      height: 200px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background: rgb(244,244,244);
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+
     .headerNavBox{
       margin: 20px 20px;
       .headerNavItem{
@@ -124,9 +133,12 @@ page {
         height: 10px;
       }
     }
+
     .headerNavAll{
-      width: 35px;
+      position: fixed;
       right: 0;
+      width: 35px;
+      background: rgb(244,244,244);
     }
   }
 }

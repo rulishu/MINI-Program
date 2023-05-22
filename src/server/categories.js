@@ -12,3 +12,8 @@ export const getList = (params) => {
     params,
   );
 };
+
+// 获取一二级分类接口
+export const getCategoriesTreeList = () => {
+  return request.post('/jcgl-mall/app/item/category/select/tree', '');
+};

@@ -1,16 +1,28 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import './index.scss';
+import { useSelector, useDispatch } from 'react-redux';
 import { View, Text, Image } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import './index.scss';
 
 const Index = (props) => {
-  const { categoryName } = props;
+  const { categoryList } = props;
   const { subList } = useSelector((state) => state.categories);
-
+  const dispatch = useDispatch();
   return (
     <View className="right" style={{ paddingBottom: 70, margin: -10 }}>
-      <View style={{ marginBottom: 8 }}>
-        <Text className="right-title">{categoryName}</Text>
+      <View
+        style={{ marginBottom: 8 }}
+        onTap={() => {
+          dispatch({
+            type: 'goodInfo/infoDetails',
+            payload: {
+              id: categoryList?.id,
+            },
+          });
+          Taro.navigateTo({ url: '/pages/goodInfo/index' });
+        }}
+      >
+        <Text className="right-title">{categoryList?.label}</Text>
       </View>
       <View>
         {subList.map((item, index) => {

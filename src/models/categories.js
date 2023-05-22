@@ -1,9 +1,11 @@
-import { getCategoriesList, getList } from '@/server/categories';
+import { getCategoriesList, getList, getCategoriesTreeList } from '@/server/categories';
 
 export default {
   namespace: 'categories', // 这是模块名
   state: {
     categoriesList: [],
+    getCategoriesTree: [],
+    getCategoriesTwoTree: [],
     subList: [],
     subInfoList: {},
   },
@@ -40,6 +42,25 @@ export default {
             type: 'update',
             payload: {
               subList: result.result.records,
+            },
+          });
+        }
+      } catch (err) {}
+    },
+
+    // 一二级分类接口
+    *getCategoriesTreeList({ payload }, { call, put }) {
+      try {
+        const params = {
+          ...payload,
+          appId: 'jcgl-mall-admin',
+        };
+        const result = yield call(getCategoriesTreeList, params);
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              getCategoriesTree: result.result,
             },
           });
         }
