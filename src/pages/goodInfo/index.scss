@@ -55,8 +55,12 @@ page {
   justify-content: center;
   align-items: center;
   .cardHeaderImage{
+    margin-top: 56px;
     width: 568px;
     height: 568px;
+  }
+  .rect-left{
+    margin-right: 20px,
   }
 }
 .cardImages{
@@ -208,7 +212,7 @@ page {
     color: #FFFFFF;
   }
   .contentButtonPay{
-    width: 526px;
+    width: 670px;
     height: 112px;
     border-radius: 24px;
     background: #A85230;
