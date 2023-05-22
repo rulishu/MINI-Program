@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Image, Text } from '@tarojs/components';
 import { useDispatch, useSelector } from 'react-redux';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Cards = () => {
@@ -30,7 +31,18 @@ const Cards = () => {
       {homeList.map((item, index) => {
         return (
           <View key={index} className="card-items">
-            <View className="card-item">
+            <View
+              className="card-item"
+              onTap={() => {
+                dispatch({
+                  type: 'goodInfo/infoDetails',
+                  payload: {
+                    id: item?.id,
+                  },
+                });
+                Taro.navigateTo({ url: '/pages/goodInfo/index' });
+              }}
+            >
               <Image
                 mode="widthFix"
                 // eslint-disable-next-line global-require

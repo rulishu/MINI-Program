@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 // import { Icon, } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import './index.scss';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 
 const Index = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch({
-      type: 'goodInfo/infoDetails',
-      payload: {
-        id: 160,
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'goodInfo/infoDetails',
+  //     payload: {
+  //       id: 160,
+  //     },
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
   return (
     <View className="heads">
       <View className="title">
