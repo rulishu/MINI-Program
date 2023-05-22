@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
-  const { payVisible } = useSelector((state) => state.goodInfo);
+  const { payVisible, productDetails } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
 
   return (
@@ -42,7 +42,7 @@ const Index = () => {
             </View>
             <View>
               <Price
-                price={1890}
+                price={productDetails?.goodsPrice}
                 size="normal"
                 needSymbol
                 thousands
@@ -66,7 +66,7 @@ const Index = () => {
             </View>
             <View>
               <Price
-                price={300}
+                price={productDetails?.storageFee}
                 size="normal"
                 needSymbol
                 thousands
@@ -90,7 +90,7 @@ const Index = () => {
             </View>
             <View>
               <Price
-                price={300}
+                price={productDetails?.insurancePremium}
                 size="normal"
                 needSymbol
                 thousands
@@ -115,7 +115,7 @@ const Index = () => {
               </View>
               <View>
                 <Price
-                  price={100}
+                  price={productDetails?.coupon}
                   size="normal"
                   needSymbol
                   thousands
@@ -131,11 +131,23 @@ const Index = () => {
             <View>
               <Text>共减</Text>
             </View>
-            <Price price={100} size="normal" needSymbol thousands className="payDetailItemPrice" />
+            <Price
+              price={productDetails?.coSubtractive}
+              size="normal"
+              needSymbol
+              thousands
+              className="payDetailItemPrice"
+            />
           </View>
           <View className="payDetailTotal">
             <Text>合计</Text>
-            <Price price={2390} size="normal" needSymbol thousands className="payDetailItemPrice" />
+            <Price
+              price={productDetails?.allGoodsPrice}
+              size="normal"
+              needSymbol
+              thousands
+              className="payDetailItemPrice"
+            />
           </View>
         </View>
       </View>

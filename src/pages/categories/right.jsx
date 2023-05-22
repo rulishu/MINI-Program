@@ -8,6 +8,7 @@ const Index = (props) => {
   const { categoryList } = props;
   const { subList } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
+
   return (
     <View className="right" style={{ paddingBottom: 70, margin: -10 }}>
       <View
@@ -27,7 +28,7 @@ const Index = (props) => {
       <View>
         {subList.map((item, index) => {
           return (
-            <View key={index} className="right-content">
+            <View key={index} className="right-content" >
               <View>
                 <Image
                   mode="widthFix"

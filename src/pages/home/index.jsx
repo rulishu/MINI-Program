@@ -64,7 +64,10 @@ const Index = () => {
         <Ellipsis content={addressInfo ? addressInfo : '定位失败'} direction="end"></Ellipsis>
       </View>
       <View className="search">
-        <View className="search-input">
+        <View
+          className="search-input"
+          onTap={() => Taro.navigateTo({ url: '/pages/search/index' })}
+        >
           <Input type="text" placeholder="搜索" />
           <View className="search-icon">
             <Image
