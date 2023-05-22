@@ -14,6 +14,7 @@ export default defineAppConfig({
     'pages/editAddress/index',
     'pages/confirmOrder/index',
     'pages/paySuccess/index',
+    'pages/search/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
