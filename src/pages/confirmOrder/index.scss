@@ -49,6 +49,10 @@ page {
             line-height: 44px;
             letter-spacing: 0px;
             color: #333333;
+            white-space:nowrap;        // 强制一行显示
+            overflow:hidden;          // 超出隐藏
+            text-overflow:ellipsis;   // 省略号
+            width: 200rpx;
           }
           .goods-info-head-info-doc{
             font-family: PingFangSC-Regular;
