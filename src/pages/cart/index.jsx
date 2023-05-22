@@ -60,7 +60,19 @@ const Index = () => {
                       <Button shape="square" className="swipeButtonBorderLeft">
                         分享
                       </Button>
-                      <Button shape="square" type="danger" className="swipeButtonBorderRight">
+                      <Button
+                        shape="square"
+                        type="danger"
+                        className="swipeButtonBorderRight"
+                        onClick={() => {
+                          dispatch({
+                            type: 'cart/deleteGood',
+                            payload: {
+                              id: itm?.id,
+                            },
+                          });
+                        }}
+                      >
                         删除
                       </Button>
                     </>
