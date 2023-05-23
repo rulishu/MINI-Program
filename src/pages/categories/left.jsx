@@ -8,23 +8,8 @@ import './index.scss';
 const Index = () => {
   const { getCategoriesTwoTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
-  const [tab5value, setTab5value] = useState('0');
-  // useEffect(() => {
-  //   getSub();
-  // }, [categoriesList.at(0)?.id]);
-  // const getSub = async () => {
-  //   if (categoriesList.length > 0) {
-  //     await dispatch({
-  //       type: 'categories/getList',
-  //       payload: {
-  //         categoryId: categoriesList.at(0)?.id,
-  //         onShelf: 2,
-  //         pageNum: 1,
-  //         pageSize: 20,
-  //       },
-  //     });
-  //   }
-  // };
+  const [tab5value, setTab5value] = useState(0);
+
   return (
     <View>
       <Tabs
@@ -36,15 +21,6 @@ const Index = () => {
         onChange={({ paneKey }) => {
           setTab5value(paneKey);
           dispatch({ type: 'categories/getCategoriesTreeList' });
-          // dispatch({
-          //   type: 'categories/getList',
-          //   payload: {
-          //     categoryId: parseInt(categoriesList[parseInt(paneKey)]?.id),
-          //     onShelf: 2,
-          //     pageNum: 1,
-          //     pageSize: 20,
-          //   },
-          // });
         }}
         titleScroll
         leftAlign
@@ -53,7 +29,10 @@ const Index = () => {
         {getCategoriesTwoTree?.map((item) => {
           return (
             <Tabs.TabPane key={item} title={item.label}>
-              <Right categoryList={item} style={{ width: '70vw', backgroundColor: '#ffffff' }} />
+              <Right
+                getCategoriesThirdTreeItem={item?.children?.at(0)}
+                style={{ width: '70vw', backgroundColor: '#ffffff' }}
+              />
             </Tabs.TabPane>
           );
         })}

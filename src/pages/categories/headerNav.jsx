@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image, Text } from '@tarojs/components';
 import { Icon } from '@nutui/nutui-react-taro';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,17 @@ import './index.scss';
 const Index = () => {
   const { getCategoriesTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    let getCategoriesTwoTreeFirst = getCategoriesTree.map((a) => a.children).flat() || [];
+    dispatch({
+      type: 'categories/update',
+      payload: {
+        getCategoriesTwoTree: getCategoriesTwoTreeFirst.slice(0, 1),
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getCategoriesTree.length]);
   return (
     <View className="headerNav">
       <View className="headerNavLayout">
