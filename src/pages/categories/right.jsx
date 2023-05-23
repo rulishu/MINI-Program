@@ -10,26 +10,42 @@ const Index = (props) => {
   const dispatch = useDispatch();
 
   return (
-    <View className="right" style={{ paddingBottom: 70, margin: -10 }}>
+    <View className="right" style={{ paddingBottom: 70, margin: -15 }}>
       <View
         style={{ marginBottom: 8 }}
-        onTap={() => {
-          dispatch({
-            type: 'goodInfo/infoDetails',
-            payload: {
-              id: getCategoriesThirdTreeItem?.id,
-            },
-          });
-          Taro.navigateTo({ url: '/pages/goodInfo/index' });
-        }}
+        // onTap={() => {
+        //   dispatch({
+        //     type: 'goodInfo/infoDetails',
+        //     payload: {
+        //       id: getCategoriesThirdTreeItem?.id,
+        //     },
+        //   });
+        //   Taro.navigateTo({ url: '/pages/goodInfo/index' });
+        // }}
+        className="right-title-box"
       >
-        <Text className="right-title">{getCategoriesThirdTreeItem?.label}</Text>
+        <Text
+          className="right-title"
+          style={{ background: getCategoriesThirdTreeItem ? 'rgb(245, 245, 245)' : '' }}
+        >
+          {getCategoriesThirdTreeItem?.label}
+        </Text>
       </View>
       <View>
         {subList.map((item, index) => {
           return (
             <View key={index} className="right-content">
-              <View>
+              <View
+                onTap={() => {
+                  dispatch({
+                    type: 'goodInfo/infoDetails',
+                    payload: {
+                      id: item?.id,
+                    },
+                  });
+                  Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                }}
+              >
                 <Image
                   mode="widthFix"
                   // eslint-disable-next-line global-require
@@ -38,7 +54,18 @@ const Index = (props) => {
                 ></Image>
               </View>
               <View className="right-contents">
-                <View className="right-content-texts">
+                <View
+                  className="right-content-texts"
+                  onTap={() => {
+                    dispatch({
+                      type: 'goodInfo/infoDetails',
+                      payload: {
+                        id: item?.id,
+                      },
+                    });
+                    Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                  }}
+                >
                   <Text className="right-content-text">{item.itemName}</Text>
                 </View>
                 <View className="right-content-bottom">

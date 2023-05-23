@@ -9,6 +9,25 @@ const Index = () => {
   const { getCategoriesTwoTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [tab5value, setTab5value] = useState(0);
+  // let getCategoriesTwoTreeId = getCategoriesTwoTree?.map((item) => item?.children)
+  // console.log('getCategoriesTwoTreeId', getCategoriesTwoTreeId?.flat()?.at(0)?.id);
+  // useEffect(() => {
+  //   getSub();
+  // }, [getCategoriesTwoTreeId?.flat()?.at(0)?.id]);
+  // const getSub = async () => {
+  //   if (getCategoriesTwoTreeId?.flat().length > 0) {
+  //     await dispatch({
+  //       type: 'categories/getList',
+  //       payload: {
+  //         categoryId: getCategoriesTwoTreeId?.flat()?.at(0)?.id,
+  //         onShelf: 2,
+  //         groundType: 2,
+  //         pageNum: 1,
+  //         pageSize: 20,
+  //       },
+  //     });
+  //   }
+  // };
 
   return (
     <View>
