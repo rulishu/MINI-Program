@@ -8,6 +8,7 @@ export default {
     getCategoriesTwoTree: [],
     subList: [],
     subInfoList: {},
+    visible: false,
   },
 
   effects: {

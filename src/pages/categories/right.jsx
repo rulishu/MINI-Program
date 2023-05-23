@@ -5,7 +5,7 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = (props) => {
-  const { categoryList } = props;
+  const { getCategoriesThirdTreeItem } = props;
   const { subList } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
 
@@ -17,18 +17,18 @@ const Index = (props) => {
           dispatch({
             type: 'goodInfo/infoDetails',
             payload: {
-              id: categoryList?.id,
+              id: getCategoriesThirdTreeItem?.id,
             },
           });
           Taro.navigateTo({ url: '/pages/goodInfo/index' });
         }}
       >
-        <Text className="right-title">{categoryList?.label}</Text>
+        <Text className="right-title">{getCategoriesThirdTreeItem?.label}</Text>
       </View>
       <View>
         {subList.map((item, index) => {
           return (
-            <View key={index} className="right-content" >
+            <View key={index} className="right-content">
               <View>
                 <Image
                   mode="widthFix"
