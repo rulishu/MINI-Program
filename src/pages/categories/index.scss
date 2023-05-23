@@ -104,41 +104,100 @@ page {
       height:50px;
     }
   }
+  // position: fixed;
+  // top: 0;
+  // left: 0;
   // 头部导航栏
-  .headerNav{
-    // position: fixed;
-    // top: 0;
-    // left: 0;
-
     .headerNavLayout{
-      height: 200px;
+      height: 160px;
       display: flex;
       flex-direction: row;
       align-items: center;
       background: rgb(244,244,244);
       white-space: nowrap;
       overflow-x: auto;
-    }
-
-    .headerNavBox{
-      margin: 20px 20px;
-      .headerNavItem{
-        border-radius: 24px;
-        width: 96px;
-        height: 96px;
+      position: relative;
+      .headerNavBox{
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align:center;
+        .headerNavItem{
+          border-radius: 24px;
+          width: 64px;
+          height: 64px;
+          // border: 6px solid rgb(255,255,255);
+          border: 5px solid rgb(170,140,95);
+        }
+        .headerNavText{
+          border-radius: 24px;
+          background-color: rgb(170,140,95);
+          margin-top: 5px;
+          font-size: 24px;
+          padding-left: 10px;
+          padding-right: 10px;
+          text-align: center;
+          width: 100px;
+          white-space:nowrap;       // 强制一行显示
+          overflow:hidden;          // 超出隐藏
+          text-overflow:ellipsis;   // 省略号
+        }
       }
-      .headerNavText{
-        border-radius: 24px;
-        width: 96px;
-        height: 10px;
+      .headerNavAll{
+        position: sticky;
+        top: 0;
+        right: 0;
+        width: 50px;
+        height: 160px;
+        background: rgb(216,216,216);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align:center;
+        .headerNavAllText{
+          writing-mode: vertical-lr;
+        }
       }
     }
-
-    .headerNavAll{
-      position: fixed;
-      right: 0;
-      width: 35px;
-      background: rgb(244,244,244);
+  // 全部菜单布局
+  .popupNavLayout{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgb(244,244,244);
+    flex-wrap: wrap;
+    position: relative;
+    .popupNavLayout-item{
+      width: 25%;
+      .allNavBox{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align:center;
+        .allNavItem{
+          border-radius: 24px;
+          width: 64px;
+          height: 64px;
+          border: 5px solid rgb(170,140,95);
+        }
+        .allNavText{
+          border-radius: 24px;
+          background-color: rgb(170,140,95);
+          margin-top: 5px;
+          font-size: 24px;
+          width: 100px;
+          text-align: center;
+          white-space:nowrap;       // 强制一行显示
+          overflow:hidden;          // 超出隐藏
+          text-overflow:ellipsis;   // 省略号
+        }
+      }
     }
   }
 }
