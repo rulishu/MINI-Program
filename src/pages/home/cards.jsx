@@ -57,7 +57,18 @@ const Cards = () => {
               </View>
               <View className="card-foot">
                 <Text className="card-price">¥{item.price}.00</Text>
-                <View className="card-btn">
+                <View
+                  className="card-btn"
+                  onTap={() => {
+                    dispatch({
+                      type: 'goodInfo/infoDetails',
+                      payload: {
+                        id: item?.id,
+                      },
+                    });
+                    Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                  }}
+                >
                   <Text className="card-btn-text">马上抢</Text>
                 </View>
               </View>

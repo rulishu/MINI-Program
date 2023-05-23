@@ -68,10 +68,13 @@ const Index = () => {
       },
     });
   };
+  const onClose = () => {
+    closeRef.current.close();
+  };
 
   return (
     <View>
-      <View className="address">
+      <View className="address" onClick={() => onClose()}>
         {addressList?.map((item, index) => {
           return (
             <Swipe
@@ -80,7 +83,7 @@ const Index = () => {
               rightAction={
                 <>
                   <Button shape="square" color="#BFBFBF" onClick={() => setDefault(item)}>
-                    <Text style={{ color: '#000000', fontWeight: 400, fontSize: 13 }}>
+                    <Text style={{ color: '#ffffff', fontWeight: 400, fontSize: 13 }}>
                       设为默认
                     </Text>
                   </Button>

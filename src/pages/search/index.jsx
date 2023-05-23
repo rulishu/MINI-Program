@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image, Text } from '@tarojs/components';
 import { Input } from '@nutui/nutui-react-taro';
 import left1 from '@/assets/images/left.svg';
 import del from '@/assets/images/del.svg';
 import bottom1 from '@/assets/images/bottom.svg';
-import { historyList, popularList, hotList } from './item';
+import { historyList, hotList } from './item';
 import Taro from '@tarojs/taro';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
+  const { hotLists } = useSelector((state) => state.search);
+
+  useEffect(() => {
+    dispatch({
+      type: 'search/searchHistoryList',
+      payload: {
+        terminal: 2,
+      },
+    });
+    // eslint-disable-next-line global-require
+  }, []);
+
+  //返回
   const goBack = () => {
     wx.navigateBack({
       delta: 1,
@@ -67,9 +82,9 @@ const Index = () => {
               <Text>热门搜索</Text>
             </View>
             <View className="popular-searches-content">
-              {popularList.map((item, index) => (
+              {hotLists.map((item, index) => (
                 <View key={index} className="popular-searches-content-item">
-                  <Text>{item.title}</Text>
+                  <Text>{item}</Text>
                 </View>
               ))}
             </View>
