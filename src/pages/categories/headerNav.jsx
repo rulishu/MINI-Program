@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Text } from '@tarojs/components';
 import { Icon } from '@nutui/nutui-react-taro';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,7 @@ import './index.scss';
 const Index = () => {
   const { getCategoriesTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
+  const [activeItem, setActiveItem] = useState(0);
 
   useEffect(() => {
     let getCategoriesTwoTreeFirst = getCategoriesTree.map((a) => a.children).flat() || [];
@@ -32,9 +33,9 @@ const Index = () => {
 
   return (
     <View className="headerNavLayout">
-      {getCategoriesTree?.map((item) => {
+      {getCategoriesTree?.map((item, index) => {
         return (
-          <View key={item?.id}>
+          <View key={item?.id} onTap={() => setActiveItem(index)}>
             <View
               className="headerNavBox"
               onTap={async () => {
@@ -66,9 +67,15 @@ const Index = () => {
                 mode="widthFix"
                 // eslint-disable-next-line global-require
                 src={require('@/assets/images/home8.png')}
-                className="headerNavItem"
+                className={
+                  index === activeItem ? 'headerNavItem headerNavItemActive' : 'headerNavItem'
+                }
               ></Image>
-              <View className="headerNavText">
+              <View
+                className={
+                  index === activeItem ? 'headerNavText headerNavTextActive' : 'headerNavText'
+                }
+              >
                 <Text>{item?.label}</Text>
               </View>
             </View>
