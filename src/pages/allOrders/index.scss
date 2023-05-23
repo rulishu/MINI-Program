@@ -1,0 +1,70 @@
+page {
+  height: 100%;
+  background: #F5F5F5;
+}
+
+.order{
+  display:flex;
+  flex-direction: column;
+  .order-content{
+    .order-item{
+      background-color: #F5F5F5;
+      margin-bottom:40px;
+      padding:40px 20px;
+      border-radius: 40px;
+      .order-item-top{
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        font-size: 24px;
+      }
+      .order-item-middle{
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin:20px 0; 
+        .order-item-middle-left{
+          display: flex;
+          flex-direction: row;
+          width: 80%;
+          .order-item-middle-left-img{
+            width:160px;
+            height:160px;
+            .order-img{
+              width:160px;
+              height:160px;
+            }
+          }
+          .order-item-middle-left-name{
+            margin-left:20px;
+            font-size: 28px;
+            display:flex;
+            flex-direction: row;
+            align-items: center;
+          }
+        }
+        .order-item-middle-right{
+          display: flex;
+          flex-direction: column;
+          .order-item-middle-right-num{
+            font-size: 24px;
+            display: flex;
+            justify-content: flex-end;
+          }
+        }
+
+      }
+      .order-item-bottom{
+        display:flex;
+        justify-content: flex-end;
+        .bottom-btn{
+          margin-left:16px;
+    
+        }
+
+      }
+    }
+
+  }
+}
