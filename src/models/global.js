@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { getPhone, newLogin } from '@/server/global';
+import { getPhone, newLogin, getOpenId } from '@/server/global';
 
 export default {
   namespace: 'global', // 这是模块名
@@ -10,6 +10,7 @@ export default {
     vipTypeList: [],
     activeIndex: 0,
     isGetPhone: false,
+    openIdInfo: {},
   },
 
   effects: {
@@ -123,6 +124,29 @@ export default {
     //     }
     //   } catch (err) { }
     // },
+
+    //获取openId
+    *getOpenId({ payload }, { call, put }) {
+      try {
+        const params = {
+          ...payload,
+        };
+        const result = yield call(getOpenId, params);
+        const { openid } = result.result || {};
+        Taro.setStorage({
+          key: 'openid',
+          data: openid,
+        });
+        if (result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              openIdInfo: result.result || {},
+            },
+          });
+        }
+      } catch (err) {}
+    },
   },
 
   reducers: {
