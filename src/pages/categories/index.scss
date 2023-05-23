@@ -134,12 +134,14 @@ page {
           border-radius: 24px;
           width: 64px;
           height: 64px;
-          // border: 6px solid rgb(255,255,255);
+          // border: 5px solid rgb(170,140,95);
+        }
+        .headerNavItemActive{
           border: 5px solid rgb(170,140,95);
         }
         .headerNavText{
           border-radius: 24px;
-          background-color: rgb(170,140,95);
+          // background-color: rgb(170,140,95);
           margin-top: 5px;
           font-size: 24px;
           padding-left: 10px;
@@ -149,6 +151,9 @@ page {
           white-space:nowrap;       // 强制一行显示
           overflow:hidden;          // 超出隐藏
           text-overflow:ellipsis;   // 省略号
+        }
+        .headerNavTextActive{
+          background-color: rgb(170,140,95);
         }
       }
       .headerNavAll{
