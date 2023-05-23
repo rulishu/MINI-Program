@@ -46,14 +46,20 @@ page {
     }
   }
   .right{
-    // padding:0;
-    // margin:0;
-    .right-title{
-      margin-left:10px;
-      font-size:26px;
-      font-weight: bold;
-      margin-bottom:10px;
+    padding:0;
+    margin:0;
+    .right-title-box{
+      align-items: center;
+      .right-title{
+        margin-left:10px;
+        font-size:26px;
+        font-weight: bold;
+        margin-bottom:10px;
+        border-radius: 10px;
+        padding: 5px 20px;
+      }
     }
+ 
     .right-content{
       display: flex;
       flex-direction: row;
@@ -196,6 +202,8 @@ page {
           white-space:nowrap;       // 强制一行显示
           overflow:hidden;          // 超出隐藏
           text-overflow:ellipsis;   // 省略号
+          padding-left: 10px;
+          padding-right: 10px;
         }
       }
     }

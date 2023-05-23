@@ -10,14 +10,26 @@ const Index = () => {
 
   useEffect(() => {
     let getCategoriesTwoTreeFirst = getCategoriesTree.map((a) => a.children).flat() || [];
+    // console.log('getCategoriesTwoTreeFirst', getCategoriesTwoTreeFirst.slice(0, 1)?.at(0)?.children[0]?.id);
     dispatch({
       type: 'categories/update',
       payload: {
         getCategoriesTwoTree: getCategoriesTwoTreeFirst.slice(0, 1),
       },
     });
+    dispatch({
+      type: 'categories/getList',
+      payload: {
+        categoryId: getCategoriesTwoTreeFirst.slice(0, 1)?.at(0)?.children[0]?.id,
+        onShelf: 2,
+        groundType: 2,
+        pageNum: 1,
+        pageSize: 20,
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCategoriesTree.length]);
+
   return (
     <View className="headerNavLayout">
       {getCategoriesTree?.map((item) => {
@@ -25,7 +37,23 @@ const Index = () => {
           <View key={item?.id}>
             <View
               className="headerNavBox"
-              onTap={() => {
+              onTap={async () => {
+                let getCategoriesTwoTreeId = item?.children?.map((itm) => itm?.children);
+                if (item?.children?.length > 0) {
+                  await dispatch({
+                    type: 'categories/getList',
+                    payload: {
+                      categoryId:
+                        item?.children[0]?.leafOrder === 1
+                          ? item?.children[0]?.id
+                          : getCategoriesTwoTreeId?.flat()?.at(0)?.id,
+                      onShelf: 2,
+                      groundType: 2,
+                      pageNum: 1,
+                      pageSize: 20,
+                    },
+                  });
+                }
                 dispatch({
                   type: 'categories/update',
                   payload: {
