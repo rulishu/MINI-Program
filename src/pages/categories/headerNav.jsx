@@ -19,40 +19,50 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCategoriesTree.length]);
   return (
-    <View className="headerNav">
-      <View className="headerNavLayout">
-        {getCategoriesTree?.map((item, idx) => {
-          return (
-            <View key={idx}>
-              <View
-                className="headerNavBox"
-                onTap={() => {
-                  dispatch({
-                    type: 'categories/update',
-                    payload: {
-                      getCategoriesTwoTree: item?.children,
-                    },
-                  });
-                }}
-              >
-                <Image
-                  mode="widthFix"
-                  // eslint-disable-next-line global-require
-                  src={require('@/assets/images/home8.png')}
-                  className="headerNavItem"
-                ></Image>
-                <View className="headerNavText">{item?.label}</View>
+    <View className="headerNavLayout">
+      {getCategoriesTree?.map((item) => {
+        return (
+          <View key={item?.id}>
+            <View
+              className="headerNavBox"
+              onTap={() => {
+                dispatch({
+                  type: 'categories/update',
+                  payload: {
+                    getCategoriesTwoTree: item?.children,
+                  },
+                });
+              }}
+            >
+              <Image
+                mode="widthFix"
+                // eslint-disable-next-line global-require
+                src={require('@/assets/images/home8.png')}
+                className="headerNavItem"
+              ></Image>
+              <View className="headerNavText">
+                <Text>{item?.label}</Text>
               </View>
             </View>
-          );
-        })}
-
-        <View className="headerNavAll">
-          <View>
-            <Text>全部</Text>
           </View>
-          <Icon name="more-s"></Icon>
+        );
+      })}
+
+      <View
+        className="headerNavAll"
+        onTap={() => {
+          dispatch({
+            type: 'categories/update',
+            payload: {
+              visible: true,
+            },
+          });
+        }}
+      >
+        <View className="headerNavAllText">
+          <Text>全部</Text>
         </View>
+        <Icon name="horizontal-n"></Icon>
       </View>
     </View>
   );

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import './index.scss';
 import Left from './left';
 import HeaderNav from './headerNav';
+import Drawer from './drawer';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const Index = () => {
     <View className="all">
       <HeaderNav />
       <Left />
+      <Drawer />
     </View>
   );
 };
