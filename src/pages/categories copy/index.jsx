@@ -3,6 +3,7 @@ import { View } from '@tarojs/components';
 import { useDispatch } from 'react-redux';
 import './index.scss';
 import Left from './left';
+import HeaderNav from './headerNav';
 import Drawer from './drawer';
 
 const Index = () => {
@@ -14,6 +15,7 @@ const Index = () => {
 
   return (
     <View className="all">
+      <HeaderNav />
       <Left />
       <Drawer />
     </View>

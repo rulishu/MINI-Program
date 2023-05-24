@@ -6,7 +6,7 @@ import Right from './right';
 import './index.scss';
 
 const Index = () => {
-  const { getCategoriesTree } = useSelector((state) => state.categories);
+  const { getCategoriesTwoTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [tab5value, setTab5value] = useState(0);
   // let getCategoriesTwoTreeId = getCategoriesTwoTree?.map((item) => item?.children)
@@ -28,6 +28,7 @@ const Index = () => {
   //     });
   //   }
   // };
+
   return (
     <View>
       <Tabs
@@ -44,11 +45,11 @@ const Index = () => {
         leftAlign
         direction="vertical"
       >
-        {getCategoriesTree?.map((item) => {
+        {getCategoriesTwoTree?.map((item) => {
           return (
             <Tabs.TabPane key={item} title={item.label}>
               <Right
-                getCategoriesTwoTreeItem={item?.children}
+                getCategoriesThirdTreeItem={item?.children?.at(0)}
                 style={{ width: '70vw', backgroundColor: '#ffffff' }}
               />
             </Tabs.TabPane>
