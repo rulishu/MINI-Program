@@ -5,10 +5,10 @@ export function getSystemInfo() {
   if (Taro.globalSystemInfo && !Taro.globalSystemInfo.ios) {
     return Taro.globalSystemInfo;
   } else {
-    // // h5环境下忽略navbar
-    // if (!isFunction(Taro.getSystemInfoSync)) {
-    //   return null;
-    // }
+    // h5环境下忽略navbar
+    if (!isFunction(Taro.getSystemInfoSync)) {
+      return null;
+    }
     let systemInfo = Taro.getSystemInfoSync() || {
       model: '',
       system: '',
@@ -85,4 +85,8 @@ export function getSystemInfo() {
     Taro.globalSystemInfo = systemInfo; //将信息保存到全局变量中,后边再用就不用重新异步获取了
     return systemInfo;
   }
+}
+
+export function isFunction(fn) {
+  return Object.prototype.toString.call(fn) === '[object Function]';
 }
