@@ -10,11 +10,12 @@ const Index = (props) => {
   const { subList } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(0);
+  let getCategoriesTwoTreeList = getCategoriesTwoTreeItem?.children;
 
   return (
     <View className="right" style={{ paddingBottom: 70, margin: -15 }}>
       <View style={{ marginBottom: 8 }} className="right-title-box">
-        {getCategoriesTwoTreeItem?.map((itm, idx) => {
+        {getCategoriesTwoTreeList?.map((itm, idx) => {
           return (
             <View
               key={idx}
@@ -36,7 +37,7 @@ const Index = (props) => {
         })}
       </View>
       <View style={{ marginTop: 15 }}>
-        {getCategoriesTwoTreeItem?.map((item, index) => {
+        {getCategoriesTwoTreeList?.map((item, index) => {
           return (
             <View key={index} className="right-content">
               <View className="right-content-title">{item?.label}</View>

@@ -5,6 +5,7 @@ export default {
   state: {
     categoriesList: [],
     getCategoriesTree: [],
+    getCategoriesTwoTree: [],
     subList: [],
     subInfoList: {},
     visible: false,

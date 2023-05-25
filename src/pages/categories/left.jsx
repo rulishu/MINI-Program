@@ -6,9 +6,11 @@ import Right from './right';
 import './index.scss';
 
 const Index = () => {
-  const { getCategoriesTree } = useSelector((state) => state.categories);
+  const { getCategoriesTree, getCategoriesTwoTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [tab5value, setTab5value] = useState(0);
+  let twoTree = getCategoriesTree?.find((el) => el?.id === getCategoriesTwoTree?.id) || [];
+
   let getCategoriesTwoTreeId = getCategoriesTree?.map((item) => item?.children);
   useEffect(() => {
     getSub();
@@ -19,7 +21,7 @@ const Index = () => {
       await dispatch({
         type: 'categories/getList',
         payload: {
-          categoryId: '220',
+          categoryId: getCategoriesTwoTreeId?.flat()?.at(0)?.id,
           onShelf: 2,
           groundType: 2,
           pageNum: 1,
@@ -36,9 +38,25 @@ const Index = () => {
         style={{ height: '100vh' }}
         autoHeight
         tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: '30vw' }}
-        onChange={({ paneKey }) => {
+        onChange={async ({ paneKey }) => {
           setTab5value(paneKey);
-          dispatch({ type: 'categories/getCategoriesTreeList' });
+          // dispatch({ type: 'categories/getCategoriesTreeList' });
+          dispatch({
+            type: 'categories/update',
+            payload: {
+              getCategoriesTwoTree: getCategoriesTree?.at(paneKey),
+            },
+          });
+          await dispatch({
+            type: 'categories/getList',
+            payload: {
+              categoryId: getCategoriesTree?.at(paneKey)?.children?.at()?.id,
+              onShelf: 2,
+              groundType: 2,
+              pageNum: 1,
+              pageSize: 20,
+            },
+          });
         }}
         titleScroll
         leftAlign
@@ -48,7 +66,7 @@ const Index = () => {
           return (
             <Tabs.TabPane key={item} title={item.label}>
               <Right
-                getCategoriesTwoTreeItem={item?.children}
+                getCategoriesTwoTreeItem={tab5value === 0 ? getCategoriesTree?.at(0) : twoTree}
                 style={{ width: '70vw', backgroundColor: '#ffffff' }}
               />
             </Tabs.TabPane>
