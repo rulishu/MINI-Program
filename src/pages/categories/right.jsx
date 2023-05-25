@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Image } from '@tarojs/components';
 import { Tag, Price, Icon } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
@@ -7,7 +7,7 @@ import './index.scss';
 
 const Index = (props) => {
   const { getCategoriesTwoTreeItem } = props;
-  // const { subList } = useSelector((state) => state.categories);
+  const { subList } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(0);
 
@@ -36,74 +36,55 @@ const Index = (props) => {
         })}
       </View>
       <View style={{ marginTop: 15 }}>
-        {getCategoriesTwoTreeItem?.map((item, idx) => {
+        {getCategoriesTwoTreeItem?.map((item, index) => {
           return (
-            <View key={idx} className="right-content">
+            <View key={index} className="right-content">
               <View className="right-content-title">{item?.label}</View>
-              <scroll-view scroll-y="true" scroll-with-animation="true" style={{}}>
-                <View className="right-content-box">
-                  <View className="right-content-item">
-                    <Image
-                      mode="widthFix"
-                      // eslint-disable-next-line global-require
-                      src={require('@/assets/images/homebg.png')}
-                      className="rightImage"
-                      onTap={() => {
-                        dispatch({
-                          type: 'goodInfo/infoDetails',
-                          payload: {
-                            id: item?.id,
-                          },
-                        });
-                        Taro.navigateTo({ url: '/pages/goodInfo/index' });
-                      }}
-                    ></Image>
-                    <View className="right-content-text-box">
-                      <View
-                        className="right-content-text-header"
+              <View className="right-content-box">
+                {subList?.map((itm, idx) => {
+                  return (
+                    <View className="right-content-item" key={idx}>
+                      <Image
+                        mode="widthFix"
+                        // eslint-disable-next-line global-require
+                        src={itm?.mainGraph}
+                        className="rightImage"
                         onTap={() => {
                           dispatch({
                             type: 'goodInfo/infoDetails',
                             payload: {
-                              id: item?.id,
+                              id: itm?.id,
                             },
                           });
                           Taro.navigateTo({ url: '/pages/goodInfo/index' });
                         }}
-                      >
-                        <Tag color="rgb(170, 170, 170)">自营</Tag>
-                        <Text style={{ marginLeft: 10 }}>秋然长粒香大米5kg/袋</Text>
-                      </View>
-                      <View className="right-content-text-tag">返 ¥9.10</View>
-                      <View className="right-content-text-footer">
-                        <Price price={11} size="normal" needSymbol thousands />
-                        <Icon name="cart" size={15}></Icon>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View className="right-content-box">
-                  <View className="right-content-item">
-                    <Image
-                      mode="widthFix"
-                      // eslint-disable-next-line global-require
-                      src={require('@/assets/images/homebg.png')}
-                      className="rightImage"
-                    ></Image>
-                    <View className="right-content-text-box">
-                      <View className="right-content-text-header">
-                        <Tag color="rgb(170, 170, 170)">自营</Tag>
-                        <Text style={{ marginLeft: 10 }}>秋然长粒香大米5kg/袋</Text>
-                      </View>
-                      <View className="right-content-text-tag">返 ¥9.10</View>
-                      <View className="right-content-text-footer">
-                        <Price price={11} size="normal" needSymbol thousands />
-                        <Icon name="cart" size={15}></Icon>
+                      ></Image>
+                      <View className="right-content-text-box">
+                        <View
+                          className="right-content-text-header"
+                          onTap={() => {
+                            dispatch({
+                              type: 'goodInfo/infoDetails',
+                              payload: {
+                                id: itm?.id,
+                              },
+                            });
+                            Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                          }}
+                        >
+                          <Tag color="rgb(170, 170, 170)">自营</Tag>
+                          <Text style={{ marginLeft: 10 }}>秋然长粒香大米5kg/袋</Text>
+                        </View>
+                        <View className="right-content-text-tag">返 ¥9.10</View>
+                        <View className="right-content-text-footer">
+                          <Price price={11} size="normal" needSymbol thousands />
+                          <Icon name="cart" size={15}></Icon>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                </View>
-              </scroll-view>
+                  );
+                })}
+              </View>
             </View>
           );
         })}
