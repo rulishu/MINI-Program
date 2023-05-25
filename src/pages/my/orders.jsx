@@ -56,6 +56,11 @@ const Index = () => {
     });
   };
 
+  // 跳转物流信息
+  const goLogisticsInfo = () => {
+    Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+  };
+
   return (
     <View className="card">
       <View className="my-orders-card">
@@ -94,7 +99,7 @@ const Index = () => {
             <View className="my-orders-logistics-title">
               <Text>最近物流</Text>
             </View>
-            <View className="my-orders-logistics-info">
+            <View className="my-orders-logistics-info" onTap={() => goLogisticsInfo()}>
               <View className="my-orders-logistics-headIcon"></View>
               <View className="my-orders-logistics-content">
                 <View>
