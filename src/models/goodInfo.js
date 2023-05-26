@@ -17,6 +17,7 @@ export default {
     // 初始化数据
     visible: false,
     payVisible: false,
+    shareVisible: false,
     queryInfo: {},
     productDetails: { ...productDetail },
     confirmList: [],

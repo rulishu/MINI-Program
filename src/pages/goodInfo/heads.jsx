@@ -5,9 +5,10 @@ import Taro from '@tarojs/taro';
 import NavBar from '../../component/navBar';
 import searchLeft from '@/assets/images/searchLeft.svg';
 import './index.scss';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const Index = () => {
+  const dispatch = useDispatch();
   const [searchWidths, setsearchWidths] = useState(0); // 胶囊按钮右边坐标 - 胶囊按钮宽度 = 按钮左边可使用宽度
   useEffect(() => {
     let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
@@ -40,6 +41,12 @@ const Index = () => {
                   // eslint-disable-next-line global-require
                   src={require('@/assets/images/share.png')}
                   className="detailIconOne"
+                  onClick={() =>
+                    dispatch({
+                      type: 'goodInfo/update',
+                      payload: { shareVisible: true },
+                    })
+                  }
                 ></Image>
                 <Image
                   mode="widthFix"
