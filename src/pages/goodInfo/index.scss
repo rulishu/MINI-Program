@@ -8,9 +8,6 @@ page {
   flex-direction: row;
   align-items:center;
   justify-content: space-between;
-  // padding:80rpx 20rpx 0rpx 20rpx;
-  // height:62px;
-  // background-color: #ffffff;
   .title{
     display: flex;
     flex-direction: row;
@@ -171,8 +168,6 @@ page {
   }
   .contentDetailImage{
     margin: 32px 40px;
-    // background: #D8D8D8;
-    // padding-bottom: 40px;
     .contentDetailImage-info{
       width:100%;
       height: 600px;
@@ -186,24 +181,16 @@ page {
   left: 0;
   // box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.16);
   background: #FFFFFF;
-  height: 192px;
+  padding-bottom: 40px;
+  padding-top: 20px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   z-index: 2222;
-  .contentButtonOne{
-    border-radius: 24px;
-    background: #F7F7F7;
-    margin-right: 20px;
-    height: 112px;
-    width: 112px;
-    border:none;
-  }
   .contentButtonTwo{
-    width: 526px;
-    height: 112px;
+    width: 90%;
     border-radius: 24px;
     background: #A85230;
     font-family: PingFangSC-Medium;
@@ -215,8 +202,7 @@ page {
     color: #FFFFFF;
   }
   .contentButtonPay{
-    width: 670px;
-    height: 112px;
+    width: 90%;
     border-radius: 24px;
     background: #A85230;
     font-family: PingFangSC-Medium;
@@ -232,11 +218,14 @@ page {
 
 // 立即购买
 .popupInfo{
-  padding-top: 92px;
-  padding-left: 40px;
+  margin-top: 50px;
+  margin-left: 40px;
+  margin-right: 40px;
+  padding-bottom: 30px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  border-bottom: 1px solid rgb(215, 215,215);
   .infoImage{
     width: 208px;
     height: 208px;
@@ -261,70 +250,73 @@ page {
     }
   }
 }
-.infoSpecs{
+.infoSpecsOne{
   margin-top: 32px;
   margin-left: 40px;
+  margin-right: 40px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid rgb(215, 215,215);
   .infoSpecsTitle{
     font-family: PingFangSC-Medium;
     font-size: 30px;
     font-weight: normal;
     line-height: 24px;
     letter-spacing: 0px;
-    color: #0D0F23;
   }
   .infoSpecsDes{
     margin-top: 24px;
     .infoSpecsButOne{
-      background: #A85230;
       box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
-      border-radius: 16px;
-
+      border-radius: 0;
       font-family: PingFangSC-Medium;
       font-size: 22px;
       font-weight: normal;
-      line-height: 19px;
       text-align: center;
-      letter-spacing: 0px;
-      color: #FFFFFF;
-    }
-    .infoSpecsButTwo{
-      margin-left: 32px;
-      background: #FFFFFF;
-      box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
-      border-radius: 16px;
-      
-      font-family: PingFangSC-Regular;
-      font-size: 22px;
-      font-weight: normal;
-      line-height: 19px;
-      text-align: center;
-      letter-spacing: 0px;
-      color: #A85230;
+      margin-right: 20px;
     }
   }
 }
-.infoNumber{
-  margin-top: 68px;
+.infoSpecsTwo{
+  margin-top: 32px;
   margin-left: 40px;
-  .numberText{
-    font-family: PingFangSC-Regular;
+  margin-right: 40px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid rgb(215, 215,215);
+  .infoSpecsTitle{
+    font-family: PingFangSC-Medium;
     font-size: 30px;
-    font-weight: normal;
     line-height: 24px;
-    letter-spacing: 0px;
-    color: #0D0F23;
   }
+  .infoSpecsDes{
+    margin-top: 24px;
+    .infoSpecsButOne{
+      border-radius: 0;
+      box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
+      font-family: PingFangSC-Medium;
+      font-size: 22px;
+      text-align: center;
+      margin-right: 20px;
+    }
+  }
+}
+
+.infoNumber{
+  margin-left: 40px;
+  margin-right: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
   .nut-icon{
-    background: #F7F7F7;
-    padding: 12px 22px;
-    border-radius: 12px;
+    border: 1px solid rgb(215, 215,215);
+    padding: 12px 12px;
   }
   .nut-number-input{
-    height: 44px !important;
-    width: 124px !important;
+    width: 10px !important;
     margin-left: 32px;
     margin-right: 32px;
-    border-radius: 12px;
+    background: #ffffff;
   }
 
 }
@@ -398,7 +390,7 @@ page {
 }
 
 .foots{
-  height: 192px;
+  height: 150px;
 }
 
 // 分享列表样式

@@ -50,12 +50,6 @@ const Index = () => {
           >
             <Text>微信</Text>
           </View>
-          {/* <Image
-            mode="widthFix"
-            className="share-image-item2"
-            // eslint-disable-next-line global-require
-            src={require('@/assets/images/home8.png')}
-          ></Image> */}
           <View
             className="share-image-item2"
             onClick={() => {
