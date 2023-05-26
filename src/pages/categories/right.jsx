@@ -10,11 +10,12 @@ const Index = (props) => {
   const { subList } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(0);
+  let getCategoriesTwoTreeList = getCategoriesTwoTreeItem?.children;
 
   return (
     <View className="right" style={{ paddingBottom: 70, margin: -15 }}>
       <View style={{ marginBottom: 8 }} className="right-title-box">
-        {getCategoriesTwoTreeItem?.map((itm, idx) => {
+        {getCategoriesTwoTreeList?.map((itm, idx) => {
           return (
             <View
               key={idx}
@@ -36,7 +37,7 @@ const Index = (props) => {
         })}
       </View>
       <View style={{ marginTop: 15 }}>
-        {getCategoriesTwoTreeItem?.map((item, index) => {
+        {getCategoriesTwoTreeList?.map((item, index) => {
           return (
             <View key={index} className="right-content">
               <View className="right-content-title">{item?.label}</View>
@@ -44,21 +45,23 @@ const Index = (props) => {
                 {subList?.map((itm, idx) => {
                   return (
                     <View className="right-content-item" key={idx}>
-                      <Image
-                        mode="widthFix"
-                        // eslint-disable-next-line global-require
-                        src={itm?.mainGraph}
-                        className="rightImage"
-                        onTap={() => {
-                          dispatch({
-                            type: 'goodInfo/infoDetails',
-                            payload: {
-                              id: itm?.id,
-                            },
-                          });
-                          Taro.navigateTo({ url: '/pages/goodInfo/index' });
-                        }}
-                      ></Image>
+                      <View>
+                        <Image
+                          mode="widthFix"
+                          // eslint-disable-next-line global-require
+                          src={itm?.mainGraph}
+                          className="rightImage"
+                          onTap={() => {
+                            dispatch({
+                              type: 'goodInfo/infoDetails',
+                              payload: {
+                                id: itm?.id,
+                              },
+                            });
+                            Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                          }}
+                        ></Image>
+                      </View>
                       <View className="right-content-text-box">
                         <View
                           className="right-content-text-header"
@@ -73,11 +76,13 @@ const Index = (props) => {
                           }}
                         >
                           <Tag color="rgb(170, 170, 170)">自营</Tag>
-                          <Text style={{ marginLeft: 10 }}>秋然长粒香大米5kg/袋</Text>
+                          <Text
+                            style={{ marginLeft: 10 }}
+                          >{`${itm?.itemName} ${itm?.specifications}`}</Text>
                         </View>
                         <View className="right-content-text-tag">返 ¥9.10</View>
                         <View className="right-content-text-footer">
-                          <Price price={11} size="normal" needSymbol thousands />
+                          <Price price={itm?.itemPrice} size="normal" needSymbol thousands />
                           <Icon name="cart" size={15}></Icon>
                         </View>
                       </View>

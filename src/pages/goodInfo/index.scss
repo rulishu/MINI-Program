@@ -397,9 +397,48 @@ page {
   }
 }
 
-
 .foots{
   height: 192px;
 }
 
+// 分享列表样式
+.share-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .share-text{
+    font-size: 30px;
+    font-weight: 400;
+    font-family: PingFangSC-Regular, PingFang SC;
+    line-height: 42rpx;
+  }
+  .share-image{
+    margin-top: 50px;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .share-image-item1{
+      height: 120px;
+      width: 120px;
+      border-radius: 50%;
+      text-align: center;
+      background: rgb(128, 128, 128);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    } 
+    .share-image-item2{
+      height: 120px;
+      width: 120px;
+      border-radius: 50%;
+      background: rgb(128, 128, 128);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
 
