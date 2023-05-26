@@ -50,7 +50,10 @@ const Index = () => {
           await dispatch({
             type: 'categories/getList',
             payload: {
-              categoryId: getCategoriesTree?.at(paneKey)?.children?.at()?.id,
+              categoryId:
+                getCategoriesTree?.at(paneKey)?.leafOrder === 1
+                  ? getCategoriesTree?.at(paneKey)?.id
+                  : getCategoriesTree?.at(paneKey)?.children?.at()?.id,
               onShelf: 2,
               groundType: 2,
               pageNum: 1,
