@@ -1,4 +1,5 @@
 export default definePageConfig({
-  navigationBarTitleText: '',
-  navigationStyle: 'custom',
+  navigationBarTitleText: '搜索结果页',
+  navigationBarBackgroundColor: '#ffffff',
+  navigationBarTextStyle: 'black',
 });

@@ -1,37 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
-import { Tag, SearchBar } from '@nutui/nutui-react-taro'; //Input
+import { SearchBar } from '@nutui/nutui-react-taro'; //Input
 import Taro from '@tarojs/taro';
-import NavBar from '../../component/navBar';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const { pageNum, pageSize, searchValue, historyLists } = useSelector((state) => state.search);
-  // const [searchHeights, setSearchHeights] = useState(0); // 与胶囊按钮同高
-  const [navHeights, setNavHeights] = useState(0); //导航栏总高
-  const [searchWidths, setsearchWidths] = useState(0); // 胶囊按钮右边坐标 - 胶囊按钮宽度 = 按钮左边可使用宽度
 
   useEffect(() => {
-    let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
-    const { top, width, height, right } = menuButtonInfo;
-    wx.getSystemInfo({
-      success: (res) => {
-        const { statusBarHeight } = res;
-        const margin = top - statusBarHeight;
-        const navHeight = height + statusBarHeight + margin * 2; //导航栏总高
-        // const searchMarginTop = statusBarHeight + margin // 状态栏 + 胶囊按钮边距
-        // const searchHeight = height; // 与胶囊按钮同高
-        const searchWidth = right - width; // 胶囊按钮右边坐标 - 胶囊按钮宽度 = 按钮左边可使用宽度
-        // setSearchHeights(searchHeight);
-        setNavHeights(navHeight);
-        setsearchWidths(searchWidth);
-      },
-    });
     // 搜索历史
     dispatch({
       type: 'search/getHistory',
+    });
+    dispatch({
+      type: 'search/update',
+      payload: {
+        searchValue: '',
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -91,24 +78,17 @@ const Index = () => {
   };
   return (
     <View className="index">
-      <View className="header-search-news">
-        <NavBar
-          background="#ffffff"
-          color="#fff"
-          renderCenter={
-            <View className="header-search-new" style={{ width: searchWidths }}>
-              <SearchBar
-                placeholder="搜索"
-                value={searchValue}
-                rightoutIcon={<Text style={{ color: '#ACACAC' }}>取消</Text>}
-                onSearch={(e) => onConfirm(e)}
-                onClickRightoutIcon={() => goBack()}
-              />
-            </View>
-          }
+      <View className="header-search-new">
+        <SearchBar
+          placeholder="搜索"
+          className="search-bar"
+          value={searchValue}
+          rightoutIcon={<Text style={{ color: '#ACACAC' }}>取消</Text>}
+          onSearch={(e) => onConfirm(e)}
+          onClickRightoutIcon={() => goBack()}
         />
       </View>
-      <View className="middle-search" style={{ top: navHeights }}>
+      <View className="middle-search">
         <View className="middle-search-info">
           <View className="search-history">
             <View className="search-history-head">
@@ -144,9 +124,7 @@ const Index = () => {
                       Taro.navigateTo({ url: '/pages/searchResult/index' });
                     }}
                   >
-                    <Tag plain color="#BFBFBF">
-                      {item.keyword}
-                    </Tag>
+                    <Text>{item.keyword}</Text>
                   </View>
                 ))}
               </View>
