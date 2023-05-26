@@ -41,8 +41,10 @@ const Index = () => {
 
   return (
     <Popup
+      closeable
+      closeIcon="circle-close"
       visible={visible}
-      style={{ height: 456, borderRadius: 24 }}
+      closeIconSize={20}
       position="bottom"
       onClose={() => {
         dispatch({
@@ -68,11 +70,16 @@ const Index = () => {
             <View>
               <Price
                 price={queryInfo?.price}
-                size="normal"
+                size="large"
                 needSymbol
                 thousands
                 className="infoTextOne"
               />
+              <Text
+                style={{ textDecoration: 'line-through', fontSize: 12, color: 'rgb(127,127,127)' }}
+              >
+                ¥218
+              </Text>
             </View>
             <View>
               <Text className="infoTextTwo">{queryInfo?.itemName}</Text>
@@ -80,17 +87,26 @@ const Index = () => {
           </View>
         </View>
 
-        <View className="infoSpecs">
+        <View className="infoSpecsOne">
           <View>
-            <Text className="infoSpecsTitle">净含量</Text>
+            <Text className="infoSpecsTitle">规格1</Text>
           </View>
           <View className="infoSpecsDes">
-            <Button className="infoSpecsButOne">{queryInfo?.specifications}</Button>
-            {/* <Button className="infoSpecsButTwo">500ml*6/箱</Button> */}
+            <Button className="infoSpecsButOne">规格值1</Button>
           </View>
         </View>
 
-        <View className="infoNumber">
+        <View className="infoSpecsTwo" style={{ height: 150 }}>
+          <View>
+            <Text className="infoSpecsTitle">规格2</Text>
+          </View>
+          <View className="infoSpecsDes">
+            <Button className="infoSpecsButOne">规格值1</Button>
+            <Button className="infoSpecsButOne">规格值2</Button>
+          </View>
+        </View>
+
+        {/* <View className="infoNumber">
           <View>
             <Text className="numberText">数量</Text>
           </View>
@@ -104,12 +120,24 @@ const Index = () => {
               onChangeFuc={(e) => {
                 onChangeFuc(e);
               }}
-              // buttonSize="26"
-              // inputWidth="124"
             />
-            {/* <Button className="numberButtonOne">-</Button>
-            <Input className="numberInput" placeholder="1"></Input>
-            <Button className="numberButtonTwo">+</Button> */}
+          </View>
+        </View> */}
+
+        <View className="infoNumber">
+          <View>
+            <Text>购买数量</Text>
+          </View>
+          <View style={{ marginRight: 7 }}>
+            <InputNumber
+              modelValue={productDetails.goodsTotalNum}
+              min="1"
+              max={queryInfo?.stock}
+              onOverlimit={(e) => overlimit(e)}
+              onChangeFuc={(e) => {
+                onChangeFuc(e);
+              }}
+            />
           </View>
         </View>
       </View>
