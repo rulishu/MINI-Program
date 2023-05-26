@@ -70,11 +70,16 @@ const Index = () => {
             <View>
               <Price
                 price={queryInfo?.price}
-                size="normal"
+                size="large"
                 needSymbol
                 thousands
                 className="infoTextOne"
               />
+              <Text
+                style={{ textDecoration: 'line-through', fontSize: 12, color: 'rgb(127,127,127)' }}
+              >
+                ¥218
+              </Text>
             </View>
             <View>
               <Text className="infoTextTwo">{queryInfo?.itemName}</Text>
