@@ -18,6 +18,13 @@ export default {
         const params = { ...payload };
         const result = yield call(getAddress, params);
         if (result && result.code === 200) {
+          // 默认地址
+          const defultAddress = result.result
+            ?.filter((item) => {
+              return item.isDefault === 1;
+            })
+            .at(0);
+          Taro.setStorageSync('defultAddress', defultAddress);
           yield put({
             type: 'update',
             payload: {

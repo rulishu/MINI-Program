@@ -72,6 +72,17 @@ const Index = () => {
     closeRef.current.close();
   };
 
+  // 选择地址
+  const onSelectAddress = (item) => {
+    dispatch({
+      type: 'goodInfo/update',
+      payload: {
+        currentAddress: item,
+      },
+    });
+    Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+  };
+
   return (
     <View>
       <View className="address" onClick={() => onClose()}>
@@ -95,8 +106,14 @@ const Index = () => {
               onActionClick={() => {
                 closeRef.current.close();
               }}
+              onClose={() => closeRef.current.close()}
             >
-              <View className="address-item">
+              <View
+                className="address-item"
+                onTap={() => {
+                  onSelectAddress(item);
+                }}
+              >
                 <View className="address-item-left">
                   <View>
                     <Avatar bgColor="#B08B57">

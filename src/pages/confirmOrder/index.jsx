@@ -12,6 +12,12 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
+  const { productDetails, queryInfo, currentAddress } = useSelector((state) => state.goodInfo);
+
+  // 默认地址
+  let delAddress = Taro.getStorageSync('defultAddress');
+  const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
+
   useEffect(() => {
     const token = Taro.getStorageSync('token');
     const userInfo = Taro.getStorageSync('userInfo');
@@ -29,24 +35,14 @@ const Index = () => {
         id: userInfo.id,
       },
     });
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const { addressList } = useSelector((state) => state.address);
-
-  // 默认地址
-  const defultAddress = addressList
-    .filter((item) => {
-      return item.isDefault === 1;
-    })
-    .at(0);
-  const { productDetails, confirmList } = useSelector((state) => state.goodInfo);
-  const confirmListInfo = confirmList?.at(0);
 
   const list = [
     {
       icon: order1,
       title: '商品总价',
-      price: confirmListInfo?.count * confirmListInfo?.price,
+      price: productDetails.allGoodsPrice,
     },
     {
       icon: order1,
@@ -73,14 +69,109 @@ const Index = () => {
       icon: '',
       title: '合计',
       isICon: false,
-      price: confirmListInfo?.count * confirmListInfo?.price,
+      price: productDetails.allGoodsPrice,
     },
   ];
 
-  // 支付
-  const onPay = () => {
-    Taro.navigateTo({ url: '/pages/paySuccess/index' });
+  // 选择地址
+  const onSelectAddress = () => {
+    Taro.navigateTo({ url: '/pages/address/index' });
   };
+
+  // 支付
+  const onPay = async () => {
+    Taro.showLoading({ title: '加载中', mask: true });
+    //确认订单
+    await dispatch({
+      type: 'goodInfo/orderConfirm',
+      payload: {
+        count: productDetails?.goodsTotalNum,
+        skuId: Number(queryInfo.id),
+      },
+    });
+    let orderDetail = Taro.getStorageSync('orderInfo');
+    await dispatch({
+      type: 'goodInfo/orderSubmit',
+      payload: {
+        orderToken: orderDetail.orderToken,
+        receivingAddressId: curAddress?.id,
+        skuId: Number(queryInfo.id),
+        totalPrice: productDetails.allGoodsPrice,
+        realName: curAddress?.consignee,
+        status: 0,
+        count: productDetails?.goodsTotalNum,
+        shoppingCartVOList: [
+          {
+            couponUserId: 84,
+            cartVOList: [
+              {
+                count: 1,
+                defaultImage: '',
+                freightFee: 0,
+                giveCount: 0,
+                price: 10,
+                saleAttrs: '',
+                sales: '',
+                shoppingCartGoodsId: 0,
+                skuId: Number(queryInfo.id),
+                store: false,
+                taxRatePrice: 0,
+                title: '',
+                weight: 0,
+              },
+            ],
+          },
+        ],
+      },
+    });
+    // 预订单
+    let submitDetail = Taro.getStorageSync('submitInfo');
+    await dispatch({
+      type: 'goodInfo/wxpay',
+      payload: {
+        orderNo: submitDetail.orderNos?.at(0),
+        orderId: submitDetail.orderIds?.at(0),
+        gatewayId: 2,
+        gatewayCode: 'WX_PAY',
+        gatewayTerminal: 2,
+        paymentAmount: productDetails.allGoodsPrice,
+        tradeType: 0,
+      },
+    });
+
+    // 支付
+    let payDetail = Taro.getStorageSync('payInfo');
+    Taro.requestPayment({
+      timeStamp: payDetail.timeStamp,
+      nonceStr: payDetail.nonceStr,
+      package: payDetail.package, // 订单包
+      signType: payDetail.signType, // 加密方式统一'
+      paySign: payDetail.paySign, // 后台支付签名返回
+      provider: payDetail.provider, //支付类型
+      appId: payDetail.appId, //小程序Appid
+      success: function (res) {
+        Taro.showToast({
+          title: '支付成功',
+          icon: 'none',
+          duration: 2000,
+        });
+        if (res.errMsg === 'requestPayment:ok') {
+          Taro.navigateTo({ url: '/pages/paySuccess/index' });
+        }
+        Taro.removeStorageSync('payInfo');
+      },
+      fail: function (res) {
+        window.console.log('fail', res);
+        Taro.showToast({
+          title: '支付失败',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
+    Taro.hideLoading();
+  };
+
   return (
     <View className="confirm">
       <View className="confirm-order">
@@ -94,7 +185,7 @@ const Index = () => {
                 {/* eslint-disable-next-line global-require */}
                 <Image
                   mode="widthFix"
-                  src={confirmListInfo?.defaultImage}
+                  src={productDetails?.goodsImage}
                   style={{ width: 82, height: 108 }}
                 ></Image>
               </View>
@@ -117,16 +208,16 @@ const Index = () => {
             </View>
           </View>
           <View className="address">
-            <View onTap={() => Taro.navigateTo({ url: '/pages/address/index' })}>
+            <View onTap={() => onSelectAddress()}>
               <Icon name="locationg3" size="18" style={{ marginRight: 8 }} />
             </View>
             <View className="address-info">
               <Text>
                 [收货地址]{' '}
-                {defultAddress?.province +
-                  defultAddress?.city +
-                  defultAddress?.area +
-                  defultAddress?.addressDetails}
+                {curAddress?.province +
+                  curAddress?.city +
+                  curAddress?.area +
+                  curAddress?.addressDetails}
               </Text>
             </View>
           </View>

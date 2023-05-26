@@ -107,4 +107,7 @@ export default {
   post: function (url, data, options) {
     return this.baseOptions({ url, data, ...options }, 'POST');
   },
+  put: function (url, data, options) {
+    return this.baseOptions({ url, data, ...options }, 'PUT');
+  },
 };

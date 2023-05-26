@@ -101,14 +101,6 @@ const Index = () => {
                     payVisible: true,
                   },
                 });
-                //确认订单
-                dispatch({
-                  type: 'goodInfo/orderConfirm',
-                  payload: {
-                    count: productDetails?.goodsTotalNum,
-                    skuId: Number(queryInfo.id),
-                  },
-                });
               }
             }}
           >
