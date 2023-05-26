@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-// import Taro from '@tarojs/taro';
-import { infoDetails, orderConfirm } from '@/server/goodInfo';
+import Taro from '@tarojs/taro';
+import { infoDetails, orderConfirm, wxpay, orderSubmit } from '@/server/goodInfo';
 
 const productDetail = {
   storageFee: 0,
@@ -20,6 +20,10 @@ export default {
     queryInfo: {},
     productDetails: { ...productDetail },
     confirmList: [],
+    orderInfo: {},
+    payInfo: {}, //支付信息
+    currentAddress: {}, //选中地址信息
+    submitOrder: {}, //预订单信息
   },
 
   effects: {
@@ -52,8 +56,52 @@ export default {
             type: 'update',
             payload: {
               confirmList: result.result.shoppingCartVOList.map((a) => a.cartVOList).flat() || [],
+              orderInfo: result.result || {},
             },
           });
+          Taro.setStorageSync('orderInfo', result.result);
+        }
+      } catch (err) {}
+    },
+
+    // 预订单
+    *orderSubmit({ payload }, { call, put }) {
+      try {
+        const params = {
+          ...payload,
+        };
+        const result = yield call(orderSubmit, params);
+        if (result) {
+          yield put({
+            type: 'update',
+            payload: {
+              submitOrder: result.result || {},
+            },
+          });
+          Taro.removeStorageSync('orderInfo');
+          Taro.setStorageSync('submitInfo', result.result);
+        }
+      } catch (err) {}
+    },
+
+    //微信支付
+    *wxpay({ payload }, { call, put }) {
+      try {
+        const params = {
+          ...payload,
+        };
+        const result = yield call(wxpay, params);
+        Taro.setStorageSync('payInfo', result.result.gatewayBody);
+        if (result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              payInfo: result.result.gatewayBody || {},
+            },
+          });
+          callback();
+          Taro.removeStorageSync('submitInfo');
+          Taro.removeStorageSync('payInfo');
         }
       } catch (err) {}
     },
