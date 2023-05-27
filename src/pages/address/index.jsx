@@ -117,7 +117,9 @@ const Index = () => {
                 <View className="address-item-left">
                   <View>
                     <Avatar bgColor="#B08B57">
-                      <Text className="address-item-left-avatar-text">{item.consignee?.at(0)}</Text>
+                      <Text className="address-item-left-avatar-text">
+                        {item?.consignee?.at(0)}
+                      </Text>
                     </Avatar>
                   </View>
                   <View className="address-item-left-info">
