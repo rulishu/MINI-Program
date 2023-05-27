@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Avatar, Button, Swipe } from '@nutui/nutui-react-taro';
+import { Button, Swipe } from '@nutui/nutui-react-taro';
 import editIcon from '../../assets/images/edit.svg';
 import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,8 +21,22 @@ const Index = () => {
     // eslint-disable-next-line global-require
   }, []);
   // 添加
-  const add = () => {
+  const add = async () => {
     Taro.navigateTo({ url: '/pages/addAddress/index' });
+    let isDefault;
+    if (addressList.length === 0) {
+      isDefault = 1;
+    } else {
+      isDefault = 0;
+    }
+    await dispatch({
+      type: 'address/update',
+      payload: {
+        reData: {
+          isDefault,
+        },
+      },
+    });
   };
 
   //编辑
@@ -52,22 +66,6 @@ const Index = () => {
     });
   };
 
-  // 设为默认
-  const setDefault = async (item) => {
-    await dispatch({
-      type: 'address/editAddress',
-      payload: {
-        ...item,
-        isDefault: 1,
-      },
-    });
-    await dispatch({
-      type: 'address/getAddress',
-      payload: {
-        id: userInfo.id,
-      },
-    });
-  };
   const onClose = () => {
     closeRef.current.close();
   };
@@ -92,16 +90,9 @@ const Index = () => {
               ref={closeRef}
               key={index}
               rightAction={
-                <>
-                  <Button shape="square" color="#BFBFBF" onClick={() => setDefault(item)}>
-                    <Text style={{ color: '#ffffff', fontWeight: 400, fontSize: 13 }}>
-                      设为默认
-                    </Text>
-                  </Button>
-                  <Button shape="square" type="danger" onClick={() => del(item.id)}>
-                    <Text style={{ color: '#FFFFFF', fontWeight: 400, fontSize: 13 }}>删除</Text>
-                  </Button>
-                </>
+                <Button shape="square" color="#BFBFBF" onClick={() => del(item.id)}>
+                  <Text style={{ color: '#FFFFFF', fontWeight: 400, fontSize: 13 }}>删除</Text>
+                </Button>
               }
               onActionClick={() => {
                 closeRef.current.close();
@@ -115,20 +106,10 @@ const Index = () => {
                 }}
               >
                 <View className="address-item-left">
-                  <View>
-                    <Avatar bgColor="#B08B57">
-                      <Text className="address-item-left-avatar-text">
-                        {item?.consignee?.at(0)}
-                      </Text>
-                    </Avatar>
-                  </View>
                   <View className="address-item-left-info">
                     <View className="address-item-left-info-top">
                       <View style={{ marginRight: 8 }}>
-                        <Text>{item.consignee}</Text>
-                      </View>
-                      <View style={{ marginRight: 8 }}>
-                        <Text>{item.phone}</Text>
+                        <Text>{item.province + item.city + item.area}</Text>
                       </View>
                       {item.isDefault === 1 && (
                         <View className="address-item-left-info-top-mr">
@@ -137,7 +118,15 @@ const Index = () => {
                       )}
                     </View>
                     <View className="address-item-left-info-bottom">
-                      <Text>{item.province + item.city + item.area}</Text>
+                      <Text>{item.addressDetails}</Text>
+                    </View>
+                    <View className="address-item-left-info-bottom">
+                      <View style={{ marginRight: 8 }}>
+                        <Text>{item.consignee}</Text>
+                      </View>
+                      <View style={{ marginRight: 8 }}>
+                        <Text>{item.phone}</Text>
+                      </View>
                     </View>
                   </View>
                 </View>

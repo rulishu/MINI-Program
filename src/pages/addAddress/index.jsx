@@ -7,7 +7,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { treeDate } = useSelector((state) => state.address);
+  const { treeDate, reData } = useSelector((state) => state.address);
   useEffect(() => {
     dispatch({ type: 'address/treeList' });
   }, []);
@@ -154,7 +154,12 @@ const Index = () => {
           inputAlign="right"
           border={false}
           labelWidth="150"
-          slotButton={<Switch onChange={(value) => setState({ ...state, isDefault: value })} />}
+          slotButton={
+            <Switch
+              checked={reData.isDefault === 1}
+              onChange={(value) => setState({ ...state, isDefault: value })}
+            />
+          }
         />
       </View>
       <View className="add-address">
