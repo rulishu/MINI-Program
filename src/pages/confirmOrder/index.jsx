@@ -41,6 +41,13 @@ const Index = () => {
 
   // 支付
   const onPay = async () => {
+    if (curAddress?.id === undefined) {
+      return Taro.showToast({
+        title: '请添加收货地址',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
     Taro.showLoading({ title: '加载中', mask: true });
     //确认订单
     await dispatch({
