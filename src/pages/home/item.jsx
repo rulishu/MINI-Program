@@ -109,6 +109,7 @@ export const data = {
           price: 123.0,
           activity: '自购省',
           activityPrice: 23.0,
+          goodType: 1,
         },
         {
           id: '156',
@@ -120,6 +121,7 @@ export const data = {
           itemPrice: 398.0,
           activity: '自购省',
           activityPrice: 298.0,
+          goodType: 2,
         },
         {
           id: '155',

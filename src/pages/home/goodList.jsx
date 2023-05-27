@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Image, Text } from '@tarojs/components';
 import homeAdd from '@/assets/images/homeAdd.svg';
+import homeNoAdd from '@/assets/images/homeNoAdd.svg';
 import './index.scss';
 
 const GoodList = (props) => {
@@ -13,6 +14,14 @@ const GoodList = (props) => {
           <View className="middle-search-result-info-item" key={item.id}>
             <View className="search-result-image">
               <Image mode="widthFix" src={item.mainGraph} className="image"></Image>
+
+              {item.goodType && (
+                <View className="image-state">
+                  <Text>
+                    {item.goodType === 1 ? '异常状态' : item.goodType === 2 ? '已售空' : ''}
+                  </Text>
+                </View>
+              )}
             </View>
             <View className="search-result-content">
               <View className="search-result-content-head">
@@ -45,7 +54,11 @@ const GoodList = (props) => {
                   </Text>
                 </View>
                 <View className="searchCart">
-                  <Image mode="widthFix" src={homeAdd} className="searchCart"></Image>
+                  <Image
+                    mode="widthFix"
+                    src={item.goodType === 1 || item.goodType === 2 ? homeNoAdd : homeAdd}
+                    className="searchCart"
+                  ></Image>
                 </View>
               </View>
             </View>
