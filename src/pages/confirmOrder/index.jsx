@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
-import { Icon, Button } from '@nutui/nutui-react-taro';
+import { Icon, Divider, Button } from '@nutui/nutui-react-taro';
 import { View, Text, Image } from '@tarojs/components';
-import { list1 } from './item';
 import Taro from '@tarojs/taro';
-import order2 from '@/assets/images/order2.svg';
-import order3 from '@/assets/images/order3.svg';
 import { useSelector, useDispatch } from 'react-redux';
-import order1 from '@/assets/images/order1.svg';
-
+import payAddress from '@/assets/images/payAddress.svg';
 import './index.scss';
 
 const Index = () => {
@@ -15,8 +11,8 @@ const Index = () => {
   const { productDetails, queryInfo, currentAddress } = useSelector((state) => state.goodInfo);
 
   // 默认地址
-  let delAddress = Taro.getStorageSync('defultAddress');
-  const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
+  // let delAddress = Taro.getStorageSync('defultAddress');
+  const curAddress = JSON.stringify(currentAddress) === '{}' ? '添加收货地址' : currentAddress;
 
   useEffect(() => {
     const token = Taro.getStorageSync('token');
@@ -38,41 +34,6 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const list = [
-    {
-      icon: order1,
-      title: '商品总价',
-      price: productDetails.allGoodsPrice,
-    },
-    {
-      icon: order1,
-      title: '仓储费',
-      price: 0,
-    },
-    {
-      icon: order1,
-      title: '保险费',
-      price: 0,
-    },
-    {
-      icon: order1,
-      title: '优惠券',
-      price: 0,
-    },
-    {
-      icon: '',
-      title: '共减',
-      isICon: false,
-      price: 0,
-    },
-    {
-      icon: '',
-      title: '合计',
-      isICon: false,
-      price: productDetails.allGoodsPrice,
-    },
-  ];
-
   // 选择地址
   const onSelectAddress = () => {
     Taro.navigateTo({ url: '/pages/address/index' });
@@ -80,6 +41,13 @@ const Index = () => {
 
   // 支付
   const onPay = async () => {
+    if (curAddress?.id === undefined) {
+      return Taro.showToast({
+        title: '请添加收货地址',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
     Taro.showLoading({ title: '加载中', mask: true });
     //确认订单
     await dispatch({
@@ -175,10 +143,36 @@ const Index = () => {
   return (
     <View className="confirm">
       <View className="confirm-order">
-        <View className="goods-info">
-          <View className="card-title-goods">
-            <Text>{productDetails.categoryName}</Text>
+        <View className="address">
+          <View className="address-left">
+            <View className="address-left-icon">
+              <Image src={payAddress} style={{ width: 16, height: 16 }} />
+            </View>
+            {JSON.stringify(currentAddress) === '{}' ? (
+              <View className="address-info">
+                <Text>添加收货地址</Text>
+              </View>
+            ) : (
+              <View className="address-info">
+                <View className="city">
+                  <Text>
+                    {currentAddress?.province + currentAddress?.city + currentAddress?.area}
+                  </Text>
+                </View>
+                <View className="address-details">
+                  <Text>{currentAddress?.addressDetails}</Text>
+                </View>
+                <View className="address-details">
+                  <Text>{currentAddress?.consignee + ' ' + currentAddress?.phone}</Text>
+                </View>
+              </View>
+            )}
           </View>
+          <View onTap={() => onSelectAddress()}>
+            <Icon name="rect-right" size="16" color="#7F7F7F" />
+          </View>
+        </View>
+        <View className="goods-info">
           <View className="goods-info-head">
             <View className="goods-info-head-left">
               <View className="goods-info-head-img">
@@ -186,7 +180,7 @@ const Index = () => {
                 <Image
                   mode="widthFix"
                   src={productDetails?.goodsImage}
-                  style={{ width: 82, height: 108 }}
+                  style={{ width: 128, height: 128 }}
                 ></Image>
               </View>
               <View className="goods-info-head-info">
@@ -199,115 +193,92 @@ const Index = () => {
               </View>
             </View>
             <View className="goods-info-head-right">
-              <View className="goods-info-head-right-price">
-                <Text>￥{productDetails.goodPrice}.00</Text>
-              </View>
               <View className="goods-info-head-right-num">
                 <Text>x{productDetails.goodsTotalNum}</Text>
               </View>
+              <View className="goods-info-head-right-price">
+                <Text>￥{productDetails.goodPrice}.00</Text>
+              </View>
             </View>
           </View>
-          <View className="address">
-            <View onTap={() => onSelectAddress()}>
-              <Icon name="locationg3" size="18" style={{ marginRight: 8 }} />
+          <Divider style={{ color: '#D7D7D7' }} />
+          <View className="address-price">
+            <View>
+              <Text>运费</Text>
             </View>
-            <View className="address-info">
-              <Text>
-                [收货地址]{' '}
-                {curAddress?.province +
-                  curAddress?.city +
-                  curAddress?.area +
-                  curAddress?.addressDetails}
-              </Text>
+            <View>
+              <Text>免邮</Text>
             </View>
           </View>
           <View className="address-price">
-            <Text>快递￥0.00</Text>
-          </View>
-          <View className="card-list">
-            {list1.map((item, index) => {
-              return (
-                <View key={index} className="card-list-item">
-                  <View className="card-list-item-left">
-                    <View>
-                      <Image
-                        mode="widthFix"
-                        src={item.icon}
-                        style={{ width: 13, height: 13 }}
-                      ></Image>
-                    </View>
-                    <View className="card-list-item-left-title">
-                      <Text>{item.title}</Text>
-                    </View>
-                  </View>
-                  <View
-                    className={
-                      item.isPrice === false ? 'card-list-item-right2' : 'card-list-item-right'
-                    }
-                  >
-                    <Text>{item?.price}</Text>
-                  </View>
-                </View>
-              );
-            })}
+            <View>
+              <Text>订单备注</Text>
+            </View>
+            <View className="address-price-right-icon">
+              <Icon name="rect-right" size="16" color="#7F7F7F" />
+            </View>
           </View>
         </View>
         <View className="amount-details">
           <View className="card-title">
-            <Text>金额明细</Text>
+            <Text>价格明细</Text>
           </View>
-          <View className="card-list">
-            {list.map((item, index) => {
-              return (
-                <View key={index} className="card-list-item">
-                  <View className="card-list-item-left">
-                    <View style={{ width: 13, height: 13 }}>
-                      {item.isICon === false ? (
-                        ''
-                      ) : (
-                        <Image
-                          mode="widthFix"
-                          src={order1}
-                          style={{ width: 13, height: 13 }}
-                        ></Image>
-                      )}
-                    </View>
-                    <View className="card-list-item-left-title">
-                      <Text>{item.title}</Text>
-                    </View>
-                  </View>
-                  <View className="card-list-item-right">
-                    <Text>￥{item?.price}.00</Text>
-                  </View>
+          <Divider style={{ color: '#D7D7D7' }} />
+          <View className="prices">
+            <View className="address-price">
+              <View>
+                <Text>商品总价</Text>
+              </View>
+              <View>
+                <Text>{productDetails.allGoodsPrice}</Text>
+              </View>
+            </View>
+            <View className="address-price">
+              <View>
+                <Text>运费</Text>
+              </View>
+              <View>
+                <Text>免邮</Text>
+              </View>
+            </View>
+            <View className="address-price">
+              <View>
+                <Text>优惠劵</Text>
+              </View>
+              <View className="address-price-right">
+                <View>
+                  <Text style={{ color: '#D9001B' }}>新人20元无门槛优惠劵</Text>
                 </View>
-              );
-            })}
+                <View className="address-price-right-icon">
+                  <Icon name="rect-right" size="16" style={{ marginLeft: 8 }} color="#7F7F7F" />
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View className="pay">
+          <View>
+            <Text>支付方式</Text>
+          </View>
+          <View>
+            <Text>微信支付</Text>
           </View>
         </View>
       </View>
       <View className="footer-height"></View>
       <View className="footer">
-        <View className="footer-conter">
-          <View className="footer-top">
-            <View style={{ width: '48%' }}>
-              <Button className="footer-top-btn" shape="square" icon={order3}>
-                <Text style={{ color: '#A85230' }}>联系客服</Text>
-              </Button>
-            </View>
-            <View style={{ width: '48%' }}>
-              <Button className="footer-top-btn" shape="square" icon={order2}>
-                <Text style={{ color: '#A85230' }}>收藏</Text>
-              </Button>
-            </View>
+        <View className="footer-content">
+          <View>
+            <Text>合计：¥ {productDetails.allGoodsPrice}</Text>
           </View>
           <View>
             <Button
-              className="footer-bottom"
-              onClick={() => {
-                onPay();
-              }}
+              shape="square"
+              color="#AAAAAA"
+              style={{ color: '#ffffff', borderRadius: 6 }}
+              onClick={() => onPay()}
             >
-              <Text style={{ fontSize: 15, lineHeight: 24 }}>确认订单</Text>
+              <Text style={{ fontSize: 14 }}>确认订单</Text>
             </Button>
           </View>
         </View>
