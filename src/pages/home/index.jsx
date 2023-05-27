@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Input, Text } from '@tarojs/components';
+import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { useDispatch } from 'react-redux';
-import { Ellipsis, Icon } from '@nutui/nutui-react-taro';
-// import pic1 from '../../assets/images/jiutan.png';
+import { Swiper, SwiperItem, Skeleton } from '@nutui/nutui-react-taro';
+import homeSearch from '@/assets/images/homeSearch.svg';
+import homeAddress from '@/assets/images/homeAddress.svg';
 import Navs from './navs';
-// import Lists from './lists';
-import Cards from './cards';
-import Foots from './foots';
+import TabList from './tabList';
+import { data } from './item';
 
 const Index = () => {
   const dispatch = useDispatch();
+  // const [initPage1, setInitPage1] = useState(0)
   const [addressInfo, setAddressInfo] = useState('');
+  const [homeTopMarginLeft, setHomeTopMarginLeft] = useState(0);
+  const [homeTopMarginTop, setHomeTopMarginTop] = useState(0);
+  const [homeTopWidth, setHomeTopWidth] = useState(0);
+  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   useEffect(() => {
     dispatch({ type: 'home/getCategoriesList' });
+    // 获取当前定位
     Taro.getLocation({
       type: 'wgs84',
       success: function (res) {
@@ -39,99 +45,85 @@ const Index = () => {
         });
       },
     });
+
+    //获取顶部导航栏位置
+    let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
+    const { top, width, height, right } = menuButtonInfo;
+    wx.getSystemInfo({
+      success: (res) => {
+        const { statusBarHeight } = res;
+        const margin = top - statusBarHeight;
+        const searchWidth = right - width;
+        const marginTop = top + margin;
+        const navHeight = height + statusBarHeight + margin * 2;
+        setHomeTopMarginLeft(margin);
+        setHomeTopMarginTop(marginTop);
+        setHomeTopWidth(searchWidth);
+        setHomeTopNavHeight(navHeight);
+      },
+    });
+
     // eslint-disable-next-line global-require
   }, []);
-  // const menus = [
-  //   { image: pic1, title: '米面粮油', bg: 'rgba(246, 86, 93, 0.08)' },
-  //   { image: pic1, title: '定制酒', bg: ' rgba(110, 162, 255, 0.08)' },
-  //   { image: pic1, title: '养生茶饮', bg: 'rgba(249, 161, 218, 0.08)' },
-  //   { image: pic1, title: '品质生鲜', bg: 'rgba(255, 132, 13, 0.08)' },
-  //   { image: pic1, title: '南北干货', bg: 'rgba(255, 132, 13, 0.08)' },
-  // ];
+
+  const onChange = () => {};
+
   return (
     <View className="index">
-      <View>
-        <Image
-          mode="widthFix"
-          // eslint-disable-next-line global-require
-          src={require('@/assets/images/homebg.png')}
-          className="page-homes-header-image"
-        ></Image>
-      </View>
-
-      <View className="address">
-        <Icon name="locationg3" size="18" style={{ marginLeft: 8, marginRight: 8 }} />
-        <Ellipsis content={addressInfo ? addressInfo : '定位失败'} direction="end"></Ellipsis>
-      </View>
-      <View className="search">
-        <View
-          className="search-input"
-          onTap={() => Taro.navigateTo({ url: '/pages/search/index' })}
-        >
-          <Input type="text" placeholder="搜索" />
-          <View className="search-icon">
-            <Image
-              mode="widthFix"
-              // eslint-disable-next-line global-require
-              src={require('@/assets/images/search.png')}
-              className="page-homes-header-search-image"
-            ></Image>
+      <View className="page-homes-header-image"></View>
+      {/* 首页顶部操作 */}
+      <View
+        className="home-top"
+        style={{ top: homeTopMarginTop, left: homeTopMarginLeft, width: homeTopWidth }}
+      >
+        <View className="home-top-content">
+          <View className="address">
+            <Skeleton
+              width="200px"
+              height="10px"
+              animated
+              avatar
+              avatarSize="32px"
+              loading={addressInfo ? true : false}
+            >
+              <Image
+                src={homeAddress}
+                style={{ width: 14, height: 16, marginLeft: 8, marginRight: 8 }}
+                className="homeAddressIcon"
+              />
+              <Text>{addressInfo ? addressInfo : '点击获取地址位置'}</Text>
+            </Skeleton>
+          </View>
+          <View className="search" onTap={() => Taro.navigateTo({ url: '/pages/search/index' })}>
+            <Image src={homeSearch} style={{ width: 18, height: 18, marginLeft: 8 }} />
           </View>
         </View>
       </View>
-      <View className="qd">
-        <View className="search-qd-icon">
-          <Image
-            mode="widthFix"
-            // eslint-disable-next-line global-require
-            src={require('@/assets/images/search1.png')}
-            className="page-homes-header-search1-image"
-          ></Image>
-        </View>
-        <View className="qd-content">
-          <Text>签到</Text>
-        </View>
+      {/* 轮播图 */}
+      <View className="demo-box home-banner" style={{ top: homeTopNavHeight + 20, height: 200 }}>
+        <Swiper
+          paginationColor="#000000"
+          autoPlay="3000"
+          // initPage={initPage1}
+          paginationVisible
+          onChange={onChange}
+          style={{ height: '200px' }}
+        >
+          {data.bannerList?.map((item) => {
+            return (
+              <SwiperItem className="home-banner-content" key={item.id}>
+                <Image src={item.img} className="home-banner-content-img" />
+              </SwiperItem>
+            );
+          })}
+        </Swiper>
       </View>
-      <View className="listen">
-        <View>
-          <Image
-            mode="widthFix"
-            // eslint-disable-next-line global-require
-            src={require('@/assets/images/search2.png')}
-            className="search2-image"
-          ></Image>
-        </View>
-        <View style={{ marginLeft: 10 }}>
-          <Image
-            mode="widthFix"
-            // eslint-disable-next-line global-require
-            src={require('@/assets/images/search3.png')}
-            className="search2-image"
-          ></Image>
-        </View>
-      </View>
-      <View className="page-homes-body">
-        {/* <View className="menu-conatiner">
-          {menus.map((menu, i) => (
-            <View key={i} className="page-grid-boxconatiner">
-              <View className="box-conatiner">
-                <View className="page-grid-box" style={{ background: menu.bg }}>
-                  <Image
-                    src={menu.image}
-                    className="box"
-                    style={{ width: '24px', height: '22px' }}
-                  />
-                </View>
-                <Text className="text">{menu.title}</Text>
-              </View>
-            </View>
-          ))}
-        </View> */}
-        <View>
-          <Navs />
-          {/* <Lists /> */}
-          <Cards />
-          <Foots />
+      {/* 主体内容 */}
+      <View className="home-body" style={{ top: homeTopNavHeight + 220 }}>
+        <Navs />
+        <TabList />
+        <View className="pageEnd">
+          <Text>——页面到底了——</Text>
         </View>
         <View className="tab-footer"></View>
       </View>
