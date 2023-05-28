@@ -70,53 +70,26 @@ page {
       .right-content-title{
         background: rgb(245, 245, 245);
         padding: 5px 20px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         width: 100%;
       }
       .right-content-box{
         display: flex;
         flex-direction: column;
         .right-content-item{
-          margin-top: 10px;
           display: flex;
           flex-direction: row;
           align-items: center;
           border-bottom: 1px solid rgb(170, 170, 170);
-          box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
-          .rightImage{
-            width: 196px;
-            height: 196px;
-          }
           .right-content-text-box{
             margin-left: 13px;
             .right-content-text-header{
-              padding-top: 5px;
               font-size: 24px;
-            }
-            .right-content-text-tag{
-              border: 2px solid red;
-              width: 80px;
-              justify-content: center;
-              text-align: center;
-              font-size: 18px;
-              margin-top: 25px;
-            }
-            .right-content-text-footer{
-              margin-top: 10px;
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding-bottom: 10px;
             }
           }
         }
       }
     }
-
-
-
-
-
 
     // .right-contents{
     //   display:flex;

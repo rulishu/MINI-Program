@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Image } from '@tarojs/components';
-import { Tag, Price, Icon } from '@nutui/nutui-react-taro';
+import { Tag, Price } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
+import homeAdd from '@/assets/images/homeAdd.svg';
 import './index.scss';
 
 const Index = (props) => {
@@ -15,141 +16,121 @@ const Index = (props) => {
   return (
     <View className="right" style={{ paddingBottom: 70, margin: -15 }}>
       <View style={{ marginBottom: 8 }} className="right-title-box">
-        {getCategoriesTwoTreeList?.map((itm, idx) => {
-          return (
-            <View
-              key={idx}
-              onTap={() => {
-                setActiveItem(idx);
-              }}
-            >
-              <Text
-                className="right-title"
-                style={{
-                  background:
-                    getCategoriesTwoTreeItem && idx !== activeItem ? 'rgb(245, 245, 245)' : '',
-                }}
-              >
-                {itm?.label}
-              </Text>
-            </View>
-          );
-        })}
-      </View>
-      <View style={{ marginTop: 15 }}>
         {getCategoriesTwoTreeList?.map((item, index) => {
           return (
-            <View key={index} className="right-content">
-              <View className="right-content-title">{item?.label}</View>
-              <View className="right-content-box">
-                {subList?.map((itm, idx) => {
-                  return (
-                    <View className="right-content-item" key={idx}>
-                      <View>
-                        <Image
-                          mode="widthFix"
-                          // eslint-disable-next-line global-require
-                          src={itm?.mainGraph}
-                          className="rightImage"
-                          onTap={() => {
-                            dispatch({
-                              type: 'goodInfo/infoDetails',
-                              payload: {
-                                id: itm?.id,
-                              },
-                            });
-                            Taro.navigateTo({ url: '/pages/goodInfo/index' });
-                          }}
-                        ></Image>
-                      </View>
-                      <View className="right-content-text-box">
+            <View key={index}>
+              {/* 二级标签 */}
+              <View
+                onTap={() => {
+                  setActiveItem(index);
+                }}
+              >
+                <Text
+                  className="right-title"
+                  style={{
+                    background:
+                      getCategoriesTwoTreeItem && index !== activeItem ? 'rgb(245, 245, 245)' : '',
+                  }}
+                >
+                  {item?.label}
+                </Text>
+              </View>
+              {/* 二级标签下内容 */}
+              <View className="right-content" style={{ marginTop: 6 }}>
+                <View className="right-content-title">{item?.label}</View>
+                {/* 标签图片内容调整 */}
+                <View className="right-content-box">
+                  {subList?.map((itm, idx) => {
+                    return (
+                      <View className="right-content-item" key={idx} style={{}}>
                         <View
-                          className="right-content-text-header"
-                          onTap={() => {
-                            dispatch({
-                              type: 'goodInfo/infoDetails',
-                              payload: {
-                                id: itm?.id,
-                              },
-                            });
-                            Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                          style={{
+                            width: '40%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            marginTop: 5,
                           }}
                         >
-                          <Tag color="rgb(170, 170, 170)">自营</Tag>
-                          <Text
-                            style={{ marginLeft: 10 }}
-                          >{`${itm?.itemName} ${itm?.specifications}`}</Text>
+                          <Image
+                            mode="widthFix"
+                            // eslint-disable-next-line global-require
+                            src={itm?.mainGraph}
+                            style={{ width: '100%' }}
+                            onTap={() => {
+                              dispatch({
+                                type: 'goodInfo/infoDetails',
+                                payload: {
+                                  id: itm?.id,
+                                },
+                              });
+                              Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                            }}
+                          ></Image>
                         </View>
-                        <View className="right-content-text-tag">返 ¥9.10</View>
-                        <View className="right-content-text-footer">
-                          <Price price={itm?.itemPrice} size="normal" needSymbol thousands />
-                          <Icon name="cart" size={15}></Icon>
+                        <View className="right-content-text-box" style={{ width: '60%' }}>
+                          <View
+                            className="right-content-text-header"
+                            onTap={() => {
+                              dispatch({
+                                type: 'goodInfo/infoDetails',
+                                payload: {
+                                  id: itm?.id,
+                                },
+                              });
+                              Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                            }}
+                          >
+                            <Tag color="rgb(170, 170, 170)">自营</Tag>
+                            <Text style={{ marginLeft: 10 }}>
+                              {`${itm?.itemName} ${itm?.specifications}`}
+                            </Text>
+                          </View>
+                          {/* <View >
+                            <Text style={{ fontSize: 12, border: '1px solid #aaaaaa' }}> 自购省</Text>
+                            <Text style={{ fontSize: 12, borderTop: '1px solid #aaaaaa', }}>¥12.8</Text>
+                          </View> */}
+                          <View
+                            style={{
+                              display: 'flex',
+                              alignItems: 'flex-start',
+                              justifyContent: 'space-between',
+                            }}
+                          >
+                            <View style={{ display: 'flex', flexDirection: 'row' }}>
+                              <Price
+                                price={itm?.itemPrice}
+                                size="normal"
+                                needSymbol
+                                thousands
+                                style={{ color: '#d9001c' }}
+                              />
+                              <Text
+                                style={{
+                                  color: '#7f7f7f',
+                                  textDecoration: 'line-through',
+                                  fontSize: 12,
+                                }}
+                              >
+                                ¥199.00
+                              </Text>
+                            </View>
+                            <View>
+                              <Image
+                                mode="widthFix"
+                                src={homeAdd}
+                                style={{ width: 25, height: 25 }}
+                              ></Image>
+                            </View>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  );
-                })}
+                    );
+                  })}
+                </View>
               </View>
             </View>
           );
         })}
-        {/* {subList.map((item, index) => {
-          return (
-            <View key={index} className="right-content">
-              <View
-                onTap={() => {
-                  dispatch({
-                    type: 'goodInfo/infoDetails',
-                    payload: {
-                      id: item?.id,
-                    },
-                  });
-                  Taro.navigateTo({ url: '/pages/goodInfo/index' });
-                }}
-              >
-                <Image
-                  mode="widthFix"
-                  // eslint-disable-next-line global-require
-                  src={item.mainGraph}
-                  className="rightImage"
-                ></Image>
-              </View>
-              <View className="right-contents">
-                <View
-                  className="right-content-texts"
-                  onTap={() => {
-                    dispatch({
-                      type: 'goodInfo/infoDetails',
-                      payload: {
-                        id: item?.id,
-                      },
-                    });
-                    Taro.navigateTo({ url: '/pages/goodInfo/index' });
-                  }}
-                >
-                  <Text className="right-content-text">{item.itemName}</Text>
-                </View>
-                <View className="right-content-bottom">
-                  <View>
-                    <Text className="right-content-price">
-                      <Text className="right-content-price-icon">¥</Text>
-                      {item.price}
-                      <Text className="right-content-price-icon">.00</Text>
-                    </Text>
-                  </View>
-                  <View>
-                    <Image
-                      mode="widthFix"
-                      // eslint-disable-next-line global-require
-                      src={require('@/assets/images/car1.png')}
-                      className="right-content-car"
-                    ></Image>
-                  </View>
-                </View>
-              </View>
-            </View>
-          );
-        })} */}
       </View>
     </View>
   );

@@ -310,9 +310,10 @@ page {
   justify-content: space-between;
   align-items: center;
   margin-top: 40px;
+  margin-bottom: 40px;
   .nut-icon{
     border: 1px solid rgb(215, 215,215);
-    padding: 12px 12px;
+    padding: 5px 12px;
   }
   .nut-number-input{
     width: 10px !important;
@@ -389,10 +390,6 @@ page {
     letter-spacing: 0px;
     color: #0D0F23;
   }
-}
-
-.foots{
-  height: 150px;
 }
 
 // 分享列表样式
