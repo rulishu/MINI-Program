@@ -81,6 +81,11 @@ page {
           flex-direction: row;
           align-items: center;
           border-bottom: 1px solid rgb(170, 170, 170);
+          height: 200px;
+          .right-content-item-img{
+            width:200px;
+            height:200px;
+          }
           .right-content-text-box{
             margin-left: 13px;
             .right-content-text-header{
