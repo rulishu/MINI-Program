@@ -7,11 +7,12 @@ import kefu from '@/assets/images/kefu.svg';
 import share from '@/assets/images/share.svg';
 import shareblack from '@/assets/images/shareblack.svg';
 import cart from '@/assets/images/cart.svg';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
-import { useDispatch } from 'react-redux';
 
 const Index = () => {
   const dispatch = useDispatch();
+  const { queryInfo } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -43,6 +44,7 @@ const Index = () => {
     'https://storage.360buyimg.com/jdc-article/welcomenutui.jpg',
     'https://storage.360buyimg.com/jdc-article/fristfabu.jpg',
   ];
+  const itemList = queryInfo?.itemImageDtoList?.map((item) => item?.path);
   const pageStyle = {
     position: 'absolute',
     bottom: 30,
@@ -55,6 +57,7 @@ const Index = () => {
     color: '#fff',
     fontSize: '14px',
   };
+
   return (
     <View>
       <View>
@@ -144,9 +147,15 @@ const Index = () => {
               marginBottom: 2,
             }}
           >
-            <Price price={98} size="large" needSymbol thousands style={{ color: '#d9001c' }} />
+            <Price
+              price={queryInfo?.costPrice}
+              size="large"
+              needSymbol
+              thousands
+              style={{ color: '#d9001c' }}
+            />
             <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
-              ¥218.00
+              ¥{queryInfo?.price}
             </Text>
           </View>
           <View
@@ -168,14 +177,10 @@ const Index = () => {
               >
                 自营
               </Text>
-              <Text style={{ fontSize: 15, paddingLeft: 5 }}>
-                五常民乐自然生态米纯正稻花香 2.5kg/5kg
-              </Text>
+              <Text style={{ fontSize: 15, paddingLeft: 5 }}>{queryInfo?.itemName}</Text>
             </View>
           </View>
-          <View style={{ color: '#818181', fontSize: 12 }}>
-            源自黄金稻场，产地直供，核心产区，可溯源，当季新米
-          </View>
+          <View style={{ color: '#818181', fontSize: 12 }}>{queryInfo?.details}</View>
         </View>
         {/* 规格值 */}
         <View
@@ -226,7 +231,7 @@ const Index = () => {
             }}
           >
             <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>运费</Text>
-            <Text style={{ paddingLeft: 15, fontSize: 15 }}>免运费</Text>
+            <Text style={{ paddingLeft: 15, fontSize: 15 }}>{queryInfo?.templateName}</Text>
           </View>
           {/* 商品详情 */}
           <View
@@ -247,7 +252,7 @@ const Index = () => {
                 justifyContent: 'center',
               }}
             >
-              {list.map((item) => {
+              {itemList?.map((item) => {
                 return (
                   <View key={item} style={{ width: '100%', display: 'flex' }}>
                     <Image src={item} style={{ width: '100%', margin: '5px 15px' }}></Image>
@@ -285,7 +290,20 @@ const Index = () => {
           </View>
           <View style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
             <View style={{ marginRight: 10, width: '45%' }}>
-              <Button style={{ borderRadius: 0, width: '100%' }}>加入购物车</Button>
+              <Button
+                style={{ borderRadius: 0, width: '100%' }}
+                onClick={() => {
+                  dispatch({
+                    type: 'goodInfo/update',
+                    payload: {
+                      visible: true,
+                      type: 'addCart',
+                    },
+                  });
+                }}
+              >
+                加入购物车
+              </Button>
             </View>
             <View style={{ width: '45%' }}>
               <Button
@@ -296,6 +314,7 @@ const Index = () => {
                     type: 'goodInfo/update',
                     payload: {
                       visible: true,
+                      type: 'nowCart',
                     },
                   });
                 }}

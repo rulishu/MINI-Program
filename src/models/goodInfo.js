@@ -9,14 +9,14 @@ const productDetail = {
   coSubtractive: 0,
   goodsPrice: 0,
   allGoodsPrice: 0,
-  goodsTotalNum: 0, //商品购买个数
+  goodsTotalNum: 1, //商品购买个数
 };
 export default {
   namespace: 'goodInfo', // 这是模块名
   state: {
     // 初始化数据
     visible: false,
-    payVisible: false,
+    type: '',
     shareVisible: false,
     queryInfo: {},
     productDetails: { ...productDetail },
