@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Image } from '@tarojs/components';
-import { Icon, Avatar } from '@nutui/nutui-react-taro';
+import { View, Text } from '@tarojs/components';
+import { Icon, Avatar, Image } from '@nutui/nutui-react-taro';
 import { useSelector } from 'react-redux';
-import vip from '../../assets/images/vip.svg';
-import myfz from '../../assets/images/myfz.svg';
+// import vip from '../../assets/images/vip.svg';
+// import myfz from '../../assets/images/myfz.svg';
+import ewm from '../../assets/images/ewm.svg';
 import Taro from '@tarojs/taro';
 import './index.scss';
 
@@ -19,24 +20,24 @@ const Index = () => {
     let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000)); //计算出相差天数
     return dayDiff;
   };
-  const list = [
-    {
-      title: '我的粉丝',
-      num: 233,
-    },
-    {
-      title: '今日涨粉',
-      num: 12,
-    },
-    {
-      title: '今日分润',
-      num: 78.23,
-    },
-    {
-      title: '待提现金额',
-      num: 1278.23,
-    },
-  ];
+  // const list = [
+  //   {
+  //     title: '我的粉丝',
+  //     num: 233,
+  //   },
+  //   {
+  //     title: '今日涨粉',
+  //     num: 12,
+  //   },
+  //   {
+  //     title: '今日分润',
+  //     num: 78.23,
+  //   },
+  //   {
+  //     title: '待提现金额',
+  //     num: 1278.23,
+  //   },
+  // ];
 
   //编辑信息
   const edit = () => {
@@ -70,25 +71,25 @@ const Index = () => {
           <Avatar
             shape="square"
             size="large"
-            icon={userInfos.headUrl === '' ? 'my' : userInfos.headUrl}
+            icon={userInfos.headUrl && userInfos.headUrl !== '' ? userInfos.headUrl : 'my'}
             iconSize="60"
           />
         </View>
         <View className="head-infos">
           <View className="head-info-name">
             <Text>{userInfos.nickName || '游客'}</Text>
-            <Image
+            {/* <Image
               mode="widthFix"
               src={vip}
               style={{ width: 24, height: 24, marginLeft: 10, marginRight: 6 }}
             ></Image>
-            <Text className="head-info-name-xf">续费</Text>
+            <Text className="head-info-name-xf">续费</Text> */}
           </View>
           <View className="head-info-id">
-            <Text>经销商 ID：{userInfos.id || '暂无信息'}</Text>
+            <Text>奋斗者 ID: {userInfos.id || '暂无信息'}</Text>
             <Image
               mode="widthFix"
-              src={myfz}
+              src={ewm}
               style={{ width: 16, height: 20, marginLeft: 10 }}
             ></Image>
           </View>
@@ -101,7 +102,7 @@ const Index = () => {
         <View className="semicircle-info"></View>
       </View>
       <View className="head-list">
-        {list.map((item, index) => (
+        {/* {list.map((item, index) => (
           <View key={index} className="head-list-item">
             <View className="head-list-item-title">
               <Text>{item.num}</Text>
@@ -110,7 +111,7 @@ const Index = () => {
               <Text>{item.title}</Text>
             </View>
           </View>
-        ))}
+        ))} */}
       </View>
     </View>
   );
