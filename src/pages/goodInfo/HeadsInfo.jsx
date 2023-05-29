@@ -116,7 +116,12 @@ const Index = () => {
                 borderRadius: 24,
                 background: '#acacac',
               }}
-              onClick={() => dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })}
+              onClick={() => {
+                dispatch({
+                  type: 'goodInfo/update',
+                  payload: { shareVisible: true },
+                });
+              }}
             >
               <Image mode="widthFix" src={share} style={{ width: 20, height: 20 }}></Image>
             </View>
