@@ -12,22 +12,19 @@ const Index = (props) => {
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(0);
   let getCategoriesTwoTreeList = getCategoriesTwoTreeItem?.children;
-  let twoLabel;
 
   return (
     <View className="right" style={{ paddingBottom: 70, margin: -15 }}>
       <View style={{ marginBottom: 8 }} className="right-title-box">
         <View style={{ width: '100%' }}>
           {/* 二级标签 */}
-          <View
-            onTap={() => {
-              setActiveItem(index);
-            }}
-          >
+          <View>
             {getCategoriesTwoTreeList?.map((item, index) => {
-              twoLabel = item?.label;
               return (
                 <Text
+                  onTap={() => {
+                    setActiveItem(index);
+                  }}
                   key={item}
                   className="right-title"
                   style={{
@@ -42,13 +39,14 @@ const Index = (props) => {
           </View>
           {/* 二级标签下内容 */}
           <View className="right-content" style={{ marginTop: 6 }}>
-            {twoLabel ? (
-              <View className="right-content-title">
-                <Text>{twoLabel}</Text>
-              </View>
-            ) : (
-              ''
-            )}
+            {getCategoriesTwoTreeList?.map((label, key) => {
+              return (
+                <View className="right-content-title" key={key}>
+                  {label ? <Text>{label?.label}</Text> : ''}
+                </View>
+              );
+            })}
+
             {/* 标签图片内容调整 */}
             <View className="right-content-box">
               {subList?.map((itm, idx) => {

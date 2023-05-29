@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Swiper, SwiperItem, Price, Icon, Button } from '@nutui/nutui-react-taro';
+import { Swiper, SwiperItem, Price, Icon, Button, Skeleton } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import searchLeft from '@/assets/images/searchLeft.svg';
 import kefu from '@/assets/images/kefu.svg';
@@ -12,11 +12,14 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo } = useSelector((state) => state.goodInfo);
+  const { queryInfo, loading } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
+  const [total, setTotal] = useState(0);
 
+  const list = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
+  const itemList = queryInfo?.itemImageDtoList?.map((item) => item?.path);
   useEffect(() => {
     const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
     const { top, width, right } = menuButtonInfo;
@@ -32,19 +35,15 @@ const Index = () => {
         setnavLefts(searchWidth);
       },
     });
+    const len = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
+    setTotal(len?.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [queryInfo]);
 
   const onChange3 = (e) => {
     setCurrent(e + 1);
   };
-  const list = [
-    'https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg',
-    'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-    'https://storage.360buyimg.com/jdc-article/welcomenutui.jpg',
-    'https://storage.360buyimg.com/jdc-article/fristfabu.jpg',
-  ];
-  const itemList = queryInfo?.itemImageDtoList?.map((item) => item?.path);
+
   const pageStyle = {
     position: 'absolute',
     bottom: 30,
@@ -57,275 +56,287 @@ const Index = () => {
     color: '#fff',
     fontSize: '14px',
   };
-
   return (
-    <View>
+    <Skeleton animated loading={!loading?.global}>
       <View>
-        {/* 轮播图/可展示图片和video */}
-        <Swiper
-          initPage={1}
-          loop
-          onChange={onChange3}
-          pageContent={<div style={pageStyle}> {current} / 4 </div>}
-        >
-          {list.map((item) => {
-            return (
-              <SwiperItem key={item}>
-                <Image style={{ height: '40vh', width: '100%' }} src={item}></Image>
-              </SwiperItem>
-            );
-          })}
-        </Swiper>
-        {/* 返回/客服/分享按钮 */}
-        <View style={{ position: 'fixed', top: navTops, zIndex: 99 }}>
-          <View onClick={() => Taro.navigateBack({ delta: 1 })}>
-            <Image mode="widthFix" src={searchLeft} style={{ width: 24, height: 24 }}></Image>
-          </View>
-          <View
-            style={{
-              position: 'relative',
-              display: 'flex',
-              flexDirection: 'row',
-              left: navLefts,
-              marginTop: 5,
-            }}
-          >
-            <View
-              style={{
-                width: 30,
-                height: 30,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 24,
-                background: '#acacac',
-                marginRight: 10,
-              }}
-              onClick={() => {}}
-            >
-              <Image
-                mode="widthFix"
-                src={kefu}
-                style={{ width: 20, height: 20, color: '#ffffff' }}
-              ></Image>
-            </View>
-            <View
-              style={{
-                width: 30,
-                height: 30,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 24,
-                background: '#acacac',
-              }}
-              onClick={() => dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })}
-            >
-              <Image mode="widthFix" src={share} style={{ width: 20, height: 20 }}></Image>
-            </View>
-          </View>
-        </View>
-        {/* 详情文本 */}
-        <View
-          style={{
-            margin: '10px 10px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            backgroundColor: '#ffffff',
-            paddingTop: 25,
-            paddingLeft: 15,
-            paddingRight: 15,
-            paddingBottom: 15,
-          }}
-        >
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: 2,
-            }}
-          >
-            <Price
-              price={queryInfo?.costPrice}
-              size="large"
-              needSymbol
-              thousands
-              style={{ color: '#d9001c' }}
-            />
-            <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
-              ¥{queryInfo?.price}
-            </Text>
-          </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: 5,
-            }}
-          >
-            <View>
-              <Text
-                style={{
-                  color: '#E9E9E9',
-                  textColor: '"#999999',
-                  background: '#aaaaaa',
-                  padding: '0px 5px',
-                }}
-              >
-                自营
-              </Text>
-              <Text style={{ fontSize: 15, paddingLeft: 5 }}>{queryInfo?.itemName}</Text>
-            </View>
-          </View>
-          <View style={{ color: '#818181', fontSize: 12 }}>{queryInfo?.details}</View>
-        </View>
-        {/* 规格值 */}
-        <View
-          style={{
-            margin: '10px 10px',
-            backgroundColor: '#ffffff',
-            height: 100,
-          }}
-        >
-          <View
-            style={{
-              height: '50%',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              borderBottom: '1px solid #f2f2f2',
-            }}
-          >
-            <View
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>规格</Text>
-              <Text style={{ paddingLeft: 15, fontSize: 15 }}>规格值1，规格值2</Text>
-            </View>
-            <View
-              style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}
-              onClick={() =>
-                dispatch({
-                  type: 'goodInfo/update',
-                  payload: {
-                    visible: true,
-                  },
-                })
+        <View>
+          {/* 轮播图/可展示图片和video */}
+          {queryInfo?.mainGraphs && (
+            <Swiper
+              initPage={1}
+              loop
+              onChange={onChange3}
+              pageContent={
+                <div style={pageStyle}>
+                  {' '}
+                  {current} / {total}{' '}
+                </div>
               }
             >
-              <Icon name="rect-right" size={20}></Icon>
-            </View>
-          </View>
-          <View
-            style={{
-              height: '50%',
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>运费</Text>
-            <Text style={{ paddingLeft: 15, fontSize: 15 }}>{queryInfo?.templateName}</Text>
-          </View>
-          {/* 商品详情 */}
-          <View
-            style={{
-              margin: '10px 0',
-              background: '#ffffff',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <View style={{ marginLeft: 15, marginTop: 20 }}>商品详情</View>
-            <View
-              style={{
-                marginTop: 10,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {itemList?.map((item) => {
+              {list.map((item) => {
                 return (
-                  <View key={item} style={{ width: '100%', display: 'flex' }}>
-                    <Image src={item} style={{ width: '100%', margin: '5px 15px' }}></Image>
-                  </View>
+                  <SwiperItem key={item}>
+                    <Image style={{ height: '40vh', width: '100%' }} src={item}></Image>
+                  </SwiperItem>
                 );
               })}
+            </Swiper>
+          )}
+          {/* 返回/客服/分享按钮 */}
+          <View style={{ position: 'fixed', top: navTops, zIndex: 99 }}>
+            <View onClick={() => Taro.navigateBack({ delta: 1 })}>
+              <Image mode="widthFix" src={searchLeft} style={{ width: 24, height: 24 }}></Image>
             </View>
-          </View>
-          <View style={{ marginBottom: 50 }}></View>
-        </View>
-        {/* 页脚按钮 */}
-        <View
-          style={{
-            position: 'fixed',
-            left: 0,
-            bottom: 0,
-            width: '100%',
-            background: '#ffffff',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            padding: '10px 0 15px 0',
-          }}
-        >
-          <View style={{ display: 'flex', flexDirection: 'row', marginRight: 25, width: '20%' }}>
             <View
-              style={{ marginRight: 15, marginLeft: 15 }}
-              onClick={() => dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })}
+              style={{
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'row',
+                left: navLefts,
+                marginTop: 5,
+              }}
             >
-              <Image mode="widthFix" src={shareblack} style={{ width: 25, height: 25 }}></Image>
-            </View>
-            <View>
-              <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
+              <View
+                style={{
+                  width: 30,
+                  height: 30,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 24,
+                  background: '#acacac',
+                  marginRight: 10,
+                }}
+                onClick={() => {}}
+              >
+                <Image
+                  mode="widthFix"
+                  src={kefu}
+                  style={{ width: 20, height: 20, color: '#ffffff' }}
+                ></Image>
+              </View>
+              <View
+                style={{
+                  width: 30,
+                  height: 30,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 24,
+                  background: '#acacac',
+                }}
+                onClick={() =>
+                  dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })
+                }
+              >
+                <Image mode="widthFix" src={share} style={{ width: 20, height: 20 }}></Image>
+              </View>
             </View>
           </View>
-          <View style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
-            <View style={{ marginRight: 10, width: '45%' }}>
-              <Button
-                style={{ borderRadius: 0, width: '100%' }}
-                onClick={() => {
-                  dispatch({
-                    type: 'goodInfo/update',
-                    payload: {
-                      visible: true,
-                      type: 'addCart',
-                    },
-                  });
-                }}
-              >
-                加入购物车
-              </Button>
+          {/* 详情文本 */}
+          <View
+            style={{
+              margin: '10px 10px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              backgroundColor: '#ffffff',
+              paddingTop: 25,
+              paddingLeft: 15,
+              paddingRight: 15,
+              paddingBottom: 15,
+            }}
+          >
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 2,
+              }}
+            >
+              <Price
+                price={queryInfo?.costPrice}
+                size="large"
+                needSymbol
+                thousands
+                style={{ color: '#d9001c' }}
+              />
+              <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
+                ¥{queryInfo?.price}
+              </Text>
             </View>
-            <View style={{ width: '45%' }}>
-              <Button
-                type="primary"
-                style={{ borderRadius: 0, width: '100%' }}
-                onClick={() => {
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 5,
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    color: '#E9E9E9',
+                    textColor: '"#999999',
+                    background: '#aaaaaa',
+                    padding: '0px 5px',
+                  }}
+                >
+                  自营
+                </Text>
+                <Text style={{ fontSize: 15, paddingLeft: 5 }}>{queryInfo?.itemName}</Text>
+              </View>
+            </View>
+            <View style={{ color: '#818181', fontSize: 12 }}>{queryInfo?.details}</View>
+          </View>
+          {/* 规格值 */}
+          <View
+            style={{
+              margin: '10px 10px',
+              backgroundColor: '#ffffff',
+              height: 100,
+            }}
+          >
+            <View
+              style={{
+                height: '50%',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottom: '1px solid #f2f2f2',
+              }}
+            >
+              <View
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>规格</Text>
+                <Text style={{ paddingLeft: 15, fontSize: 15 }}>规格值1，规格值2</Text>
+              </View>
+              <View
+                style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}
+                onClick={() =>
                   dispatch({
                     type: 'goodInfo/update',
                     payload: {
                       visible: true,
-                      type: 'nowCart',
                     },
-                  });
+                  })
+                }
+              >
+                <Icon name="rect-right" size={20}></Icon>
+              </View>
+            </View>
+            <View
+              style={{
+                height: '50%',
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>运费</Text>
+              <Text style={{ paddingLeft: 15, fontSize: 15 }}>{queryInfo?.templateName}</Text>
+            </View>
+            {/* 商品详情 */}
+            <View
+              style={{
+                margin: '10px 0',
+                background: '#ffffff',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <View style={{ marginLeft: 15, marginTop: 20 }}>商品详情</View>
+              <View
+                style={{
+                  marginTop: 10,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                立即购买
-              </Button>
+                {itemList?.map((item) => {
+                  return (
+                    <View key={item} style={{ width: '100%', display: 'flex' }}>
+                      <Image src={item} style={{ width: '100%', margin: '5px 15px' }}></Image>
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
+            <View style={{ marginBottom: 50 }}></View>
+          </View>
+          {/* 页脚按钮 */}
+          <View
+            style={{
+              position: 'fixed',
+              left: 0,
+              bottom: 0,
+              width: '100%',
+              background: '#ffffff',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: '10px 0 15px 0',
+            }}
+          >
+            <View style={{ display: 'flex', flexDirection: 'row', marginRight: 25, width: '20%' }}>
+              <View
+                style={{ marginRight: 15, marginLeft: 15 }}
+                onClick={() =>
+                  dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })
+                }
+              >
+                <Image mode="widthFix" src={shareblack} style={{ width: 25, height: 25 }}></Image>
+              </View>
+              <View>
+                <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
+              </View>
+            </View>
+            <View style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
+              <View style={{ marginRight: 10, width: '45%' }}>
+                <Button
+                  style={{ borderRadius: 0, width: '100%' }}
+                  onClick={() => {
+                    dispatch({
+                      type: 'goodInfo/update',
+                      payload: {
+                        visible: true,
+                        type: 'addCart',
+                      },
+                    });
+                  }}
+                >
+                  加入购物车
+                </Button>
+              </View>
+              <View style={{ width: '45%' }}>
+                <Button
+                  type="primary"
+                  style={{ borderRadius: 0, width: '100%' }}
+                  onClick={() => {
+                    dispatch({
+                      type: 'goodInfo/update',
+                      payload: {
+                        visible: true,
+                        type: 'nowCart',
+                      },
+                    });
+                  }}
+                >
+                  立即购买
+                </Button>
+              </View>
             </View>
           </View>
         </View>
       </View>
-    </View>
+    </Skeleton>
   );
 };
 export default Index;
