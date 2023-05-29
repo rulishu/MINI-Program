@@ -186,3 +186,41 @@ page {
 .footer-height{
   height:130px;
 }
+
+/* 弹出层 */
+.popupInfo{
+  margin:20px;
+  // position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .popupInfo-title{
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+  }
+  .popupInfo-textArea{
+    margin:40px 0;
+    position: relative;
+    .textArea-info{
+      background-color: #F2F2F2;
+    }
+    .textArea-page{
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      text-align: end;
+      color: #7F7F7F;
+    }
+  }
+  .popupInfo-button{
+    width:100%;
+    position: absolute;
+    bottom:60px;
+    left:0px;
+    display: flex;
+    justify-content: center;
+
+  }
+
+} 
