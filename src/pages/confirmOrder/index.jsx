@@ -4,11 +4,14 @@ import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { useSelector, useDispatch } from 'react-redux';
 import payAddress from '@/assets/images/payAddress.svg';
+import PopupInfo from './popupInfo';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { productDetails, queryInfo, currentAddress } = useSelector((state) => state.goodInfo);
+  const { productDetails, queryInfo, currentAddress, orderNotesInfo } = useSelector(
+    (state) => state.goodInfo,
+  );
 
   // 默认地址
   // let delAddress = Taro.getStorageSync('defultAddress');
@@ -37,6 +40,16 @@ const Index = () => {
   // 选择地址
   const onSelectAddress = () => {
     Taro.navigateTo({ url: '/pages/address/index' });
+  };
+
+  // 订单备注
+  const onOrderNotes = () => {
+    dispatch({
+      type: 'goodInfo/update',
+      payload: {
+        orderNotesOpen: true,
+      },
+    });
   };
 
   // 支付
@@ -68,6 +81,7 @@ const Index = () => {
         realName: curAddress?.consignee,
         status: 0,
         count: productDetails?.goodsTotalNum,
+        remark: orderNotesInfo, //备注
         shoppingCartVOList: [
           {
             couponUserId: 84,
@@ -214,7 +228,7 @@ const Index = () => {
             <View>
               <Text>订单备注</Text>
             </View>
-            <View className="address-price-right-icon">
+            <View className="address-price-right-icon" onTap={() => onOrderNotes()}>
               <Icon name="rect-right" size="16" color="#7F7F7F" />
             </View>
           </View>
@@ -283,6 +297,7 @@ const Index = () => {
           </View>
         </View>
       </View>
+      <PopupInfo />
     </View>
   );
 };

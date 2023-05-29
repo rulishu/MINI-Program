@@ -156,11 +156,11 @@ const Index = () => {
                 duration: 2000,
               });
             }
+            Taro.navigateTo({ url: '/pages/confirmOrder/index' });
             dispatch({
               type: 'goodInfo/update',
               payload: {
                 visible: false,
-                payVisible: true,
               },
             });
           }}

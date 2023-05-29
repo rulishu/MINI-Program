@@ -42,20 +42,23 @@ const Index = (props) => {
                 <View className="right-content-box">
                   {subList?.map((itm, idx) => {
                     return (
-                      <View className="right-content-item" key={idx} style={{}}>
+                      <View
+                        className="right-content-item"
+                        key={idx}
+                        style={{ marginBottom: 5, overflow: 'hidden' }}
+                      >
                         <View
+                          className="right-content-item-img"
                           style={{
                             width: '40%',
-                            display: 'flex',
                             alignItems: 'center',
-                            marginTop: 5,
                           }}
                         >
                           <Image
                             mode="widthFix"
                             // eslint-disable-next-line global-require
                             src={itm?.mainGraph}
-                            style={{ width: '100%' }}
+                            className="right-content-item-img"
                             onTap={() => {
                               dispatch({
                                 type: 'goodInfo/infoDetails',
@@ -67,7 +70,16 @@ const Index = (props) => {
                             }}
                           ></Image>
                         </View>
-                        <View className="right-content-text-box" style={{ width: '60%' }}>
+                        <View
+                          className="right-content-text-box"
+                          style={{
+                            width: '60%',
+                            height: 100,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                          }}
+                        >
                           <View
                             className="right-content-text-header"
                             onTap={() => {
@@ -104,15 +116,17 @@ const Index = (props) => {
                                 thousands
                                 style={{ color: '#d9001c' }}
                               />
-                              <Text
-                                style={{
-                                  color: '#7f7f7f',
-                                  textDecoration: 'line-through',
-                                  fontSize: 12,
-                                }}
-                              >
-                                ¥199.00
-                              </Text>
+                              <View>
+                                <Text
+                                  style={{
+                                    color: '#7f7f7f',
+                                    textDecoration: 'line-through',
+                                    fontSize: 12,
+                                  }}
+                                >
+                                  ¥199.00
+                                </Text>
+                              </View>
                             </View>
                             <View>
                               <Image

@@ -25,6 +25,8 @@ export default {
     payInfo: {}, //支付信息
     currentAddress: {}, //选中地址信息
     submitOrder: {}, //预订单信息
+    orderNotesOpen: false, //订单备注弹窗
+    orderNotesInfo: '', //订单备注
   },
 
   effects: {
