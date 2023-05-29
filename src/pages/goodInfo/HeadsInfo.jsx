@@ -203,7 +203,17 @@ const Index = () => {
               <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>规格</Text>
               <Text style={{ paddingLeft: 15, fontSize: 15 }}>规格值1，规格值2</Text>
             </View>
-            <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
+            <View
+              style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}
+              onClick={() =>
+                dispatch({
+                  type: 'goodInfo/update',
+                  payload: {
+                    visible: true,
+                  },
+                })
+              }
+            >
               <Icon name="rect-right" size={20}></Icon>
             </View>
           </View>
@@ -218,6 +228,7 @@ const Index = () => {
             <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>运费</Text>
             <Text style={{ paddingLeft: 15, fontSize: 15 }}>免运费</Text>
           </View>
+          {/* 商品详情 */}
           <View
             style={{
               margin: '10px 0',
@@ -245,10 +256,9 @@ const Index = () => {
               })}
             </View>
           </View>
-          <View></View>
           <View style={{ marginBottom: 50 }}></View>
         </View>
-        {/* 商品详情 */}
+        {/* 页脚按钮 */}
         <View
           style={{
             position: 'fixed',
@@ -263,7 +273,10 @@ const Index = () => {
           }}
         >
           <View style={{ display: 'flex', flexDirection: 'row', marginRight: 25, width: '20%' }}>
-            <View style={{ marginRight: 15, marginLeft: 15 }}>
+            <View
+              style={{ marginRight: 15, marginLeft: 15 }}
+              onClick={() => dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })}
+            >
               <Image mode="widthFix" src={shareblack} style={{ width: 25, height: 25 }}></Image>
             </View>
             <View>
@@ -275,7 +288,18 @@ const Index = () => {
               <Button style={{ borderRadius: 0, width: '100%' }}>加入购物车</Button>
             </View>
             <View style={{ width: '45%' }}>
-              <Button type="primary" style={{ borderRadius: 0, width: '100%' }}>
+              <Button
+                type="primary"
+                style={{ borderRadius: 0, width: '100%' }}
+                onClick={() => {
+                  dispatch({
+                    type: 'goodInfo/update',
+                    payload: {
+                      visible: true,
+                    },
+                  });
+                }}
+              >
                 立即购买
               </Button>
             </View>

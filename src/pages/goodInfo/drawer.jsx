@@ -38,7 +38,6 @@ const Index = () => {
       },
     });
   };
-
   return (
     <Popup
       closeable
@@ -140,8 +139,37 @@ const Index = () => {
             />
           </View>
         </View>
+        <Button
+          type="primary"
+          style={{
+            borderRadius: 0,
+            marginBottom: 20,
+            marginLeft: 20,
+            marginRight: 20,
+            borderRadius: 6,
+          }}
+          onClick={() => {
+            if (productDetails?.goodsTotalNum < 1) {
+              return Taro.showToast({
+                title: '至少选择一个商品',
+                icon: 'none',
+                duration: 2000,
+              });
+            }
+            dispatch({
+              type: 'goodInfo/update',
+              payload: {
+                visible: false,
+                payVisible: true,
+              },
+            });
+          }}
+        >
+          立即购买
+        </Button>
       </View>
-      <View className="foots"></View>
+
+      {/* <View className="foots"></View> */}
     </Popup>
   );
 };
