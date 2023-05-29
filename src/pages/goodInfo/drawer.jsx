@@ -5,12 +5,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 
 const Index = () => {
-  const { visible, queryInfo, productDetails } = useSelector((state) => state.goodInfo);
+  const { visible, queryInfo, productDetails, type } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
-  // 数量超出库存
+  // 数量提示
   const overlimit = () => {
-    Taro.showToast({
-      title: '超出限制事件触发',
+    return Taro.showToast({
+      title: '不能再少了',
+      icon: 'none',
+      duration: 2000,
+    });
+  };
+  const morelimit = () => {
+    return Taro.showToast({
+      title: '超过最大库存',
       icon: 'none',
       duration: 2000,
     });
@@ -105,34 +112,16 @@ const Index = () => {
           </View>
         </View>
 
-        {/* <View className="infoNumber">
-          <View>
-            <Text className="numberText">数量</Text>
-          </View>
-          <View style={{ marginTop: 12, marginLeft: 20, display: 'flex', flexDirection: 'row' }}>
-            <InputNumber
-              className="cartCardRightAdd"
-              modelValue={productDetails.goodsTotalNum}
-              min="1"
-              max={queryInfo?.stock}
-              onOverlimit={(e) => overlimit(e)}
-              onChangeFuc={(e) => {
-                onChangeFuc(e);
-              }}
-            />
-          </View>
-        </View> */}
-
         <View className="infoNumber">
           <View>
             <Text>购买数量</Text>
           </View>
           <View style={{ marginRight: 7 }}>
             <InputNumber
-              modelValue={productDetails.goodsTotalNum}
+              modelValue={productDetails?.goodsTotalNum}
               min="1"
               max={queryInfo?.stock}
-              onOverlimit={(e) => overlimit(e)}
+              onOverlimit={productDetails?.goodsTotalNum <= 1 ? overlimit : morelimit}
               onChangeFuc={(e) => {
                 onChangeFuc(e);
               }}
@@ -149,27 +138,20 @@ const Index = () => {
             borderRadius: 6,
           }}
           onClick={() => {
-            if (productDetails?.goodsTotalNum < 1) {
-              return Taro.showToast({
-                title: '至少选择一个商品',
-                icon: 'none',
-                duration: 2000,
+            if (type === 'nowCart') {
+              Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+              dispatch({
+                type: 'goodInfo/update',
+                payload: {
+                  visible: false,
+                },
               });
             }
-            Taro.navigateTo({ url: '/pages/confirmOrder/index' });
-            dispatch({
-              type: 'goodInfo/update',
-              payload: {
-                visible: false,
-              },
-            });
           }}
         >
-          立即购买
+          {type === 'nowCart' ? '立即购买' : '加入购物车'}
         </Button>
       </View>
-
-      {/* <View className="foots"></View> */}
     </Popup>
   );
 };
