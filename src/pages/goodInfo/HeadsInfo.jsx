@@ -13,7 +13,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo, loading, skuSpecs } = useSelector((state) => state.goodInfo);
+  const { queryInfo, loading } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -223,11 +223,10 @@ const Index = () => {
                 }}
               >
                 <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>规格</Text>
-                {skuSpecs?.map((sku) => {
-                  // console.log('sku', sku);
+                {queryInfo?.itemSkuDtos?.at(0)?.attributes?.map((item) => {
                   return (
-                    <Text style={{ paddingLeft: 15, fontSize: 15 }} key={sku}>
-                      规格值1
+                    <Text style={{ paddingLeft: 15, fontSize: 15 }} key={item?.attributeId}>
+                      {item?.attributeName}
                     </Text>
                   );
                 })}
