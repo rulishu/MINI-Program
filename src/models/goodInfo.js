@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { infoDetails, orderConfirm, wxpay, orderSubmit } from '@/server/goodInfo';
+import { infoDetails, orderConfirm, wxpay, orderSubmit, newConfirm } from '@/server/goodInfo';
 
 const productDetail = {
   storageFee: 0,
@@ -30,6 +30,7 @@ export default {
     orderNotesInfo: '', //订单备注
     attributeVos: [], // sku规格处理
     skuSpecs: [], // sku规格值
+    skuList: [],
   },
 
   effects: {
@@ -88,6 +89,7 @@ export default {
             payload: {
               queryInfo: result.result,
               attributeVos,
+              skuList: skuList,
             },
           });
         }
@@ -152,6 +154,17 @@ export default {
           callback();
           Taro.removeStorageSync('submitInfo');
           Taro.removeStorageSync('payInfo');
+        }
+      } catch (err) {}
+    },
+    *newConfirm({ payload }, { call, put }) {
+      try {
+        const params = {
+          ...payload,
+        };
+        const result = yield call(newConfirm, params);
+        if (result.code === 200) {
+          Taro.navigateTo({ url: '/pages/confirmOrder/index' });
         }
       } catch (err) {}
     },
