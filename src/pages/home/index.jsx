@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperItem, Skeleton } from '@nutui/nutui-react-taro';
 import homeSearch from '@/assets/images/homeSearch.svg';
 import homeAddress from '@/assets/images/homeAddress.svg';
 import Navs from './navs';
 import TabList from './tabList';
-import { data } from './item';
 
 const Index = () => {
   const dispatch = useDispatch();
+  const { bannerList } = useSelector((state) => state.home);
   // const [initPage1, setInitPage1] = useState(0)
   const [addressInfo, setAddressInfo] = useState('');
   const [homeTopMarginLeft, setHomeTopMarginLeft] = useState(0);
@@ -19,7 +19,28 @@ const Index = () => {
   const [homeTopWidth, setHomeTopWidth] = useState(0);
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   useEffect(() => {
-    dispatch({ type: 'home/getCategoriesList' });
+    dispatch({
+      type: 'home/getBannerList',
+      payload: {
+        type: 1,
+        category: 1,
+      },
+    });
+    dispatch({
+      type: 'home/getActivityList',
+      payload: {
+        type: 2,
+        category: 1,
+      },
+    });
+    //
+    dispatch({
+      type: 'home/getLevel',
+      // payload: {
+      //   type: 2,
+      //   category: 1
+      // }
+    });
     // 获取当前定位
     Taro.getLocation({
       type: 'wgs84',
@@ -62,11 +83,13 @@ const Index = () => {
         setHomeTopNavHeight(navHeight);
       },
     });
-
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
   }, []);
 
-  const onChange = () => {};
+  // 点击轮播图跳转
+  const goBanner = (jumpPath) => {
+    window.console.log('点击轮播图跳转', jumpPath);
+  };
 
   return (
     <View className="index">
@@ -101,23 +124,41 @@ const Index = () => {
       </View>
       {/* 轮播图 */}
       <View className="demo-box home-banner" style={{ top: homeTopNavHeight + 20, height: 200 }}>
-        <Swiper
-          paginationColor="#000000"
-          autoPlay="3000"
-          // initPage={initPage1}
-          paginationVisible
-          onChange={onChange}
-          style={{ height: '200px' }}
+        <Skeleton
+          loading={bannerList ? true : false}
+          width="400px"
+          height="200px"
+          title
+          animated
+          style={{ height: 200, width: '100%', marginTop: -20, marginRight: 20 }}
         >
-          {data.bannerList?.map((item) => {
-            return (
-              <SwiperItem className="home-banner-content" key={item.id}>
-                <Image src={item.img} className="home-banner-content-img" />
-              </SwiperItem>
-            );
-          })}
-        </Swiper>
+          <Swiper
+            paginationColor="#000000"
+            autoPlay="3000"
+            // initPage={initPage1}
+            paginationVisible
+            style={{
+              height: '200px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {bannerList?.map((item) => {
+              return (
+                <SwiperItem className="home-banner-content" key={item.id}>
+                  <Image
+                    src={item.path}
+                    className="home-banner-content-img"
+                    onTap={() => goBanner(item.jumpPath)}
+                  />
+                </SwiperItem>
+              );
+            })}
+          </Swiper>
+        </Skeleton>
       </View>
+
       {/* 主体内容 */}
       <View className="home-body" style={{ top: homeTopNavHeight + 220 }}>
         <Navs />

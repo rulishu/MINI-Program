@@ -1,11 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from '@tarojs/components';
 import { Tabs } from '@nutui/nutui-react-taro';
+import { useSelector, useDispatch } from 'react-redux';
 import GoodList from './goodList';
-import { data } from './item';
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
+  const { levelTab, levelList, pageNum, pageSize } = useSelector((state) => state.home);
+
+  useEffect(() => {
+    getSub();
+    // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
+  }, [levelTab.length]);
+
+  const getSub = async () => {
+    if (levelTab.length > 0) {
+      await dispatch({
+        type: 'home/getLevelList',
+        payload: {
+          pageNum: 1,
+          pageSize: 20,
+          category: parseInt(levelTab.at(0)?.id),
+        },
+      });
+    }
+  };
+
   const [tab4value, setTab4value] = useState('0');
   return (
     <View className="index">
@@ -14,13 +35,21 @@ const Index = () => {
         className="tabs"
         onChange={({ paneKey }) => {
           setTab4value(paneKey);
+          dispatch({
+            type: 'home/getLevelList',
+            payload: {
+              category: parseInt(levelTab[parseInt(paneKey)]?.id),
+              pageNum: pageNum,
+              pageSize: pageSize,
+            },
+          });
         }}
         titleScroll
         titleGutter="10"
       >
-        {data.tabList?.map((item) => (
-          <Tabs.TabPane key={item.id} title={item.tab} className="tab-content">
-            <GoodList dataList={item.data} />
+        {levelTab?.map((item) => (
+          <Tabs.TabPane key={item.id} title={item.categoryName} className="tab-content">
+            <GoodList dataList={levelList} />
           </Tabs.TabPane>
         ))}
       </Tabs>

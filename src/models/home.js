@@ -1,58 +1,80 @@
-import { getList } from '@/server/home';
-import { getCategoriesList } from '@/server/categories';
+import { getBannerList, getLevel, getLevelList } from '@/server/home';
 
 export default {
-  namespace: 'home', // 这是模块名
+  namespace: 'home',
   state: {
     homeList: [],
     wineList: [],
     categoriesList: [],
+    bannerList: [], // 轮播图列表
+    activityList: [], // 活动列表
+    levelTab: [], // 一级tab
+    levelList: [], //商品列表
+    pageNum: 1,
+    pageSize: 20,
   },
 
   effects: {
-    // 查询商品列表
-    *getList({ payload }, { call, put }) {
+    // 获取轮播图列表
+    *getBannerList({ payload }, { call, put }) {
       try {
         const params = { ...payload };
-        const result = yield call(getList, params);
+        const result = yield call(getBannerList, params);
         if (result && result.code === 200) {
           yield put({
             type: 'update',
             payload: {
-              homeList: result.result.records.slice(0, 2) || [],
-            },
-          });
-        }
-      } catch (err) {}
-    },
-    // 查询wine商品列表
-    *getWineList({ payload }, { call, put }) {
-      try {
-        const params = { ...payload };
-        const result = yield call(getList, params);
-        if (result && result.code === 200) {
-          yield put({
-            type: 'update',
-            payload: {
-              wineList: result.result.records.slice(0, 4) || [],
+              bannerList: result.result || [],
             },
           });
         }
       } catch (err) {}
     },
 
-    // 获取分类列表
-    *getCategoriesList({ payload }, { call, put }) {
+    // 获取活动列表
+    *getActivityList({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(getBannerList, params);
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              activityList: result.result || [],
+            },
+          });
+        }
+      } catch (err) {}
+    },
+
+    // 查询一级分类
+    *getLevel({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(getLevel, params);
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              levelTab: result.result || [],
+            },
+          });
+        }
+      } catch (err) {}
+    },
+
+    // 获取商品列表
+    *getLevelList({ payload }, { call, put }) {
       try {
         const params = {
           ...payload,
         };
-        const result = yield call(getCategoriesList, params);
+        const result = yield call(getLevelList, params);
         if (result && result.code === 200) {
           yield put({
             type: 'update',
             payload: {
-              categoriesList: result.result,
+              levelList: result.result.records || [],
             },
           });
         }
