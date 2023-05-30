@@ -15,6 +15,7 @@ export default defineAppConfig({
     'pages/confirmOrder/index',
     'pages/paySuccess/index',
     'pages/search/index',
+    'pages/poster/index',
     'pages/allOrders/index',
     'pages/searchResult/index',
     'pages/logisticsInfo/index',
@@ -22,7 +23,7 @@ export default defineAppConfig({
   requiredPrivateInfos: ['getLocation'],
   permission: {
     'scope.userLocation': {
-      desc: '你的位置信息将用于小程序位置接口的效果展示',
+      desc: '你的位置信息将用于获取收货地址信息',
     },
   },
   window: {
