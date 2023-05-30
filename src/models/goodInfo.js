@@ -27,6 +27,8 @@ export default {
     submitOrder: {}, //预订单信息
     orderNotesOpen: false, //订单备注弹窗
     orderNotesInfo: '', //订单备注
+    attributeVos: [], // sku规格处理
+    skuSpecs: [], // sku规格值
   },
 
   effects: {
@@ -37,10 +39,54 @@ export default {
         };
         const result = yield call(infoDetails, params);
         if (result) {
+          let skuList = result?.result?.itemSkuDtos;
+          // console.log('skuList', skuList);
+          let attrLists = [];
+          skuList.forEach((item) => {
+            if (item?.attributes) {
+              let arr = item?.attributes.concat([]);
+              arr[0]['imageUrl'] = item?.imageUrl;
+              attrLists = attrLists.concat(arr);
+            }
+          });
+          //
+          let arr = [];
+          attrLists.forEach((item, index) => {
+            const idx = arr.findIndex((i) => i?.attribute_value === item?.attributeId);
+            if (idx > -1) {
+              if (
+                arr[idx].valueList.findIndex((attrdata) => attrdata?.value === item?.value) === -1
+              ) {
+                arr[idx].valueList = arr[idx].valueList.concat([
+                  {
+                    id: index,
+                    value: item?.value,
+                    imageUrl: item?.imageUrl,
+                  },
+                ]);
+              }
+            } else {
+              arr.push({
+                attribute_value: item?.attributeId,
+                attribute_name: item?.attributeName,
+                // attrOptions.find((obj) => obj?.id === String(item?.attributeId))
+                // ?.item?.attributeName,
+                valueList: [
+                  {
+                    id: index,
+                    value: item?.value,
+                    imageUrl: item?.imageUrl,
+                  },
+                ],
+              });
+            }
+          });
+          const attributeVos = arr;
           yield put({
             type: 'update',
             payload: {
               queryInfo: result.result,
+              attributeVos,
             },
           });
         }

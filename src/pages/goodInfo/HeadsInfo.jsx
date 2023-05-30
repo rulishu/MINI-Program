@@ -8,11 +8,12 @@ import share from '@/assets/images/share.svg';
 import shareblack from '@/assets/images/shareblack.svg';
 import cart from '@/assets/images/cart.svg';
 import { useDispatch, useSelector } from 'react-redux';
+import Drawer from './drawer';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo, loading } = useSelector((state) => state.goodInfo);
+  const { queryInfo, loading, skuSpecs } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -206,6 +207,14 @@ const Index = () => {
                 alignItems: 'center',
                 borderBottom: '1px solid #f2f2f2',
               }}
+              onClick={() =>
+                dispatch({
+                  type: 'goodInfo/update',
+                  payload: {
+                    visible: true,
+                  },
+                })
+              }
             >
               <View
                 style={{
@@ -214,19 +223,16 @@ const Index = () => {
                 }}
               >
                 <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>规格</Text>
-                <Text style={{ paddingLeft: 15, fontSize: 15 }}>规格值1，规格值2</Text>
+                {skuSpecs?.map((sku) => {
+                  // console.log('sku', sku);
+                  return (
+                    <Text style={{ paddingLeft: 15, fontSize: 15 }} key={sku}>
+                      规格值1
+                    </Text>
+                  );
+                })}
               </View>
-              <View
-                style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}
-                onClick={() =>
-                  dispatch({
-                    type: 'goodInfo/update',
-                    payload: {
-                      visible: true,
-                    },
-                  })
-                }
-              >
+              <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
                 <Icon name="rect-right" size={20}></Icon>
               </View>
             </View>
@@ -336,6 +342,8 @@ const Index = () => {
           </View>
         </View>
       </View>
+
+      <Drawer />
     </Skeleton>
   );
 };
