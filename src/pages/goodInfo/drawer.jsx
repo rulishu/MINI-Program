@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 
 const Index = () => {
-  const { visible, queryInfo, productDetails, type, attributeVos } = useSelector(
+  const { visible, queryInfo, productDetails, type, attributeVos, skuSpecs } = useSelector(
     (state) => state.goodInfo,
   );
   const dispatch = useDispatch();
@@ -46,6 +46,7 @@ const Index = () => {
           goodsImage: queryInfo?.mainGraph,
           categoryName: queryInfo?.categoryName,
           details: queryInfo?.details,
+          skuSpecs: skuSpecs,
         },
       },
     });
@@ -172,6 +173,7 @@ const Index = () => {
                   visible: false,
                 },
               });
+            } else {
             }
           }}
         >

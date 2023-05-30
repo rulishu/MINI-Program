@@ -10,6 +10,7 @@ const productDetail = {
   goodsPrice: 0,
   allGoodsPrice: 0,
   goodsTotalNum: 1, //商品购买个数
+  specs: [], // 选中规格数据
 };
 export default {
   namespace: 'goodInfo', // 这是模块名
