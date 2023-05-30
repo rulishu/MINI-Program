@@ -54,6 +54,11 @@ page {
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
+      .my-code{
+        white-space:nowrap;        // 强制一行显示
+        overflow:hidden;          // 超出隐藏
+        text-overflow:ellipsis;   // 省略号
+      }
       .right-title{
         margin-left:10px;
         font-size:26px;

@@ -11,11 +11,6 @@ const Index = (props) => {
   const { subList } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(0);
-  // const [options] = useState([
-  //   { text: '全部商品', value: 0 },
-  //   { text: '新款商品', value: 1 },
-  //   { text: '活动商品', value: 2 },
-  // ])
   let getCategoriesTwoTreeList = getCategoriesTwoTreeItem?.children;
 
   return (
@@ -23,7 +18,7 @@ const Index = (props) => {
       <View style={{ marginBottom: 8 }} className="right-title-box">
         <View style={{ width: '100%' }}>
           {/* 二级标签 */}
-          <View className="my-code">
+          <View>
             {getCategoriesTwoTreeList?.map((item, index) => {
               return (
                 <Text
@@ -41,9 +36,6 @@ const Index = (props) => {
                 </Text>
               );
             })}
-            {/* <Menu>
-              <MenuItem options={options} value={0} />
-            </Menu> */}
           </View>
           {/* 二级标签下内容 */}
           <View className="right-content" style={{ marginTop: 6 }}>

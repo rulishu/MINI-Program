@@ -265,6 +265,8 @@ page {
   }
   .infoSpecsDes{
     margin-top: 24px;
+    display: flex;
+    flex-direction: row;
     .infoSpecsButOne{
       box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
       border-radius: 0;
@@ -275,29 +277,16 @@ page {
       margin-right: 20px;
       color: #aaaaaa;
     }
-  }
-}
-.infoSpecsTwo{
-  margin-top: 32px;
-  margin-left: 40px;
-  margin-right: 40px;
-  padding-bottom: 30px;
-  border-bottom: 1px solid rgb(215, 215,215);
-  .infoSpecsTitle{
-    font-family: PingFangSC-Medium;
-    font-size: 30px;
-    line-height: 24px;
-  }
-  .infoSpecsDes{
-    margin-top: 24px;
-    .infoSpecsButOne{
-      border-radius: 0;
+    .activeStyle{
       box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
+      border-radius: 0;
       font-family: PingFangSC-Medium;
       font-size: 22px;
+      font-weight: normal;
       text-align: center;
       margin-right: 20px;
-      color: #aaaaaa;
+      color: #009dd9;
+      border: 1px solid #009dd9;
     }
   }
 }

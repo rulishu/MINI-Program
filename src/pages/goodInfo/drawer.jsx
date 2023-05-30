@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Popup, Button, InputNumber, Price } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 
 const Index = () => {
-  const { visible, queryInfo, productDetails, type } = useSelector((state) => state.goodInfo);
+  const { visible, queryInfo, productDetails, type, attributeVos } = useSelector(
+    (state) => state.goodInfo,
+  );
   const dispatch = useDispatch();
+  const [imageUrl, setImageUrl] = useState();
+  const [active, setActive] = useState([]);
+
   // 数量提示
   const overlimit = () => {
     return Taro.showToast({
@@ -67,7 +72,7 @@ const Index = () => {
             <Image
               mode="widthFix"
               // eslint-disable-next-line global-require
-              src={queryInfo?.mainGraph}
+              src={imageUrl ? imageUrl : queryInfo?.mainGraph}
               className="infoImage"
             ></Image>
           </View>
@@ -93,24 +98,45 @@ const Index = () => {
           </View>
         </View>
 
-        <View className="infoSpecsOne">
-          <View>
-            <Text className="infoSpecsTitle">规格1</Text>
-          </View>
-          <View className="infoSpecsDes">
-            <Button className="infoSpecsButOne">规格值1</Button>
-          </View>
-        </View>
-
-        <View className="infoSpecsTwo" style={{ height: 150 }}>
-          <View>
-            <Text className="infoSpecsTitle">规格2</Text>
-          </View>
-          <View className="infoSpecsDes">
-            <Button className="infoSpecsButOne">规格值1</Button>
-            <Button className="infoSpecsButOne">规格值2</Button>
-          </View>
-        </View>
+        {attributeVos?.map((attri) => {
+          return (
+            <View View className="infoSpecsOne" key={attri?.attribute_value}>
+              <View>
+                <Text className="infoSpecsTitle">{attri?.attribute_name}</Text>
+              </View>
+              <View className="infoSpecsDes">
+                {attri?.valueList?.map((valueItem) => {
+                  return valueItem?.value ? (
+                    <Button
+                      className={
+                        active[attri?.attribute_name]?.id === valueItem?.id
+                          ? 'activeStyle'
+                          : 'infoSpecsButOne '
+                      }
+                      key={valueItem?.id}
+                      onClick={() => {
+                        let obj = active;
+                        obj[attri?.attribute_name] = { id: valueItem?.id, value: valueItem?.value };
+                        setActive(obj);
+                        setImageUrl(valueItem?.imageUrl);
+                        dispatch({
+                          type: 'goodInfo/update',
+                          payload: {
+                            skuSpecs: obj,
+                          },
+                        });
+                      }}
+                    >
+                      {valueItem?.value}
+                    </Button>
+                  ) : (
+                    ''
+                  );
+                })}
+              </View>
+            </View>
+          );
+        })}
 
         <View className="infoNumber">
           <View>
