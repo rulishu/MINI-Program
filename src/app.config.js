@@ -16,6 +16,7 @@ export default defineAppConfig({
     'pages/paySuccess/index',
     'pages/search/index',
     'pages/poster/index',
+    'pages/afterSales/index',
     'pages/allOrders/index',
     'pages/searchResult/index',
     'pages/logisticsInfo/index',
