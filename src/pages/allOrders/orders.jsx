@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Button, Tag, Divider } from '@nutui/nutui-react-taro';
+import { Button, Tag, Divider, Popup } from '@nutui/nutui-react-taro';
 import { orderList } from './item';
 import './index.scss';
 
 const Index = () => {
+  const [isConfirm, setIsConfirm] = useState(false);
+  useEffect(() => {}, []);
   return (
     <View className="order">
       <View className="order-content">
@@ -66,13 +68,45 @@ const Index = () => {
               <Button shape="square" className="bottom-btn" size="small" type="danger">
                 立即支付 14.59
               </Button>
-              <Button shape="square" className="bottom-btn" size="small" type="info">
+              <Button
+                shape="square"
+                className="bottom-btn"
+                size="small"
+                type="info"
+                onClick={() => {
+                  setIsConfirm(true);
+                }}
+              >
                 确认收货
               </Button>
             </View>
           </View>
         ))}
       </View>
+      <Popup
+        visible={isConfirm}
+        className="order_pop"
+        position="bottom"
+        onClose={() => {
+          setIsConfirm(false);
+        }}
+      >
+        <View className="pop_view">
+          <View className="pop_title">确认收货</View>
+          <View>
+            <Image mode="aspectFit" className="pop_img"></Image>
+          </View>
+          <View className="pop_text_view">
+            <Text>为保证你的售后权益，请收到商品确</Text>
+            <Text>认无误后再确认收货</Text>
+          </View>
+          <View className="pop_btn">
+            <Button shape="square" size="large" type="info">
+              确定
+            </Button>
+          </View>
+        </View>
+      </Popup>
     </View>
   );
 };

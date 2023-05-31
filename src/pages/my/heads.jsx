@@ -107,9 +107,11 @@ const Index = () => {
               onClick={goPoster}
             ></Image>
           </View>
-          <View className="head-info-id">
-            <Text>加入融辉第 {time(userInfos.createTime) || 0} 天</Text>
-          </View>
+          {userInfos.createTime && (
+            <View className="head-info-id">
+              <Text>加入融辉第 {time(userInfos.createTime) || 0} 天</Text>
+            </View>
+          )}
         </View>
       </View>
       <View className="semicircle">
