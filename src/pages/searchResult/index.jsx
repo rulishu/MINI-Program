@@ -56,6 +56,18 @@ const Index = () => {
       type: 'search/getHistory',
     });
   };
+
+  // 跳转商品详情
+  const goGoodInfo = async (itm) => {
+    await dispatch({
+      type: 'goodInfo/infoDetails',
+      payload: {
+        id: itm?.id,
+      },
+    });
+    Taro.navigateTo({ url: '/pages/goodInfo/index' });
+  };
+
   return (
     <View className="index">
       <View className="header-search-new">
@@ -72,25 +84,25 @@ const Index = () => {
         ) : (
           <View className="middle-search-result-info">
             {selectLists.map((item) => (
-              <View className="middle-search-result-info-item" key={item.id}>
+              <View
+                className="middle-search-result-info-item"
+                key={item.id}
+                onTap={() => goGoodInfo(item)}
+              >
                 <View className="search-result-image">
                   <Image mode="widthFix" src={item.mainGraph} className="image"></Image>
                 </View>
                 <View className="search-result-content">
                   <View className="search-result-content-head">
-                    <Text className="tag">
-                      {item.itemType === 1 ? '自营' : item.itemType === 2 ? '严选' : ''}
-                    </Text>
+                    <Text className="tag">{item.suppliersId === 1 ? '严选' : ''}</Text>
                     <Text className="title">{item.itemName}</Text>
                   </View>
                   <View className="search-result-content-middle">
-                    {item?.activity === '' ||
-                    item?.activity === null ||
-                    item?.activity === undefined ? (
-                        <Text></Text>
-                      ) : (
-                        <Text className="activity">{item.activity}</Text>
-                      )}
+                    {item?.savedPrice === 0 ? (
+                      <Text></Text>
+                    ) : (
+                      <Text className="activity">{item.savedPrice}</Text>
+                    )}
                   </View>
                   <View className="search-result-content-bottom">
                     <View>
