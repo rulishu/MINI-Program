@@ -1,3 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '镖族严选',
+  navigationBarTitleText: '',
+  navigationStyle: 'custom',
 });
