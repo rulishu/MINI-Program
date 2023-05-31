@@ -53,6 +53,19 @@ const Index = () => {
     Taro.navigateTo({ url: '/pages/editUser/index' });
   };
 
+  const goPoster = () => {
+    const token = Taro.getStorageSync('token');
+    if (token === '') {
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 2000,
+      });
+      return;
+    }
+    Taro.navigateTo({ url: '/pages/poster/index' });
+  };
+
   return (
     <View>
       <View className="heads">
@@ -77,7 +90,7 @@ const Index = () => {
         </View>
         <View className="head-infos">
           <View className="head-info-name">
-            <Text>{userInfos.nickName || '游客'}</Text>
+            <Text>{userInfos.consumerName || '游客'}</Text>
             {/* <Image
               mode="widthFix"
               src={vip}
@@ -91,6 +104,7 @@ const Index = () => {
               mode="widthFix"
               src={ewm}
               style={{ width: 16, height: 20, marginLeft: 10 }}
+              onClick={goPoster}
             ></Image>
           </View>
           <View className="head-info-id">

@@ -46,14 +46,18 @@ const Index = () => {
     },
   ];
 
-  const goOrder = async (item) => {
-    Taro.navigateTo({ url: '/pages/allOrders/index' });
-    await dispatch({
-      type: 'allOrders/update',
-      payload: {
-        orderActive: item.id,
-      },
-    });
+  const goList = async (item) => {
+    if (item.id === 5) {
+      Taro.navigateTo({ url: '/pages/afterSales/index' });
+    } else {
+      Taro.navigateTo({ url: '/pages/allOrders/index' });
+      await dispatch({
+        type: 'allOrders/update',
+        payload: {
+          orderActive: item.id,
+        },
+      });
+    }
   };
 
   // 跳转物流信息
@@ -86,7 +90,7 @@ const Index = () => {
         </View>
         <View className="my-orders-list">
           {list.map((item, index) => (
-            <View key={index} className="my-orders-list-item" onTap={() => goOrder(item)}>
+            <View key={index} className="my-orders-list-item" onTap={() => goList(item)}>
               <Image mode="widthFix" src={item.icon} style={{ width: 24, height: 24 }}></Image>
               <View className="my-orders-list-item-num">
                 <Text>{item.title}</Text>
