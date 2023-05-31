@@ -9,7 +9,7 @@ const Index = (props) => {
 
   return (
     <View className="classification">
-      {data.map((item) => {
+      {data?.map((item) => {
         return (
           <View key={item.id} className="classification-content">
             <View className="classification-content-title">

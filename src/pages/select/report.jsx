@@ -6,7 +6,7 @@ import './index.scss';
 
 const Index = () => {
   return (
-    <View className="report">
+    <View className="report" style={{ height: '50vh', overflow: 'scroll' }}>
       <View className="steps-wrapper">
         <Steps direction="vertical" progressDot style={{ backgroundColor: '#F2F2F2' }}>
           {data?.map((val) => {

@@ -19,7 +19,7 @@ const Index = () => {
   const [customized, setCustomized] = useState(false);
   const [tab5value, setTab5value] = useState('0');
   return (
-    <View className="traceability">
+    <View className="traceability" style={{ height: '50vh', overflow: 'scroll' }}>
       <View className="traceability-top">
         <View className="traceability-top-left">
           <ScrollView
@@ -82,6 +82,7 @@ const Index = () => {
       <View className="traceability-bottom">
         <Tabs
           value={tab5value}
+          style={{ height: '46vh' }}
           onChange={({ paneKey }) => {
             setTab5value(paneKey);
           }}
