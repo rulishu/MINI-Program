@@ -31,6 +31,10 @@ export default {
     attributeVos: [], // sku规格处理
     skuSpecs: [], // sku规格值
     skuList: [],
+    shoppingCartVOList: [], // 购买数据
+    orderToken: '',
+    activeSku: [], //选中规格
+    goodsName: '', //商品名称
   },
 
   effects: {
@@ -130,7 +134,6 @@ export default {
               submitOrder: result.result || {},
             },
           });
-          Taro.removeStorageSync('orderInfo');
           Taro.setStorageSync('submitInfo', result.result);
         }
       } catch (err) {}
@@ -157,6 +160,8 @@ export default {
         }
       } catch (err) {}
     },
+
+    //立即购买
     *newConfirm({ payload }, { call, put }) {
       try {
         const params = {
@@ -165,6 +170,13 @@ export default {
         const result = yield call(newConfirm, params);
         if (result.code === 200) {
           Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+          yield put({
+            type: 'update',
+            payload: {
+              shoppingCartVOList: result.result.shoppingCartVOList || {},
+              orderToken: result.result.orderToken,
+            },
+          });
         }
       } catch (err) {}
     },

@@ -76,8 +76,12 @@ page {
             width: 200rpx;
           }
           .goods-info-head-info-doc{
+            margin:10px 0;
             font-size: 22px;
             color:#7F7F7F;
+            .doc{
+              margin-right: 10px;
+            }
           }
         }
 

@@ -8,14 +8,33 @@ import PopupInfo from './popupInfo';
 import './index.scss';
 
 const Index = () => {
-  const dispatch = useDispatch();
-  const { productDetails, queryInfo, currentAddress, orderNotesInfo } = useSelector(
-    (state) => state.goodInfo,
-  );
+  const dispatch = useDispatch(); //queryInfo,
+  const { goodsName, currentAddress, orderNotesInfo, shoppingCartVOList, orderToken, activeSku } =
+    useSelector((state) => state.goodInfo);
 
-  // 默认地址
+  // 初始化收货地址内容
   // let delAddress = Taro.getStorageSync('defultAddress');
   const curAddress = JSON.stringify(currentAddress) === '{}' ? '添加收货地址' : currentAddress;
+
+  // 处理确认订单展示数据
+  const orderInfo = shoppingCartVOList?.at(0)?.cartVOList.at(0);
+  // console.log('shoppingCartVOList', shoppingCartVOList, orderInfo)
+
+  const shoppingCartVOLists = shoppingCartVOList?.at(0)?.cartVOList?.map((item) => {
+    return {
+      cartVOList: [
+        {
+          skuId: Number(item?.skuId),
+          count: item?.count,
+          defaultImage: item?.defaultImage,
+          store: item?.store,
+          totalPrice: item?.totalPrice,
+          unitPrice: item?.unitPrice,
+          whetherSpecialItem: item?.whetherSpecialItem,
+        },
+      ],
+    };
+  });
 
   useEffect(() => {
     const token = Taro.getStorageSync('token');
@@ -62,48 +81,18 @@ const Index = () => {
       });
     }
     Taro.showLoading({ title: '加载中', mask: true });
-    //确认订单
-    await dispatch({
-      type: 'goodInfo/orderConfirm',
-      payload: {
-        count: productDetails?.goodsTotalNum,
-        skuId: Number(queryInfo.id),
-      },
-    });
-    let orderDetail = Taro.getStorageSync('orderInfo');
     await dispatch({
       type: 'goodInfo/orderSubmit',
       payload: {
-        orderToken: orderDetail.orderToken,
+        orderToken: orderToken,
         receivingAddressId: curAddress?.id,
-        skuId: Number(queryInfo.id),
-        totalPrice: productDetails.allGoodsPrice,
+        skuId: Number(orderInfo?.skuId),
+        totalPrice: orderInfo.totalPrice,
         realName: curAddress?.consignee,
         status: 0,
-        count: productDetails?.goodsTotalNum,
+        count: orderInfo?.count,
         remark: orderNotesInfo, //备注
-        shoppingCartVOList: [
-          {
-            couponUserId: 84,
-            cartVOList: [
-              {
-                count: 1,
-                defaultImage: '',
-                freightFee: 0,
-                giveCount: 0,
-                price: 10,
-                saleAttrs: '',
-                sales: '',
-                shoppingCartGoodsId: 0,
-                skuId: Number(queryInfo.id),
-                store: false,
-                taxRatePrice: 0,
-                title: '',
-                weight: 0,
-              },
-            ],
-          },
-        ],
+        shoppingCartVOList: shoppingCartVOLists,
       },
     });
     // 预订单
@@ -116,7 +105,7 @@ const Index = () => {
         gatewayId: 2,
         gatewayCode: 'WX_PAY',
         gatewayTerminal: 2,
-        paymentAmount: productDetails.allGoodsPrice,
+        paymentAmount: orderInfo.totalPrice,
         tradeType: 0,
       },
     });
@@ -138,7 +127,13 @@ const Index = () => {
           duration: 2000,
         });
         if (res.errMsg === 'requestPayment:ok') {
-          Taro.navigateTo({ url: '/pages/paySuccess/index' });
+          Taro.navigateTo({ url: '/pages/allOrders/index' });
+          dispatch({
+            type: 'allOrders/update',
+            payload: {
+              orderActive: 0,
+            },
+          });
         }
         Taro.removeStorageSync('payInfo');
       },
@@ -193,25 +188,29 @@ const Index = () => {
                 {/* eslint-disable-next-line global-require */}
                 <Image
                   mode="widthFix"
-                  src={productDetails?.goodsImage}
+                  src={orderInfo?.defaultImage}
                   style={{ width: 128, height: 128 }}
                 ></Image>
               </View>
               <View className="goods-info-head-info">
                 <View className="goods-info-head-info-title">
-                  <Text>{productDetails?.goodsName}</Text>
+                  <Text>{goodsName}</Text>
                 </View>
                 <View className="goods-info-head-info-doc">
-                  <Text>{productDetails.details}</Text>
+                  {activeSku.map((item) => (
+                    <Text key={item.id} className="doc">
+                      {item.value},
+                    </Text>
+                  ))}
                 </View>
               </View>
             </View>
             <View className="goods-info-head-right">
               <View className="goods-info-head-right-num">
-                <Text>x{productDetails.goodsTotalNum}</Text>
+                <Text>x{orderInfo.count}</Text>
               </View>
               <View className="goods-info-head-right-price">
-                <Text>￥{productDetails.goodPrice}.00</Text>
+                <Text>￥{orderInfo.unitPrice}.00</Text>
               </View>
             </View>
           </View>
@@ -244,7 +243,7 @@ const Index = () => {
                 <Text>商品总价</Text>
               </View>
               <View>
-                <Text>{productDetails.allGoodsPrice}</Text>
+                <Text>{orderInfo.totalPrice}</Text>
               </View>
             </View>
             <View className="address-price">
@@ -283,12 +282,12 @@ const Index = () => {
       <View className="footer">
         <View className="footer-content">
           <View>
-            <Text>合计：¥ {productDetails.allGoodsPrice}</Text>
+            <Text>合计：¥ {orderInfo.totalPrice}</Text>
           </View>
           <View>
             <Button
               shape="square"
-              color="#AAAAAA"
+              type="primary"
               style={{ color: '#ffffff', borderRadius: 6 }}
               onClick={() => onPay()}
             >
