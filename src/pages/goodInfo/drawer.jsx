@@ -11,6 +11,7 @@ const Index = () => {
   const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState();
   const [active, setActive] = useState({});
+  const [activeSku, setActiveSku] = useState([]);
 
   // 数量提示
   const overlimit = () => {
@@ -69,7 +70,7 @@ const Index = () => {
     >
       <View style={{ display: 'flex', flexDirection: 'column' }}>
         <View className="popupInfo">
-          <View>
+          <View className="infoImage">
             <Image
               mode="widthFix"
               // eslint-disable-next-line global-require
@@ -81,7 +82,7 @@ const Index = () => {
           <View className="infoTextBox">
             <View>
               <Price
-                price={queryInfo?.price}
+                price={queryInfo?.costPrice}
                 size="large"
                 needSymbol
                 thousands
@@ -90,7 +91,7 @@ const Index = () => {
               <Text
                 style={{ textDecoration: 'line-through', fontSize: 12, color: 'rgb(127,127,127)' }}
               >
-                ¥218
+                {queryInfo?.price}
               </Text>
             </View>
             <View>
@@ -99,7 +100,7 @@ const Index = () => {
           </View>
         </View>
 
-        {attributeVos?.map((attri) => {
+        {attributeVos?.map((attri, attrindex) => {
           return (
             <View View className="infoSpecsOne" key={attri?.attribute_value}>
               <View>
@@ -120,7 +121,24 @@ const Index = () => {
                         obj[attri?.attribute_name] = { id: valueItem?.id, value: valueItem?.value };
                         setActive(obj);
                         setImageUrl(valueItem?.imageUrl);
+                        let objSku = activeSku;
+                        objSku[attri?.attribute_value] = {
+                          id: valueItem?.id,
+                          value: valueItem?.value,
+                          label: attri?.attribute_name,
+                        };
+                        setActiveSku(objSku.filter((d) => d));
+                        dispatch({
+                          type: 'goodInfo/update',
+                          payload: {
+                            activeSku: activeSku.filter((d) => d),
+                            goodsName: queryInfo?.itemName,
+                          },
+                        });
                       }}
+                      disabled={
+                        attrindex === 0 ? false : Object.keys(active).length > 0 ? false : true
+                      }
                     >
                       {valueItem?.value}
                     </Button>
@@ -173,24 +191,30 @@ const Index = () => {
                 arr.length === Object.keys(active).length ? !arr.some((i) => i === false) : false;
               return { ...obj, isThisSku };
             });
-            // console.log('newArr', newArr);
 
             let sku = newArr.find((arrItem) => arrItem?.isThisSku === true);
             if (type === 'nowCart') {
-              dispatch({
-                type: 'goodInfo/update',
-                payload: {
-                  visible: false,
-                },
-              });
-              dispatch({
-                type: 'goodInfo/newConfirm',
-                payload: {
-                  count: productDetails?.goodsTotalNum,
-                  skuId: sku?.skuId,
-                },
-              });
-            } else {
+              if (Object.keys(active).length <= 1) {
+                Taro.showToast({
+                  title: '请选择规格',
+                  icon: 'none',
+                  duration: 2000,
+                });
+              } else {
+                dispatch({
+                  type: 'goodInfo/update',
+                  payload: {
+                    visible: false,
+                  },
+                });
+                dispatch({
+                  type: 'goodInfo/newConfirm',
+                  payload: {
+                    count: productDetails?.goodsTotalNum,
+                    skuId: sku?.skuId,
+                  },
+                });
+              }
             }
           }}
         >

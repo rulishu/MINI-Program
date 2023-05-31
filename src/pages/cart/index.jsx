@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import { Swipe, Cell, Button, Checkbox, Price, InputNumber, Empty } from '@nutui/nutui-react-taro';
+import { Price, InputNumber, Swipe, Button, Checkbox, Tag } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -10,8 +10,6 @@ const Index = () => {
   const dispatch = useDispatch();
   const { shoppingList } = useSelector((state) => state.cart);
   const [checked, setChecked] = useState(false);
-  const [amount, setAmount] = useState(0);
-  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     dispatch({
@@ -19,12 +17,37 @@ const Index = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleChange = (data) => {
-    setAmount(data?.goodsAmount);
-    setPrice(data?.totalPrice);
-  };
-  const onChange = (check) => {
+  const list = [
+    {
+      id: 0,
+      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
+      title: '秋然长粒香大米,秋然长粒香大米 ,秋然长粒香大米  5kg/袋标题',
+      sku: '规格值1,规格值2',
+      price: 70,
+    },
+    {
+      id: 1,
+      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
+      title: '秋然长粒香大米 5kg/袋标题',
+      sku: '规格值1,规格值2',
+      price: 70,
+    },
+    {
+      id: 2,
+      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
+      title: '秋然长粒香大米 5kg/袋标题',
+      sku: '规格值1,规格值2',
+      price: 70,
+    },
+    {
+      id: 3,
+      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
+      title: '秋然长粒香大米 5kg/袋标题',
+      sku: '规格值1,规格值2',
+      price: 70,
+    },
+  ];
+  const handleChange = (check) => {
     if (check === true) {
       setChecked(true);
     }
@@ -32,139 +55,144 @@ const Index = () => {
       setChecked(false);
     }
   };
-  let shoppingItem = shoppingList.flat();
   return (
-    <View className="index">
-      {/* 地址 */}
-      {shoppingList.length > 0 ? (
-        <View style={{ paddingBottom: 190 }}>
-          <View className="cartHeader">
-            <Image
-              mode="widthFix"
-              // eslint-disable-next-line global-require
-              src={require('@/assets/tabar/map.png')}
-              className="cartHeaderMap"
-            ></Image>
-            <Text className="cartHeaderText">
-              浙江省杭州市滨江区 长河街道 春波路 春波小区13幢1单元701室
-            </Text>
-          </View>
-
-          {/* 商品信息 */}
-          {shoppingItem.map((itm) => {
-            return (
-              <>
-                <Swipe
-                  rightAction={
-                    <>
-                      <Button shape="square" className="swipeButtonBorderLeft">
-                        分享
-                      </Button>
-                      <Button
-                        shape="square"
-                        type="danger"
-                        className="swipeButtonBorderRight"
-                        onClick={() => {
-                          dispatch({
-                            type: 'cart/deleteGood',
-                            payload: {
-                              id: itm?.id,
-                            },
-                          });
+    <View>
+      <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
+        {/* 清空 */}
+        <View
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            marginBottom: 10,
+          }}
+        >
+          <Image
+            mode="widthFix"
+            // eslint-disable-next-line global-require
+            src={require('@/assets/images/clear.svg')}
+            style={{ width: 25, height: 25 }}
+          ></Image>
+          <Text style={{ marginLeft: 5, color: '#7f7f7f' }}>清空</Text>
+        </View>
+        {/* 购车车列表 */}
+        {list.map((item) => {
+          return (
+            <Swipe
+              key={item?.id}
+              rightAction={
+                <Button type="primary" shape="square" style={{ width: 50 }}>
+                  删除
+                </Button>
+              }
+            >
+              <View style={{ backgroundColor: '#ffffff' }}>
+                <View>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      padding: '15px 10px 15px 10px',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <View>
+                      <Checkbox checked={checked} onChange={() => handleChange(itm)} />
+                    </View>
+                    <View style={{ width: 100, height: 100 }}>
+                      <Image
+                        mode="widthFix"
+                        // eslint-disable-next-line global-require
+                        src={require('@/assets/images/home8.png')}
+                        style={{ width: 100, height: 100 }}
+                      ></Image>
+                    </View>
+                    <View
+                      style={{
+                        height: 100,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        marginLeft: 10,
+                      }}
+                    >
+                      <View
+                        style={{
+                          whiteSpace: 'nowrap', // 强制一行显示
+                          overflow: 'hidden', // 超出隐藏
+                          textOverflow: 'ellipsis', // 省略号
                         }}
                       >
-                        删除
-                      </Button>
-                    </>
-                  }
-                >
-                  <View className="swipeCell">
-                    <Cell className="swipeCellBorder">
-                      <View style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Text className="cartCardText">奋斗之露,厚德载物</Text>
-                        <Checkbox checked={checked} onChange={() => handleChange(itm)} />
+                        <Text style={{ color: '#333333', fontSize: 15 }}> {item?.title}</Text>
                       </View>
-                      <View className="cartCard">
-                        <Image
-                          mode="widthFix"
-                          // eslint-disable-next-line global-require
-                          src={itm?.mainGraph}
-                          className="cartCardLeft"
-                        ></Image>
-                        <View className="cartCardRight">
-                          <Text className="cartCardRightTitle">{itm?.goodsName}</Text>
-                          <Text className="cartCardRightContent">{itm?.goodsSpecification} </Text>
-                          <Price
-                            className="cartCardRightPrice"
-                            price={itm?.goodsUnitPrice}
-                            size="normal"
-                            needSymbol
-                            thousands
-                          />
-                          <InputNumber className="cartCardRightAdd" modelValue={itm?.goodsAmount} />
-                        </View>
-                      </View>
-                    </Cell>
-                  </View>
-                </Swipe>
-
-                {/* 领劵结算 */}
-                <View className="foot">
-                  <View className="cartFooter">
-                    <View className="cartFooterCard">
-                      <Checkbox
-                        className="cartFooterCheck"
-                        textPosition="right"
-                        label="全选"
-                        checked={false}
-                        onChange={onChange}
-                      />
                       <View>
-                        <Text className="cartFooterText">已选中{amount}件,卷后合计:</Text>
-                        <Price
-                          price={price}
-                          size="normal"
-                          needSymbol
-                          thousands
-                          style={{ color: '#0D0F23' }}
-                        />
+                        <Text style={{ color: '#adadad', fontSize: 13 }}>{item?.sku}</Text>
+                      </View>
+                      <View>
+                        <Tag color="#E9E9E9" textColor="#999999">
+                          标签
+                        </Tag>
+                      </View>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Price price={item?.price} size="normal" needSymbol thousands />
+                        <InputNumber modelValue={1} />
                       </View>
                     </View>
-                    <Button
-                      className="cartFooterButton"
-                      shape="square"
-                      style={{ borderRadius: 12 }}
-                    >
-                      领劵结算
-                    </Button>
                   </View>
                 </View>
-              </>
-            );
-          })}
-        </View>
-      ) : (
-        <View>
-          <Empty className="empty" description="购物车空空如也～">
-            <Button
-              onClick={() => {
-                Taro.switchTab({ url: '/pages/categories/index' });
-                dispatch({
-                  type: 'global/update',
-                  payload: {
-                    activeIndex: 1,
-                  },
-                });
+              </View>
+            </Swipe>
+          );
+        })}
+      </View>
+      {/* 页脚结算 */}
+      <View style={{ position: 'fixed', bottom: 0, width: '100%' }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0 20px 80px 20px',
+            backgroundColor: '#ffffff',
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Checkbox
+              className="cartFooterCheck"
+              textPosition="right"
+              label="全选"
+              checked={false}
+              onChange={handleChange}
+            />
+          </View>
+
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginRight: 10,
               }}
-              size="small"
-              type="primary"
-              style={{ marginTop: 20 }}
             >
-              去逛逛
+              <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ 111</Text>
+              <Text style={{ fontSize: 12 }}> 不含运费</Text>
+            </View>
+            <Button style={{ borderRadius: 5, width: 80 }} type="primary">
+              结算
             </Button>
-          </Empty>
+          </View>
         </View>
-      )}
+      </View>
     </View>
   );
 };

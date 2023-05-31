@@ -228,7 +228,7 @@ page {
   border-bottom: 1px solid rgb(215, 215,215);
   .infoImage{
     width: 200px;
-    height: 200px;
+    height: 200px !important;
   }
   .infoTextBox{
     margin-left: 32px;
@@ -305,9 +305,9 @@ page {
     padding: 5px 12px;
   }
   .nut-number-input{
-    width: 10px !important;
-    margin-left: 32px;
-    margin-right: 32px;
+    width: 40px !important;
+    margin-left: 20px;
+    margin-right: 20px;
     background: #ffffff;
   }
 

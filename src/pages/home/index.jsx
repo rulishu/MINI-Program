@@ -33,14 +33,8 @@ const Index = () => {
         category: 1,
       },
     });
-    //
-    dispatch({
-      type: 'home/getLevel',
-      // payload: {
-      //   type: 2,
-      //   category: 1
-      // }
-    });
+    // 一级分类
+    dispatch({ type: 'home/getLevel' });
     // 获取当前定位
     Taro.getLocation({
       type: 'wgs84',
@@ -59,6 +53,7 @@ const Index = () => {
         });
       },
       fail: function () {
+        setAddressInfo('点击获取地址位置');
         Taro.showToast({
           title: '获取用户位置信息失败！',
           icon: 'none',
@@ -82,6 +77,14 @@ const Index = () => {
         setHomeTopWidth(searchWidth);
         setHomeTopNavHeight(navHeight);
       },
+      fail: function (res) {
+        window.console.log('fail', res);
+        Taro.showToast({
+          title: '获取定位失败',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
     });
     // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
   }, []);
@@ -89,6 +92,80 @@ const Index = () => {
   // 点击轮播图跳转
   const goBanner = (jumpPath) => {
     window.console.log('点击轮播图跳转', jumpPath);
+  };
+
+  // 再次获取定位
+  const getReAddress = () => {
+    // 先判断用户是否已经授权，如果没有授权，则调用 wx.authorize 请求授权
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success() {
+              // 用户同意授权，可以使用 wx.getLocation 获取定位信息
+              wx.getLocation({
+                type: 'wgs84',
+                success(ress) {
+                  const latitude = ress.latitude;
+                  const longitude = ress.longitude;
+                  // 请求腾讯地图逆地址解析接口
+                  wx.request({
+                    url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
+                    success(val) {
+                      const role = val.data.result.address;
+                      setAddressInfo(role);
+                    },
+                  });
+                },
+              });
+            },
+            fail() {
+              // 用户拒绝授权，可以提示用户进入授权设置页面进行授权
+              wx.showModal({
+                title: '提示',
+                content: '请在小程序的设置页面中打开定位权限',
+                showCancel: false,
+                success(re) {
+                  if (re.confirm) {
+                    wx.openSetting({
+                      success() {
+                        // 获取当前定位
+                        Taro.getLocation({
+                          type: 'wgs84',
+                          success: function (ress) {
+                            // 纬度
+                            const latitude = ress.latitude;
+                            // 经度
+                            const longitude = ress.longitude;
+                            // 请求腾讯地图逆地址解析接口
+                            wx.request({
+                              url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
+                              success(val) {
+                                const role = val.data.result.address;
+                                setAddressInfo(role);
+                              },
+                            });
+                          },
+                          fail: function () {
+                            setAddressInfo('点击获取地址位置');
+                            Taro.showToast({
+                              title: '获取用户位置信息失败！',
+                              icon: 'none',
+                              duration: 2000,
+                            });
+                          },
+                        });
+                      },
+                    });
+                  }
+                },
+              });
+            },
+          });
+        }
+      },
+    });
   };
 
   return (
@@ -100,7 +177,7 @@ const Index = () => {
         style={{ top: homeTopMarginTop, left: homeTopMarginLeft, width: homeTopWidth }}
       >
         <View className="home-top-content">
-          <View className="address">
+          <View className="address" onTap={() => getReAddress()}>
             <Skeleton
               width="200px"
               height="10px"

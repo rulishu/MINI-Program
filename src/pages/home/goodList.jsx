@@ -54,14 +54,14 @@ const GoodList = (props) => {
                 <Text className="title">{item.itemName}</Text>
               </View>
               <View className="search-result-content-middle">
-                {/* {item?.activity === '' ||
-                  item?.activity === null ||
-                  item?.activity === undefined ? (<Text></Text>) : ( */}
-                <>
-                  <Text className="activity">自营</Text>
-                  <Text className="activity-price">¥ 20.00</Text>
-                </>
-                {/* ) } */}
+                {item?.savedPrice === 0 ? (
+                  <Text></Text>
+                ) : (
+                  <>
+                    <Text className="activity">自营</Text>
+                    <Text className="activity-price">¥ {item?.savedPrice}</Text>
+                  </>
+                )}
               </View>
               <View className="search-result-content-bottom">
                 <View>

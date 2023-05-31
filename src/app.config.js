@@ -13,7 +13,6 @@ export default defineAppConfig({
     'pages/addAddress/index',
     'pages/editAddress/index',
     'pages/confirmOrder/index',
-    'pages/paySuccess/index',
     'pages/search/index',
     'pages/poster/index',
     'pages/afterSales/index',
