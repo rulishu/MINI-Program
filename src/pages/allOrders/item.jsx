@@ -19,10 +19,6 @@ export const tabList = [
     id: 4,
     title: '待评价',
   },
-  {
-    id: 5,
-    title: '退款/售后',
-  },
 ];
 
 export const orderList = [

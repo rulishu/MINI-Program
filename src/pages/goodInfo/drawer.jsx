@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 
 const Index = () => {
-  const { visible, queryInfo, productDetails, type, attributeVos, skuSpecs } = useSelector(
+  const { visible, queryInfo, productDetails, type, attributeVos, skuSpecs, skuList } = useSelector(
     (state) => state.goodInfo,
   );
   const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState();
-  const [active, setActive] = useState([]);
+  const [active, setActive] = useState({});
 
   // 数量提示
   const overlimit = () => {
@@ -120,12 +120,6 @@ const Index = () => {
                         obj[attri?.attribute_name] = { id: valueItem?.id, value: valueItem?.value };
                         setActive(obj);
                         setImageUrl(valueItem?.imageUrl);
-                        dispatch({
-                          type: 'goodInfo/update',
-                          payload: {
-                            skuSpecs: obj,
-                          },
-                        });
                       }}
                     >
                       {valueItem?.value}
@@ -165,12 +159,35 @@ const Index = () => {
             borderRadius: 6,
           }}
           onClick={() => {
+            const newArr = skuList.map((item) => {
+              let obj = { ...item };
+              let arr = [];
+              item.attributes.forEach((i) => {
+                if (active?.[i?.attributeName]?.value === i?.value) {
+                  arr.push(true);
+                } else {
+                  arr.push(false);
+                }
+              });
+              const isThisSku =
+                arr.length === Object.keys(active).length ? !arr.some((i) => i === false) : false;
+              return { ...obj, isThisSku };
+            });
+            // console.log('newArr', newArr);
+
+            let sku = newArr.find((arrItem) => arrItem?.isThisSku === true);
             if (type === 'nowCart') {
-              Taro.navigateTo({ url: '/pages/confirmOrder/index' });
               dispatch({
                 type: 'goodInfo/update',
                 payload: {
                   visible: false,
+                },
+              });
+              dispatch({
+                type: 'goodInfo/newConfirm',
+                payload: {
+                  count: productDetails?.goodsTotalNum,
+                  skuId: sku?.skuId,
                 },
               });
             } else {

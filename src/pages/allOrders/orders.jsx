@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Button } from '@nutui/nutui-react-taro';
+import { Button, Tag, Divider } from '@nutui/nutui-react-taro';
 import { orderList } from './item';
 import './index.scss';
 
@@ -12,7 +12,7 @@ const Index = () => {
           <View key={item.id} className="order-item">
             <View className="order-item-top">
               <View>
-                <Text>{item.time}</Text>
+                <Text>订单编号：{item.time}</Text>
               </View>
               <View>
                 <Text>{item.type}</Text>
@@ -29,27 +29,45 @@ const Index = () => {
                   ></Image>
                 </View>
                 <View className="order-item-middle-left-name">
-                  <Text>{item.title}</Text>
+                  <Text
+                    className="order-item-middle-left-name-text"
+                    style={{ width: '80%', fontSize: 15 }}
+                  >
+                    {item.title}
+                  </Text>
+                  <Text
+                    className="order-item-middle-left-name-text"
+                    style={{ width: '50%', fontSize: 10 }}
+                  >
+                    规格值,规格值
+                  </Text>
+                  <Tag style={{ width: 25 }} color="rgb(170, 170, 170)">
+                    自营
+                  </Tag>
                 </View>
               </View>
               <View className="order-item-middle-right">
-                <View>
-                  <Text>¥{item.price}</Text>
-                </View>
                 <View className="order-item-middle-right-num">
-                  <Text>共{item.num}件</Text>
+                  <Text>x{item.num}</Text>
                 </View>
               </View>
             </View>
+            <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15 }}>
+              实付款： ￥{item.price}
+            </View>
+            <Divider styles={{ color: 'rgb(170, 170, 170)' }} />
             <View className="order-item-bottom">
-              <Button className="bottom-btn" plain size="small" type="default">
-                查看发票
+              {/* <Button shape="square" className="bottom-btn" plain size="small" type="default">
+                查看物流
+              </Button> */}
+              <Button shape="square" className="bottom-btn" plain size="small" type="default">
+                删除订单
               </Button>
-              <Button className="bottom-btn" plain size="small" type="default">
-                退换/售后
+              <Button shape="square" className="bottom-btn" size="small" type="danger">
+                立即支付 14.59
               </Button>
-              <Button className="bottom-btn" plain size="small" type="danger">
-                再次购买
+              <Button shape="square" className="bottom-btn" size="small" type="info">
+                确认收货
               </Button>
             </View>
           </View>

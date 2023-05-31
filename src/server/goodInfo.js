@@ -18,3 +18,8 @@ export const orderSubmit = (params) => {
 export const wxpay = (params) => {
   return request.put('/jcgl-mall/app/payment/flow/do/wxpay', params);
 };
+
+// 立即购买
+export const newConfirm = (params) => {
+  return request.post('/jcgl-mall/app/advance/order/newConfirm', params);
+};
