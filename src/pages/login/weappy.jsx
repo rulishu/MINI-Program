@@ -19,13 +19,6 @@ const WeAppy = () => {
               jsCode: res.code,
             },
           });
-          // 获取openId
-          dispatch({
-            type: 'global/getOpenId',
-            payload: {
-              jsCode: res.code,
-            },
-          });
         } else {
           Taro.showToast({
             title: '获取微信信息失败',
@@ -49,13 +42,6 @@ const WeAppy = () => {
                   jsCode: res.code,
                   encryptedData: detail.encryptedData,
                   iv: detail.iv,
-                },
-              });
-              // 获取openId
-              dispatch({
-                type: 'global/getOpenId',
-                payload: {
-                  jsCode: res.code,
                 },
               });
             } else {
