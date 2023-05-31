@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import { Radio, Price, InputNumber, Swipe, Button } from '@nutui/nutui-react-taro';
+import { Price, InputNumber, Swipe, Button, Checkbox, Tag } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -9,7 +9,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const { shoppingList } = useSelector((state) => state.cart);
-  const [radioVal] = useState('1');
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     dispatch({
@@ -47,7 +47,14 @@ const Index = () => {
       price: 70,
     },
   ];
-  const handleChange = (v) => {};
+  const handleChange = (check) => {
+    if (check === true) {
+      setChecked(true);
+    }
+    if (check === false) {
+      setChecked(false);
+    }
+  };
   return (
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
@@ -68,6 +75,7 @@ const Index = () => {
           ></Image>
           <Text style={{ marginLeft: 5, color: '#7f7f7f' }}>清空</Text>
         </View>
+        {/* 购车车列表 */}
         {list.map((item) => {
           return (
             <Swipe
@@ -89,9 +97,7 @@ const Index = () => {
                     }}
                   >
                     <View>
-                      <Radio.RadioGroup value={radioVal} onChange={handleChange}>
-                        <Radio value={radioVal}></Radio>
-                      </Radio.RadioGroup>
+                      <Checkbox checked={checked} onChange={() => handleChange(itm)} />
                     </View>
                     <View style={{ width: 100, height: 100 }}>
                       <Image
@@ -117,10 +123,16 @@ const Index = () => {
                           textOverflow: 'ellipsis', // 省略号
                         }}
                       >
-                        <Text> {item?.title}</Text>
+                        <Text style={{ color: '#333333', fontSize: 15 }}> {item?.title}</Text>
                       </View>
-
-                      <Text>{item?.sku}</Text>
+                      <View>
+                        <Text style={{ color: '#adadad', fontSize: 13 }}>{item?.sku}</Text>
+                      </View>
+                      <View>
+                        <Tag color="#E9E9E9" textColor="#999999">
+                          标签
+                        </Tag>
+                      </View>
                       <View
                         style={{
                           display: 'flex',
@@ -139,6 +151,47 @@ const Index = () => {
             </Swipe>
           );
         })}
+      </View>
+      {/* 页脚结算 */}
+      <View style={{ position: 'fixed', bottom: 0, width: '100%' }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '0 20px 80px 20px',
+            backgroundColor: '#ffffff',
+            paddingTop: 10,
+          }}
+        >
+          <View>
+            <Checkbox
+              className="cartFooterCheck"
+              textPosition="right"
+              label="全选"
+              checked={false}
+              onChange={handleChange}
+            />
+          </View>
+
+          <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginRight: 10,
+              }}
+            >
+              <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ 111</Text>
+              <Text style={{ fontSize: 12 }}> 不含运费</Text>
+            </View>
+            <Button style={{ borderRadius: 5, width: 80 }} type="primary">
+              结算
+            </Button>
+          </View>
+        </View>
       </View>
     </View>
   );
