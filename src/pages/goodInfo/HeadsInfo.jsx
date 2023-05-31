@@ -308,13 +308,21 @@ const Index = () => {
                 <Button
                   style={{ borderRadius: 0, width: '100%' }}
                   onClick={() => {
-                    dispatch({
-                      type: 'goodInfo/update',
-                      payload: {
-                        visible: true,
-                        type: 'addCart',
-                      },
-                    });
+                    if (queryInfo?.stock <= 0) {
+                      Taro.showToast({
+                        title: '商品已售空',
+                        icon: 'none',
+                        duration: 2000,
+                      });
+                    } else {
+                      dispatch({
+                        type: 'goodInfo/update',
+                        payload: {
+                          visible: true,
+                          type: 'addCart',
+                        },
+                      });
+                    }
                   }}
                 >
                   加入购物车
@@ -325,13 +333,21 @@ const Index = () => {
                   type="primary"
                   style={{ borderRadius: 0, width: '100%' }}
                   onClick={() => {
-                    dispatch({
-                      type: 'goodInfo/update',
-                      payload: {
-                        visible: true,
-                        type: 'nowCart',
-                      },
-                    });
+                    if (queryInfo?.stock <= 0) {
+                      Taro.showToast({
+                        title: '商品已售空',
+                        icon: 'none',
+                        duration: 2000,
+                      });
+                    } else {
+                      dispatch({
+                        type: 'goodInfo/update',
+                        payload: {
+                          visible: true,
+                          type: 'nowCart',
+                        },
+                      });
+                    }
                   }}
                 >
                   立即购买
