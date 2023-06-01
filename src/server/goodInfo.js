@@ -23,3 +23,8 @@ export const wxpay = (params) => {
 export const newConfirm = (params) => {
   return request.post('/jcgl-mall/app/advance/order/newConfirm', params);
 };
+
+// 海报小程序码
+export const miniprogramcode = (params) => {
+  return request.get('/jcgl-user/wx/login/miniprogramcode', params);
+};
