@@ -44,7 +44,7 @@ const Index = () => {
                         return (
                           <View
                             key={item.id}
-                            onTap={() => goGoodInfo(item)}
+                            onTap={() => {}}
                             style={{
                               width: '45%',
                               height: 188,

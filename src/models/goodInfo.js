@@ -1,6 +1,13 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { infoDetails, orderConfirm, wxpay, orderSubmit, newConfirm } from '@/server/goodInfo';
+import {
+  infoDetails,
+  orderConfirm,
+  wxpay,
+  orderSubmit,
+  newConfirm,
+  miniprogramcode,
+} from '@/server/goodInfo';
 
 const productDetail = {
   storageFee: 0,
@@ -39,23 +46,7 @@ export default {
     autoplay: true,
     interval: 2000,
     duration: 500,
-    list: [
-      {
-        id: 1,
-        name: '美肤专家团',
-        img: 'https://sucai.suoluomei.cn/sucai_zs/images/20191203142553-10e8e9b9f13c14b6ac3aa516a30802b.png',
-      },
-      {
-        id: 2,
-        name: '私户专家团',
-        img: 'https://sucai.suoluomei.cn/sucai_zs/images/20191203142619-6c6872faf293abfc4939a7ea6eb1402.png',
-      },
-      {
-        id: 3,
-        name: '私户专家团',
-        img: 'https://sucai.suoluomei.cn/sucai_zs/images/20191203142553-10e8e9b9f13c14b6ac3aa516a30802b.png',
-      },
-    ],
+    posterCode: '',
   },
 
   effects: {
@@ -206,6 +197,24 @@ export default {
           //   // confirmText:
           // });
           Taro.navigateTo({ url: '/pages/login/index' });
+        }
+      } catch (err) {}
+    },
+
+    // 小程序码
+    *miniprogramcode({ payload }, { call, put }) {
+      try {
+        const params = {
+          ...payload,
+        };
+        const result = yield call(miniprogramcode, params);
+        if (result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              posterCode: result.result || '',
+            },
+          });
         }
       } catch (err) {}
     },

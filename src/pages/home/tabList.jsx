@@ -21,7 +21,7 @@ const Index = () => {
         payload: {
           pageNum: 1,
           pageSize: 20,
-          category: parseInt(levelTab.at(0)?.id),
+          id: parseInt(levelTab.at(0)?.id),
         },
       });
     }
@@ -38,7 +38,7 @@ const Index = () => {
           dispatch({
             type: 'home/getLevelList',
             payload: {
-              category: parseInt(levelTab[parseInt(paneKey)]?.id),
+              id: parseInt(levelTab[parseInt(paneKey)]?.id),
               pageNum: pageNum,
               pageSize: pageSize,
             },
@@ -48,7 +48,7 @@ const Index = () => {
         titleGutter="10"
       >
         {levelTab?.map((item) => (
-          <Tabs.TabPane key={item.id} title={item.categoryName} className="tab-content">
+          <Tabs.TabPane key={item.id} title={item.marketingName} className="tab-content">
             <GoodList dataList={levelList} />
           </Tabs.TabPane>
         ))}

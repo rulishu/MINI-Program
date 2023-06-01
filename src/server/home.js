@@ -7,13 +7,13 @@ export const getBannerList = (params) => {
 
 // 查询一级分类
 export const getLevel = (params) => {
-  return request.post(`/jcgl-mall/app/item/category/select/root/level`, params);
+  return request.post(`/jcgl-mall/app/marketing/relation/selectAllLevelOne`, params);
 };
 
 // 首页查询商品列表
 export const getLevelList = (params) => {
   return request.post(
-    `/jcgl-mall/app/item/select/page/list?pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
+    `/jcgl-mall/app/marketing/relation/selectItemTwo?pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
     params,
   );
 };

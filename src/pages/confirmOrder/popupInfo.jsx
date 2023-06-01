@@ -62,7 +62,7 @@ const Index = () => {
         <View className="popupInfo-button">
           <Button
             shape="square"
-            color="#009DD9"
+            color="#A05635"
             style={{ width: '80%', borderRadius: 8, border: 'none' }}
             onClick={() => onClick()}
           >

@@ -16,8 +16,9 @@ const Index = () => {
     margin: '6px 0 20px 0',
   };
 
-  const [customized, setCustomized] = useState(false);
+  // const [customized, setCustomized] = useState(false);
   const [tab5value, setTab5value] = useState('0');
+  const [activeTag, setActiveTag] = useState(0);
   return (
     <View className="traceability" style={{ height: '50vh', overflow: 'scroll' }}>
       <View className="traceability-top">
@@ -30,10 +31,19 @@ const Index = () => {
             lowerThreshold={Threshold}
             upperThreshold={Threshold}
           >
-            {escortAgency.map((item) => {
+            {escortAgency.map((item, index) => {
               return (
                 <View key={item.id} style={vStyleA} className="scrollview-item">
-                  <Tag color="#F2F2F2" textColor="#333333" className="tag">
+                  <Tag
+                    plain
+                    onClick={() => {
+                      setActiveTag(index);
+                    }}
+                    color={index !== activeTag ? '#999999' : '#965A3C'}
+                    // color="#F2F2F2"
+                    // textColor="#333333"
+                    className="tag"
+                  >
                     {item.name}
                   </Tag>
                 </View>
@@ -43,10 +53,10 @@ const Index = () => {
         </View>
         <View className="traceability-top-right">
           <Popover
-            visible={customized}
+            // visible={customized}
             location="left-start"
             onClick={() => {
-              customized ? setCustomized(false) : setCustomized(true);
+              // customized ? setCustomized(false) : setCustomized(true);
             }}
           >
             <Button
@@ -59,9 +69,9 @@ const Index = () => {
                 justifyContent: 'center',
               }}
             >
-              <Image src={selectMenu} style={{ width: 20, height: 20 }} />
+              <Image src={selectMenu} style={{ width: 20, height: 20, marginTop: 10 }} />
             </Button>
-            {customized ? (
+            {/* {customized ? (
               <div className="self-content">
                 {escortAgency.map((item) => {
                   return (
@@ -75,7 +85,7 @@ const Index = () => {
               </div>
             ) : (
               ''
-            )}
+            )} */}
           </Popover>
         </View>
       </View>
