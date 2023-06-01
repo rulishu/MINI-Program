@@ -16,7 +16,7 @@ const Index = () => {
       success: function () {
         Taro.showToast({
           title: '分享成功',
-          icon: 'success',
+          icon: 'none',
           duration: 2000,
         });
         dispatch({

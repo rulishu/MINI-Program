@@ -74,7 +74,7 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              levelList: result.result.records || [],
+              levelList: result.result || [],
             },
           });
         }

@@ -16,7 +16,7 @@ const Index = () => {
     margin: '6px 0 20px 0',
   };
 
-  const [customized, setCustomized] = useState(false);
+  // const [customized, setCustomized] = useState(false);
   const [tab5value, setTab5value] = useState('0');
   const [activeTag, setActiveTag] = useState(0);
   return (
@@ -53,10 +53,10 @@ const Index = () => {
         </View>
         <View className="traceability-top-right">
           <Popover
-            visible={customized}
+            // visible={customized}
             location="left-start"
             onClick={() => {
-              customized ? setCustomized(false) : setCustomized(true);
+              // customized ? setCustomized(false) : setCustomized(true);
             }}
           >
             <Button
@@ -69,9 +69,9 @@ const Index = () => {
                 justifyContent: 'center',
               }}
             >
-              <Image src={selectMenu} style={{ width: 20, height: 20 }} />
+              <Image src={selectMenu} style={{ width: 20, height: 20, marginTop: 10 }} />
             </Button>
-            {customized ? (
+            {/* {customized ? (
               <div className="self-content">
                 {escortAgency.map((item) => {
                   return (
@@ -85,7 +85,7 @@ const Index = () => {
               </div>
             ) : (
               ''
-            )}
+            )} */}
           </Popover>
         </View>
       </View>
