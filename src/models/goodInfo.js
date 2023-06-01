@@ -35,6 +35,27 @@ export default {
     orderToken: '',
     activeSku: [], //选中规格
     goodsName: '', //商品名称
+    currentIndex: 0,
+    autoplay: true,
+    interval: 2000,
+    duration: 500,
+    list: [
+      {
+        id: 1,
+        name: '美肤专家团',
+        img: 'https://sucai.suoluomei.cn/sucai_zs/images/20191203142553-10e8e9b9f13c14b6ac3aa516a30802b.png',
+      },
+      {
+        id: 2,
+        name: '私户专家团',
+        img: 'https://sucai.suoluomei.cn/sucai_zs/images/20191203142619-6c6872faf293abfc4939a7ea6eb1402.png',
+      },
+      {
+        id: 3,
+        name: '私户专家团',
+        img: 'https://sucai.suoluomei.cn/sucai_zs/images/20191203142553-10e8e9b9f13c14b6ac3aa516a30802b.png',
+      },
+    ],
   },
 
   effects: {
