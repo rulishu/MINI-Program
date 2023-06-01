@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Popup, Button, InputNumber, Price } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,8 +10,31 @@ const Index = () => {
   );
   const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState();
+  const [memberPrice, setMemberPrice] = useState();
   const [active, setActive] = useState({});
   const [activeSku, setActiveSku] = useState([]);
+
+  // 选中的规格值[查找会员价和相对应的图片]
+  let newArr = skuList.map((item) => {
+    let obj = { ...item };
+    let arr = [];
+    item.attributes.forEach((i) => {
+      if (active?.[i?.attributeName]?.value === i?.value) {
+        arr.push(true);
+      } else {
+        arr.push(false);
+      }
+    });
+    const isThisSku =
+      arr.length === Object.keys(active).length ? !arr.some((i) => i === false) : false;
+    return { ...obj, isThisSku };
+  });
+  let skuInfo = newArr.find((arrItem) => arrItem?.isThisSku === true);
+
+  useEffect(() => {
+    setImageUrl(skuInfo?.imageUrl);
+    setMemberPrice(skuInfo?.membershipPrice);
+  }, [skuInfo, imageUrl, memberPrice]);
 
   // 数量提示
   const overlimit = () => {
@@ -52,6 +75,7 @@ const Index = () => {
       },
     });
   };
+
   return (
     <Popup
       closeable
@@ -82,7 +106,7 @@ const Index = () => {
           <View className="infoTextBox">
             <View>
               <Price
-                price={queryInfo?.costPrice}
+                price={memberPrice ? memberPrice : queryInfo?.costPrice}
                 size="large"
                 needSymbol
                 thousands
@@ -120,7 +144,7 @@ const Index = () => {
                         let obj = active;
                         obj[attri?.attribute_name] = { id: valueItem?.id, value: valueItem?.value };
                         setActive(obj);
-                        setImageUrl(valueItem?.imageUrl);
+
                         let objSku = activeSku;
                         objSku[attri?.attribute_value] = {
                           id: valueItem?.id,
@@ -170,29 +194,12 @@ const Index = () => {
         <Button
           type="primary"
           style={{
-            borderRadius: 0,
             marginBottom: 20,
             marginLeft: 20,
             marginRight: 20,
             borderRadius: 6,
           }}
           onClick={() => {
-            const newArr = skuList.map((item) => {
-              let obj = { ...item };
-              let arr = [];
-              item.attributes.forEach((i) => {
-                if (active?.[i?.attributeName]?.value === i?.value) {
-                  arr.push(true);
-                } else {
-                  arr.push(false);
-                }
-              });
-              const isThisSku =
-                arr.length === Object.keys(active).length ? !arr.some((i) => i === false) : false;
-              return { ...obj, isThisSku };
-            });
-
-            let sku = newArr.find((arrItem) => arrItem?.isThisSku === true);
             if (type === 'nowCart') {
               if (Object.keys(active).length <= 1) {
                 Taro.showToast({
@@ -211,7 +218,7 @@ const Index = () => {
                   type: 'goodInfo/newConfirm',
                   payload: {
                     count: productDetails?.goodsTotalNum,
-                    skuId: sku?.skuId,
+                    skuId: skuInfo?.skuId,
                   },
                 });
               }

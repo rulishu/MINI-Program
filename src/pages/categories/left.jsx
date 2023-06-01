@@ -6,30 +6,24 @@ import Right from './right';
 import './index.scss';
 
 const Index = () => {
-  const { getCategoriesTree, getCategoriesTwoTree } = useSelector((state) => state.categories);
+  const { getCategoriesTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [tab5value, setTab5value] = useState(0);
-  let twoTree = getCategoriesTree?.find((el) => el?.id === getCategoriesTwoTree?.id) || [];
 
-  let getCategoriesTwoTreeId = getCategoriesTree?.map((item) => item?.children);
   useEffect(() => {
-    getSub();
+    dispatch({
+      type: 'categories/getList',
+      payload: {
+        id: getCategoriesTree?.at(0)?.id,
+        onShelf: 2,
+        groundType: 2,
+        pageNum: 1,
+        pageSize: 20,
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getCategoriesTwoTreeId?.flat()?.at(0)?.id]);
-  const getSub = async () => {
-    if (getCategoriesTwoTreeId?.flat().length > 0) {
-      await dispatch({
-        type: 'categories/getList',
-        payload: {
-          category: getCategoriesTwoTreeId?.flat()?.at(0)?.id,
-          onShelf: 2,
-          groundType: 2,
-          pageNum: 1,
-          pageSize: 20,
-        },
-      });
-    }
-  };
+  }, [getCategoriesTree?.at(0)?.id]);
+
   return (
     <View>
       <Tabs
@@ -40,20 +34,10 @@ const Index = () => {
         tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: '30vw' }}
         onChange={async ({ paneKey }) => {
           setTab5value(paneKey);
-          // dispatch({ type: 'categories/getCategoriesTreeList' });
-          dispatch({
-            type: 'categories/update',
-            payload: {
-              getCategoriesTwoTree: getCategoriesTree?.at(paneKey),
-            },
-          });
           await dispatch({
             type: 'categories/getList',
             payload: {
-              category:
-                getCategoriesTree?.at(paneKey)?.leafOrder === 1
-                  ? getCategoriesTree?.at(paneKey)?.id
-                  : getCategoriesTree?.at(paneKey)?.children?.at()?.id,
+              id: getCategoriesTree?.at(paneKey)?.id,
               onShelf: 2,
               groundType: 2,
               pageNum: 1,
@@ -67,9 +51,9 @@ const Index = () => {
       >
         {getCategoriesTree?.map((item) => {
           return (
-            <Tabs.TabPane key={item} title={item.label}>
+            <Tabs.TabPane key={item} title={item?.marketingName}>
               <Right
-                getCategoriesTwoTreeItem={tab5value === 0 ? getCategoriesTree?.at(0) : twoTree}
+                getCategoriesTwoTree={item?.child}
                 style={{ width: '70vw', backgroundColor: '#ffffff' }}
               />
             </Tabs.TabPane>

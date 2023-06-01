@@ -177,6 +177,14 @@ export default {
               orderToken: result.result.orderToken,
             },
           });
+        } else {
+          // Taro.showModal({
+          //   title: '温馨提示',
+          //   content: `${result?.message}`,
+          //   showCancel: false,
+          //   // confirmText:
+          // });
+          Taro.navigateTo({ url: '/pages/login/index' });
         }
       } catch (err) {}
     },

@@ -8,7 +8,7 @@ import Drawer from './drawer';
 const Index = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({ type: 'categories/getCategoriesTreeList' });
+    dispatch({ type: 'categories/selectAllLevelTwo' });
     // eslint-disable-next-line global-require
   }, []);
 
