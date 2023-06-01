@@ -51,7 +51,7 @@ const Index = () => {
       >
         {getCategoriesTree?.map((item) => {
           return (
-            <Tabs.TabPane key={item} title={item?.marketingName}>
+            <Tabs.TabPane key={item} title={item?.marketingName} className="tabpane">
               <Right
                 getCategoriesTwoTree={item?.child}
                 style={{ width: '70vw', backgroundColor: '#ffffff' }}
