@@ -15,19 +15,24 @@ const Index = (props) => {
 
   const onTagTap = (e) => {
     const targetId = e.currentTarget?.dataset?.targetId;
-    // console.log(' e.currentTarget', e.currentTarget);
-    // setData({
-    //   scrollTop: 0, // 滚动到顶部，确保能够正确跳转
-    //   scrollIntoView: targetId // 设置 scroll-into-view 属性为目标内容的 id 值
-    // });
-    setScrollIntoView(targetId);
+    setScrollIntoView(`a${targetId}`);
   };
 
   return (
-    <Skeleton animated loading={!loading?.global}>
-      <View className="right" style={{ paddingBottom: 70, margin: -15 }}>
-        <View style={{ marginBottom: 8 }} className="right-title-box">
-          <ScrollView scrollY scrollIntoView={scrollIntoView} scrollWithAnimation>
+    <ScrollView
+      scrollY
+      style={{
+        height: '100%',
+      }}
+      scrollIntoView={scrollIntoView}
+      scrollWithAnimation
+    >
+      <Skeleton animated loading={!loading?.global}>
+        <View
+          className="right"
+          style={{ paddingBottom: 70, height: 'auto', margin: '10px 5px 10px 5px' }}
+        >
+          <View style={{ marginBottom: 8 }} className="right-title-box">
             <View style={{ width: '100%' }}>
               {/* 二级标签 */}
               <ScrollView className="my-code" scrollX scrollWithAnimation>
@@ -55,7 +60,7 @@ const Index = (props) => {
                 {subList?.map((itm, idx) => {
                   return (
                     <>
-                      <View className="right-content-title" key={idx} id={itm?.id}>
+                      <View className="right-content-title" key={idx} id={`a${itm?.id}`}>
                         <Text>{itm?.marketingName}</Text>
                       </View>
                       {/* 标签图片内容调整 */}
@@ -173,10 +178,10 @@ const Index = (props) => {
                 })}
               </View>
             </View>
-          </ScrollView>
+          </View>
         </View>
-      </View>
-    </Skeleton>
+      </Skeleton>
+    </ScrollView>
   );
 };
 export default Index;
