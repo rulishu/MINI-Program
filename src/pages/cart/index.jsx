@@ -21,7 +21,7 @@ const Index = () => {
     {
       id: 0,
       imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米,秋然长粒香大米 ,秋然长粒香大米  5kg/袋标题',
+      title: '秋然长粒香大米 5kg/袋标题',
       sku: '规格值1,规格值2',
       price: 70,
     },

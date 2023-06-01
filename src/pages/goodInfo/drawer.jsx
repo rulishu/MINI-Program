@@ -170,7 +170,6 @@ const Index = () => {
         <Button
           type="primary"
           style={{
-            borderRadius: 0,
             marginBottom: 20,
             marginLeft: 20,
             marginRight: 20,

@@ -58,6 +58,7 @@ page {
         white-space:nowrap;        // 强制一行显示
         overflow:hidden;          // 超出隐藏
         text-overflow:ellipsis;   // 省略号
+        // overflow-x: auto;
       }
       .right-title{
         margin-left:10px;
@@ -73,10 +74,12 @@ page {
       flex-direction: column;
       margin-left: 10px;
       .right-content-title{
-        background: rgb(245, 245, 245);
+        background: #965A3C;
         padding: 5px 20px;
         margin-bottom: 10px;
         width: 100%;
+        color: #ffffff;
+        font-size: 30px;
       }
       .right-content-box{
         display: flex;

@@ -14,6 +14,7 @@ page {
     width:80%;
     background-color: #ffffff;
   }
+  // 左侧一级菜单
   .left{
     // height: 100%;
     width:144px;
@@ -42,176 +43,106 @@ page {
     }
     .left-title{
       font-size: 24px;
-      
     }
   }
+  // 右侧二级菜单
   .right{
     padding:0;
     margin:0;
     .right-title-box{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
       align-items: center;
+      .my-code{
+        white-space:nowrap;        // 强制一行显示
+        overflow:hidden;          // 超出隐藏
+        text-overflow:ellipsis;   // 省略号
+        // overflow-x: auto;
+      }
       .right-title{
         margin-left:10px;
         font-size:26px;
         font-weight: bold;
         margin-bottom:10px;
-        border-radius: 10px;
         padding: 5px 20px;
+        border: 1px solid rgb(245, 245, 245);
       }
     }
- 
     .right-content{
       display: flex;
-      flex-direction: row;
-      height:200px;
-      align-items: center;
-      margin:0 10px;
-      .rightImage{
-        width:180px;
-        height:120px;
-      }
-    }
-    .right-contents{
-      display:flex;
       flex-direction: column;
-      justify-content: space-between;
-      height: 180px;
-      margin-left: 10rpx;
+      margin-left: 10px;
+      .right-content-title{
+        background: #965A3C;
+        padding: 5px 20px;
+        margin-bottom: 10px;
+        width: 100%;
+        color: #ffffff;
+        font-size: 30px;
+      }
+      .right-content-box{
+        display: flex;
+        flex-direction: column;
+        .right-content-item{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          border-bottom: 1px solid rgb(170, 170, 170);
+          height: 200px;
+          .right-content-item-img{
+            width:200px;
+            height:200px;
+          }
+          .right-content-text-box{
+            margin-left: 13px;
+            .right-content-text-header{
+              font-size: 24px;
+            }
+          }
+        }
+      }
     }
-    .right-content-texts{
-      text-overflow: -o-ellipsis-lastline;
-	    overflow: hidden;				//溢出内容隐藏
-	    text-overflow: ellipsis;		//文本溢出部分用省略号表示
-	    display: -webkit-box;			//特别显示模式
-	    -webkit-line-clamp: 2;			//行数
-	    line-clamp: 2;					
-	    -webkit-box-orient: vertical;	//盒子中内容竖直排列
-    }
-    .right-content-text{
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .right-content-bottom{
-      display:flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-    .right-content-price{
-      color:#C3A769;
-      font-size: 36px;
-      font-weight: bold;
-    }
-    .right-content-price-icon{
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .right-content-car{
-      width:50px;
-      height:50px;
-    }
+
+    // .right-contents{
+    //   display:flex;
+    //   flex-direction: column;
+    //   justify-content: space-between;
+    //   height: 180px;
+    //   margin-left: 10rpx;
+    // }
+    // .right-content-texts{
+    //   text-overflow: -o-ellipsis-lastline;
+	  //   overflow: hidden;				//溢出内容隐藏
+	  //   text-overflow: ellipsis;		//文本溢出部分用省略号表示
+	  //   display: -webkit-box;			//特别显示模式
+	  //   -webkit-line-clamp: 2;			//行数
+	  //   line-clamp: 2;					
+	  //   -webkit-box-orient: vertical;	//盒子中内容竖直排列
+    // }
+    // .right-content-text{
+    //   font-size: 28px;
+    //   font-weight: bold;
+    // }
+    // .right-content-bottom{
+    //   display:flex;
+    //   flex-direction: row;
+    //   justify-content: space-between;
+    // }
+    // .right-content-price{
+    //   color:#C3A769;
+    //   font-size: 36px;
+    //   font-weight: bold;
+    // }
+    // .right-content-price-icon{
+    //   font-size: 28px;
+    //   font-weight: bold;
+    // }
+    // .right-content-car{
+    //   width:50px;
+    //   height:50px;
+    // }
   }
-  // position: fixed;
-  // top: 0;
-  // left: 0;
-  // 头部导航栏
-    .headerNavLayout{
-      height: 160px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      background: rgb(244,244,244);
-      white-space: nowrap;
-      overflow-x: auto;
-      position: relative;
-      .headerNavBox{
-        padding-left: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align:center;
-        .headerNavItem{
-          border-radius: 24px;
-          width: 64px;
-          height: 64px;
-          // border: 5px solid rgb(170,140,95);
-        }
-        .headerNavItemActive{
-          border: 5px solid rgb(170,140,95);
-        }
-        .headerNavText{
-          border-radius: 24px;
-          // background-color: rgb(170,140,95);
-          margin-top: 5px;
-          font-size: 24px;
-          padding-left: 10px;
-          padding-right: 10px;
-          text-align: center;
-          width: 100px;
-          white-space:nowrap;       // 强制一行显示
-          overflow:hidden;          // 超出隐藏
-          text-overflow:ellipsis;   // 省略号
-        }
-        .headerNavTextActive{
-          background-color: rgb(170,140,95);
-        }
-      }
-      .headerNavAll{
-        position: sticky;
-        top: 0;
-        right: 0;
-        width: 50px;
-        height: 160px;
-        background: rgb(216,216,216);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align:center;
-        .headerNavAllText{
-          writing-mode: vertical-lr;
-        }
-      }
-    }
-  // 全部菜单布局
-  .popupNavLayout{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background: rgb(244,244,244);
-    flex-wrap: wrap;
-    position: relative;
-    .popupNavLayout-item{
-      width: 25%;
-      .allNavBox{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align:center;
-        .allNavItem{
-          border-radius: 24px;
-          width: 64px;
-          height: 64px;
-          border: 5px solid rgb(170,140,95);
-        }
-        .allNavText{
-          border-radius: 24px;
-          background-color: rgb(170,140,95);
-          margin-top: 5px;
-          font-size: 24px;
-          width: 100px;
-          text-align: center;
-          white-space:nowrap;       // 强制一行显示
-          overflow:hidden;          // 超出隐藏
-          text-overflow:ellipsis;   // 省略号
-          padding-left: 10px;
-          padding-right: 10px;
-        }
-      }
-    }
-  }
+
 }
 
