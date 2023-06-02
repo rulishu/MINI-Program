@@ -87,7 +87,7 @@ const Index = () => {
         orderToken: orderToken,
         receivingAddressId: curAddress?.id,
         skuId: Number(orderInfo?.skuId),
-        totalPrice: orderInfo.totalPrice,
+        totalPrice: orderInfo?.totalPrice,
         realName: curAddress?.consignee,
         status: 0,
         count: orderInfo?.count,
@@ -105,7 +105,7 @@ const Index = () => {
         gatewayId: 2,
         gatewayCode: 'WX_PAY',
         gatewayTerminal: 2,
-        paymentAmount: orderInfo.totalPrice,
+        paymentAmount: orderInfo?.totalPrice,
         tradeType: 0,
       },
     });
@@ -207,10 +207,10 @@ const Index = () => {
             </View>
             <View className="goods-info-head-right">
               <View className="goods-info-head-right-num">
-                <Text>x{orderInfo.count}</Text>
+                <Text>x{orderInfo?.count}</Text>
               </View>
               <View className="goods-info-head-right-price">
-                <Text>￥{orderInfo.unitPrice}.00</Text>
+                <Text>￥{orderInfo?.unitPrice}.00</Text>
               </View>
             </View>
           </View>
@@ -243,7 +243,7 @@ const Index = () => {
                 <Text>商品总价</Text>
               </View>
               <View>
-                <Text>{orderInfo.totalPrice}</Text>
+                <Text>{orderInfo?.totalPrice}</Text>
               </View>
             </View>
             <View className="address-price">
@@ -282,7 +282,7 @@ const Index = () => {
       <View className="footer">
         <View className="footer-content">
           <View>
-            <Text>合计：¥ {orderInfo.totalPrice}</Text>
+            <Text>合计：¥ {orderInfo?.totalPrice}</Text>
           </View>
           <View>
             <Button
