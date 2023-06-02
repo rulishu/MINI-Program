@@ -61,6 +61,7 @@ const Index = () => {
         label="头像"
         placeholder=" "
         clearable
+        readonly
         inputAlign="right"
         slotButton={
           <Button
