@@ -21,7 +21,7 @@ const Index = () => {
     {
       id: 0,
       imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米 5kg/袋标题',
+      title: '秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,  5kg/袋标题',
       sku: '规格值1,规格值2',
       price: 70,
     },
@@ -35,7 +35,7 @@ const Index = () => {
     {
       id: 2,
       imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米 5kg/袋标题',
+      title: '秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,秋然长粒香大米 5kg/袋标题',
       sku: '规格值1,规格值2',
       price: 70,
     },
@@ -86,7 +86,7 @@ const Index = () => {
                 </Button>
               }
             >
-              <View style={{ backgroundColor: '#ffffff' }}>
+              <View style={{ backgroundColor: '#ffffff', width: '100%' }}>
                 <View>
                   <View
                     style={{
@@ -114,6 +114,7 @@ const Index = () => {
                         flexDirection: 'column',
                         justifyContent: 'space-between',
                         marginLeft: 10,
+                        width: '58%',
                       }}
                     >
                       <View
@@ -142,7 +143,7 @@ const Index = () => {
                         }}
                       >
                         <Price price={item?.price} size="normal" needSymbol thousands />
-                        <InputNumber modelValue={1} />
+                        <InputNumber modelValue={1} className="inputNumberStyle" />
                       </View>
                     </View>
                   </View>

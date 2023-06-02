@@ -137,4 +137,16 @@ page {
 .empty{
   height: 94vh;
 }
+.inputNumberStyle{
+  .nut-icon{
+    border: 1px solid rgb(215, 215,215);
+    padding: 0px 10px;
+  }
+  .nut-number-input{
+    width: 20px !important;
+    margin-left: 15px;
+    margin-right: 15px;
+    background: #ffffff;
+  }
+}
 
