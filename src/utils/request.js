@@ -50,7 +50,6 @@ export default {
         Authorization: `Bearer ${token}`,
         ...headers,
       };
-
       const option = {
         url: proxy(url),
         data: data,

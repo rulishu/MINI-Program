@@ -1,87 +1,123 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Button, Tag, Divider, Popup } from '@nutui/nutui-react-taro';
-import { orderList } from './item';
+import { Button, Tag, Divider, Popup, Empty } from '@nutui/nutui-react-taro';
+import { useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
   const [isConfirm, setIsConfirm] = useState(false);
-  useEffect(() => {}, []);
+  const { orderList } = useSelector((state) => state.allOrders);
+
+  const orderState = (num) => {
+    if (num === 0) {
+      return '待定价';
+    }
+    if (num === 1) {
+      return '待付款';
+    }
+    if (num === 2) {
+      return '备货中';
+    }
+    if (num === 3) {
+      return '待收货';
+    }
+    if (num === 4) {
+      return '已完成';
+    }
+  };
+
   return (
     <View className="order">
       <View className="order-content">
-        {orderList.map((item) => (
-          <View key={item.id} className="order-item">
-            <View className="order-item-top">
-              <View>
-                <Text>订单编号：{item.time}</Text>
-              </View>
-              <View>
-                <Text>{item.type}</Text>
-              </View>
-            </View>
-            <View className="order-item-middle">
-              <View className="order-item-middle-left">
-                <View className="order-item-middle-left-img">
-                  <Image
-                    mode="widthFix"
-                    className="order-img"
-                    // eslint-disable-next-line global-require
-                    src={require('@/assets/images/home8.png')}
-                  ></Image>
+        {orderList.length !== 0 ? (
+          orderList.map((item) => (
+            <View key={item.id} className="order-item">
+              <View className="order-item-top">
+                <View>
+                  <Text>订单编号：{item.orderNumber}</Text>
                 </View>
-                <View className="order-item-middle-left-name">
-                  <Text
-                    className="order-item-middle-left-name-text"
-                    style={{ width: '80%', fontSize: 15 }}
+                <View>
+                  <Text>{orderState(item.orderStatus)}</Text>
+                </View>
+              </View>
+              {item.items.map((goodsItem) => (
+                <View key={goodsItem.id} className="order-item-middle">
+                  <View className="order-item-middle-left">
+                    <View className="order-item-middle-left-img">
+                      <Image
+                        mode="scaleToFill"
+                        className="order-img"
+                        // eslint-disable-next-line global-require
+                        src={goodsItem.mainGraph}
+                      ></Image>
+                    </View>
+                    <View className="order-item-middle-left-name">
+                      <Text
+                        className="order-item-middle-left-name-text"
+                        style={{ width: '80%', fontSize: 15 }}
+                      >
+                        {goodsItem.itemName}
+                      </Text>
+                      <Text
+                        className="order-item-middle-left-name-text"
+                        style={{ width: '70%', fontSize: 10 }}
+                      >
+                        {goodsItem.attributes.map((attributeItem) => {
+                          let str = `${attributeItem.attributeName}:${attributeItem.value}`;
+                          return str;
+                        })}
+                      </Text>
+                      <Tag style={{ width: 25 }} color="rgb(170, 170, 170)">
+                        自营
+                      </Tag>
+                    </View>
+                  </View>
+                  <View className="order-item-middle-right">
+                    <View className="order-item-middle-right-num">
+                      <Text>x{goodsItem.amount}</Text>
+                    </View>
+                  </View>
+                </View>
+              ))}
+              <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15 }}>
+                实付款： ￥{item.payPrice}
+              </View>
+              <Divider styles={{ color: 'rgb(170, 170, 170)' }} />
+              <View className="order-item-bottom">
+                {item.orderStatus === 3 && (
+                  <Button shape="square" className="bottom-btn" plain size="small" type="default">
+                    查看物流
+                  </Button>
+                )}
+                {(item.orderStatus !== 1 || item.orderStatus !== 2 || item.orderStatus !== 3) && (
+                  <Button shape="square" className="bottom-btn" plain size="small" type="default">
+                    删除订单
+                  </Button>
+                )}
+                {item.orderStatus === 1 && (
+                  <Button shape="square" className="bottom-btn" size="small" type="danger">
+                    立即支付 14.59
+                  </Button>
+                )}
+                {item.orderStatus === 3 && (
+                  <Button
+                    shape="square"
+                    className="bottom-btn"
+                    size="small"
+                    type="info"
+                    onClick={() => {
+                      setIsConfirm(true);
+                    }}
                   >
-                    {item.title}
-                  </Text>
-                  <Text
-                    className="order-item-middle-left-name-text"
-                    style={{ width: '50%', fontSize: 10 }}
-                  >
-                    规格值,规格值
-                  </Text>
-                  <Tag style={{ width: 25 }} color="rgb(170, 170, 170)">
-                    自营
-                  </Tag>
-                </View>
-              </View>
-              <View className="order-item-middle-right">
-                <View className="order-item-middle-right-num">
-                  <Text>x{item.num}</Text>
-                </View>
+                    确认收货
+                  </Button>
+                )}
               </View>
             </View>
-            <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15 }}>
-              实付款： ￥{item.price}
-            </View>
-            <Divider styles={{ color: 'rgb(170, 170, 170)' }} />
-            <View className="order-item-bottom">
-              {/* <Button shape="square" className="bottom-btn" plain size="small" type="default">
-                查看物流
-              </Button> */}
-              <Button shape="square" className="bottom-btn" plain size="small" type="default">
-                删除订单
-              </Button>
-              <Button shape="square" className="bottom-btn" size="small" type="danger">
-                立即支付 14.59
-              </Button>
-              <Button
-                shape="square"
-                className="bottom-btn"
-                size="small"
-                type="info"
-                onClick={() => {
-                  setIsConfirm(true);
-                }}
-              >
-                确认收货
-              </Button>
-            </View>
-          </View>
-        ))}
+          ))
+        ) : (
+          <Empty style={{ background: 'F5F5F5' }} description="无数据" />
+        )}
       </View>
       <Popup
         visible={isConfirm}
