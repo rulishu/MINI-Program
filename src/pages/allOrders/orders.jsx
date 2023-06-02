@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Button, Tag, Divider, Popup, Empty } from '@nutui/nutui-react-taro';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
   const [isConfirm, setIsConfirm] = useState(false);
   const { orderList } = useSelector((state) => state.allOrders);
 
@@ -26,12 +28,26 @@ const Index = () => {
     }
   };
 
+  const goOrderDetails = async (status) => {
+    await dispatch({
+      type: 'orderDetails/update',
+      payload: {
+        orderStatus: status,
+      },
+    });
+    Taro.navigateTo({ url: '/pages/orderDetails/index' });
+  };
+
   return (
     <View className="order">
       <View className="order-content">
         {orderList.length !== 0 ? (
           orderList.map((item) => (
-            <View key={item.id} className="order-item">
+            <View
+              key={item.id}
+              className="order-item"
+              onClick={() => goOrderDetails(item.orderStatus)}
+            >
               <View className="order-item-top">
                 <View>
                   <Text>订单编号：{item.orderNumber}</Text>

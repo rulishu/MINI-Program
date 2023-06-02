@@ -19,6 +19,7 @@ export default defineAppConfig({
     'pages/allOrders/index',
     'pages/searchResult/index',
     'pages/logisticsInfo/index',
+    'pages/orderDetails/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
