@@ -63,7 +63,11 @@ const Index = (props) => {
                       {/* 标签图片内容调整 */}
                       {itm?.itemDto?.map((dto) => {
                         return (
-                          <View className="right-content-box" key={dto} style={{ marginTop: 5 }}>
+                          <View
+                            className="right-content-box"
+                            key={dto}
+                            style={{ marginTop: 5, marginRight: 10 }}
+                          >
                             <View className="right-content-item" style={{ overflow: 'hidden' }}>
                               <View
                                 className="right-content-item-img"
