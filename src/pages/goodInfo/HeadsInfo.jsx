@@ -57,6 +57,15 @@ const Index = () => {
     color: '#fff',
     fontSize: '14px',
   };
+  const title = () => {
+    if (queryInfo?.onShelf === 0) {
+      return '商品已下架';
+    } else if (queryInfo?.stock === 0) {
+      return '商品已售空';
+    } else if (queryInfo?.isDelete === 1) {
+      return '商品已删除';
+    }
+  };
   return (
     <Skeleton animated loading={!loading?.global}>
       <View>
@@ -272,9 +281,9 @@ const Index = () => {
                     </View>
                   );
                 })}
+                <View style={{ marginBottom: 70 }}>{title()}</View>
               </View>
             </View>
-            <View style={{ marginBottom: 50 }}></View>
           </View>
           {/* 页脚按钮 */}
           <View
@@ -308,9 +317,21 @@ const Index = () => {
                 <Button
                   style={{ borderRadius: 0, width: '100%' }}
                   onClick={() => {
-                    if (queryInfo?.stock <= 0) {
+                    if (queryInfo?.onShelf === 0) {
+                      Taro.showToast({
+                        title: '商品已下架',
+                        icon: 'none',
+                        duration: 2000,
+                      });
+                    } else if (queryInfo?.stock === 0) {
                       Taro.showToast({
                         title: '商品已售空',
+                        icon: 'none',
+                        duration: 2000,
+                      });
+                    } else if (queryInfo?.isDelete === 1) {
+                      Taro.showToast({
+                        title: '商品已删除',
                         icon: 'none',
                         duration: 2000,
                       });
@@ -333,9 +354,21 @@ const Index = () => {
                   type="primary"
                   style={{ borderRadius: 0, width: '100%' }}
                   onClick={() => {
-                    if (queryInfo?.stock <= 0) {
+                    if (queryInfo?.onShelf === 0) {
+                      Taro.showToast({
+                        title: '商品已下架',
+                        icon: 'none',
+                        duration: 2000,
+                      });
+                    } else if (queryInfo?.stock === 0) {
                       Taro.showToast({
                         title: '商品已售空',
+                        icon: 'none',
+                        duration: 2000,
+                      });
+                    } else if (queryInfo?.isDelete === 1) {
+                      Taro.showToast({
+                        title: '商品已删除',
                         icon: 'none',
                         duration: 2000,
                       });

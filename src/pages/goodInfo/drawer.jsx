@@ -223,6 +223,23 @@ const Index = () => {
                 });
               }
             }
+            if (type === 'addCart') {
+              if (Object.keys(active).length <= 1) {
+                Taro.showToast({
+                  title: '请选择规格',
+                  icon: 'none',
+                  duration: 2000,
+                });
+              } else {
+                dispatch({
+                  type: 'goodInfo/update',
+                  payload: {
+                    visible: false,
+                  },
+                });
+                Taro.navigateTo({ url: '/pages/goodInfo/index' });
+              }
+            }
           }}
         >
           {type === 'nowCart' ? '立即购买' : '加入购物车'}
