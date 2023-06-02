@@ -72,13 +72,18 @@ const Index = () => {
 
   // 选择地址
   const onSelectAddress = (item) => {
-    dispatch({
-      type: 'goodInfo/update',
-      payload: {
-        currentAddress: item,
-      },
-    });
-    Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+    let pages = getCurrentPages(); // 页面对象
+    let prevpage = pages[pages.length - 2]; // 上一个页面对象
+    let path = prevpage.route; // 上一个页面路由地址
+    if (path === 'pages/confirmOrder/index') {
+      dispatch({
+        type: 'goodInfo/update',
+        payload: {
+          currentAddress: item,
+        },
+      });
+      Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+    }
   };
 
   return (

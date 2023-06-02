@@ -67,7 +67,7 @@ const GoodList = (props) => {
                     <Text></Text>
                   ) : (
                     <>
-                      <Text className="activity">自营</Text>
+                      <Text className="activity">自购省</Text>
                       <Text className="activity-price">¥ {item?.savedPrice}</Text>
                     </>
                   )}
