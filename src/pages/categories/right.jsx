@@ -28,10 +28,7 @@ const Index = (props) => {
       scrollWithAnimation
     >
       <Skeleton animated loading={!loading?.global}>
-        <View
-          className="right"
-          style={{ paddingBottom: 70, height: 'auto', margin: '10px 5px 10px 5px' }}
-        >
+        <View className="right" style={{ paddingBottom: 70, height: 'auto' }}>
           <View style={{ marginBottom: 8 }} className="right-title-box">
             <View style={{ width: '100%' }}>
               {/* 二级标签 */}
@@ -66,7 +63,11 @@ const Index = (props) => {
                       {/* 标签图片内容调整 */}
                       {itm?.itemDto?.map((dto) => {
                         return (
-                          <View className="right-content-box" key={dto} style={{ marginTop: 5 }}>
+                          <View
+                            className="right-content-box"
+                            key={dto}
+                            style={{ marginTop: 5, marginRight: 10 }}
+                          >
                             <View className="right-content-item" style={{ overflow: 'hidden' }}>
                               <View
                                 className="right-content-item-img"

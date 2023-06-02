@@ -221,6 +221,7 @@ const Index = () => {
                   type: 'goodInfo/update',
                   payload: {
                     visible: true,
+                    type: 'addCart',
                   },
                 })
               }
