@@ -29,6 +29,28 @@ const GoodList = (props) => {
     Taro.navigateTo({ url: '/pages/goodInfo/index' });
   };
 
+  // 最低价
+  const min = (data) => {
+    return (
+      data?.reduce((prev, current) => {
+        if (current?.membershipPrice < prev) {
+          return current?.membershipPrice;
+        } else {
+          return prev;
+        }
+      }, Infinity) || 0
+    );
+  };
+
+  // 最高价
+  const max = (data) => {
+    return (
+      data?.reduce((prev, curr) => {
+        return prev?.membershipPrice > curr?.membershipPrice ? prev : curr;
+      })?.membershipPrice || 0
+    );
+  };
+
   return (
     <View className="list">
       {dataList.map((item) => {
@@ -76,11 +98,11 @@ const GoodList = (props) => {
                 <View>
                   <Text className="lastPrice">
                     <Text style={{ fontSize: 12 }}>¥ </Text>
-                    {item.costPrice || 0}
+                    {min(item.itemSkuDtos) || 0}
                   </Text>
                   <Text className="firstPrice">
                     <Text style={{ fontSize: 12 }}>¥ </Text>
-                    {item.price || 0}
+                    {max(item.itemSkuDtos) || 0}
                   </Text>
                 </View>
                 <View className="searchCart">
