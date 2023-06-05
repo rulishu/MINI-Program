@@ -13,7 +13,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo, loading } = useSelector((state) => state.goodInfo);
+  const { queryInfo } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -66,8 +66,11 @@ const Index = () => {
       return '商品已删除';
     }
   };
+  const prices = queryInfo?.itemSkuDtos?.map((item) => item?.goodsCost);
+  const minPrice = prices && Math.min(...prices);
+
   return (
-    <Skeleton animated loading={!loading?.global}>
+    <Skeleton animated loading={queryInfo?.mainGraphs ? true : false}>
       <View>
         <View>
           {/* 轮播图/可展示图片和video */}
@@ -173,7 +176,7 @@ const Index = () => {
                 style={{ color: '#d9001c' }}
               />
               <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
-                ¥{queryInfo?.price}
+                {minPrice ? `¥${minPrice}` : ''}
               </Text>
             </View>
             <View

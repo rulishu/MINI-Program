@@ -8,7 +8,7 @@ import './index.scss';
 
 const Index = (props) => {
   const { getCategoriesTwoTree } = props;
-  const { subList, loading } = useSelector((state) => state.categories);
+  const { subList } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [activeItem, setActiveItem] = useState(0);
   const [scrollIntoView, setScrollIntoView] = useState(0);
@@ -27,55 +27,58 @@ const Index = (props) => {
       scrollIntoView={scrollIntoView}
       scrollWithAnimation
     >
-      <Skeleton animated loading={!loading?.global}>
-        <View className="right" style={{ paddingBottom: 70, height: 'auto' }}>
-          <View style={{ marginBottom: 8 }} className="right-title-box">
-            <View style={{ width: '100%' }}>
-              {/* 二级标签 */}
-              <ScrollView className="my-code" scrollX scrollWithAnimation>
-                {getCategoriesTwoTree?.map((item, index) => {
-                  return (
-                    <Tag
-                      key={index}
-                      plain
-                      onClick={() => {
-                        setActiveItem(index);
-                      }}
-                      className="right-title"
-                      color={getCategoriesTwoTree && index !== activeItem ? '#999999' : '#965A3C'}
-                      // textColor="#999999"
-                    >
-                      <Text data-target-id={item?.id} onClick={(e) => onTagTap(e)}>
-                        {item?.marketingName}
-                      </Text>
-                    </Tag>
-                  );
-                })}
-              </ScrollView>
-              {/* 二级标签下内容 */}
-              <View className="right-content" style={{ marginTop: 6 }}>
-                {subList?.map((itm, idx) => {
-                  return (
-                    <>
-                      <View className="right-content-title" key={idx} id={`a${itm?.id}`}>
-                        <Text>{itm?.marketingName}</Text>
-                      </View>
-                      {/* 标签图片内容调整 */}
-                      {itm?.itemDto?.map((dto) => {
-                        return (
-                          <View
-                            className="right-content-box"
-                            key={dto}
-                            style={{ marginTop: 5, marginRight: 10 }}
-                          >
-                            <View className="right-content-item" style={{ overflow: 'hidden' }}>
-                              <View
-                                className="right-content-item-img"
-                                style={{
-                                  width: '40%',
-                                  alignItems: 'center',
-                                }}
-                              >
+      <View className="right" style={{ paddingBottom: 70, height: 'auto' }}>
+        <View style={{ marginBottom: 8 }} className="right-title-box">
+          <View style={{ width: '100%' }}>
+            {/* 二级标签 */}
+            <ScrollView className="my-code" scrollX scrollWithAnimation>
+              {getCategoriesTwoTree?.map((item, index) => {
+                return (
+                  <Tag
+                    key={index}
+                    plain
+                    onClick={() => {
+                      setActiveItem(index);
+                    }}
+                    className="right-title"
+                    color={getCategoriesTwoTree && index !== activeItem ? '#999999' : '#965A3C'}
+                    // textColor="#999999"
+                  >
+                    <Text data-target-id={item?.id} onClick={(e) => onTagTap(e)}>
+                      {item?.marketingName}
+                    </Text>
+                  </Tag>
+                );
+              })}
+            </ScrollView>
+            {/* 二级标签下内容 */}
+            <View className="right-content" style={{ marginTop: 6 }}>
+              {subList?.map((itm, idx) => {
+                return (
+                  <>
+                    <View className="right-content-title" key={idx} id={`a${itm?.id}`}>
+                      <Text>{itm?.marketingName}</Text>
+                    </View>
+                    {/* 标签图片内容调整 */}
+                    {itm?.itemDto?.map((dto) => {
+                      const prices = dto?.itemSkuDtos?.map((item) => item?.goodsCost);
+                      const minPrice = prices && Math.min(...prices);
+
+                      return (
+                        <View
+                          className="right-content-box"
+                          key={dto}
+                          style={{ marginTop: 5, marginRight: 10 }}
+                        >
+                          <View className="right-content-item" style={{ overflow: 'hidden' }}>
+                            <View
+                              className="right-content-item-img"
+                              style={{
+                                width: '40%',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <Skeleton animated loading={dto?.mainGraph ? true : false}>
                                 <Image
                                   mode="widthFix"
                                   // eslint-disable-next-line global-require
@@ -91,34 +94,35 @@ const Index = (props) => {
                                     Taro.navigateTo({ url: '/pages/goodInfo/index' });
                                   }}
                                 ></Image>
-                              </View>
+                              </Skeleton>
+                            </View>
 
+                            <View
+                              className="right-content-text-box"
+                              style={{
+                                width: '60%',
+                                height: 100,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                              }}
+                            >
                               <View
-                                className="right-content-text-box"
-                                style={{
-                                  width: '60%',
-                                  height: 100,
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  justifyContent: 'space-between',
+                                className="right-content-text-header"
+                                onTap={() => {
+                                  dispatch({
+                                    type: 'goodInfo/infoDetails',
+                                    payload: {
+                                      id: dto?.id,
+                                    },
+                                  });
+                                  Taro.navigateTo({ url: '/pages/goodInfo/index' });
                                 }}
                               >
-                                <View
-                                  className="right-content-text-header"
-                                  onTap={() => {
-                                    dispatch({
-                                      type: 'goodInfo/infoDetails',
-                                      payload: {
-                                        id: dto?.id,
-                                      },
-                                    });
-                                    Taro.navigateTo({ url: '/pages/goodInfo/index' });
-                                  }}
-                                >
-                                  <Tag color="rgb(170, 170, 170)">自营</Tag>
-                                  <Text style={{ marginLeft: 10 }}>{dto?.itemName}</Text>
-                                </View>
-                                {/* <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                <Tag color="rgb(170, 170, 170)">自营</Tag>
+                                <Text style={{ marginLeft: 10 }}>{dto?.itemName}</Text>
+                              </View>
+                              {/* <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                 <View style={{ fontSize: 10, border: '1px solid #aaaaaa', padding: '2px 3px' }}>
                                   <Text> 自购省</Text>
                                 </View>
@@ -134,54 +138,53 @@ const Index = (props) => {
                                   <Text style={{ color: '#ffffff' }} >¥12.8</Text>
                                 </View>
                               </View> */}
-                                <View
-                                  style={{
-                                    display: 'flex',
-                                    alignItems: 'flex-start',
-                                    justifyContent: 'space-between',
-                                  }}
-                                >
-                                  <View style={{ display: 'flex', flexDirection: 'row' }}>
-                                    <Price
-                                      price={dto?.costPrice}
-                                      size="normal"
-                                      needSymbol
-                                      thousands
-                                      style={{ color: '#d9001c' }}
-                                    />
-                                    <View>
-                                      <Text
-                                        style={{
-                                          color: '#7f7f7f',
-                                          textDecoration: 'line-through',
-                                          fontSize: 12,
-                                        }}
-                                      >
-                                        ¥{dto?.price}
-                                      </Text>
-                                    </View>
-                                  </View>
+                              <View
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'flex-start',
+                                  justifyContent: 'space-between',
+                                }}
+                              >
+                                <View style={{ display: 'flex', flexDirection: 'row' }}>
+                                  <Price
+                                    price={dto?.costPrice}
+                                    size="normal"
+                                    needSymbol
+                                    thousands
+                                    style={{ color: '#d9001c' }}
+                                  />
                                   <View>
-                                    <Image
-                                      mode="widthFix"
-                                      src={homeAdd}
-                                      style={{ width: 25, height: 25 }}
-                                    ></Image>
+                                    <Text
+                                      style={{
+                                        color: '#7f7f7f',
+                                        textDecoration: 'line-through',
+                                        fontSize: 12,
+                                      }}
+                                    >
+                                      {minPrice ? `¥${minPrice}` : ''}
+                                    </Text>
                                   </View>
+                                </View>
+                                <View>
+                                  <Image
+                                    mode="widthFix"
+                                    src={homeAdd}
+                                    style={{ width: 25, height: 25 }}
+                                  ></Image>
                                 </View>
                               </View>
                             </View>
                           </View>
-                        );
-                      })}
-                    </>
-                  );
-                })}
-              </View>
+                        </View>
+                      );
+                    })}
+                  </>
+                );
+              })}
             </View>
           </View>
         </View>
-      </Skeleton>
+      </View>
     </ScrollView>
   );
 };
