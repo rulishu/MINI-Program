@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import PopupInfo from './popupInfo';
 import { list } from './item';
 import Taro from '@tarojs/taro';
+import AfterSales from './afterSales';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const { orderStatus } = useSelector((state) => state.orderDetails);
-  const type = 6;
   useEffect(() => {
     wx.setNavigationBarTitle({
       title:
@@ -59,6 +59,16 @@ const Index = () => {
       type: 'orderDetails/update',
       payload: {
         orderRefund: true,
+      },
+    });
+  };
+
+  // 申请售后
+  const onAfterSales = () => {
+    dispatch({
+      type: 'orderDetails/update',
+      payload: {
+        orderAfterSales: true,
       },
     });
   };
@@ -168,6 +178,7 @@ const Index = () => {
                 style={{ color: '#AAAAAA', fontWeight: 400 }}
                 plain
                 type="default"
+                onClick={() => onAfterSales()}
               >
                 <Text style={{ fontSize: 14 }}>申请售后</Text>
               </Button>
@@ -220,7 +231,7 @@ const Index = () => {
           </View>
         </View>
         <View className="amount-details">
-          {list1(type).map((a) => {
+          {list1(orderStatus)?.map((a) => {
             return (
               <View key={a.id} className="address-price">
                 <View>
@@ -363,6 +374,7 @@ const Index = () => {
         </View>
       </View>
       <PopupInfo />
+      <AfterSales />
     </View>
   );
 };
