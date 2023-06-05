@@ -7,6 +7,7 @@ import PopupInfo from './popupInfo';
 import { list } from './item';
 import Taro from '@tarojs/taro';
 import AfterSales from './afterSales';
+import { orderType } from '../../utils/enum';
 import './index.scss';
 
 const Index = () => {
@@ -14,20 +15,7 @@ const Index = () => {
   const { orderStatus } = useSelector((state) => state.orderDetails);
   useEffect(() => {
     wx.setNavigationBarTitle({
-      title:
-        orderStatus === 1
-          ? '待付款'
-          : orderStatus === 2
-            ? '待发货'
-            : orderStatus === 3
-              ? '待收货'
-              : orderStatus === 4
-                ? '已完成'
-                : orderStatus === 5
-                  ? '已取消'
-                  : orderStatus === 6
-                    ? '已退款'
-                    : '',
+      title: orderType[orderStatus],
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
