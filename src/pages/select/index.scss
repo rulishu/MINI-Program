@@ -7,7 +7,7 @@ page {
 
   .strict-selection-top{
     background-color: #A05635;
-    height:40vh;
+    height:30vh;
     width: 100%;
     position: relative;
     .strict-selection-top-content{
@@ -23,6 +23,7 @@ page {
   }
 }
 .strict-selection-body{
+  height: 60vh;
   /* tabs 组件修改 */
   .tabs{
     padding:0;
@@ -89,6 +90,14 @@ page {
       align-items: center;
       justify-content: flex-end;
       align-items: center;
+      .popover{
+        .popover-menu-item-name{
+          width:100px;
+          white-space:nowrap;        // 强制一行显示
+          overflow:hidden;          // 超出隐藏
+          text-overflow:ellipsis;   // 省略号
+        }
+      }
       .self-content{
         display: flex;
         flex-direction: row;

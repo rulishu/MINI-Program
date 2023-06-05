@@ -11,16 +11,22 @@ const Index = () => {
   const Threshold = 20;
   const vStyleA = {
     display: 'inline-block',
-    // height: '40px',
     width: '80px',
-    margin: '6px 0 20px 0',
+    margin: '8px 0 20px 0',
   };
 
-  // const [customized, setCustomized] = useState(false);
   const [tab5value, setTab5value] = useState('0');
   const [activeTag, setActiveTag] = useState(0);
+  const [lightTheme, setLightTheme] = useState(false);
+
+  const itemList = escortAgency.map((a) => {
+    return {
+      name: a.name,
+    };
+  });
+
   return (
-    <View className="traceability" style={{ height: '50vh', overflow: 'scroll' }}>
+    <View className="traceability" style={{ overflow: 'scroll' }}>
       <View className="traceability-top">
         <View className="traceability-top-left">
           <ScrollView
@@ -53,11 +59,13 @@ const Index = () => {
         </View>
         <View className="traceability-top-right">
           <Popover
-            // visible={customized}
-            location="left-start"
+            className="popover"
+            location="bottom-end"
+            visible={lightTheme}
             onClick={() => {
-              // customized ? setCustomized(false) : setCustomized(true);
+              lightTheme ? setLightTheme(false) : setLightTheme(true);
             }}
+            list={itemList}
           >
             <Button
               color="#ffffff"
@@ -71,28 +79,13 @@ const Index = () => {
             >
               <Image src={selectMenu} style={{ width: 20, height: 20, marginTop: 10 }} />
             </Button>
-            {/* {customized ? (
-              <div className="self-content">
-                {escortAgency.map((item) => {
-                  return (
-                    <View key={item.id} className="self-content-item">
-                      <Tag color="#F2F2F2" textColor="#333333">
-                        {item.name}
-                      </Tag>
-                    </View>
-                  );
-                })}
-              </div>
-            ) : (
-              ''
-            )} */}
           </Popover>
         </View>
       </View>
       <View className="traceability-bottom">
         <Tabs
           value={tab5value}
-          style={{ height: '46vh' }}
+          style={{ height: '52vh' }}
           onChange={({ paneKey }) => {
             setTab5value(paneKey);
           }}

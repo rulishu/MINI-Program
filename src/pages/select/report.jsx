@@ -6,7 +6,7 @@ import './index.scss';
 
 const Index = () => {
   return (
-    <View className="report" style={{ height: '50vh', overflow: 'scroll' }}>
+    <View className="report" style={{ height: '56vh', overflow: 'scroll' }}>
       <View className="steps-wrapper">
         <Steps direction="vertical" progressDot style={{ backgroundColor: '#F2F2F2' }}>
           {data?.map((val) => {
@@ -44,13 +44,12 @@ const Index = () => {
                         return (
                           <View
                             key={item.id}
-                            onTap={() => {}}
                             style={{
                               width: '45%',
                               height: 188,
                               display: 'flex',
                               flexDirection: 'column',
-                              backgroundColor: '#ffffff',
+                              backgroundColor: '#F2F2F2',
                             }}
                           >
                             <View style={{ height: 148, width: 148, position: 'relative' }}>
@@ -68,7 +67,7 @@ const Index = () => {
                                   style={{
                                     height: '100%',
                                     width: '100%',
-                                    backgroundColor: '#D7D7D7',
+                                    backgroundColor: '#F2F2F2',
                                   }}
                                 ></Image>
                               </Skeleton>
