@@ -25,13 +25,13 @@ const Index = () => {
       href: '/pages/home/index',
     },
     {
-      title: '商品',
+      title: '分类',
       icon: select,
       iconActive: select1,
       href: '/pages/categories/index',
     },
     {
-      title: '封坛',
+      title: '镖族严选',
       icon: categories,
       iconActive: categories1,
       href: '/pages/select/index',
