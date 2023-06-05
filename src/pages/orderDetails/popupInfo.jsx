@@ -9,7 +9,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const [value2, updateValue2] = useState('');
-  const { orderRefund } = useSelector((state) => state.orderDetails);
+  const { orderRefund, refundType } = useSelector((state) => state.orderDetails);
 
   const onClose = () => {
     dispatch({
@@ -50,7 +50,7 @@ const Index = () => {
     >
       <View className="popupInfo">
         <View className="popupInfo-title">
-          <Text>申请退款</Text>
+          <Text>{refundType === 'refundOnly' ? '仅退款' : '退货退款'}</Text>
         </View>
         <View className="popupInfo-pay">
           <View>

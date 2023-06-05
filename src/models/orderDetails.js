@@ -6,6 +6,8 @@ export default {
     // 初始化数据
     orderRefund: false,
     orderStatus: undefined,
+    orderAfterSales: false,
+    refundType: '',
   },
 
   effects: {},

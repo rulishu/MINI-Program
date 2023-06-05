@@ -32,11 +32,7 @@ const Index = (props) => {
             </View>
             <View className="classification-content-goods">
               {item?.goodsList?.map((vel) => (
-                <View
-                  className="middle-search-result-info-item"
-                  key={vel.id}
-                  onTap={() => goGoodInfo(vel)}
-                >
+                <View className="middle-search-result-info-item" key={vel.id}>
                   <View className="search-result-image">
                     <Skeleton
                       loading={vel.mainGraph ? true : false}
