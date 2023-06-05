@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from '@tarojs/components';
-import { Tabs } from '@nutui/nutui-react-taro';
+import { Tabs, Empty } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Right from './right';
 import './index.scss';
@@ -26,40 +26,53 @@ const Index = () => {
 
   return (
     <View>
-      <Tabs
-        value={tab5value}
-        color="#B08B57"
-        style={{ height: '100vh' }}
-        autoHeight
-        tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: '30vw' }}
-        onChange={async ({ paneKey }) => {
-          setTab5value(paneKey);
-          await dispatch({
-            type: 'categories/getList',
-            payload: {
-              id: getCategoriesTree?.at(paneKey)?.id,
-              onShelf: 2,
-              groundType: 2,
-              pageNum: 1,
-              pageSize: 20,
-            },
-          });
-        }}
-        titleScroll
-        leftAlign
-        direction="vertical"
-      >
-        {getCategoriesTree?.map((item) => {
-          return (
-            <Tabs.TabPane key={item} title={item?.marketingName} className="tabpane">
-              <Right
-                getCategoriesTwoTree={item?.child}
-                style={{ width: '70vw', backgroundColor: '#ffffff' }}
-              />
-            </Tabs.TabPane>
-          );
-        })}
-      </Tabs>
+      {getCategoriesTree.length > 0 ? (
+        <Tabs
+          value={tab5value}
+          color="#B08B57"
+          style={{ height: '100vh' }}
+          autoHeight
+          tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: '30vw' }}
+          onChange={async ({ paneKey }) => {
+            setTab5value(paneKey);
+            await dispatch({
+              type: 'categories/getList',
+              payload: {
+                id: getCategoriesTree?.at(paneKey)?.id,
+                onShelf: 2,
+                groundType: 2,
+                pageNum: 1,
+                pageSize: 20,
+              },
+            });
+          }}
+          titleScroll
+          leftAlign
+          direction="vertical"
+        >
+          {getCategoriesTree?.map((item) => {
+            return (
+              <Tabs.TabPane key={item} title={item?.marketingName} className="tabpane">
+                <Right
+                  getCategoriesTwoTree={item?.child}
+                  style={{ width: '70vw', backgroundColor: '#ffffff' }}
+                />
+              </Tabs.TabPane>
+            );
+          })}
+        </Tabs>
+      ) : (
+        <View
+          style={{
+            height: '90vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Empty image="empty" description="无数据" />
+        </View>
+      )}
     </View>
   );
 };
