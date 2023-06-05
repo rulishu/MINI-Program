@@ -64,9 +64,11 @@ const Index = () => {
               <View>退款金额:￥{item.price}</View>
             </View>
 
-            <Divider styles={{ color: 'rgb(170, 170, 170)' }} />
+            <Divider
+              styles={{ color: 'rgb(170, 170, 170)', marginTop: '10px', marginBottom: '10px' }}
+            />
             <View className="order-item-bottom">
-              <Button shape="square" className="bottom-btn" plain size="small" type="default">
+              <Button shape="square" plain size="small" type="default">
                 取消售后
               </Button>
             </View>

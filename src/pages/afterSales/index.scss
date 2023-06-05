@@ -12,13 +12,14 @@ page {
       background-color: #fff;
 
       margin-top: 40px;
-      padding: 40px 20px;
+      padding: 20px 20px;
 
       .order-item-top {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        font-size: 24px;
+        font-size: 28px;
+        margin-bottom: 30px;
       }
 
       .order-item-middle {
@@ -70,11 +71,6 @@ page {
       .order-item-bottom {
         display: flex;
         justify-content: flex-end;
-
-        .bottom-btn {
-          margin-left: 16px;
-
-        }
 
       }
     }

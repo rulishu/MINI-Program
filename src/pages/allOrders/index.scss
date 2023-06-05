@@ -19,6 +19,7 @@ page {
         flex-direction: row;
         justify-content: space-between;
         font-size: 24px;
+        margin-bottom: 30px;
       }
 
       .order-item-middle {
@@ -76,11 +77,13 @@ page {
         display: flex;
         justify-content: flex-end;
 
-        .bottom-btn {
+        .bottom-btn,.bottom-btn-pay  {
           margin-left: 16px;
 
         }
-
+        .bottom-btn-pay {
+          width: 240px;
+        }
       }
     }
 
