@@ -201,7 +201,7 @@ const Index = () => {
           }}
           onClick={() => {
             if (type === 'nowCart') {
-              if (Object.keys(active).length <= 1) {
+              if (Object.keys(active).length !== Object.keys(attributeVos).length) {
                 Taro.showToast({
                   title: '请选择规格',
                   icon: 'none',
@@ -224,7 +224,7 @@ const Index = () => {
               }
             }
             if (type === 'addCart') {
-              if (Object.keys(active).length <= 1) {
+              if (Object.keys(active).length !== Object.keys(attributeVos).length) {
                 Taro.showToast({
                   title: '请选择规格',
                   icon: 'none',
