@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { getAllOrders, deleteOrder } from '@/server/allOrders';
+import { getAllOrders, deleteOrder, cancelOrder } from '@/server/allOrders';
 
 export default {
   namespace: 'allOrders', // 这是模块名
@@ -38,6 +38,22 @@ export default {
             duration: 2000,
           });
           payload.callBack();
+        }
+      } catch (err) {}
+    },
+
+    // 取消订单
+    *cancelOrder({ payload }, { call, put }) {
+      try {
+        const data = yield call(cancelOrder, payload);
+        if (data && data.code === 200) {
+          yield put({
+            type: 'getAllOrders',
+            payload: {
+              pageNum: 1,
+              pageSize: 10,
+            },
+          });
         }
       } catch (err) {}
     },

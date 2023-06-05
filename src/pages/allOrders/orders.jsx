@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Button, Tag, Divider, Popup, Empty } from '@nutui/nutui-react-taro';
 import { useSelector, useDispatch } from 'react-redux';
+// import { useCountDown } from 'ahooks';
 import Taro from '@tarojs/taro';
 import './index.scss';
 
@@ -9,7 +10,6 @@ const Index = () => {
   const dispatch = useDispatch();
   const [isConfirm, setIsConfirm] = useState(false);
   const { orderList, orderActive } = useSelector((state) => state.allOrders);
-
   const orderState = (num) => {
     if (num === 0) {
       return '待定价';
@@ -26,7 +26,7 @@ const Index = () => {
     if (num === 4) {
       return '已完成';
     }
-    if (num === 5) {
+    if (num === -2) {
       return '已取消';
     }
     if (num === 6) {
@@ -164,8 +164,8 @@ const Index = () => {
                     </Button>
                   )}
                   {item.orderStatus === 1 && (
-                    <Button shape="square" className="bottom-btn" size="small" type="danger">
-                      立即支付
+                    <Button shape="square" className="bottom-btn-pay" size="small" type="danger">
+                      <View style={{ display: 'flex' }}>立即支付 14:59</View>
                     </Button>
                   )}
                   {item.orderStatus === 3 && (
