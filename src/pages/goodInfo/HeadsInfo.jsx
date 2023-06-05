@@ -13,7 +13,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo } = useSelector((state) => state.goodInfo);
+  const { queryInfo, type } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -21,7 +21,9 @@ const Index = () => {
 
   const list = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
   const itemList = queryInfo?.itemImageDtoList?.map((item) => item?.path);
+
   useEffect(() => {
+    // 获取胶囊的位置
     const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
     const { top, width, right } = menuButtonInfo;
     wx.getSystemInfo({
@@ -36,10 +38,18 @@ const Index = () => {
         setnavLefts(searchWidth);
       },
     });
-    const len = queryInfo?.mainGraphs
-      ? queryInfo?.mainGraphs?.map((item) => item?.path).concat(queryInfo?.itemVideo)
-      : [];
-    setTotal(len?.length);
+    // 轮播图
+    const len = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
+    const newLen = queryInfo?.itemVideo ? len.concat(queryInfo?.itemVideo) : len;
+    setTotal(newLen?.length);
+    // 提示
+    if (type === 'addCart') {
+      Taro.showToast({
+        title: '已加入购物车',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryInfo]);
 
@@ -88,22 +98,24 @@ const Index = () => {
               autoplay
               circular
             >
-              <SwiperItem>
-                <Video
-                  id="video"
-                  style={{ height: '40vh', width: '100%' }}
-                  src={queryInfo?.itemVideo}
-                  // "https://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
-                  initialTime={0}
-                  controls
-                  autoplay
-                  loop={false}
-                  muted
-                  showBottomProgress
-                  showMuteBtn
-                  showFullscreenBtn={false}
-                />
-              </SwiperItem>
+              {queryInfo?.itemVideo && (
+                <SwiperItem>
+                  <Video
+                    id="video"
+                    style={{ height: '40vh', width: '100%' }}
+                    src={queryInfo?.itemVideo}
+                    // "https://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
+                    initialTime={0}
+                    controls
+                    autoplay
+                    loop={false}
+                    muted
+                    showBottomProgress
+                    showMuteBtn
+                    showFullscreenBtn={false}
+                  />
+                </SwiperItem>
+              )}
 
               {list.map((item, index) => {
                 return (

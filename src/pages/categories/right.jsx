@@ -169,7 +169,7 @@ const Index = (props) => {
                                   <Image
                                     mode="widthFix"
                                     src={homeAdd}
-                                    style={{ width: 25, height: 25 }}
+                                    style={{ width: 20, height: 20 }}
                                   ></Image>
                                 </View>
                               </View>
