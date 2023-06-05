@@ -7,3 +7,8 @@ export const getAllOrders = (params) => {
     { orderStatus: params?.orderStatus },
   );
 };
+
+// 删除订单
+export const deleteOrder = (params) => {
+  return request.delete(`/jcgl-mall/app/order/info/delete?id=${params.id}`);
+};

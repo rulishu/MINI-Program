@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-// import Taro from '@tarojs/taro';
-import { getAllOrders } from '@/server/allOrders';
+import Taro from '@tarojs/taro';
+import { getAllOrders, deleteOrder } from '@/server/allOrders';
 
 export default {
   namespace: 'allOrders', // 这是模块名
@@ -23,6 +23,21 @@ export default {
               orderList: data.result.records || [],
             },
           });
+        }
+      } catch (err) {}
+    },
+
+    // 删除订单
+    *deleteOrder({ payload }, { call }) {
+      try {
+        const data = yield call(deleteOrder, { id: payload.id });
+        if (data && data.code === 200) {
+          Taro.showToast({
+            title: '删除成功',
+            icon: 'success',
+            duration: 2000,
+          });
+          payload.callBack();
         }
       } catch (err) {}
     },

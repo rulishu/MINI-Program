@@ -109,4 +109,7 @@ export default {
   put: function (url, data, options) {
     return this.baseOptions({ url, data, ...options }, 'PUT');
   },
+  delete: function (url, data, options) {
+    return this.baseOptions({ url, data, ...options }, 'Delete');
+  },
 };

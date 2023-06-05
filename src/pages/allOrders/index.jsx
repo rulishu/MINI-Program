@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View } from '@tarojs/components';
 import { Tabs } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
@@ -36,14 +36,18 @@ const Index = () => {
       });
     }
   }, []);
-  const [tab3value, setTab3value] = useState(orderActive);
   return (
     <View className="index">
       <Tabs
-        value={tab3value}
+        value={orderActive}
         background="#ffffff"
         onChange={({ paneKey }) => {
-          setTab3value(paneKey);
+          dispatch({
+            type: 'allOrders/update',
+            payload: {
+              orderActive: paneKey,
+            },
+          });
           let orderStatus;
           if (paneKey === '1') {
             orderStatus = 1;
