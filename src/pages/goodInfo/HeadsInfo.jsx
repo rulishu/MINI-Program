@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image } from '@tarojs/components';
+import { View, Text, Image, Video } from '@tarojs/components';
 import { Swiper, SwiperItem, Price, Icon, Button, Skeleton } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import searchLeft from '@/assets/images/searchLeft.svg';
@@ -36,7 +36,9 @@ const Index = () => {
         setnavLefts(searchWidth);
       },
     });
-    const len = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
+    const len = queryInfo?.mainGraphs
+      ? queryInfo?.mainGraphs?.map((item) => item?.path).concat(queryInfo?.itemVideo)
+      : [];
     setTotal(len?.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryInfo]);
@@ -68,7 +70,6 @@ const Index = () => {
   };
   const prices = queryInfo?.itemSkuDtos?.map((item) => item?.goodsCost);
   const minPrice = prices && Math.min(...prices);
-
   return (
     <Skeleton animated loading={queryInfo?.mainGraphs ? true : false}>
       <View>
@@ -76,19 +77,37 @@ const Index = () => {
           {/* 轮播图/可展示图片和video */}
           {queryInfo?.mainGraphs && (
             <Swiper
-              initPage={1}
+              // initPage={1}
               loop
               onChange={onChange3}
               pageContent={
                 <div style={pageStyle}>
-                  {' '}
-                  {current} / {total}{' '}
+                  {current} / {total}
                 </div>
               }
+              autoplay
+              circular
             >
-              {list.map((item) => {
+              <SwiperItem>
+                <Video
+                  id="video"
+                  style={{ height: '40vh', width: '100%' }}
+                  src={queryInfo?.itemVideo}
+                  // "https://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
+                  initialTime={0}
+                  controls
+                  autoplay
+                  loop={false}
+                  muted
+                  showBottomProgress
+                  showMuteBtn
+                  showFullscreenBtn={false}
+                />
+              </SwiperItem>
+
+              {list.map((item, index) => {
                 return (
-                  <SwiperItem key={item}>
+                  <SwiperItem key={index}>
                     <Image style={{ height: '40vh', width: '100%' }} src={item}></Image>
                   </SwiperItem>
                 );
