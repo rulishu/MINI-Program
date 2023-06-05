@@ -216,9 +216,7 @@ const Index = () => {
             paginationVisible
             style={{
               height: '200px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              width: '100%',
             }}
           >
             {bannerList?.map((item) => {
