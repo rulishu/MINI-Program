@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, Video } from '@tarojs/components';
 import { Swiper, SwiperItem, Skeleton } from '@nutui/nutui-react-taro';
 import './index.scss';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Index = (props) => {
-  const { data, itemList, title } = props;
+  const dispatch = useDispatch();
+  const { itemList, title } = props;
+  const { secondLevelAreaClassAgent, list } = useSelector((state) => state.select);
+  useEffect(() => {
+    dispatch({
+      type: 'select/selectList',
+      payload: {
+        pageNum: 1,
+        pageSize: 20,
+        provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
+      },
+    });
+    // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
+  }, [secondLevelAreaClassAgent.at(0)?.areaId]);
 
   // 轮播视频
   const videos = itemList?.videos?.split(',');
@@ -80,7 +94,7 @@ const Index = (props) => {
         )}
 
         <View className="classification-content-goods">
-          {data?.map((vel) => (
+          {list?.map((vel) => (
             <View className="middle-search-result-info-item" key={vel.id}>
               <View className="search-result-image">
                 <Skeleton
