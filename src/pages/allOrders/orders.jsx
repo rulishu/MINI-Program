@@ -39,7 +39,7 @@ const ListItem = ({ item, orderActive }) => {
     <Fragment>
       <View className="order-item">
         <View onClick={() => goOrderDetails(item.orderStatus)}>
-          <View>
+          <View style={{ fontSize: 13 }}>
             <Text>
               {days}天{hours}小时{minutes}分之{seconds}秒
             </Text>
@@ -91,7 +91,7 @@ const ListItem = ({ item, orderActive }) => {
               </View>
             </View>
           ))}
-          <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15 }}>
+          <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15, marginBottom: -5 }}>
             实付款： ￥{item.payPrice}
           </View>
         </View>

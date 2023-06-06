@@ -3,23 +3,27 @@ page {
   background: #F5F5F5;
 }
 
+.tabpane{
+  background-color: #f2f2f2;
+}
+.nut-tabpane{
+  padding: 0 !important;
+}
 .order {
   display: flex;
   flex-direction: column;
-
   .order-content {
+    width: 100%;
     .order-item {
-      background-color: #F5F5F5;
-      margin-bottom: 40px;
-      padding: 40px 20px;
-      border-radius: 40px;
-
+      padding: 30px 44px;
+      background-color: #ffffff;
+      margin-top: 10px;
       .order-item-top {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        font-size: 24px;
-        margin-bottom: 30px;
+        font-size: 30px;
+        margin-bottom: 20px;
       }
 
       .order-item-middle {
@@ -27,7 +31,7 @@ page {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin: 10px 0;
+        // margin: 10px 0;
 
         .order-item-middle-left {
           display: flex;
@@ -65,7 +69,7 @@ page {
           flex-direction: column;
 
           .order-item-middle-right-num {
-            font-size: 24px;
+            font-size: 28px;
             display: flex;
             justify-content: flex-end;
           }
@@ -76,7 +80,7 @@ page {
       .order-item-bottom {
         display: flex;
         justify-content: flex-end;
-
+        margin-top: -10px;
         .bottom-btn,.bottom-btn-pay  {
           margin-left: 16px;
 

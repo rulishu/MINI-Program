@@ -37,7 +37,7 @@ const Index = () => {
     }
   }, []);
   return (
-    <View className="index">
+    <View style={{ marginTop: 3 }}>
       <Tabs
         value={orderActive}
         background="#ffffff"
@@ -72,7 +72,7 @@ const Index = () => {
         }}
       >
         {tabList.map((item) => (
-          <Tabs.TabPane key={item.id} title={item.title}>
+          <Tabs.TabPane key={item.id} title={item.title} className="tabpane">
             <Orders />
           </Tabs.TabPane>
         ))}
