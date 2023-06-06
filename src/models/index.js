@@ -8,6 +8,7 @@ import goodInfo from './goodInfo';
 import search from './search';
 import allOrders from './allOrders';
 import orderDetails from './orderDetails';
+import select from './select';
 
 export default [
   global,
@@ -20,4 +21,5 @@ export default [
   search,
   allOrders,
   orderDetails,
+  select,
 ]; // 这里是数组, 数组中的每个项都是独立的模块

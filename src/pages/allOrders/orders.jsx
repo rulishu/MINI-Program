@@ -31,11 +31,18 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   });
   const { minutes, seconds } = formattedRes;
   const dispatch = useDispatch();
-  const goOrderDetails = async (status) => {
+  const goOrderDetails = async (status, info) => {
     await dispatch({
       type: 'orderDetails/update',
       payload: {
         orderStatus: status,
+        orderInfo: {},
+      },
+    });
+    await dispatch({
+      type: 'orderDetails/selectPrimaryKey',
+      payload: {
+        id: Number(info.id),
       },
     });
     Taro.navigateTo({ url: '/pages/orderDetails/index' });
@@ -93,7 +100,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   return (
     <Fragment>
       <View className="order-item">
-        <View onClick={() => goOrderDetails(item.orderStatus)}>
+        <View onClick={() => goOrderDetails(item.orderStatus, item)}>
           <View className="order-item-top">
             <View>
               <Text>订单编号：{item.orderNumber}</Text>

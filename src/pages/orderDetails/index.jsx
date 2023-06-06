@@ -4,7 +4,6 @@ import { View, Text, Image } from '@tarojs/components';
 import payAddress from '@/assets/images/payAddress.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import PopupInfo from './popupInfo';
-import { list } from './item';
 import Taro from '@tarojs/taro';
 import AfterSales from './afterSales';
 import { orderType } from '../../utils/enum';
@@ -12,7 +11,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { orderStatus } = useSelector((state) => state.orderDetails);
+  const { orderStatus, orderInfo } = useSelector((state) => state.orderDetails);
   useEffect(() => {
     wx.setNavigationBarTitle({
       title: orderType[orderStatus],
@@ -20,19 +19,22 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 收货地址
+  const address = orderInfo?.address?.split(' ');
+
   const list1 = (val) => {
     const data = [
-      { id: 1, title: '订单编号', price: list.orderCode },
-      { id: 5, title: '创建时间', isPrice: false, price: list.createTime },
+      { id: 1, title: '订单编号', price: orderInfo.orderNumber },
+      { id: 5, title: '创建时间', price: orderInfo.createTime },
     ];
 
     const data2 = [
-      { id: 1, title: '订单编号', price: list.orderCode },
-      { id: 2, title: '订单备注', isPrice: false, price: list.remark },
-      { id: 3, title: '支付方式', isPrice: false, price: list.provider },
-      { id: 4, isPrice: false, title: '支付单号', price: list.orderCode },
-      { id: 5, title: '创建时间', isPrice: false, price: list.createTime },
-      { id: 6, isPrice: false, title: '支付时间', price: list.payTime },
+      { id: 1, title: '订单编号', price: orderInfo.orderNumber },
+      { id: 2, title: '订单备注', price: orderInfo?.remark },
+      { id: 3, title: '支付方式', price: '微信支付' },
+      { id: 4, title: '支付单号', price: '' },
+      { id: 5, title: '创建时间', price: orderInfo.createTime },
+      { id: 6, title: '支付时间', price: '' },
     ];
     if (val == 1 || val == 5) {
       return data;
@@ -97,18 +99,15 @@ const Index = () => {
             <View className="address-left-icon">
               <Image src={payAddress} style={{ width: 16, height: 16 }} />
             </View>
-
             <View className="address-info">
               <View className="city">
-                <Text>
-                  {list.addressInfo?.province + list.addressInfo?.city + list.addressInfo?.area}
-                </Text>
+                <Text>{address?.slice(0, 3)}</Text>
               </View>
               <View className="address-details">
-                <Text>{list.addressInfo?.addressDetails}</Text>
+                <Text>{address?.slice(3, 4)}</Text>
               </View>
               <View className="address-details">
-                <Text>{list.addressInfo?.consignee + ' ' + list.addressInfo?.phone}</Text>
+                <Text>{orderInfo?.consignee + ' ' + orderInfo?.phone}</Text>
               </View>
             </View>
           </View>
@@ -116,49 +115,53 @@ const Index = () => {
         <View className="goods-info">
           <View className="goods-info-head-top">
             <View className="goods-info-head-top-code">
-              <Text>订单编号:{list.orderCode}</Text>
+              <Text>订单编号:{orderInfo?.orderNumber}</Text>
             </View>
             <View className="goods-info-head-top-phone">
               <Text>联系客服</Text>
             </View>
           </View>
-          <View className="goods-info-head">
-            <View className="goods-info-head-left">
-              <View className="goods-info-head-img">
-                <Image
-                  mode="widthFix"
-                  src={list?.defaultImage}
-                  style={{ width: 128, height: 128 }}
-                ></Image>
-              </View>
-              <View className="goods-info-head-info">
-                <View className="goods-info-head-info-title">
-                  <Text>{list.itemName}</Text>
+          {orderInfo?.items?.map((a) => {
+            return (
+              <View className="goods-info-head" key={a.id}>
+                <View className="goods-info-head-left">
+                  <View className="goods-info-head-img">
+                    <Image
+                      mode="widthFix"
+                      src={a?.mainGraph}
+                      style={{ width: 128, height: 128 }}
+                    ></Image>
+                  </View>
+                  <View className="goods-info-head-info">
+                    <View className="goods-info-head-info-title">
+                      <Text>{a.itemName}</Text>
+                    </View>
+                    <View className="goods-info-head-info-doc">
+                      {a.attributes?.map((item) => (
+                        <Text key={item.id} className="doc">
+                          {item.value},
+                        </Text>
+                      ))}
+                    </View>
+                    <View className="goods-info-head-info-doc ">
+                      <Text className="doc-bg">自营</Text>
+                    </View>
+                  </View>
                 </View>
-                <View className="goods-info-head-info-doc">
-                  {list.activeSku.map((item) => (
-                    <Text key={item.id} className="doc">
-                      {item.value},
+                <View className="goods-info-head-right">
+                  <View className="goods-info-head-right-num">
+                    <Text>x{a?.amount}</Text>
+                  </View>
+                  <View className="goods-info-head-right-price">
+                    <Text>
+                      <Text style={{ fontSize: 12 }}>¥</Text>
+                      {a?.unitPrice}
                     </Text>
-                  ))}
-                </View>
-                <View className="goods-info-head-info-doc ">
-                  <Text className="doc-bg">自营</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <View className="goods-info-head-right">
-              <View className="goods-info-head-right-num">
-                <Text>x{list?.count}</Text>
-              </View>
-              <View className="goods-info-head-right-price">
-                <Text>
-                  <Text style={{ fontSize: 12 }}>¥</Text>
-                  {list?.unitPrice}
-                </Text>
-              </View>
-            </View>
-          </View>
+            );
+          })}
           {orderStatus === 3 && (
             <View className="after-sales">
               <Button
@@ -180,7 +183,7 @@ const Index = () => {
             <View>
               <Text>
                 <Text style={{ fontSize: 12 }}>¥</Text>
-                {list?.unitPrice}
+                {orderInfo?.orderPrice}
               </Text>
             </View>
           </View>
@@ -190,8 +193,8 @@ const Index = () => {
             </View>
             <View>
               <Text>
-                <Text style={{ fontSize: 12 }}>¥</Text>
-                {list?.freight}
+                包邮
+                {/* <Text style={{ fontSize: 12 }}>¥</Text> */}
               </Text>
             </View>
           </View>
@@ -201,8 +204,8 @@ const Index = () => {
             </View>
             <View className="red-text">
               <Text>
-                <Text style={{ fontSize: 12 }}>-¥</Text>
-                {list?.coupon}
+                <Text style={{ fontSize: 12 }}>¥</Text>
+                0.00
               </Text>
             </View>
           </View>
@@ -213,7 +216,7 @@ const Index = () => {
             <View className="red-text">
               <Text>
                 <Text style={{ fontSize: 12 }}>¥</Text>
-                {list?.totalPrice}
+                {orderInfo?.orderPrice}
               </Text>
             </View>
           </View>

@@ -1,14 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Image } from '@tarojs/components';
-import { escortAgency, tabData } from './item';
 import { Tag, Popover, Button, Tabs } from '@nutui/nutui-react-taro';
 import selectMenu from '@/assets/images/selectMenu.svg';
 import Classification from './classification';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
-  const scrollTop = 0;
-  const Threshold = 20;
+  const dispatch = useDispatch();
+  const { scrollTop, Threshold, firstLevelAreaClassAgent, secondLevelAreaClassAgent, list } =
+    useSelector((state) => state.select);
+  useEffect(() => {
+    getSub();
+    // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
+  }, [firstLevelAreaClassAgent.length, secondLevelAreaClassAgent.length]);
+
+  // 默认
+  const getSub = async () => {
+    if (firstLevelAreaClassAgent.length > 0) {
+      await dispatch({
+        type: 'select/selectAreaClassBagent',
+        payload: {
+          id: parseInt(firstLevelAreaClassAgent.at(0)?.id),
+        },
+      });
+      if (secondLevelAreaClassAgent.length > 0) {
+        await dispatch({
+          type: 'select/selectList',
+          payload: {
+            pageNum: 1,
+            pageSize: 20,
+            provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
+          },
+        });
+      }
+    }
+  };
   const vStyleA = {
     display: 'inline-block',
     width: '80px',
@@ -19,9 +46,9 @@ const Index = () => {
   const [activeTag, setActiveTag] = useState(0);
   const [lightTheme, setLightTheme] = useState(false);
 
-  const itemList = escortAgency.map((a) => {
+  const itemList = firstLevelAreaClassAgent.map((a) => {
     return {
-      name: a.name,
+      name: a.companyName,
     };
   });
 
@@ -37,7 +64,7 @@ const Index = () => {
             lowerThreshold={Threshold}
             upperThreshold={Threshold}
           >
-            {escortAgency.map((item, index) => {
+            {firstLevelAreaClassAgent.map((item, index) => {
               return (
                 <View key={item.id} style={vStyleA} className="scrollview-item">
                   <Tag
@@ -50,7 +77,7 @@ const Index = () => {
                     // textColor="#333333"
                     className="tag"
                   >
-                    {item.name}
+                    {item.companyName}
                   </Tag>
                 </View>
               );
@@ -88,15 +115,24 @@ const Index = () => {
           style={{ height: '52vh' }}
           onChange={({ paneKey }) => {
             setTab5value(paneKey);
+            dispatch({
+              type: 'select/selectList',
+              payload: {
+                pageNum: 1,
+                pageSize: 20,
+                provenance: parseInt(secondLevelAreaClassAgent[parseInt(paneKey)]?.areaId),
+              },
+            });
           }}
           className="tabs"
           background="#ffffff"
           titleScroll
           direction="vertical"
+          playBtnPosition="center"
         >
-          {tabData.map((item) => (
-            <Tabs.TabPane key={item.id} title={item.tab} className="tab-content">
-              <Classification data={item.data} />
+          {secondLevelAreaClassAgent.map((item) => (
+            <Tabs.TabPane key={item.id} title={item.companyName} className="tab-content">
+              <Classification data={list} itemList={item} title={item.companyName} />
             </Tabs.TabPane>
           ))}
         </Tabs>
