@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
 import { getAllOrders, deleteOrder, cancelOrder } from '@/server/allOrders';
+import { wxpay } from '@/server/goodInfo';
 
 export default {
   namespace: 'allOrders', // 这是模块名
@@ -43,17 +44,58 @@ export default {
     },
 
     // 取消订单
-    *cancelOrder({ payload }, { call, put }) {
+    // *cancelOrder({ payload }, { call, put }) {
+    //   try {
+    //     const data = yield call(cancelOrder, payload);
+    //     if (data && data.code === 200) {
+    // yield put({
+    //   type: 'getAllOrders',
+    //   payload: {
+    //     pageNum: 1,
+    //     pageSize: 10,
+    //   },
+    // });
+    //     }
+    //   } catch (err) { }
+    // },
+
+    //微信支付
+    *wxpay({ payload }, { call, put }) {
       try {
-        const data = yield call(cancelOrder, payload);
-        if (data && data.code === 200) {
-          yield put({
-            type: 'getAllOrders',
-            payload: {
-              pageNum: 1,
-              pageSize: 10,
+        const { callBack, ...other } = payload;
+        const result = yield call(wxpay, other);
+        if (result.code === 200) {
+          let payDetail = result.result.gatewayBody;
+          Taro.requestPayment({
+            timeStamp: payDetail.timeStamp,
+            nonceStr: payDetail.nonceStr,
+            package: payDetail.package, // 订单包
+            signType: payDetail.signType, // 加密方式统一'
+            paySign: payDetail.paySign, // 后台支付签名返回
+            provider: payDetail.provider, //支付类型
+            appId: payDetail.appId, //小程序Appid
+            success: function (res) {
+              Taro.showToast({
+                title: '支付成功',
+                icon: 'none',
+                duration: 2000,
+              });
+              if (res.errMsg === 'requestPayment:ok') {
+                callBack();
+              }
+              Taro.hideLoading();
+            },
+            fail: async function (res) {
+              Taro.showToast({
+                title: '支付失败',
+                icon: 'none',
+                duration: 2000,
+              });
+              Taro.hideLoading();
             },
           });
+        } else {
+          Taro.hideLoading();
         }
       } catch (err) {}
     },

@@ -1,20 +1,35 @@
 import React, { Fragment, useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Button, Tag, Divider, Popup, Empty } from '@nutui/nutui-react-taro';
+import { Button, Divider, Popup, Empty } from '@nutui/nutui-react-taro';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCountDown } from 'ahooks';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import moment from 'moment';
 
-const ListItem = ({ item, orderActive }) => {
+const ListItem = ({ item, keys, orderActive, orderList }) => {
   const { predictEndTime } = item;
   // eslint-disable-next-line no-unused-vars
   const [countdown, formattedRes] = useCountDown({
+    // leftTime: 60 * 100,
     leftTime: moment(predictEndTime).valueOf() - moment().valueOf(),
-    onEnd: () => {},
+    onEnd: async () => {
+      if (keys === orderActive) {
+        orderList.filter((orderItem) => {
+          if (orderItem.id === item.id) {
+            orderItem.orderStatus = -2;
+          }
+        });
+        await dispatch({
+          type: 'orderDetails/update',
+          payload: {
+            orderList: orderList,
+          },
+        });
+      }
+    },
   });
-  const { days, hours, minutes, seconds } = formattedRes;
+  const { minutes, seconds } = formattedRes;
   const dispatch = useDispatch();
   const goOrderDetails = async (status) => {
     await dispatch({
@@ -35,15 +50,50 @@ const ListItem = ({ item, orderActive }) => {
     [7]: '待评价',
     [-2]: '已取消',
   };
+
+  const wxPay = async () => {
+    Taro.showLoading({ title: '加载中', mask: true });
+    await dispatch({
+      type: 'allOrders/wxpay',
+      payload: {
+        orderNo: item?.orderNumber,
+        orderId: item?.id,
+        gatewayId: 2,
+        gatewayCode: 'WX_PAY',
+        gatewayTerminal: 2,
+        paymentAmount: item?.orderPrice,
+        tradeType: 0,
+        callBack: () => {
+          let orderStatus;
+          if (orderActive === 1) {
+            orderStatus = 1;
+          }
+          if (orderActive === 2) {
+            orderStatus = 2;
+          }
+          if (orderActive === 3) {
+            orderStatus = 3;
+          }
+          if (orderActive === 4) {
+            orderStatus = 7;
+          }
+          dispatch({
+            type: 'allOrders/getAllOrders',
+            payload: {
+              pageNum: 1,
+              pageSize: 10,
+              orderStatus,
+            },
+          });
+        },
+      },
+    });
+  };
+
   return (
     <Fragment>
       <View className="order-item">
         <View onClick={() => goOrderDetails(item.orderStatus)}>
-          <View style={{ fontSize: 13 }}>
-            <Text>
-              {days}天{hours}小时{minutes}分之{seconds}秒
-            </Text>
-          </View>
           <View className="order-item-top">
             <View>
               <Text>订单编号：{item.orderNumber}</Text>
@@ -75,13 +125,11 @@ const ListItem = ({ item, orderActive }) => {
                     style={{ width: '70%', fontSize: 10 }}
                   >
                     {goodsItem.attributes.map((attributeItem) => {
-                      let str = `${attributeItem.attributeName}:${attributeItem.value}`;
+                      let str = `${attributeItem.attributeName}:${attributeItem.value} `;
                       return str;
                     })}
                   </Text>
-                  <Tag style={{ width: 25 }} color="rgb(170, 170, 170)">
-                    自营
-                  </Tag>
+                  <View className="order-item-middle-left-name-tag">自营</View>
                 </View>
               </View>
               <View className="order-item-middle-right">
@@ -153,8 +201,16 @@ const ListItem = ({ item, orderActive }) => {
             </Button>
           )}
           {item.orderStatus === 1 && (
-            <Button shape="square" className="bottom-btn-pay" size="small" type="danger">
-              <View style={{ display: 'flex' }}>立即支付 14:59</View>
+            <Button
+              shape="square"
+              className="bottom-btn-pay"
+              size="small"
+              type="danger"
+              onClick={wxPay}
+            >
+              <View style={{ display: 'flex' }}>
+                立即支付 {minutes}:{seconds}
+              </View>
             </Button>
           )}
           {item.orderStatus === 3 && (
@@ -176,7 +232,7 @@ const ListItem = ({ item, orderActive }) => {
   );
 };
 
-const Index = () => {
+const Index = ({ keys }) => {
   const [isConfirm, setIsConfirm] = useState(false);
   const { orderList, orderActive } = useSelector((state) => state.allOrders);
   return (
@@ -184,7 +240,15 @@ const Index = () => {
       <View className="order-content">
         {orderList.length !== 0 ? (
           orderList.map((item) => {
-            return <ListItem item={item} orderActive={orderActive} key={item.id} />;
+            return (
+              <ListItem
+                item={item}
+                keys={keys}
+                orderActive={orderActive}
+                orderList={orderList}
+                key={item.id}
+              />
+            );
           })
         ) : (
           <Empty style={{ background: 'F5F5F5' }} description="无数据" />

@@ -21,6 +21,9 @@ const Index = () => {
           id: userInfo.id,
         },
       });
+      dispatch({
+        type: 'my/getOrderNum',
+      });
     }
     // eslint-disable-next-line global-require
   }, []);
