@@ -8,34 +8,18 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { scrollTop, Threshold, firstLevelAreaClassAgent, secondLevelAreaClassAgent, list } =
-    useSelector((state) => state.select);
+  const { scrollTop, Threshold, firstLevelAreaClassAgent, secondLevelAreaClassAgent } = useSelector(
+    (state) => state.select,
+  );
   useEffect(() => {
-    getSub();
+    dispatch({
+      type: 'select/selectAreaClassBagent',
+      payload: {
+        id: parseInt(firstLevelAreaClassAgent.at(0)?.id),
+      },
+    });
     // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
-  }, [firstLevelAreaClassAgent.length, secondLevelAreaClassAgent.length]);
-
-  // 默认
-  const getSub = async () => {
-    if (firstLevelAreaClassAgent.length > 0) {
-      await dispatch({
-        type: 'select/selectAreaClassBagent',
-        payload: {
-          id: parseInt(firstLevelAreaClassAgent.at(0)?.id),
-        },
-      });
-      if (secondLevelAreaClassAgent.length > 0) {
-        await dispatch({
-          type: 'select/selectList',
-          payload: {
-            pageNum: 1,
-            pageSize: 20,
-            provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
-          },
-        });
-      }
-    }
-  };
+  }, [firstLevelAreaClassAgent.at(0)?.id]);
   const vStyleA = {
     display: 'inline-block',
     width: '80px',
@@ -48,10 +32,10 @@ const Index = () => {
 
   const itemList = firstLevelAreaClassAgent.map((a) => {
     return {
-      name: a.companyName,
+      name: a.shopName,
+      value: a.id,
     };
   });
-
   return (
     <View className="traceability" style={{ overflow: 'scroll' }}>
       <View className="traceability-top">
@@ -69,15 +53,29 @@ const Index = () => {
                 <View key={item.id} style={vStyleA} className="scrollview-item">
                   <Tag
                     plain
-                    onClick={() => {
+                    onClick={async () => {
                       setActiveTag(index);
+                      await dispatch({
+                        type: 'select/selectAreaClassBagent',
+                        payload: {
+                          id: parseInt(item?.id),
+                        },
+                      });
+                      await dispatch({
+                        type: 'select/selectList',
+                        payload: {
+                          pageNum: 1,
+                          pageSize: 20,
+                          provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
+                        },
+                      });
                     }}
                     color={index !== activeTag ? '#999999' : '#965A3C'}
                     // color="#F2F2F2"
                     // textColor="#333333"
                     className="tag"
                   >
-                    {item.companyName}
+                    {item.shopName}
                   </Tag>
                 </View>
               );
@@ -91,6 +89,23 @@ const Index = () => {
             visible={lightTheme}
             onClick={() => {
               lightTheme ? setLightTheme(false) : setLightTheme(true);
+            }}
+            onChoose={async (item, index) => {
+              setActiveTag(index);
+              await dispatch({
+                type: 'select/selectAreaClassBagent',
+                payload: {
+                  id: parseInt(item?.value),
+                },
+              });
+              await dispatch({
+                type: 'select/selectList',
+                payload: {
+                  pageNum: 1,
+                  pageSize: 20,
+                  provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
+                },
+              });
             }}
             list={itemList}
           >
@@ -131,8 +146,8 @@ const Index = () => {
           playBtnPosition="center"
         >
           {secondLevelAreaClassAgent.map((item) => (
-            <Tabs.TabPane key={item.id} title={item.companyName} className="tab-content">
-              <Classification data={list} itemList={item} title={item.companyName} />
+            <Tabs.TabPane key={item.id} title={item.shopName} className="tab-content">
+              <Classification itemList={item} title={item.shopName} />
             </Tabs.TabPane>
           ))}
         </Tabs>
