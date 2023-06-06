@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from '@tarojs/components';
 import Report from './report';
 import Traceability from './traceability';
 import { Tabs } from '@nutui/nutui-react-taro';
+import { useDispatch } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
+
   const [tab9value, setTab9value] = useState('0');
+  useEffect(() => {
+    dispatch({
+      type: 'select/selectAreaClassAagent',
+      payload: {
+        level: 1,
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <View className="strict-selection">
       <View className="strict-selection-top">
