@@ -17,3 +17,8 @@ export const deleteOrder = (params) => {
 // export const cancelOrder = (params) => {
 //   return request.get(`/jcgl-mall/app/order/info/cancel?id=${params}`);
 // };
+
+// 确认收货
+export const receipt = (params) => {
+  return request.get(`/jcgl-mall/app/order/info/confirm/receipt?id=${params}`);
+};

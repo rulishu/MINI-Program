@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { getAllOrders, deleteOrder, cancelOrder } from '@/server/allOrders';
+import { getAllOrders, deleteOrder, receipt } from '@/server/allOrders';
 import { wxpay } from '@/server/goodInfo';
 
 export default {
@@ -24,6 +24,7 @@ export default {
               orderList: data.result.records || [],
             },
           });
+          Taro.hideLoading();
         }
       } catch (err) {}
     },
@@ -58,6 +59,29 @@ export default {
     //     }
     //   } catch (err) { }
     // },
+
+    // 确认收货
+    *receiptOrder({ payload }, { call, put }) {
+      try {
+        const data = yield call(receipt, payload.id);
+        if (data && data.code === 200) {
+          yield put({
+            type: 'getAllOrders',
+            payload: {
+              pageNum: 1,
+              pageSize: 10,
+            },
+          });
+          payload.callBack();
+        } else {
+          Taro.showToast({
+            title: data.message,
+            icon: 'error',
+            duration: 2000,
+          });
+        }
+      } catch (err) {}
+    },
 
     //微信支付
     *wxpay({ payload }, { call, put }) {

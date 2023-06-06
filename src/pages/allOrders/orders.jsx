@@ -21,7 +21,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
           }
         });
         await dispatch({
-          type: 'orderDetails/update',
+          type: 'allOrders/update',
           payload: {
             orderList: orderList,
           },
@@ -29,6 +29,8 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
       }
     },
   });
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [orderAmount, setOrderAmount] = useState(0);
   const { minutes, seconds } = formattedRes;
   const dispatch = useDispatch();
   const goOrderDetails = async (status) => {
@@ -51,6 +53,32 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
     [-2]: '已取消',
   };
 
+  const getList = () => {
+    callBack: () => {
+      let orderStatus;
+      if (orderActive === 1) {
+        orderStatus = 1;
+      }
+      if (orderActive === 2) {
+        orderStatus = 2;
+      }
+      if (orderActive === 3) {
+        orderStatus = 3;
+      }
+      if (orderActive === 4) {
+        orderStatus = 7;
+      }
+      dispatch({
+        type: 'allOrders/getAllOrders',
+        payload: {
+          pageNum: 1,
+          pageSize: 10,
+          orderStatus,
+        },
+      });
+    };
+  };
+
   const wxPay = async () => {
     Taro.showLoading({ title: '加载中', mask: true });
     await dispatch({
@@ -63,29 +91,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
         gatewayTerminal: 2,
         paymentAmount: item?.orderPrice,
         tradeType: 0,
-        callBack: () => {
-          let orderStatus;
-          if (orderActive === 1) {
-            orderStatus = 1;
-          }
-          if (orderActive === 2) {
-            orderStatus = 2;
-          }
-          if (orderActive === 3) {
-            orderStatus = 3;
-          }
-          if (orderActive === 4) {
-            orderStatus = 7;
-          }
-          dispatch({
-            type: 'allOrders/getAllOrders',
-            payload: {
-              pageNum: 1,
-              pageSize: 10,
-              orderStatus,
-            },
-          });
-        },
+        callBack: () => getList,
       },
     });
   };
@@ -167,29 +173,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
                         type: 'allOrders/deleteOrder',
                         payload: {
                           id: item.id,
-                          callBack: () => {
-                            let orderStatus;
-                            if (orderActive === '1') {
-                              orderStatus = 1;
-                            }
-                            if (orderActive === '2') {
-                              orderStatus = 2;
-                            }
-                            if (orderActive === '3') {
-                              orderStatus = 3;
-                            }
-                            if (orderActive === '4') {
-                              orderStatus = 7;
-                            }
-                            dispatch({
-                              type: 'allOrders/getAllOrders',
-                              payload: {
-                                pageNum: 1,
-                                pageSize: 10,
-                                orderStatus,
-                              },
-                            });
-                          },
+                          callBack: () => getList,
                         },
                       });
                     }
@@ -221,6 +205,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               type="info"
               onClick={() => {
                 setIsConfirm(true);
+                setOrderAmount(item.items.reduce((total, obj) => total + obj.amount, 0));
               }}
             >
               确认收货
@@ -228,12 +213,52 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
           )}
         </View>
       </View>
+      <Popup
+        visible={isConfirm}
+        className="order_pop"
+        position="bottom"
+        onClose={() => {
+          setIsConfirm(false);
+        }}
+      >
+        <View className="pop_view">
+          <View className="pop_title">确认收货</View>
+          <View className="pop_img_view">
+            <View className="pop_img_text">共{orderAmount}件</View>
+            <Image mode="scaleToFill" className="pop_img" src={item.items[0].mainGraph}></Image>
+          </View>
+          <View className="pop_text_view">
+            <Text>为保证你的售后权益，请收到商品确</Text>
+            <Text>认无误后再确认收货</Text>
+          </View>
+          <View className="pop_btn">
+            <Button
+              shape="square"
+              size="large"
+              type="info"
+              onClick={() => {
+                dispatch({
+                  type: 'allOrders/receiptOrder',
+                  payload: {
+                    id: item.id,
+                    callBack: () => {
+                      getList;
+                      setIsConfirm(false);
+                    },
+                  },
+                });
+              }}
+            >
+              确定
+            </Button>
+          </View>
+        </View>
+      </Popup>
     </Fragment>
   );
 };
 
 const Index = ({ keys }) => {
-  const [isConfirm, setIsConfirm] = useState(false);
   const { orderList, orderActive } = useSelector((state) => state.allOrders);
   return (
     <View className="order">
@@ -254,30 +279,6 @@ const Index = ({ keys }) => {
           <Empty style={{ background: 'F5F5F5' }} description="无数据" />
         )}
       </View>
-      <Popup
-        visible={isConfirm}
-        className="order_pop"
-        position="bottom"
-        onClose={() => {
-          setIsConfirm(false);
-        }}
-      >
-        <View className="pop_view">
-          <View className="pop_title">确认收货</View>
-          <View>
-            <Image mode="aspectFit" className="pop_img"></Image>
-          </View>
-          <View className="pop_text_view">
-            <Text>为保证你的售后权益，请收到商品确</Text>
-            <Text>认无误后再确认收货</Text>
-          </View>
-          <View className="pop_btn">
-            <Button shape="square" size="large" type="info">
-              确定
-            </Button>
-          </View>
-        </View>
-      </Popup>
     </View>
   );
 };
