@@ -38,9 +38,12 @@ page {
             width: 160px;
             height: 160px;
 
+
             .order-img {
               width: 160px;
               height: 160px;
+              background-color: #F2F2F2;
+              border:1px solid #F2F2F2;
             }
           }
 
@@ -58,6 +61,16 @@ page {
           overflow: hidden;
           text-overflow: ellipsis;
           margin-bottom: 15px;
+        }
+
+        .order-item-middle-left-name-tag{
+          background-color: rgb(170, 170, 170);
+          color: #fff;
+          height: 30px;
+          width: 80px;
+          font-size: 23px;
+          text-align: center;
+          border-radius: 10px;
         }
 
         .order-item-middle-right {
