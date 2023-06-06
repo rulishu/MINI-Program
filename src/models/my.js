@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 // import Taro from '@tarojs/taro';
-import { getUserInfo, editUserInfo } from '@/server/my';
+import { getUserInfo, editUserInfo, statis } from '@/server/my';
 
 export default {
   namespace: 'my', // 这是模块名
   state: {
     // 初始化数据
     userInfos: {},
+    orderNumList: [],
   },
 
   effects: {
@@ -20,6 +21,21 @@ export default {
             type: 'update',
             payload: {
               userInfos: result.result || '',
+            },
+          });
+        }
+      } catch (err) {}
+    },
+
+    // 查询用户各类型订单数量
+    *getOrderNum({}, { call, put }) {
+      try {
+        const result = yield call(statis);
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              orderNumList: result.result || '',
             },
           });
         }

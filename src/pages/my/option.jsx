@@ -94,7 +94,7 @@ const Index = () => {
       <View className="option-list">
         {list.map((item, index) => (
           <View key={index} className="option-list-item" onTap={() => go(item)}>
-            <View style={{ width: 24, height: 24, marginBottom: 2 }}>
+            <View style={{ width: 24, height: 24 }}>
               <Image mode="widthFix" src={item.icon} style={{ width: 24, height: 24 }}></Image>
             </View>
             <View className="option-list-item-title">

@@ -13,7 +13,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo, type } = useSelector((state) => state.goodInfo);
+  const { queryInfo } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -43,13 +43,13 @@ const Index = () => {
     const newLen = queryInfo?.itemVideo ? len.concat(queryInfo?.itemVideo) : len;
     setTotal(newLen?.length);
     // 提示
-    if (type === 'addCart') {
-      Taro.showToast({
-        title: '已加入购物车',
-        icon: 'none',
-        duration: 2000,
-      });
-    }
+    // if (type === 'addCart') {
+    //   Taro.showToast({
+    //     title: '已加入购物车',
+    //     icon: 'none',
+    //     duration: 2000,
+    //   });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryInfo]);
 
