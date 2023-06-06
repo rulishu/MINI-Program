@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy } from 'react';
 import { View } from '@tarojs/components';
 import { Tabs } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
-import { tabList } from './item';
-import Orders from './orders';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
+
+const Orders = lazy(() => import('./orders'));
 
 const Index = () => {
   const { orderActive } = useSelector((state) => state.allOrders);
@@ -36,6 +36,35 @@ const Index = () => {
       });
     }
   }, []);
+
+  const tabList = [
+    {
+      id: 0,
+      title: '全部',
+      children: <Orders keys={0} />,
+    },
+    {
+      id: 1,
+      title: '待付款',
+      children: <Orders keys={1} />,
+    },
+    {
+      id: 2,
+      title: '待发货',
+      children: <Orders keys={3} />,
+    },
+    {
+      id: 3,
+      title: '待收货',
+      children: <Orders keys={4} />,
+    },
+    {
+      id: 4,
+      title: '待评价',
+      children: <Orders keys={5} />,
+    },
+  ];
+
   return (
     <View className="index">
       <Tabs
@@ -73,7 +102,7 @@ const Index = () => {
       >
         {tabList.map((item) => (
           <Tabs.TabPane key={item.id} title={item.title}>
-            <Orders />
+            {item.children}
           </Tabs.TabPane>
         ))}
       </Tabs>

@@ -7,12 +7,16 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import moment from 'moment';
 
-const ListItem = ({ item, orderActive }) => {
+const ListItem = ({ item, keys, orderActive }) => {
   const { predictEndTime } = item;
   // eslint-disable-next-line no-unused-vars
   const [countdown, formattedRes] = useCountDown({
     leftTime: moment(predictEndTime).valueOf() - moment().valueOf(),
-    onEnd: () => {},
+    onEnd: () => {
+      if (keys === orderActive) {
+        window.console.log('执行操作，调用接口');
+      }
+    },
   });
   const { days, hours, minutes, seconds } = formattedRes;
   const dispatch = useDispatch();
@@ -35,6 +39,7 @@ const ListItem = ({ item, orderActive }) => {
     [7]: '待评价',
     [-2]: '已取消',
   };
+
   return (
     <Fragment>
       <View className="order-item">
@@ -176,7 +181,7 @@ const ListItem = ({ item, orderActive }) => {
   );
 };
 
-const Index = () => {
+const Index = ({ keys }) => {
   const [isConfirm, setIsConfirm] = useState(false);
   const { orderList, orderActive } = useSelector((state) => state.allOrders);
   return (
@@ -184,7 +189,7 @@ const Index = () => {
       <View className="order-content">
         {orderList.length !== 0 ? (
           orderList.map((item) => {
-            return <ListItem item={item} orderActive={orderActive} key={item.id} />;
+            return <ListItem item={item} keys={keys} orderActive={orderActive} key={item.id} />;
           })
         ) : (
           <Empty style={{ background: 'F5F5F5' }} description="无数据" />
