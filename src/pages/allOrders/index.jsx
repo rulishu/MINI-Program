@@ -51,17 +51,17 @@ const Index = () => {
     {
       id: 2,
       title: '待发货',
-      children: <Orders keys={3} />,
+      children: <Orders keys={2} />,
     },
     {
       id: 3,
       title: '待收货',
-      children: <Orders keys={4} />,
+      children: <Orders keys={3} />,
     },
     {
       id: 4,
       title: '待评价',
-      children: <Orders keys={5} />,
+      children: <Orders keys={4} />,
     },
   ];
 
@@ -71,10 +71,11 @@ const Index = () => {
         value={orderActive}
         background="#ffffff"
         onChange={({ paneKey }) => {
+          Taro.showLoading({ title: '获取订单中...', mask: true });
           dispatch({
             type: 'allOrders/update',
             payload: {
-              orderActive: paneKey,
+              orderActive: parseInt(paneKey),
             },
           });
           let orderStatus;
