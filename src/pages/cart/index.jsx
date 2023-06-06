@@ -10,6 +10,7 @@ const Index = () => {
   const dispatch = useDispatch();
   const { shoppingList } = useSelector((state) => state.cart);
   const [checked, setChecked] = useState(false);
+  const [inputValue, setInputValue] = useState(1);
 
   useEffect(() => {
     dispatch({
@@ -24,6 +25,7 @@ const Index = () => {
       title: '秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,  5kg/袋标题',
       sku: '规格值1,规格值2',
       price: 70,
+      state: 0,
     },
     {
       id: 1,
@@ -31,6 +33,7 @@ const Index = () => {
       title: '秋然长粒香大米 5kg/袋标题',
       sku: '规格值1,规格值2',
       price: 70,
+      state: 0,
     },
     {
       id: 2,
@@ -38,6 +41,7 @@ const Index = () => {
       title: '秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,秋然长粒香大米 5kg/袋标题',
       sku: '规格值1,规格值2',
       price: 70,
+      state: 0,
     },
     {
       id: 3,
@@ -45,6 +49,7 @@ const Index = () => {
       title: '秋然长粒香大米 5kg/袋标题',
       sku: '规格值1,规格值2',
       price: 70,
+      state: 1,
     },
   ];
   const handleChange = (check) => {
@@ -55,6 +60,45 @@ const Index = () => {
       setChecked(false);
     }
   };
+  const onClear = () => {
+    Taro.showModal({
+      // title: "提示",
+      content: '确认要删除所选商品',
+      cancelText: '取消',
+      confirmText: '确认',
+      success: (res) => {
+        if (res.confirm) {
+          // dispatch({})
+        } else if (res.cancel) {
+          return;
+        }
+      },
+    });
+  };
+  const overlimit = () => {
+    Taro.showModal({
+      // title: "提示",
+      content: '确定要删除吗',
+      cancelText: '取消',
+      confirmText: '确认',
+      success: (res) => {
+        if (res.confirm) {
+          // dispatch({})
+        } else if (res.cancel) {
+          return;
+        }
+      },
+    });
+  };
+  const morelimit = () => {
+    return Taro.showToast({
+      title: '超过最大库存',
+      icon: 'none',
+      duration: 2000,
+    });
+  };
+  const onDelete = () => {};
+
   return (
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
@@ -66,6 +110,7 @@ const Index = () => {
             alignItems: 'center',
             marginBottom: 10,
           }}
+          onClick={() => onClear()}
         >
           <Image
             mode="widthFix"
@@ -81,13 +126,24 @@ const Index = () => {
             <Swipe
               key={item?.id}
               rightAction={
-                <Button type="primary" shape="square" style={{ width: 50 }}>
+                <Button
+                  type="primary"
+                  shape="square"
+                  style={{ width: 50 }}
+                  onClick={() => onDelete()}
+                >
                   删除
                 </Button>
               }
+              disabled={item?.state === 1 ? true : false}
             >
               <View style={{ backgroundColor: '#ffffff', width: '100%' }}>
-                <View>
+                <View
+                  style={{
+                    zIndex: item?.state === 1 ? 1000 : 0,
+                    backgroundColor: item?.state === 1 ? '#c7c7c7' : '',
+                  }}
+                >
                   <View
                     style={{
                       display: 'flex',
@@ -96,8 +152,29 @@ const Index = () => {
                       alignItems: 'center',
                     }}
                   >
+                    {item?.state === 1 && (
+                      <View
+                        style={{
+                          position: 'absolute',
+                          left: '50%',
+                          top: '50%',
+                          transform: 'translate(-50%,-50%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#ffffff',
+                          // border: '1px solid red'
+                        }}
+                      >
+                        <Text>异常状态</Text>
+                      </View>
+                    )}
                     <View>
-                      <Checkbox checked={checked} onChange={() => handleChange(itm)} />
+                      <Checkbox
+                        checked={item?.state === 1 ? false : checked}
+                        onChange={() => handleChange(itm)}
+                        disabled={item?.state === 1 ? true : false}
+                      />
                     </View>
                     <View style={{ width: 100, height: 100 }}>
                       <Image
@@ -130,21 +207,31 @@ const Index = () => {
                         <Text style={{ color: '#adadad', fontSize: 13 }}>{item?.sku}</Text>
                       </View>
                       <View>
-                        <Tag color="#E9E9E9" textColor="#999999">
-                          标签
-                        </Tag>
+                        {item?.state !== 1 && (
+                          <Tag color="#E9E9E9" textColor="#999999">
+                            标签
+                          </Tag>
+                        )}
                       </View>
-                      <View
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Price price={item?.price} size="normal" needSymbol thousands />
-                        <InputNumber modelValue={1} className="inputNumberStyle" />
-                      </View>
+                      {item?.state !== 1 && (
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Price price={item?.price} size="normal" needSymbol thousands />
+                          <InputNumber
+                            className="inputNumberStyle"
+                            min="1"
+                            modelValue={inputValue}
+                            max={10}
+                            onOverlimit={inputValue <= 1 ? overlimit : morelimit}
+                          />
+                        </View>
+                      )}
                     </View>
                   </View>
                 </View>
@@ -188,7 +275,13 @@ const Index = () => {
               <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ 111</Text>
               <Text style={{ fontSize: 12 }}> 不含运费</Text>
             </View>
-            <Button style={{ borderRadius: 5, width: 80 }} type="primary">
+            <Button
+              style={{ borderRadius: 5, width: 80 }}
+              type="primary"
+              onClick={() => {
+                Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+              }}
+            >
               结算
             </Button>
           </View>
