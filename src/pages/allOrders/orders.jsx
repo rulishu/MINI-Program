@@ -33,11 +33,18 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   const [orderAmount, setOrderAmount] = useState(0);
   const { minutes, seconds } = formattedRes;
   const dispatch = useDispatch();
-  const goOrderDetails = async (status) => {
+  const goOrderDetails = async (status, info) => {
     await dispatch({
       type: 'orderDetails/update',
       payload: {
         orderStatus: status,
+        orderInfo: {},
+      },
+    });
+    await dispatch({
+      type: 'orderDetails/selectPrimaryKey',
+      payload: {
+        id: Number(info.id),
       },
     });
     Taro.navigateTo({ url: '/pages/orderDetails/index' });
@@ -99,7 +106,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   return (
     <Fragment>
       <View className="order-item">
-        <View onClick={() => goOrderDetails(item.orderStatus)}>
+        <View onClick={() => goOrderDetails(item.orderStatus, item)}>
           <View className="order-item-top">
             <View>
               <Text>订单编号：{item.orderNumber}</Text>
@@ -145,7 +152,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               </View>
             </View>
           ))}
-          <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15 }}>
+          <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15, marginBottom: -5 }}>
             实付款： ￥{item.payPrice}
           </View>
         </View>

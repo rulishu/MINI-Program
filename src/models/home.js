@@ -21,26 +21,18 @@ export default {
         const params = { ...payload };
         const result = yield call(getBannerList, params);
         if (result && result.code === 200) {
-          yield put({
-            type: 'update',
-            payload: {
-              bannerList: result.result || [],
-            },
+          let bannerList = result.result.filter((item) => {
+            return item.type === 1;
           });
-        }
-      } catch (err) {}
-    },
-
-    // 获取活动列表
-    *getActivityList({ payload }, { call, put }) {
-      try {
-        const params = { ...payload };
-        const result = yield call(getBannerList, params);
-        if (result && result.code === 200) {
+          // 获取活动列表
+          let activityList = result.result.filter((item) => {
+            return item.type === 2;
+          });
           yield put({
             type: 'update',
             payload: {
-              activityList: result.result || [],
+              bannerList: bannerList || [],
+              activityList: activityList || [],
             },
           });
         }

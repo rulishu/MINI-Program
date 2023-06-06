@@ -22,14 +22,6 @@ const Index = () => {
     dispatch({
       type: 'home/getBannerList',
       payload: {
-        type: 1,
-        category: 1,
-      },
-    });
-    dispatch({
-      type: 'home/getActivityList',
-      payload: {
-        type: 2,
         category: 1,
       },
     });
