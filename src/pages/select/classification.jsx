@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, Video } from '@tarojs/components';
-import { Swiper, SwiperItem, Skeleton } from '@nutui/nutui-react-taro';
+import { View, Text, Video } from '@tarojs/components';
+import { Swiper, SwiperItem, Grid, GridItem } from '@nutui/nutui-react-taro';
 import './index.scss';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -58,10 +58,12 @@ const Index = (props) => {
     let str2 = str?.filter((s) => {
       return s;
     });
-    if (str2?.length === 0 || str2 === undefined) {
+    // js 最小值
+    let str3 = Math.min(...str2);
+    if (str3?.length === 0 || str3 === undefined || str3 === Infinity) {
       return;
     } else {
-      return '¥' + str2;
+      return '¥' + str3;
     }
   };
 
@@ -97,38 +99,34 @@ const Index = (props) => {
         )}
 
         <View className="classification-content-goods">
-          {list?.map((vel) => (
-            <View className="middle-search-result-info-item" key={vel.id}>
-              <View className="search-result-image">
-                <Skeleton
-                  loading={vel.mainGraph ? true : false}
-                  width="auto"
-                  height="auto"
-                  title
-                  animated
-                  className="search-result-image"
-                >
-                  <Image mode="widthFix" src={vel.mainGraph} className="image"></Image>
-                </Skeleton>
-              </View>
-              <View className="search-result-content">
-                <View className="search-result-content-head">
-                  <Text className="title">{vel.itemName}</Text>
-                </View>
-                <View className="search-result-content-bottom">
-                  <View>
-                    <Text className="lastPrice">
-                      <Text style={{ fontSize: 8 }}>¥ </Text>
-                      {min(vel.itemSkuDtos) || 0}
-                    </Text>
-                    <Text className="firstPrice">
-                      {aPrice(min(vel.itemSkuDtos), vel.itemSkuDtos)}
-                    </Text>
+          <Grid gutter={3}>
+            {list?.map((vel) => (
+              <GridItem
+                icon={vel.mainGraph}
+                key={vel.id}
+                iconSize="77"
+                className="middle-search-result-info-item"
+                text={
+                  <View className="search-result-content">
+                    <View className="search-result-content-head">
+                      <Text className="title">{vel.itemName}</Text>
+                    </View>
+                    <View className="search-result-content-bottom">
+                      <View>
+                        <Text className="lastPrice">
+                          <Text style={{ fontSize: 8 }}>¥ </Text>
+                          {min(vel.itemSkuDtos) || 0}
+                        </Text>
+                        <Text className="firstPrice">
+                          {aPrice(min(vel.itemSkuDtos), vel.itemSkuDtos)}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
-                </View>
-              </View>
-            </View>
-          ))}
+                }
+              ></GridItem>
+            ))}
+          </Grid>
         </View>
       </View>
     </View>
