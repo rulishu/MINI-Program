@@ -39,6 +39,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
       payload: {
         orderStatus: status,
         orderInfo: {},
+        infoDetail: info,
       },
     });
     await dispatch({

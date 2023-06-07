@@ -13,6 +13,7 @@ export default {
     orderInfo: {}, //订单详情
     isConfirm: false,
     orderAmount: 0,
+    infoDetail: {},
   },
 
   effects: {
