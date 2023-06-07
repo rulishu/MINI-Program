@@ -3,6 +3,7 @@ import { View, Text, Image } from '@tarojs/components';
 import { Button, Divider, Popup, Empty } from '@nutui/nutui-react-taro';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCountDown } from 'ahooks';
+import usePay from '@/hooks/usePay';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import moment from 'moment';
@@ -11,7 +12,6 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   const { predictEndTime } = item;
   // eslint-disable-next-line no-unused-vars
   const [countdown, formattedRes] = useCountDown({
-    // leftTime: 60 * 100,
     leftTime: moment(predictEndTime).valueOf() - moment().valueOf(),
     onEnd: async () => {
       if (keys === orderActive) {
@@ -33,6 +33,34 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   const [orderAmount, setOrderAmount] = useState(0);
   const { minutes, seconds } = formattedRes;
   const dispatch = useDispatch();
+  const getList = () => {
+    Taro.showLoading({ title: '获取订单中...', mask: true });
+    let orderStatus;
+    if (orderActive === 1) {
+      orderStatus = 1;
+    }
+    if (orderActive === 2) {
+      orderStatus = 2;
+    }
+    if (orderActive === 3) {
+      orderStatus = 3;
+    }
+    if (orderActive === 4) {
+      orderStatus = 7;
+    }
+    dispatch({
+      type: 'allOrders/getAllOrders',
+      payload: {
+        pageNum: 1,
+        pageSize: 10,
+        orderStatus,
+      },
+    });
+  };
+  const { payOrder } = usePay({
+    success: () => getList(),
+    error: () => {},
+  });
   const goOrderDetails = async (status, info) => {
     await dispatch({
       type: 'orderDetails/update',
@@ -59,49 +87,6 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
     [6]: '已退款',
     [7]: '待评价',
     [-2]: '已取消',
-  };
-
-  const getList = () => {
-    callBack: () => {
-      let orderStatus;
-      if (orderActive === 1) {
-        orderStatus = 1;
-      }
-      if (orderActive === 2) {
-        orderStatus = 2;
-      }
-      if (orderActive === 3) {
-        orderStatus = 3;
-      }
-      if (orderActive === 4) {
-        orderStatus = 7;
-      }
-      dispatch({
-        type: 'allOrders/getAllOrders',
-        payload: {
-          pageNum: 1,
-          pageSize: 10,
-          orderStatus,
-        },
-      });
-    };
-  };
-
-  const wxPay = async () => {
-    Taro.showLoading({ title: '加载中', mask: true });
-    await dispatch({
-      type: 'allOrders/wxpay',
-      payload: {
-        orderNo: item?.orderNumber,
-        orderId: item?.id,
-        gatewayId: 2,
-        gatewayCode: 'WX_PAY',
-        gatewayTerminal: 2,
-        paymentAmount: item?.orderPrice,
-        tradeType: 0,
-        callBack: () => getList,
-      },
-    });
   };
 
   return (
@@ -188,7 +173,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
                         type: 'allOrders/deleteOrder',
                         payload: {
                           id: item.id,
-                          callBack: () => getList,
+                          callBack: () => getList(),
                         },
                       });
                     }
@@ -205,7 +190,17 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               className="bottom-btn-pay"
               size="small"
               type="danger"
-              onClick={wxPay}
+              onClick={() => {
+                payOrder({
+                  orderNo: item?.orderNumber,
+                  orderId: item?.id,
+                  gatewayId: 2,
+                  gatewayCode: 'WX_PAY',
+                  gatewayTerminal: 2,
+                  paymentAmount: item?.orderPrice,
+                  tradeType: 0,
+                });
+              }}
             >
               <View style={{ display: 'flex' }}>
                 立即支付 {minutes}:{seconds}
@@ -258,7 +253,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
                   payload: {
                     id: item.id,
                     callBack: () => {
-                      getList;
+                      getList();
                       setIsConfirm(false);
                     },
                   },

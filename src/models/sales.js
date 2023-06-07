@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { getOrderList } from '@/server/afterSales';
+import { getOrderList, cancelSales, bindReturns } from '@/server/afterSales';
 
 export default {
   namespace: 'sales', // 这是模块名
@@ -28,6 +28,25 @@ export default {
     },
 
     // 取消售后
+    *bindReturns({ payload }, { call, put }) {
+      try {
+        const data = yield call(bindReturns, payload);
+        if (data && data.code === 200) {
+          yield put({
+            type: 'getAllOrders',
+            payload: {
+              pageNum: 1,
+              pageSize: 10,
+            },
+          });
+          Taro.hideLoading();
+        } else {
+          Taro.hideLoading();
+        }
+      } catch (err) {}
+    },
+
+    // 绑定退货单
     *cancelOrder({ payload }, { call, put }) {
       try {
         const data = yield call(cancelSales, payload);

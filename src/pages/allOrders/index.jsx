@@ -13,6 +13,7 @@ const Index = () => {
   useEffect(() => {
     const token = Taro.getStorageSync('token');
     if (token !== '') {
+      Taro.showLoading({ title: '获取订单中...', mask: true });
       let orderStatus;
       if (orderActive === 1) {
         orderStatus = 1;
