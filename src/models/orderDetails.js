@@ -11,6 +11,8 @@ export default {
     orderAfterSales: false,
     refundType: '',
     orderInfo: {}, //订单详情
+    isConfirm: false,
+    orderAmount: 0,
   },
 
   effects: {

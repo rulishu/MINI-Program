@@ -10,6 +10,7 @@ import { orderType, orderPay } from '../../utils/enum';
 import { useCountDown } from 'ahooks';
 import moment from 'moment';
 import usePay from '@/hooks/usePay';
+import Confirm from './confirm';
 import './index.scss';
 
 const Index = () => {
@@ -359,7 +360,20 @@ const Index = () => {
                 </Button>
               </View>
               <View>
-                <Button shape="square" type="primary" style={{ color: '#ffffff', border: 'none' }}>
+                <Button
+                  shape="square"
+                  type="primary"
+                  style={{ color: '#ffffff', border: 'none' }}
+                  onClick={() => {
+                    dispatch({
+                      type: 'orderDetails/update',
+                      payload: {
+                        isConfirm: true,
+                        orderAmount: orderInfo.items.reduce((total, obj) => total + obj.amount, 0),
+                      },
+                    });
+                  }}
+                >
                   <Text style={{ fontSize: 14 }}>确认收货</Text>
                 </Button>
               </View>
@@ -433,6 +447,7 @@ const Index = () => {
           )}
         </View>
       </View>
+      <Confirm />
       <PopupInfo />
       <AfterSales />
     </View>
