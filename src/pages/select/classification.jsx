@@ -25,8 +25,11 @@ const Index = (props) => {
 
   // 会员价
   const min = (item) => {
+    const data = item.filter((vel) => {
+      return vel.price !== 0;
+    });
     let str =
-      item?.reduce((prev, current) => {
+      data?.reduce((prev, current) => {
         if (current?.membershipPrice < prev) {
           return current?.membershipPrice;
         } else {
@@ -53,7 +56,7 @@ const Index = (props) => {
       .flat();
     // js 过滤空值
     let str2 = str?.filter((s) => {
-      return s && s?.trim();
+      return s;
     });
     if (str2?.length === 0 || str2 === undefined) {
       return;

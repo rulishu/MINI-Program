@@ -7,3 +7,9 @@ export const orderType = {
   6: '已取消',
   7: '已退款',
 };
+
+export const orderPay = {
+  1: '微信支付',
+  2: '支付宝支付',
+  3: '银行卡支付',
+};
