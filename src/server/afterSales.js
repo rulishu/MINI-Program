@@ -12,3 +12,8 @@ export const getOrderList = (params) => {
 export const cancelSales = (params) => {
   return request.post(`/jcgl-mall/app/after/service/record/cancel`, params);
 };
+
+// 绑定退货单
+export const bindReturns = (params) => {
+  return request.post(`/jcgl-mall/app/after/service/record/bind/return/order/number`, params);
+};
