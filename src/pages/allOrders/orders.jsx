@@ -283,7 +283,7 @@ const Index = ({ keys }) => {
             );
           })
         ) : (
-          <Empty style={{ background: 'F5F5F5' }} description="无数据" />
+          <Empty description="无数据" />
         )}
       </View>
     </View>

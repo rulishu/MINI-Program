@@ -139,7 +139,7 @@ export default {
           ...payload,
         };
         const result = yield call(orderSubmit, params);
-        if (result) {
+        if (result && result.code === 200) {
           yield put({
             type: 'update',
             payload: {
@@ -147,6 +147,12 @@ export default {
             },
           });
           Taro.setStorageSync('submitInfo', result.result);
+        } else {
+          Taro.showToast({
+            title: result.message,
+            icon: 'none',
+            duration: 2000,
+          });
         }
       } catch (err) {}
     },
