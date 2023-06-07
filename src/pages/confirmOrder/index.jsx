@@ -5,20 +5,31 @@ import Taro from '@tarojs/taro';
 import { useSelector, useDispatch } from 'react-redux';
 import payAddress from '@/assets/images/payAddress.svg';
 import PopupInfo from './popupInfo';
+import usePay from '@/hooks/usePay';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch(); //queryInfo,
   const { goodsName, currentAddress, orderNotesInfo, shoppingCartVOList, orderToken, activeSku } =
     useSelector((state) => state.goodInfo);
-
+  const { payOrder } = usePay({
+    success: () => {
+      Taro.navigateTo({ url: '/pages/allOrders/index' });
+      dispatch({
+        type: 'allOrders/update',
+        payload: {
+          orderActive: 0,
+        },
+      });
+    },
+    error: () => {},
+  });
   // 初始化收货地址内容
   // let delAddress = Taro.getStorageSync('defultAddress');
   const curAddress = JSON.stringify(currentAddress) === '{}' ? '添加收货地址' : currentAddress;
 
   // 处理确认订单展示数据
   const orderInfo = shoppingCartVOList?.at(0)?.cartVOList.at(0);
-  // console.log('shoppingCartVOList', shoppingCartVOList, orderInfo)
 
   const shoppingCartVOLists = shoppingCartVOList?.at(0)?.cartVOList?.map((item) => {
     return {
@@ -97,56 +108,16 @@ const Index = () => {
     });
     // 预订单
     let submitDetail = Taro.getStorageSync('submitInfo');
-    await dispatch({
-      type: 'goodInfo/wxpay',
-      payload: {
-        orderNo: submitDetail.orderNos?.at(0),
-        orderId: submitDetail.orderIds?.at(0),
-        gatewayId: 2,
-        gatewayCode: 'WX_PAY',
-        gatewayTerminal: 2,
-        paymentAmount: orderInfo?.totalPrice,
-        tradeType: 0,
-      },
-    });
-
     // 支付
-    let payDetail = Taro.getStorageSync('payInfo');
-    Taro.requestPayment({
-      timeStamp: payDetail.timeStamp,
-      nonceStr: payDetail.nonceStr,
-      package: payDetail.package, // 订单包
-      signType: payDetail.signType, // 加密方式统一'
-      paySign: payDetail.paySign, // 后台支付签名返回
-      provider: payDetail.provider, //支付类型
-      appId: payDetail.appId, //小程序Appid
-      success: function (res) {
-        Taro.showToast({
-          title: '支付成功',
-          icon: 'none',
-          duration: 2000,
-        });
-        if (res.errMsg === 'requestPayment:ok') {
-          Taro.navigateTo({ url: '/pages/allOrders/index' });
-          dispatch({
-            type: 'allOrders/update',
-            payload: {
-              orderActive: 0,
-            },
-          });
-        }
-        Taro.removeStorageSync('payInfo');
-      },
-      fail: function (res) {
-        window.console.log('fail', res);
-        Taro.showToast({
-          title: '支付失败',
-          icon: 'none',
-          duration: 2000,
-        });
-      },
+    payOrder({
+      orderNo: submitDetail.orderNos?.at(0),
+      orderId: submitDetail.orderIds?.at(0),
+      gatewayId: 2,
+      gatewayCode: 'WX_PAY',
+      gatewayTerminal: 2,
+      paymentAmount: orderInfo?.totalPrice,
+      tradeType: 0,
     });
-    Taro.hideLoading();
   };
 
   return (
