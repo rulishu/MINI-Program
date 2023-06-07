@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Button, Popup, TextArea } from '@nutui/nutui-react-taro';
 import { View, Text } from '@tarojs/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { list } from './item';
-import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const [value2, updateValue2] = useState('');
-  const { orderRefund, refundType } = useSelector((state) => state.orderDetails);
+  const { orderRefund, refundType, orderInfo, orderStatus } = useSelector(
+    (state) => state.orderDetails,
+  );
 
   const onClose = () => {
     dispatch({
@@ -26,19 +26,41 @@ const Index = () => {
     updateValue2(e);
   };
 
-  // 提交
-  const onClick = () => {
-    Taro.showToast({
-      title: '售后申请已提交',
-      icon: 'none',
-      duration: 2000,
-    });
-    dispatch({
-      type: 'orderDetails/update',
-      payload: {
-        orderRefund: false,
-      },
-    });
+  // 仅退款
+  const onClick = async (item) => {
+    if (refundType === 'refundOnly') {
+      await dispatch({
+        type: 'orderDetails/serviceApply',
+        payload: {
+          afterServiceType: 1,
+          reason: value2,
+          id: item.id,
+          orderId: item.id,
+          itemIds: item?.items?.map((a) => Number(a.itemId)),
+          callBack: () => {
+            dispatch({
+              type: 'allOrders/getAllOrders',
+              payload: {
+                pageNum: 1,
+                pageSize: 10,
+                orderStatus,
+              },
+            });
+          },
+        },
+      });
+    } else if (refundType === 'returnsRefunds') {
+      await dispatch({
+        type: 'orderDetails/serviceApply',
+        payload: {
+          afterServiceType: 2,
+          reason: value2,
+          id: item.id,
+          orderId: item.id,
+          itemIds: item?.items?.map((a) => Number(a.itemId)),
+        },
+      });
+    }
   };
 
   return (
@@ -59,7 +81,7 @@ const Index = () => {
           <View className="popupInfo-pay-num">
             <Text>
               <Text style={{ fontSize: 12 }}>¥</Text>
-              {list?.totalPrice}
+              {orderInfo?.orderPrice}
             </Text>
           </View>
         </View>
@@ -85,7 +107,7 @@ const Index = () => {
             shape="square"
             color="#A05635"
             style={{ width: '80%', borderRadius: 8, border: 'none' }}
-            onClick={() => onClick()}
+            onClick={() => onClick(orderInfo)}
           >
             申请退款
           </Button>
