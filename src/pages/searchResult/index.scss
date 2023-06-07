@@ -89,9 +89,15 @@ page {
           margin:8px 0;
           height:20px;
           .activity{
-            padding: 2px;
-            border:1px solid #DA0A24;
-            color:#DA0A24;
+            padding: 4px;
+            color:#F65D3D;
+            background-color: #F5F5F5;
+          }
+          .activity-price{
+            padding: 4px;
+            background-color:#F65D3D;
+            color:#ffffff;
+  
           }
         }
         .search-result-content-bottom{
