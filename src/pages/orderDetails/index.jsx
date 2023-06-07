@@ -124,7 +124,12 @@ const Index = () => {
       content: '确认取消订单吗?',
       success: function (res) {
         if (res.confirm) {
-          return;
+          dispatch({
+            type: 'allOrders/cancelOrder',
+            payload: {
+              id: orderInfo?.id,
+            },
+          });
         } else if (res.cancel) {
           return;
         }

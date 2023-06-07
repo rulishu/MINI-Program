@@ -159,7 +159,14 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
         <Divider styles={{ color: 'rgb(170, 170, 170)' }} />
         <View className="order-item-bottom">
           {item.orderStatus === 3 && (
-            <Button shape="square" className="bottom-btn" plain size="small" type="default">
+            <Button
+              shape="square"
+              className="bottom-btn"
+              plain
+              size="small"
+              type="default"
+              onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
+            >
               查看物流
             </Button>
           )}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Popup, Button, InputNumber, Price } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
+import { min, aPrice } from '@/utils/min';
 import Taro from '@tarojs/taro';
 
 const Index = () => {
@@ -106,7 +107,7 @@ const Index = () => {
           <View className="infoTextBox">
             <View>
               <Price
-                price={memberPrice ? memberPrice : queryInfo?.costPrice}
+                price={min(queryInfo?.itemSkuDtos)}
                 size="large"
                 needSymbol
                 thousands
@@ -115,7 +116,8 @@ const Index = () => {
               <Text
                 style={{ textDecoration: 'line-through', fontSize: 12, color: 'rgb(127,127,127)' }}
               >
-                {queryInfo?.price}
+                {queryInfo?.itemSkuDtos &&
+                  aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
             </View>
             <View>

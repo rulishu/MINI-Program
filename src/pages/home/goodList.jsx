@@ -5,6 +5,7 @@ import homeNoAdd from '@/assets/images/homeNoAdd.svg';
 import { Skeleton } from '@nutui/nutui-react-taro';
 import { useDispatch } from 'react-redux';
 import Taro from '@tarojs/taro';
+import { min, aPrice } from '@/utils/min';
 import './index.scss';
 
 const GoodList = (props) => {
@@ -27,28 +28,6 @@ const GoodList = (props) => {
       },
     });
     Taro.navigateTo({ url: '/pages/goodInfo/index' });
-  };
-
-  // 最低价
-  const min = (data) => {
-    return (
-      data?.reduce((prev, current) => {
-        if (current?.membershipPrice < prev) {
-          return current?.membershipPrice;
-        } else {
-          return prev;
-        }
-      }, Infinity) || 0
-    );
-  };
-
-  // 最高价
-  const max = (data) => {
-    return (
-      data?.reduce((prev, curr) => {
-        return prev?.membershipPrice > curr?.membershipPrice ? prev : curr;
-      })?.membershipPrice || 0
-    );
   };
 
   return (
@@ -96,13 +75,9 @@ const GoodList = (props) => {
               </View>
               <View className="search-result-content-bottom">
                 <View>
-                  <Text className="lastPrice">
-                    <Text style={{ fontSize: 12 }}>¥ </Text>
-                    {min(item.itemSkuDtos) || 0}
-                  </Text>
+                  <Text className="lastPrice">{min(item.itemSkuDtos) || '¥0'}</Text>
                   <Text className="firstPrice">
-                    <Text style={{ fontSize: 12 }}>¥ </Text>
-                    {max(item.itemSkuDtos) || 0}
+                    {aPrice(min(item.itemSkuDtos), item.itemSkuDtos)}
                   </Text>
                 </View>
                 <View className="searchCart">
