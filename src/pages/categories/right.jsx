@@ -4,6 +4,7 @@ import { View, Text, Image, ScrollView } from '@tarojs/components';
 import { Tag, Price, Skeleton } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import homeAdd from '@/assets/images/homeAdd.svg';
+import { min, aPrice } from '@/utils/min';
 import './index.scss';
 
 const Index = (props) => {
@@ -69,12 +70,6 @@ const Index = (props) => {
                     </View>
                     {/* 标签图片内容调整 */}
                     {itm?.itemDto?.map((dto) => {
-                      const prices = dto?.itemSkuDtos?.map((item) => item?.membershipPrice);
-                      const minPrice = prices && Math.min(...prices);
-                      let dtoItem = dto?.itemSkuDtos?.find(
-                        (item) => item?.membershipPrice === minPrice,
-                      );
-
                       return (
                         <View
                           className="right-content-box"
@@ -151,7 +146,7 @@ const Index = (props) => {
                                   onClick={() => onTap(dto?.id)}
                                 >
                                   <Price
-                                    price={minPrice}
+                                    price={min(dto?.itemSkuDtos)}
                                     size="normal"
                                     needSymbol
                                     thousands
@@ -165,7 +160,8 @@ const Index = (props) => {
                                         fontSize: 12,
                                       }}
                                     >
-                                      {dtoItem?.referencePrice}
+                                      {dto?.itemSkuDtos &&
+                                        aPrice(min(dto?.itemSkuDtos), dto?.itemSkuDtos)}
                                     </Text>
                                   </View>
                                 </View>

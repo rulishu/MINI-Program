@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { getAllOrders, deleteOrder, receipt } from '@/server/allOrders';
+import { getAllOrders, deleteOrder, receipt, cancelOrder } from '@/server/allOrders';
 import { wxpay } from '@/server/goodInfo';
 
 export default {
@@ -9,6 +9,9 @@ export default {
     // 初始化数据
     orderActive: 0,
     orderList: [],
+    pageNum: 1,
+    total: 0,
+    refreshHasMore: false,
   },
 
   effects: {
@@ -45,20 +48,25 @@ export default {
     },
 
     // 取消订单
-    // *cancelOrder({ payload }, { call, put }) {
-    //   try {
-    //     const data = yield call(cancelOrder, payload);
-    //     if (data && data.code === 200) {
-    // yield put({
-    //   type: 'getAllOrders',
-    //   payload: {
-    //     pageNum: 1,
-    //     pageSize: 10,
-    //   },
-    // });
-    //     }
-    //   } catch (err) { }
-    // },
+    *cancelOrder({ payload }, { call, put }) {
+      try {
+        const data = yield call(cancelOrder, payload);
+        if (data && data.code === 200) {
+          Taro.showToast({
+            title: '取消成功',
+            icon: 'success',
+            duration: 2000,
+          });
+          yield put({
+            type: 'getAllOrders',
+            payload: {
+              pageNum: 1,
+              pageSize: 10,
+            },
+          });
+        }
+      } catch (err) {}
+    },
 
     // 确认收货
     *receiptOrder({ payload }, { call, put }) {

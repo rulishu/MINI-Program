@@ -9,6 +9,7 @@ import shareblack from '@/assets/images/shareblack.svg';
 import cart from '@/assets/images/cart.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import Drawer from './drawer';
+import { min, aPrice } from '@/utils/min';
 import './index.scss';
 
 const Index = () => {
@@ -78,10 +79,6 @@ const Index = () => {
       return '商品已删除';
     }
   };
-  const prices = queryInfo?.itemSkuDtos?.map((item) => item?.membershipPrice);
-  const minPrice = prices && Math.min(...prices);
-  let dtoItem = queryInfo?.itemSkuDtos?.find((itm) => itm?.membershipPrice === minPrice);
-
   return (
     <Skeleton animated loading={queryInfo?.mainGraphs ? true : false}>
       <View>
@@ -202,14 +199,15 @@ const Index = () => {
               }}
             >
               <Price
-                price={minPrice}
+                price={min(queryInfo?.itemSkuDtos)}
                 size="large"
                 needSymbol
                 thousands
                 style={{ color: '#d9001c' }}
               />
               <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
-                {dtoItem?.referencePrice}
+                {queryInfo?.itemSkuDtos &&
+                  aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
             </View>
             <View

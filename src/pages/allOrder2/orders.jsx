@@ -59,33 +59,6 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
     [7]: '待评价',
     [-2]: '已取消',
   };
-
-  const getList = () => {
-    callBack: () => {
-      let orderStatus;
-      if (orderActive === 1) {
-        orderStatus = 1;
-      }
-      if (orderActive === 2) {
-        orderStatus = 2;
-      }
-      if (orderActive === 3) {
-        orderStatus = 3;
-      }
-      if (orderActive === 4) {
-        orderStatus = 7;
-      }
-      dispatch({
-        type: 'allOrders/getAllOrders',
-        payload: {
-          pageNum: 1,
-          pageSize: 10,
-          orderStatus,
-        },
-      });
-    };
-  };
-
   const wxPay = async () => {
     Taro.showLoading({ title: '加载中', mask: true });
     await dispatch({
@@ -98,7 +71,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
         gatewayTerminal: 2,
         paymentAmount: item?.orderPrice,
         tradeType: 0,
-        callBack: () => getList,
+        callBack: () => refesh(),
       },
     });
   };
@@ -159,14 +132,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
         <Divider styles={{ color: 'rgb(170, 170, 170)' }} />
         <View className="order-item-bottom">
           {item.orderStatus === 3 && (
-            <Button
-              shape="square"
-              className="bottom-btn"
-              plain
-              size="small"
-              type="default"
-              onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
-            >
+            <Button shape="square" className="bottom-btn" plain size="small" type="default">
               查看物流
             </Button>
           )}
@@ -187,7 +153,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
                         type: 'allOrders/deleteOrder',
                         payload: {
                           id: item.id,
-                          callBack: () => getList,
+                          callBack: () => refesh(),
                         },
                       });
                     }
@@ -256,7 +222,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
                   payload: {
                     id: item.id,
                     callBack: () => {
-                      getList;
+                      refesh();
                       setIsConfirm(false);
                     },
                   },
@@ -272,17 +238,18 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   );
 };
 
-const Index = ({ keys }) => {
+const Index = ({ keys, refesh }) => {
   const { orderList, orderActive } = useSelector((state) => state.allOrders);
   return (
     <View className="order">
       <View className="order-content">
         {orderList.length !== 0 ? (
-          orderList.map((item) => {
+          (orderList || []).map((item) => {
             return (
               <ListItem
                 item={item}
                 keys={keys}
+                refesh={refesh}
                 orderActive={orderActive}
                 orderList={orderList}
                 key={item.id}
@@ -290,7 +257,7 @@ const Index = ({ keys }) => {
             );
           })
         ) : (
-          <Empty description="无数据" />
+          <Empty style={{ background: 'transparent' }} description="无数据" />
         )}
       </View>
     </View>
