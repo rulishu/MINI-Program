@@ -75,7 +75,9 @@ const Index = () => {
       },
     });
   };
-
+  const prices = queryInfo?.itemSkuDtos?.map((item) => item?.membershipPrice);
+  const minPrice = prices && Math.min(...prices);
+  let dtoItem = queryInfo?.itemSkuDtos?.find((itm) => itm?.membershipPrice === minPrice);
   return (
     <Popup
       closeable
@@ -105,17 +107,11 @@ const Index = () => {
 
           <View className="infoTextBox">
             <View>
-              <Price
-                price={memberPrice ? memberPrice : queryInfo?.costPrice}
-                size="large"
-                needSymbol
-                thousands
-                className="infoTextOne"
-              />
+              <Price price={minPrice} size="large" needSymbol thousands className="infoTextOne" />
               <Text
                 style={{ textDecoration: 'line-through', fontSize: 12, color: 'rgb(127,127,127)' }}
               >
-                {queryInfo?.price}
+                {dtoItem?.referencePrice}
               </Text>
             </View>
             <View>
