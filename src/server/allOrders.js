@@ -13,10 +13,10 @@ export const deleteOrder = (params) => {
   return request.delete(`/jcgl-mall/app/order/info/delete?id=${params.id}`);
 };
 
-// // 取消订单
-// export const cancelOrder = (params) => {
-//   return request.get(`/jcgl-mall/app/order/info/cancel?id=${params}`);
-// };
+// 取消订单
+export const cancelOrder = (params) => {
+  return request.get(`/jcgl-mall/app/order/info/cancel`, params);
+};
 
 // 确认收货
 export const receipt = (params) => {
