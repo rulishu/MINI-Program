@@ -17,7 +17,15 @@ const Index = (props) => {
     const targetId = e.currentTarget?.dataset?.targetId;
     setScrollIntoView(`a${targetId}`);
   };
-
+  const onTap = (id) => {
+    dispatch({
+      type: 'goodInfo/infoDetails',
+      payload: {
+        id: id,
+      },
+    });
+    Taro.navigateTo({ url: '/pages/goodInfo/index' });
+  };
   return (
     <ScrollView
       scrollY
@@ -61,8 +69,11 @@ const Index = (props) => {
                     </View>
                     {/* 标签图片内容调整 */}
                     {itm?.itemDto?.map((dto) => {
-                      const prices = dto?.itemSkuDtos?.map((item) => item?.goodsCost);
+                      const prices = dto?.itemSkuDtos?.map((item) => item?.membershipPrice);
                       const minPrice = prices && Math.min(...prices);
+                      let dtoItem = dto?.itemSkuDtos?.find(
+                        (item) => item?.membershipPrice === minPrice,
+                      );
 
                       return (
                         <View
@@ -77,6 +88,9 @@ const Index = (props) => {
                                 width: '40%',
                                 alignItems: 'center',
                               }}
+                              onTap={() => {
+                                onTap(dto?.id);
+                              }}
                             >
                               <Skeleton animated loading={dto?.mainGraph ? true : false}>
                                 <Image
@@ -84,15 +98,6 @@ const Index = (props) => {
                                   // eslint-disable-next-line global-require
                                   src={dto?.mainGraph}
                                   className="right-content-item-img"
-                                  onTap={() => {
-                                    dispatch({
-                                      type: 'goodInfo/infoDetails',
-                                      payload: {
-                                        id: dto?.id,
-                                      },
-                                    });
-                                    Taro.navigateTo({ url: '/pages/goodInfo/index' });
-                                  }}
                                 ></Image>
                               </Skeleton>
                             </View>
@@ -110,16 +115,12 @@ const Index = (props) => {
                               <View
                                 className="right-content-text-header"
                                 onTap={() => {
-                                  dispatch({
-                                    type: 'goodInfo/infoDetails',
-                                    payload: {
-                                      id: dto?.id,
-                                    },
-                                  });
-                                  Taro.navigateTo({ url: '/pages/goodInfo/index' });
+                                  onTap(dto?.id);
                                 }}
                               >
-                                <Tag color="rgb(170, 170, 170)">自营</Tag>
+                                <Tag color="rgb(170, 170, 170)">
+                                  {dto?.suppliersId === 1 ? '自营' : '严选'}
+                                </Tag>
                                 <Text style={{ marginLeft: 10 }}>{dto?.itemName}</Text>
                               </View>
                               {/* <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -145,9 +146,12 @@ const Index = (props) => {
                                   justifyContent: 'space-between',
                                 }}
                               >
-                                <View style={{ display: 'flex', flexDirection: 'row' }}>
+                                <View
+                                  style={{ display: 'flex', flexDirection: 'row' }}
+                                  onClick={() => onTap(dto?.id)}
+                                >
                                   <Price
-                                    price={dto?.costPrice}
+                                    price={minPrice}
                                     size="normal"
                                     needSymbol
                                     thousands
@@ -161,7 +165,7 @@ const Index = (props) => {
                                         fontSize: 12,
                                       }}
                                     >
-                                      {minPrice ? `¥${minPrice}` : ''}
+                                      {dtoItem?.referencePrice}
                                     </Text>
                                   </View>
                                 </View>

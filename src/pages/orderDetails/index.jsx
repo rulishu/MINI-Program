@@ -286,6 +286,7 @@ const Index = () => {
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
                   plain
                   type="default"
+                  onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
                 >
                   <Text style={{ fontSize: 14 }}>查看物流</Text>
                 </Button>
@@ -316,6 +317,7 @@ const Index = () => {
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
                   plain
                   type="default"
+                  onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
                 >
                   <Text style={{ fontSize: 14 }}>查看物流</Text>
                 </Button>
