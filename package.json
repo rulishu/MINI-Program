@@ -90,6 +90,12 @@
     "stylelint": "^14.4.0",
     "webpack": "5.69.0"
   },
+  "overrides": {
+    "dva-core": "^2.0.4"
+  },
+  "resolutions": {
+    "dva-core": "^2.0.4"
+  },
   "lint-staged": {
     "*.{js,jsx}": [
       "eslint --fix",
