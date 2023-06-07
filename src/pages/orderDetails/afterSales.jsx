@@ -2,13 +2,12 @@ import React from 'react';
 import { Button, Popup, Image } from '@nutui/nutui-react-taro';
 import { View, Text } from '@tarojs/components';
 import { useSelector, useDispatch } from 'react-redux';
-import { list } from './item';
 import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { orderAfterSales } = useSelector((state) => state.orderDetails);
+  const { orderAfterSales, orderInfo } = useSelector((state) => state.orderDetails);
   const onClose = () => {
     dispatch({
       type: 'orderDetails/update',
@@ -96,45 +95,49 @@ const Index = () => {
           </View>
         </View>
         <View className="popupInfo-textArea">
-          <View className="popupInfo-textArea-box">
-            <View className="popupInfo-textArea-box-content">
-              <View>
-                <Image
-                  mode="widthFix"
-                  src={list?.defaultImage}
-                  style={{ width: 100, height: 100 }}
-                ></Image>
-              </View>
-              <View className="popupInfo-textArea-box-content-left">
-                <View>
-                  <View className="popupInfo-textArea-box-content-left-title">
-                    <Text>{list.itemName}</Text>
+          {orderInfo?.items?.map((item) => {
+            return (
+              <View className="popupInfo-textArea-box" key={item.id}>
+                <View className="popupInfo-textArea-box-content">
+                  <View>
+                    <Image
+                      mode="widthFix"
+                      src={item?.mainGraph}
+                      style={{ width: 100, height: 100 }}
+                    ></Image>
                   </View>
-                  <View className="popupInfo-textArea-box-content-left-doc">
-                    {list.activeSku.map((item) => (
-                      <Text key={item.id} className="doc">
-                        {item.value},
-                      </Text>
-                    ))}
+                  <View className="popupInfo-textArea-box-content-left">
+                    <View>
+                      <View className="popupInfo-textArea-box-content-left-title">
+                        <Text>{item.itemName}</Text>
+                      </View>
+                      <View className="popupInfo-textArea-box-content-left-doc">
+                        {item.attributes.map((val) => (
+                          <Text key={item.id} className="doc">
+                            {val.value},
+                          </Text>
+                        ))}
+                      </View>
+                    </View>
+                    <View className="popupInfo-textArea-box-content-left-doc ">
+                      <Text className="doc-bg">自营</Text>
+                    </View>
                   </View>
                 </View>
-                <View className="popupInfo-textArea-box-content-left-doc ">
-                  <Text className="doc-bg">自营</Text>
+                <View className="popupInfo-textArea-box-content-right">
+                  <View className="popupInfo-textArea-box-content-right-num">
+                    <Text>x{item?.amount}</Text>
+                  </View>
+                  <View className="popupInfo-textArea-box-content-right-price">
+                    <Text>
+                      <Text style={{ fontSize: 12 }}>¥</Text>
+                      {item?.unitPrice}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <View className="popupInfo-textArea-box-content-right">
-              <View className="popupInfo-textArea-box-content-right-num">
-                <Text>x{list?.count}</Text>
-              </View>
-              <View className="popupInfo-textArea-box-content-right-price">
-                <Text>
-                  <Text style={{ fontSize: 12 }}>¥</Text>
-                  {list?.unitPrice}
-                </Text>
-              </View>
-            </View>
-          </View>
+            );
+          })}
         </View>
         <View className="popupInfo-button">
           <Button

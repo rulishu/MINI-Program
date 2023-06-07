@@ -20,6 +20,18 @@ const GoodList = (props) => {
         icon: 'none',
         duration: 2000,
       });
+    } else if (itm?.onShelf === 0) {
+      Taro.showToast({
+        title: '商品已下架',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (itm?.isDelete === 1) {
+      Taro.showToast({
+        title: '商品已删除',
+        icon: 'none',
+        duration: 2000,
+      });
     }
     await dispatch({
       type: 'goodInfo/infoDetails',
@@ -53,6 +65,16 @@ const GoodList = (props) => {
               {item.stock === 0 && (
                 <View className="image-state">
                   <Text>{item.stock === 0 ? '已售空' : ''}</Text>
+                </View>
+              )}
+              {item.onShelf === 0 && (
+                <View className="image-state">
+                  <Text>{item.onShelf === 0 ? '已下架' : ''}</Text>
+                </View>
+              )}
+              {item.isDelete === 1 && (
+                <View className="image-state">
+                  <Text>{item.isDelete === 1 ? '已删除' : ''}</Text>
                 </View>
               )}
             </View>

@@ -104,6 +104,7 @@ const Index = () => {
       type: 'orderDetails/update',
       payload: {
         orderRefund: true,
+        refundType: 'refundOnly',
       },
     });
   };
@@ -289,7 +290,7 @@ const Index = () => {
                   <Text>{a.title}</Text>
                 </View>
                 <View className="address-price-right">
-                  <Text>{a.price}</Text>
+                  <Text className="address-price-right-text">{a.price}</Text>
                   <Text style={{ color: '#000000', marginLeft: 10 }}>
                     {a.title === '订单编号' ? '复制' : ''}
                   </Text>

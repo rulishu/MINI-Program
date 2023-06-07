@@ -152,16 +152,22 @@ page {
       .address-price{
         display: flex;
         // justify-content:space-between;
-        text-align: right;
+        // text-align: right;
         margin-top:30px;
         .address-price-right{
           display:flex;
-          align-items: center;
+          // align-items: center;
           margin-left:60px;
           color:#7F7F7F;
           white-space: nowrap;// 强制一行显示
           overflow: hidden; // 超出隐藏
           text-overflow: ellipsis; // 省略号
+          .address-price-right-text{
+            white-space: nowrap;// 强制一行显示
+            overflow: hidden; // 超出隐藏
+            text-overflow: ellipsis; // 省略号
+            width:360px;
+          }
         }
       }
     }
@@ -190,7 +196,7 @@ page {
         flex-direction: row;
       }
       .card-list-item-right{
-        text-align: right;
+        // text-align: right;
         display:flex;
         align-items: center;
       }
