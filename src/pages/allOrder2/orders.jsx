@@ -238,8 +238,8 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   );
 };
 
-const Index = ({ keys }) => {
-  const { orderList, orderActive, refesh } = useSelector((state) => state.allOrders);
+const Index = ({ keys, refesh }) => {
+  const { orderList, orderActive } = useSelector((state) => state.allOrders);
   return (
     <View className="order">
       <View className="order-content">

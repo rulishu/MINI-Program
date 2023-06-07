@@ -65,7 +65,7 @@ const Index = () => {
   ];
 
   useEffect(() => {
-    Taro.showLoading();
+    Taro.showLoading({ title: '加载中...', mask: true });
     run({
       pageNum: pageNum,
       pageSize: 20,
@@ -75,7 +75,7 @@ const Index = () => {
 
   const refesh = () => {
     updateFn({ pageNum: 1 });
-    Taro.showLoading();
+    Taro.showLoading({ title: '加载中...', mask: true });
     run({
       pageNum: 1,
       pageSize: 20,
