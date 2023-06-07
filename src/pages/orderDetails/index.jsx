@@ -6,12 +6,53 @@ import { useDispatch, useSelector } from 'react-redux';
 import PopupInfo from './popupInfo';
 import Taro from '@tarojs/taro';
 import AfterSales from './afterSales';
-import { orderType } from '../../utils/enum';
+import { orderType, orderPay } from '../../utils/enum';
+import { useCountDown } from 'ahooks';
+import moment from 'moment';
+import usePay from '@/hooks/usePay';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const { orderStatus, orderInfo } = useSelector((state) => state.orderDetails);
+  const { predictEndTime } = orderInfo;
+  const { payOrder } = usePay({
+    success: () => {
+      Taro.navigateTo({ url: '/pages/allOrders/index' });
+      dispatch({
+        type: 'allOrders/getAllOrders',
+        payload: {
+          pageNum: 1,
+          pageSize: 10,
+          orderStatus,
+        },
+      });
+    },
+    error: () => {},
+  });
+
+  // eslint-disable-next-line no-unused-vars
+  const [countdown, formattedRes] = useCountDown({
+    // leftTime: 60 * 100,
+    leftTime: moment(predictEndTime).valueOf() - moment().valueOf(),
+    onEnd: async () => {
+      if (keys === orderActive) {
+        orderInfo.filter((orderItem) => {
+          if (orderItem.id === item.id) {
+            orderItem.orderStatus = -2;
+          }
+        });
+        await dispatch({
+          type: 'orderDetails/update',
+          payload: {
+            orderInfo: orderInfo,
+          },
+        });
+      }
+    },
+  });
+  const { minutes, seconds } = formattedRes;
+
   useEffect(() => {
     wx.setNavigationBarTitle({
       title: orderType[orderStatus],
@@ -31,16 +72,30 @@ const Index = () => {
     const data2 = [
       { id: 1, title: '订单编号', price: orderInfo.orderNumber },
       { id: 2, title: '订单备注', price: orderInfo?.remark },
-      { id: 3, title: '支付方式', price: '微信支付' },
-      { id: 4, title: '支付单号', price: '' },
-      { id: 5, title: '创建时间', price: orderInfo.createTime },
-      { id: 6, title: '支付时间', price: '' },
+      { id: 3, title: '支付方式', price: orderPay[orderInfo?.payType] },
+      { id: 4, title: '支付单号', price: orderInfo?.paymentOrderNumber },
+      { id: 5, title: '创建时间', price: orderInfo?.createTime },
+      { id: 6, title: '支付时间', price: orderInfo?.payDate },
     ];
     if (val == 1 || val == 5) {
       return data;
     } else if (val == 2 || val === 3 || val === 4 || val === 6) {
       return data2;
     }
+  };
+
+  // 立即支付
+  const onPay = async () => {
+    Taro.showLoading({ title: '加载中', mask: true });
+    payOrder({
+      orderNo: orderInfo?.orderNumber,
+      orderId: orderInfo?.id,
+      gatewayId: 2,
+      gatewayCode: 'WX_PAY',
+      gatewayTerminal: 2,
+      paymentAmount: orderInfo?.totalPrice,
+      tradeType: 0,
+    });
   };
 
   // 申请退款
@@ -259,8 +314,15 @@ const Index = () => {
                 </Button>
               </View>
               <View>
-                <Button shape="square" color="#FF374C" style={{ color: '#ffffff', border: 'none' }}>
-                  <Text style={{ fontSize: 14 }}>立即支付 14.59</Text>
+                <Button
+                  onClick={() => onPay()}
+                  shape="square"
+                  type="danger"
+                  style={{ color: '#ffffff', border: 'none', width: 140 }}
+                >
+                  <Text>
+                    立即支付 {minutes}:{seconds}
+                  </Text>
                 </Button>
               </View>
             </>
