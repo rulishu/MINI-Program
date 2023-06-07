@@ -132,11 +132,12 @@ page {
       .classification-content{
         margin-bottom:20px;
         .classification-content-title{
+          margin-left:6px;
           font-size: 26px;
           margin-bottom:10px;
         }
         .classification-content-banner{
-          margin-bottom:20px;
+          margin:0 6px 20px 6px;
         }
         .classification-content-goods{
            display:flex;
@@ -145,10 +146,22 @@ page {
            justify-content: space-between;
            width:100%;
           .middle-search-result-info-item{
-            width:32%;
+            width:100%;
             display: flex;
             flex-direction: column;
             margin-bottom: 20px;
+            .nut-icon__img{
+              background-color: #D8D8D8;
+            }
+            .nut-grid-item__content{
+              padding:0;
+            }
+            .nut-grid-item__text {
+              margin:0;
+            }
+            .nut-grid-item__content--center{
+              display:block
+            }
             .search-result-image{
               width:100%;
               height:150px;
@@ -165,7 +178,7 @@ page {
               justify-content: space-between;
               height:100%;
               padding:0 10px 10px 10px;
-              background-color: #ffffff;
+              // background-color: #ffffff;
               .search-result-content-head{
                 text-overflow: -o-ellipsis-lastline;
                 overflow: hidden;				//溢出内容隐藏
