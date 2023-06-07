@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Popup, Button, InputNumber, Price } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
+import { min, aPrice } from '@/utils/min';
 import Taro from '@tarojs/taro';
 
 const Index = () => {
@@ -75,9 +76,7 @@ const Index = () => {
       },
     });
   };
-  const prices = queryInfo?.itemSkuDtos?.map((item) => item?.membershipPrice);
-  const minPrice = prices && Math.min(...prices);
-  let dtoItem = queryInfo?.itemSkuDtos?.find((itm) => itm?.membershipPrice === minPrice);
+
   return (
     <Popup
       closeable
@@ -107,11 +106,18 @@ const Index = () => {
 
           <View className="infoTextBox">
             <View>
-              <Price price={minPrice} size="large" needSymbol thousands className="infoTextOne" />
+              <Price
+                price={min(queryInfo?.itemSkuDtos)}
+                size="large"
+                needSymbol
+                thousands
+                className="infoTextOne"
+              />
               <Text
                 style={{ textDecoration: 'line-through', fontSize: 12, color: 'rgb(127,127,127)' }}
               >
-                {dtoItem?.referencePrice}
+                {queryInfo?.itemSkuDtos &&
+                  aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
             </View>
             <View>
