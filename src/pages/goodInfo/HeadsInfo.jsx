@@ -201,7 +201,7 @@ const Index = () => {
               <Price
                 price={min(queryInfo?.itemSkuDtos)}
                 size="large"
-                needSymbol
+                needSymbol={false}
                 thousands
                 style={{ color: '#d9001c' }}
               />

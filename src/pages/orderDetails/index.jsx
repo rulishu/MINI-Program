@@ -10,6 +10,7 @@ import { orderType, orderPay } from '../../utils/enum';
 import { useCountDown } from 'ahooks';
 import moment from 'moment';
 import usePay from '@/hooks/usePay';
+import Confirm from './confirm';
 import './index.scss';
 
 const Index = () => {
@@ -104,6 +105,7 @@ const Index = () => {
       type: 'orderDetails/update',
       payload: {
         orderRefund: true,
+        refundType: 'refundOnly',
       },
     });
   };
@@ -289,7 +291,7 @@ const Index = () => {
                   <Text>{a.title}</Text>
                 </View>
                 <View className="address-price-right">
-                  <Text>{a.price}</Text>
+                  <Text className="address-price-right-text">{a.price}</Text>
                   <Text style={{ color: '#000000', marginLeft: 10 }}>
                     {a.title === '订单编号' ? '复制' : ''}
                   </Text>
@@ -359,7 +361,20 @@ const Index = () => {
                 </Button>
               </View>
               <View>
-                <Button shape="square" type="primary" style={{ color: '#ffffff', border: 'none' }}>
+                <Button
+                  shape="square"
+                  type="primary"
+                  style={{ color: '#ffffff', border: 'none' }}
+                  onClick={() => {
+                    dispatch({
+                      type: 'orderDetails/update',
+                      payload: {
+                        isConfirm: true,
+                        orderAmount: orderInfo.items.reduce((total, obj) => total + obj.amount, 0),
+                      },
+                    });
+                  }}
+                >
                   <Text style={{ fontSize: 14 }}>确认收货</Text>
                 </Button>
               </View>
@@ -433,6 +448,7 @@ const Index = () => {
           )}
         </View>
       </View>
+      <Confirm />
       <PopupInfo />
       <AfterSales />
     </View>

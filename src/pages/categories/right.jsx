@@ -148,7 +148,7 @@ const Index = (props) => {
                                   <Price
                                     price={min(dto?.itemSkuDtos)}
                                     size="normal"
-                                    needSymbol
+                                    needSymbol={false}
                                     thousands
                                     style={{ color: '#d9001c' }}
                                   />
