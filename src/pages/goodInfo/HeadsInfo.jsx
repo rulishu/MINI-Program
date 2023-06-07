@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Video } from '@tarojs/components';
-import { Swiper, SwiperItem, Price, Icon, Button, Skeleton } from '@nutui/nutui-react-taro';
+import { Swiper, SwiperItem, Price, Icon, Button, Skeleton, Tag } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import searchLeft from '@/assets/images/searchLeft.svg';
 import kefu from '@/assets/images/kefu.svg';
@@ -78,8 +78,10 @@ const Index = () => {
       return '商品已删除';
     }
   };
-  const prices = queryInfo?.itemSkuDtos?.map((item) => item?.goodsCost);
+  const prices = queryInfo?.itemSkuDtos?.map((item) => item?.membershipPrice);
   const minPrice = prices && Math.min(...prices);
+  let dtoItem = queryInfo?.itemSkuDtos?.find((itm) => itm?.membershipPrice === minPrice);
+
   return (
     <Skeleton animated loading={queryInfo?.mainGraphs ? true : false}>
       <View>
@@ -200,14 +202,14 @@ const Index = () => {
               }}
             >
               <Price
-                price={queryInfo?.costPrice}
+                price={minPrice}
                 size="large"
                 needSymbol
                 thousands
                 style={{ color: '#d9001c' }}
               />
               <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
-                {minPrice ? `¥${minPrice}` : ''}
+                {dtoItem?.referencePrice}
               </Text>
             </View>
             <View
@@ -219,16 +221,9 @@ const Index = () => {
               }}
             >
               <View>
-                <Text
-                  style={{
-                    color: '#E9E9E9',
-                    textColor: '"#999999',
-                    background: '#aaaaaa',
-                    padding: '0px 5px',
-                  }}
-                >
-                  自营
-                </Text>
+                <Tag color="rgb(170, 170, 170)">
+                  {queryInfo?.suppliersId === 1 ? '自营' : '严选'}
+                </Tag>
                 <Text style={{ fontSize: 15, paddingLeft: 5 }}>{queryInfo?.itemName}</Text>
               </View>
             </View>
