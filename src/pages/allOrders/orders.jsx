@@ -216,7 +216,8 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               shape="square"
               className="bottom-btn"
               size="small"
-              type="info"
+              // type="info"
+              type="primary"
               onClick={() => {
                 setIsConfirm(true);
                 setOrderAmount(item.items.reduce((total, obj) => total + obj.amount, 0));
