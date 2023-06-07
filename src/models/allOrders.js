@@ -9,6 +9,9 @@ export default {
     // 初始化数据
     orderActive: 0,
     orderList: [],
+    pageNum: 1,
+    total: 0,
+    refreshHasMore: false,
   },
 
   effects: {
