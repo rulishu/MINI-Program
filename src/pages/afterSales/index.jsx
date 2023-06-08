@@ -18,120 +18,174 @@ const Index = () => {
         pageSize: 10,
       },
     });
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <View className="order">
+      {/* <ScrollView
+        style={{ height: '100vh' }}
+        scrollY
+        scrollWithAnimation
+        refresherEnabled
+        lowerThreshold={50}
+        onScrollToLower={() => updateFn({ pageNum: pageNum + 1 })}
+        onRefresherRefresh={refesh}
+      > */}
       <View className="order-content">
         {orderList.length !== 0 ? (
-          orderList.map((item) => (
-            <View key={item.id} className="order-item">
-              <View className="order-item-top">
-                <View>
-                  <Text>售后单号:{item.time}</Text>
-                  <Tag
-                    style={{ marginLeft: '5px' }}
-                    color="#E9E9E9"
-                    textColor="#999999"
+          orderList.map((item) => {
+            // 订单收货类型
+            let orderType;
+            if (item.afterServiceType === 1 && item.orderStatus === 2) {
+              orderType = '未发货仅退款';
+            } else if (item.afterServiceType === 1 && item.orderStatus === 3) {
+              orderType = '已发货仅退款';
+            } else if (item.afterServiceType === 2 && item.orderStatus === 3) {
+              orderType = '已发货退货退款';
+            } else {
+              orderType = '未知状态';
+            }
+
+            // 订单售后状态
+            let orderState;
+
+            if (item.status === -1) {
+              orderState = '待审核';
+            } else if (item.status === 3) {
+              orderState = '退款中';
+            } else if (item.status === 2 && !item?.returnOrderNumber) {
+              orderState = '已拒绝售后';
+            } else if (item.status === 6) {
+              orderState = '已取消';
+            } else if (item.status === 2 && item?.returnOrderNumber) {
+              orderState = '商家已拒绝';
+            } else if (item.status === 4) {
+              orderState = '已退款';
+            } else if (item.status === 1 && !item?.returnOrderNumber) {
+              orderState = '待买家发货';
+            } else if (item.status === 1 && item?.returnOrderNumber) {
+              orderState = '待平台收货';
+            }
+
+            return (
+              <View key={item.id} className="order-item">
+                <View className="order-item-top">
+                  <View style={{ display: 'flex', width: '70%' }}>
+                    <View className="order-item-top-text">
+                      <Text>售后单号:{item.afterServiceCode}</Text>
+                    </View>
+                    <Tag
+                      plain
+                      style={{ marginLeft: '5px' }}
+                      color="#A05635"
+                      textColor="#A05635"
+                      onClick={() => {
+                        wx.setClipboardData({
+                          data: item.returnOrderNumber,
+                        });
+                      }}
+                    >
+                      复制
+                    </Tag>
+                  </View>
+                  <View style={{ color: '#A85230' }}>
+                    <Text>{orderType}</Text>
+                  </View>
+                </View>
+                {item.items.map((goodsItem) => (
+                  <View key={goodsItem.id} className="order-item-middle">
+                    <View className="order-item-middle-left">
+                      <View className="order-item-middle-left-img">
+                        <Image
+                          mode="scaleToFill"
+                          className="order-img"
+                          // eslint-disable-next-line global-require
+                          src={goodsItem.mainGraph}
+                        ></Image>
+                      </View>
+                      <View className="order-item-middle-left-name">
+                        <Text className="order-item-middle-left-name-text" style={{ width: '80%' }}>
+                          {goodsItem.itemName}
+                        </Text>
+                        <Text className="order-item-middle-left-name-mes" style={{ width: '80%' }}>
+                          {goodsItem.attributes.map((attributeItem) => {
+                            let str = `${attributeItem.attributeName}:${attributeItem.value} `;
+                            return str;
+                          })}
+                        </Text>
+                        <View className="order-item-middle-left-name-tag">自营</View>
+                      </View>
+                    </View>
+                    <View className="order-item-middle-right">
+                      <View className="order-item-middle-right-num">
+                        <Text>x{goodsItem.amount}</Text>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+                <View className="order-item-bold">
+                  <View>状态: {orderState}</View>
+                  <View>
+                    退款金额:￥{item.items.reduce((total, obj) => total + obj.totalPrice, 0)}
+                  </View>
+                </View>
+
+                <Divider styles={{ color: '#efefef', marginTop: '10px', marginBottom: '10px' }} />
+                <View className="order-item-bottom">
+                  <Button
+                    shape="square"
+                    className="bottom-btn"
+                    plain
+                    size="small"
+                    type="default"
                     onClick={() => {
-                      wx.setClipboardData({
-                        data: item.time,
+                      Taro.showModal({
+                        title: '提示',
+                        content: '确定取消售后吗？',
+                        success: function (res) {
+                          if (res.confirm) {
+                            Taro.showLoading({ title: '取消中...', mask: true });
+                            dispatch({
+                              type: 'sales/cancelOrder',
+                              payload: {
+                                id: item.id,
+                              },
+                            });
+                          }
+                        },
                       });
                     }}
                   >
-                    复制
-                  </Tag>
+                    取消售后
+                  </Button>
+                  <Button
+                    shape="square"
+                    plain
+                    className="bottom-btn"
+                    size="small"
+                    type="default"
+                    onClick={() => {
+                      dispatch({
+                        type: 'sales/update',
+                        payload: {
+                          visible: true,
+                        },
+                      });
+                    }}
+                  >
+                    绑定运单号
+                  </Button>
                 </View>
-                <View>
-                  <Text>{item.type}</Text>
-                </View>
+                {/* 运单号弹窗 */}
+                <Drawer />
               </View>
-              <View className="order-item-middle">
-                <View className="order-item-middle-left">
-                  <View className="order-item-middle-left-img">
-                    <Image
-                      mode="widthFix"
-                      className="order-img"
-                      // eslint-disable-next-line global-require
-                      src={require('@/assets/images/home8.png')}
-                    ></Image>
-                  </View>
-                  <View className="order-item-middle-left-name">
-                    <Text
-                      className="order-item-middle-left-name-text"
-                      style={{ width: '80%', fontSize: 15 }}
-                    >
-                      {item.title}
-                    </Text>
-                    <Text
-                      className="order-item-middle-left-name-text"
-                      style={{ width: '50%', fontSize: 10 }}
-                    >
-                      规格值,规格值
-                    </Text>
-                    <Tag style={{ width: 25 }} color="rgb(170, 170, 170)">
-                      自营
-                    </Tag>
-                  </View>
-                </View>
-              </View>
-              <View className="order-item-bold">
-                <View>状态: {item.state}</View>
-                <View>退款金额:￥{item.price}</View>
-              </View>
-
-              <Divider styles={{ color: '#efefef', marginTop: '10px', marginBottom: '10px' }} />
-              <View className="order-item-bottom">
-                <Button
-                  shape="square"
-                  plain
-                  size="small"
-                  type="default"
-                  onClick={() => {
-                    Taro.showModal({
-                      title: '提示',
-                      content: '确定取消售后吗？',
-                      success: function (res) {
-                        if (res.confirm) {
-                          Taro.showLoading({ title: '取消中...', mask: true });
-                          dispatch({
-                            type: 'sales/cancelOrder',
-                            payload: {
-                              id: item.id,
-                            },
-                          });
-                        }
-                      },
-                    });
-                  }}
-                >
-                  取消售后
-                </Button>
-                <Button
-                  shape="square"
-                  plain
-                  size="small"
-                  type="default"
-                  onClick={() => {
-                    dispatch({
-                      type: 'sales/update',
-                      payload: {
-                        visible: true,
-                      },
-                    });
-                  }}
-                >
-                  绑定运单号
-                </Button>
-              </View>
-              {/* 运单号弹窗 */}
-              <Drawer />
-            </View>
-          ))
+            );
+          })
         ) : (
           <Empty description="无数据" />
         )}
       </View>
+      {/* </ScrollView> */}
     </View>
   );
 };

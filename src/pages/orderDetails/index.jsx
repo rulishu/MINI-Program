@@ -308,7 +308,7 @@ const Index = () => {
                 </View>
                 <View className="address-price-right">
                   <Text className="address-price-right-text">{a.price}</Text>
-                  <Text style={{ color: '#000000', marginLeft: 10 }}>
+                  <Text style={{ color: '#A05635', marginLeft: 10 }}>
                     {a.title === '订单编号' ? '复制' : ''}
                   </Text>
                 </View>
