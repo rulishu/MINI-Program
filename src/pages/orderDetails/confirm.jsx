@@ -44,7 +44,7 @@ const Index = () => {
                 dispatch({
                   type: 'allOrders/receiptOrder',
                   payload: {
-                    id: item.id,
+                    id: infoDetail.id,
                     callBack: () => {
                       getList;
                       dispatchFn({ isConfirm: false });

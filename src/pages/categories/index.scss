@@ -94,11 +94,32 @@ page {
           border-bottom: 1px solid #DCDCDC;
           height: 200px;
           .right-content-item-img{
+            width: 40%;
+            align-items: center;
+            position: relative;
             width:200px;
             height:200px;
+            .image-state{
+              position: absolute;
+              top: 20%;
+              left: 20%;
+              height: 120px;
+              width: 120px;
+              background-color: #ffffff;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+           }
           }
+       
           .right-content-text-box{
             margin-left: 13px;
+            width: 60%;
+            height: 200px;
+            display:flex;
+            flex-direction: column;
+            justify-content: space-between;
             .right-content-text-header{
               font-size: 24px;
             }
