@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView } from '@tarojs/components';
+import { View, ScrollView, Text } from '@tarojs/components';
 import { Tabs, Empty } from '@nutui/nutui-react-taro';
 import { useSelector, useDispatch } from 'react-redux';
 import GoodList from './goodList';
@@ -24,7 +24,7 @@ const Index = () => {
     onSuccess: ({ code, result }) => {
       if (code && code === 200) {
         updateFn({
-          total: result.total,
+          total: result?.total,
           levelList:
             pageNum === 1 ? result?.records || [] : [...levelList, ...(result?.records || [])],
           refreshHasMore:
@@ -105,6 +105,9 @@ const Index = () => {
           </Tabs.TabPane>
         ))}
       </Tabs>
+      <View className="pageEnd">
+        <Text>——页面到底了——</Text>
+      </View>
     </View>
   );
 };
