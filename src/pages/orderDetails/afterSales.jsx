@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Popup, Image } from '@nutui/nutui-react-taro';
 import { View, Text } from '@tarojs/components';
 import { useSelector, useDispatch } from 'react-redux';
-import Taro from '@tarojs/taro';
+import { orderBtn } from '@/utils/enum';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
+  const [avtive, setActive] = useState();
   const { orderAfterSales, orderInfo } = useSelector((state) => state.orderDetails);
   const onClose = () => {
     dispatch({
@@ -19,39 +20,25 @@ const Index = () => {
 
   // 下一步
   const onClick = () => {
-    Taro.showToast({
-      title: '下一步',
-      icon: 'none',
-      duration: 2000,
-    });
-    dispatch({
-      type: 'orderDetails/update',
-      payload: {
-        orderAfterSales: false,
-      },
-    });
-  };
-
-  // 仅退款
-  const onRefundOnly = () => {
-    dispatch({
-      type: 'orderDetails/update',
-      payload: {
-        orderRefund: true,
-        refundType: 'refundOnly',
-      },
-    });
-  };
-
-  // 退货退款
-  const onReturnsRefunds = () => {
-    dispatch({
-      type: 'orderDetails/update',
-      payload: {
-        orderRefund: true,
-        refundType: 'returnsRefunds',
-      },
-    });
+    if (avtive === 0) {
+      // 仅退款
+      dispatch({
+        type: 'orderDetails/update',
+        payload: {
+          orderRefund: true,
+          refundType: 'refundOnly',
+        },
+      });
+    } else if (avtive === 1) {
+      // 退货退款
+      dispatch({
+        type: 'orderDetails/update',
+        payload: {
+          orderRefund: true,
+          refundType: 'returnsRefunds',
+        },
+      });
+    }
   };
 
   return (
@@ -70,27 +57,20 @@ const Index = () => {
             <Text>售后类型:</Text>
           </View>
           <View className="popupInfo-after popupInfo-after-btn">
-            <View style={{ marginRight: 20 }}>
-              <Button
-                shape="square"
-                style={{ color: '#AAAAAA', fontWeight: 400 }}
-                plain
-                type="default"
-                onClick={() => onRefundOnly()}
-              >
-                <Text style={{ fontSize: 14 }}>仅退款</Text>
-              </Button>
-            </View>
-            <View>
-              <Button
-                shape="square"
-                style={{ color: '#AAAAAA', fontWeight: 400 }}
-                plain
-                type="default"
-                onClick={() => onReturnsRefunds()}
-              >
-                <Text style={{ fontSize: 14 }}>退货退款</Text>
-              </Button>
+            <View style={{ marginRight: 20, display: 'flex' }}>
+              {orderBtn?.map((str, index) => (
+                <View key={index} style={{ marginRight: 20 }}>
+                  <Button
+                    shape="square"
+                    style={{ color: avtive === index ? '#ffffff' : '#AAAAAA', fontWeight: 400 }}
+                    plain={avtive === index ? false : true}
+                    type={avtive == index ? 'primary' : 'default'}
+                    onClick={() => setActive(index)}
+                  >
+                    <Text style={{ fontSize: 14 }}>{str}</Text>
+                  </Button>
+                </View>
+              ))}
             </View>
           </View>
         </View>
@@ -120,7 +100,7 @@ const Index = () => {
                       </View>
                     </View>
                     <View className="popupInfo-textArea-box-content-left-doc ">
-                      <Text className="doc-bg">自营</Text>
+                      <Text className="doc-bg">{item?.suppliersId === 1 ? '自营' : '严选'}</Text>
                     </View>
                   </View>
                 </View>

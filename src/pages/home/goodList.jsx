@@ -21,13 +21,13 @@ const GoodList = (props) => {
         duration: 2000,
       });
     } else if (itm?.onShelf === 0) {
-      Taro.showToast({
+      return Taro.showToast({
         title: '商品已下架',
         icon: 'none',
         duration: 2000,
       });
     } else if (itm?.isDelete === 1) {
-      Taro.showToast({
+      return Taro.showToast({
         title: '商品已删除',
         icon: 'none',
         duration: 2000,

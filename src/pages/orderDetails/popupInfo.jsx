@@ -36,7 +36,7 @@ const Index = () => {
           reason: value2,
           id: item.id,
           orderId: item.id,
-          itemIds: item?.items?.map((a) => Number(a.itemId)),
+          itemIds: item?.items?.map((a) => Number(a.id)),
           callBack: () => {
             dispatch({
               type: 'allOrders/getAllOrders',
@@ -57,7 +57,7 @@ const Index = () => {
           reason: value2,
           id: item.id,
           orderId: item.id,
-          itemIds: item?.items?.map((a) => Number(a.itemId)),
+          itemIds: item?.items?.map((a) => Number(a.id)),
         },
       });
     }
