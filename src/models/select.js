@@ -11,6 +11,9 @@ export default {
     firstLevelAreaClassAgent: [], //一级镖局
     secondLevelAreaClassAgent: [], //二级镖局
     list: [], //商品信息
+    pageNum: 1,
+    pageSize: 20,
+    total: 0,
   },
 
   effects: {
@@ -58,6 +61,9 @@ export default {
               list: result.result.records || [],
             },
           });
+          Taro.hideLoading();
+        } else {
+          Taro.hideLoading();
         }
       } catch (err) {}
     },

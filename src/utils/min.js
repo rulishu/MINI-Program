@@ -34,6 +34,9 @@ export const aPrice = (sma, item) => {
   let str2 = str?.filter((s) => {
     return s;
   });
+  if (str2 === undefined) {
+    return;
+  }
   // js 最小值
   let str3 = Math.min(...str2);
   if (str3?.length === 0 || str3 === undefined || str3 === Infinity) {
