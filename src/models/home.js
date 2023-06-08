@@ -1,4 +1,5 @@
 import { getBannerList, getLevel, getLevelList } from '@/server/home';
+import Taro from '@tarojs/taro';
 
 export default {
   namespace: 'home',
@@ -11,7 +12,8 @@ export default {
     levelTab: [], // 一级tab
     levelList: [], //商品列表
     pageNum: 1,
-    pageSize: 20,
+    pageSize: 5,
+    total: 0,
   },
 
   effects: {
@@ -66,11 +68,17 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              levelList: result.result || [],
+              levelList: result.result?.records || [],
+              total: result.result.total,
             },
           });
+          Taro.hideLoading();
+        } else {
+          Taro.hideLoading();
         }
-      } catch (err) {}
+      } catch (err) {
+        Taro.hideLoading();
+      }
     },
   },
 
