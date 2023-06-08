@@ -98,7 +98,8 @@ page {
             align-items: center;
             position: relative;
             width:200px;
-            height:200px;
+            height:200px !important;
+            background-color: #D8D8D8;
             .image-state{
               position: absolute;
               top: 20%;
