@@ -60,8 +60,8 @@ export default {
             icon: 'success',
             duration: 2000,
           });
-          payload.callBack();
-          // Taro.navigateTo({ url: '/pages/allOrders/index' });
+          // payload.callBack();
+          Taro.navigateTo({ url: '/pages/allOrders/index' });
         }
       } catch (err) {}
     },
