@@ -12,7 +12,7 @@ export default {
     levelTab: [], // 一级tab
     levelList: [], //商品列表
     pageNum: 1,
-    pageSize: 5,
+    pageSize: 20,
     total: 0,
   },
 
@@ -68,8 +68,8 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              levelList: result.result?.records || [],
-              total: result.result.total,
+              levelList: result?.result?.records || [],
+              total: result?.result?.total,
             },
           });
           Taro.hideLoading();

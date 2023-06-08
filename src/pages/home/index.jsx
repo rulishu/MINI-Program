@@ -230,9 +230,6 @@ const Index = () => {
       <View className="home-body" style={{ top: homeTopNavHeight + 220 }}>
         <Navs />
         <TabList />
-        <View className="pageEnd">
-          <Text>——页面到底了——</Text>
-        </View>
         <View className="tab-footer"></View>
       </View>
     </View>
