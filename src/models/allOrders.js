@@ -25,6 +25,7 @@ export default {
             type: 'update',
             payload: {
               orderList: data.result.records || [],
+              total: data.result?.total,
             },
           });
           Taro.hideLoading();
@@ -59,13 +60,8 @@ export default {
             icon: 'success',
             duration: 2000,
           });
-          yield put({
-            type: 'getAllOrders',
-            payload: {
-              pageNum: 1,
-              pageSize: 10,
-            },
-          });
+          payload.callBack();
+          // Taro.navigateTo({ url: '/pages/allOrders/index' });
         }
       } catch (err) {}
     },
