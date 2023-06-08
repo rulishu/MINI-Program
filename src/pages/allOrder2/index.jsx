@@ -1,5 +1,5 @@
 import React, { useEffect, lazy } from 'react';
-import { ScrollView, View } from '@tarojs/components';
+import { ScrollView, View, Text } from '@tarojs/components';
 import { Tabs } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,9 @@ import { getAllOrders } from '@/server/allOrders';
 const Orders = lazy(() => import('./orders'));
 
 const Index = () => {
-  const { orderActive, pageNum, orderList, total } = useSelector((state) => state.allOrders);
+  const { orderActive, pageNum, orderList, total, refreshHasMore } = useSelector(
+    (state) => state.allOrders,
+  );
   const dispatch = useDispatch();
 
   const updateFn = (payload) => {
@@ -99,7 +101,7 @@ const Index = () => {
               scrollY
               scrollWithAnimation
               refresherEnabled
-              lowerThreshold={50}
+              lowerThreshold={20}
               refresherTriggered={loading}
               onScrollToLower={() => updateFn({ pageNum: pageNum + 1 })}
               onRefresherRefresh={refesh}
@@ -108,6 +110,18 @@ const Index = () => {
                 keys: item.id,
                 refesh: refesh,
               })}
+              {refreshHasMore && (
+                <View
+                  style={{
+                    marginTop: 10,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text style={{ fontSize: '14px', color: '#999' }}>到底啦～</Text>
+                </View>
+              )}
             </ScrollView>
           </Tabs.TabPane>
         ))}

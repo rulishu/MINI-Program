@@ -25,6 +25,7 @@ export default {
             type: 'update',
             payload: {
               orderList: data.result.records || [],
+              total: data.result?.total,
             },
           });
           Taro.hideLoading();
