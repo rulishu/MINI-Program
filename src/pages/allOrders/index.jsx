@@ -1,8 +1,9 @@
 import React, { useEffect, lazy } from 'react';
-import { View } from '@tarojs/components';
-import { Tabs } from '@nutui/nutui-react-taro';
+import { View, Text } from '@tarojs/components';
+import { Tabs, Icon } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
+import NavBar from '../../component/navBar';
 import './index.scss';
 
 const Orders = lazy(() => import('./orders'));
@@ -65,50 +66,74 @@ const Index = () => {
       children: <Orders keys={4} />,
     },
   ];
+  //返回
+  const goBack = () => {
+    Taro.switchTab({ url: '/pages/my/index' });
+  };
 
   return (
-    <View>
-      <Tabs
-        value={orderActive}
-        background="#ffffff"
-        onChange={({ paneKey }) => {
-          Taro.showLoading({ title: '获取订单中...', mask: true });
-          dispatch({
-            type: 'allOrders/update',
-            payload: {
-              orderActive: parseInt(paneKey),
-            },
-          });
-          let orderStatus;
-          if (paneKey === '1') {
-            orderStatus = 1;
+    <>
+      <View>
+        <NavBar
+          background="#ffffff"
+          color="black"
+          // iconTheme="black"
+          // back
+          renderCenter={
+            <View className="navbar-head">
+              <View className="navbar-head-left">
+                <Icon size="18" name="rect-left" onTap={() => goBack()} />
+              </View>
+              <View className="navbar-head-right">
+                <Text>全部订单</Text>
+              </View>
+            </View>
           }
-          if (paneKey === '2') {
-            orderStatus = 2;
-          }
-          if (paneKey === '3') {
-            orderStatus = 3;
-          }
-          if (paneKey === '4') {
-            orderStatus = 7;
-          }
-          dispatch({
-            type: 'allOrders/getAllOrders',
-            payload: {
-              pageNum: 1,
-              pageSize: 10,
-              orderStatus,
-            },
-          });
-        }}
-      >
-        {tabList.map((item) => (
-          <Tabs.TabPane key={item.id} title={item.title} className="tabpane">
-            {item.children}
-          </Tabs.TabPane>
-        ))}
-      </Tabs>
-    </View>
+        />
+      </View>
+      <View style={{ marginTop: 3 }}>
+        <Tabs
+          value={orderActive}
+          background="#ffffff"
+          onChange={({ paneKey }) => {
+            Taro.showLoading({ title: '获取订单中...', mask: true });
+            dispatch({
+              type: 'allOrders/update',
+              payload: {
+                orderActive: parseInt(paneKey),
+              },
+            });
+            let orderStatus;
+            if (paneKey === '1') {
+              orderStatus = 1;
+            }
+            if (paneKey === '2') {
+              orderStatus = 2;
+            }
+            if (paneKey === '3') {
+              orderStatus = 3;
+            }
+            if (paneKey === '4') {
+              orderStatus = 7;
+            }
+            dispatch({
+              type: 'allOrders/getAllOrders',
+              payload: {
+                pageNum: 1,
+                pageSize: 10,
+                orderStatus,
+              },
+            });
+          }}
+        >
+          {tabList.map((item) => (
+            <Tabs.TabPane key={item.id} title={item.title} className="tabpane">
+              {item.children}
+            </Tabs.TabPane>
+          ))}
+        </Tabs>
+      </View>
+    </>
   );
 };
 export default Index;

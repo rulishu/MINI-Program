@@ -21,6 +21,16 @@ const Index = () => {
           orderActive: 0,
         },
       });
+      dispatch({
+        type: 'goodInfo/update',
+        payload: {
+          currentAddress: {},
+          orderNotesInfo: '',
+          goodsName: '',
+          activeSku: [],
+          shoppingCartVOList: [],
+        },
+      });
     },
     error: () => {},
   });
