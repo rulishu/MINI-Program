@@ -1,7 +1,7 @@
-import { View } from '@tarojs/components';
-import React, { useEffect } from 'react';
+import { ScrollView, Text } from '@tarojs/components';
+import React, { Fragment, useEffect, useImperativeHandle } from 'react';
 import { useSetState, useRequest } from 'ahooks';
-import { Infiniteloading, Empty } from '@nutui/nutui-react-taro';
+import { Empty } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 
 const InfiniteUlStyle = {
@@ -12,7 +12,7 @@ const InfiniteUlStyle = {
   overflowX: 'hidden',
 };
 
-export default ({ request, params, renderItem }) => {
+export default React.forwardRef(({ request, params, style, renderList }, ref) => {
   const [state, setState] = useSetState({
     pageNum: 1,
     pageSize: 20,
@@ -22,7 +22,7 @@ export default ({ request, params, renderItem }) => {
   });
   const { pageNum, pageSize, dataSource, total, refreshHasMore } = state;
 
-  const { run } = useRequest(request, {
+  const { run, loading } = useRequest(request, {
     manual: true,
     onSuccess: ({ code, result }) => {
       if (code && code === 200) {
@@ -38,20 +38,13 @@ export default ({ request, params, renderItem }) => {
   });
 
   useEffect(() => {
-    setState({ pageNum: 1, dataSource: [] });
-    Taro.showLoading({ title: '加载中...', mask: true });
-    run({
-      pageNum: pageNum,
-      pageSize: pageSize,
-      ...params,
-    });
+    refresh();
   }, [params]);
 
   // 上拉加载更多
-  const loadMore = (done) => {
+  const loadMore = () => {
     if (dataSource.length < total) {
       setState({ pageNum: pageNum + 1 });
-      done?.();
       Taro.showLoading({ title: '加载中...', mask: true });
       run({
         pageNum: pageNum,
@@ -62,7 +55,7 @@ export default ({ request, params, renderItem }) => {
   };
 
   // 下拉刷新
-  const refresh = (done) => {
+  const refresh = () => {
     setState({ pageNum: 1, dataSource: [] });
     Taro.showLoading({ title: '加载中...', mask: true });
     run({
@@ -70,26 +63,33 @@ export default ({ request, params, renderItem }) => {
       pageSize: pageSize,
       ...params,
     });
-    done?.();
   };
 
+  useImperativeHandle(ref, () => {
+    return {
+      refresh: refresh,
+    };
+  });
   return (
-    <View style={InfiniteUlStyle}>
-      <Infiniteloading
-        hasMore={refreshHasMore}
-        threshold={100}
-        isOpenRefresh
-        loadTxt="loading"
-        onLoadMore={loadMore} // 上拉加载更多
-        onRefresh={refresh} // 下拉刷新
-        pullIcon={null}
-      >
-        {dataSource.length === 0 ? (
-          <Empty style={{ background: 'F5F5F5' }} description="暂无数据" />
-        ) : (
-          dataSource.map((item, index) => renderItem(item, index))
-        )}
-      </Infiniteloading>
-    </View>
+    <ScrollView
+      style={InfiniteUlStyle}
+      scrollY
+      scrollWithAnimation
+      refresherEnabled
+      lowerThreshold={50}
+      refresherTriggered={loading}
+      onScrollToLower={loadMore}
+      onRefresherRefresh={refresh}
+      {...style}
+    >
+      {dataSource.length === 0 ? (
+        <Empty style={{ background: 'F5F5F5' }} description="暂无数据" />
+      ) : (
+        <Fragment>
+          {renderList?.(dataSource)}
+          {refreshHasMore && <Text>无更多数据</Text>}
+        </Fragment>
+      )}
+    </ScrollView>
   );
-};
+});
