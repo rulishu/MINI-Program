@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { View } from '@tarojs/components';
 import { Input, Popup, Button } from '@nutui/nutui-react-taro';
+import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
-const Drawer = () => {
+const Drawer = ({ id }) => {
   const { visible } = useSelector((state) => state.sales);
   const dispatch = useDispatch();
-  const { waybillNumber, setWaybillNumber } = useState(0);
+  const [waybillNumber, setWaybillNumber] = useState(0);
+
   const confirm = () => {
     Taro.showLoading({ title: '确定中...', mask: true });
     dispatch({
       type: 'sales/bindReturns',
       payload: {
-        num: waybillNumber,
+        returnOrderNumber: waybillNumber,
+        id,
       },
     });
   };

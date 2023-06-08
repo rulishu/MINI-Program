@@ -75,19 +75,20 @@ page {
           }
         }
 
-        .order-item-middle-left-name-text, .order-item-middle-left-name-mes{
+        .order-item-middle-left-name-text,
+        .order-item-middle-left-name-mes {
           overflow: hidden;
           text-overflow: ellipsis;
           margin-bottom: 15px;
           font-size: 30px;
         }
-        
-        .order-item-middle-left-name-text{
+
+        .order-item-middle-left-name-text {
           white-space: nowrap;
           font-weight: 600;
         }
 
-        .order-item-middle-left-name-mes{
+        .order-item-middle-left-name-mes {
           height: 61px;
           color: #c9c8c8;
         }
@@ -195,7 +196,34 @@ page {
   }
 }
 
-.divider{
+.divider {
   margin: 20px 0;
   color: rgb(170, 170, 170);
+}
+
+.pop_view {
+  height: 400px;
+  width: 600px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+
+  .pop_content {
+    height: 300px;
+  }
+
+  .pop_title {
+    padding-bottom: 0;
+    font-size: 35px;
+  }
+
+  .pop_input_view {
+    padding: 40px;
+  }
+
+  .pop_button {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
 }

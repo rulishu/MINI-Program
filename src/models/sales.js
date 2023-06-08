@@ -40,6 +40,17 @@ export default {
             },
           });
           Taro.hideLoading();
+          Taro.showToast({
+            title: '绑定成功',
+            icon: 'none',
+            duration: 2000,
+          });
+          yield put({
+            type: 'update',
+            payload: {
+              visible: false,
+            },
+          });
         } else {
           Taro.hideLoading();
         }

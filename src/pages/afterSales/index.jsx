@@ -124,7 +124,9 @@ const Index = () => {
                   </View>
                 ))}
                 <View className="order-item-bold">
-                  <View>状态: {orderState}</View>
+                  <View>
+                    状态:<Text style={{ color: '#A85230' }}> {orderState}</Text>
+                  </View>
                   <View>
                     退款金额:￥{item.items.reduce((total, obj) => total + obj.totalPrice, 0)}
                   </View>
@@ -132,52 +134,56 @@ const Index = () => {
 
                 <Divider styles={{ color: '#efefef', marginTop: '10px', marginBottom: '10px' }} />
                 <View className="order-item-bottom">
-                  <Button
-                    shape="square"
-                    className="bottom-btn"
-                    plain
-                    size="small"
-                    type="default"
-                    onClick={() => {
-                      Taro.showModal({
-                        title: '提示',
-                        content: '确定取消售后吗？',
-                        success: function (res) {
-                          if (res.confirm) {
-                            Taro.showLoading({ title: '取消中...', mask: true });
-                            dispatch({
-                              type: 'sales/cancelOrder',
-                              payload: {
-                                id: item.id,
-                              },
-                            });
-                          }
-                        },
-                      });
-                    }}
-                  >
-                    取消售后
-                  </Button>
-                  <Button
-                    shape="square"
-                    plain
-                    className="bottom-btn"
-                    size="small"
-                    type="default"
-                    onClick={() => {
-                      dispatch({
-                        type: 'sales/update',
-                        payload: {
-                          visible: true,
-                        },
-                      });
-                    }}
-                  >
-                    绑定运单号
-                  </Button>
+                  {item.status === 1 && item.status === 1 && !item?.returnOrderNumber ? (
+                    <Button
+                      shape="square"
+                      className="bottom-btn"
+                      plain
+                      size="small"
+                      type="default"
+                      onClick={() => {
+                        Taro.showModal({
+                          title: '提示',
+                          content: '确定取消售后吗？',
+                          success: function (res) {
+                            if (res.confirm) {
+                              Taro.showLoading({ title: '取消中...', mask: true });
+                              dispatch({
+                                type: 'sales/cancelOrder',
+                                payload: {
+                                  id: item.id,
+                                },
+                              });
+                            }
+                          },
+                        });
+                      }}
+                    >
+                      取消售后
+                    </Button>
+                  ) : null}
+                  {item.status === 1 && !item?.returnOrderNumber ? (
+                    <Button
+                      shape="square"
+                      plain
+                      className="bottom-btn"
+                      size="small"
+                      type="default"
+                      onClick={() => {
+                        dispatch({
+                          type: 'sales/update',
+                          payload: {
+                            visible: true,
+                          },
+                        });
+                      }}
+                    >
+                      绑定运单号
+                    </Button>
+                  ) : null}
                 </View>
                 {/* 运单号弹窗 */}
-                <Drawer />
+                <Drawer id={item.id} />
               </View>
             );
           })
