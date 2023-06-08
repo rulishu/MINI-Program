@@ -1,11 +1,11 @@
 export const orderType = {
   1: '待付款',
   2: '待发货',
-  3: '待发货',
-  4: '待收货',
-  5: '已完成',
+  3: '待收货',
+  // 4: '待收货',
+  // 5: '已完成',
   6: '已取消',
-  7: '已退款',
+  7: '已完成',
 };
 
 export const orderPay = {
@@ -13,3 +13,5 @@ export const orderPay = {
   2: '支付宝支付',
   3: '银行卡支付',
 };
+
+export const orderBtn = ['仅退款', '退货退款'];

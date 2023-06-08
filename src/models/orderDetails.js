@@ -46,7 +46,7 @@ export default {
           });
         } else {
           Taro.showToast({
-            title: '售后申请失败',
+            title: result.message || '售后申请失败',
             icon: 'none',
             duration: 2000,
           });
@@ -59,7 +59,6 @@ export default {
           },
         });
         payload.callBack();
-        Taro.navigateTo({ url: '/pages/allOrders/index' });
       } catch (err) {}
     },
   },

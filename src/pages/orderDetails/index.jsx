@@ -80,7 +80,7 @@ const Index = () => {
     ];
     if (val == 1 || val == 5) {
       return data;
-    } else if (val == 2 || val === 3 || val === 4 || val === 6) {
+    } else if (val == 2 || val === 3 || val === 4 || val === 7) {
       return data2;
     }
   };
@@ -140,12 +140,28 @@ const Index = () => {
   };
 
   // 删除订单
-  const onDelOrder = () => {
+  const onDelOrder = (item) => {
     Taro.showModal({
       content: '确定要删除订单吗?',
       success: function (res) {
         if (res.confirm) {
-          return;
+          dispatch({
+            type: 'allOrders/deleteOrder',
+            payload: {
+              id: item.id,
+              callBack: () => {
+                dispatch({
+                  type: 'allOrders/getAllOrders',
+                  payload: {
+                    pageNum: 1,
+                    pageSize: 10,
+                    orderStatus,
+                  },
+                });
+              },
+            },
+          });
+          Taro.navigateTo({ url: '/pages/allOrders/index' });
         } else if (res.cancel) {
           return;
         }
@@ -206,7 +222,7 @@ const Index = () => {
                       ))}
                     </View>
                     <View className="goods-info-head-info-doc ">
-                      <Text className="doc-bg">自营</Text>
+                      <Text className="doc-bg">{a?.suppliersId === 1 ? '自营' : '严选'}</Text>
                     </View>
                   </View>
                 </View>
@@ -388,7 +404,7 @@ const Index = () => {
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
                   plain
                   type="default"
-                  onClick={() => onDelOrder()}
+                  onClick={() => onDelOrder(orderInfo)}
                 >
                   <Text style={{ fontSize: 14 }}>删除订单</Text>
                 </Button>
@@ -406,17 +422,28 @@ const Index = () => {
               </View>
             </>
           )}
-          {orderStatus === 5 && (
+          {orderStatus === 7 && (
             <>
+              <View style={{ marginRight: 10 }}>
+                <Button
+                  shape="square"
+                  style={{ color: '#AAAAAA', fontWeight: 400 }}
+                  plain
+                  type="default"
+                  onClick={() => onDelOrder(orderInfo)}
+                >
+                  <Text style={{ fontSize: 14 }}>删除订单</Text>
+                </Button>
+              </View>
               <View>
                 <Button
                   shape="square"
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
                   plain
                   type="default"
-                  onClick={() => onDelOrder()}
+                  onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
                 >
-                  <Text style={{ fontSize: 14 }}>删除订单</Text>
+                  <Text style={{ fontSize: 14 }}>查看物流</Text>
                 </Button>
               </View>
             </>
@@ -429,7 +456,7 @@ const Index = () => {
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
                   plain
                   type="default"
-                  onClick={() => onDelOrder()}
+                  onClick={() => onDelOrder(orderInfo)}
                 >
                   <Text style={{ fontSize: 14 }}>删除订单</Text>
                 </Button>
