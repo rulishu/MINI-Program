@@ -8,7 +8,11 @@ const Index = () => {
   return (
     <View className="report" style={{ height: '56vh', overflow: 'scroll' }}>
       <View className="steps-wrapper">
-        <Steps direction="vertical" progressDot style={{ backgroundColor: '#F2F2F2' }}>
+        <Steps
+          direction="vertical"
+          progressDot
+          style={{ backgroundColor: '#F2F2F2', marginLeft: 20 }}
+        >
           {data?.map((val) => {
             return (
               <>
