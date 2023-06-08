@@ -79,10 +79,6 @@ const Index = (props) => {
                           <View className="right-content-item" style={{ overflow: 'hidden' }}>
                             <View
                               className="right-content-item-img"
-                              style={{
-                                width: '40%',
-                                alignItems: 'center',
-                              }}
                               onTap={() => {
                                 onTap(dto?.id);
                               }}
@@ -95,18 +91,21 @@ const Index = (props) => {
                                   className="right-content-item-img"
                                 ></Image>
                               </Skeleton>
+                              {(dto.stock === 0 || dto.onShelf === 0 || dto.isDelete === 1) && (
+                                <View className="image-state">
+                                  <Text>
+                                    {dto.stock === 0
+                                      ? '已售空'
+                                      : dto.onShelf === 0
+                                        ? '已下架'
+                                        : dto.isDelete === 1
+                                          ? '已删除'
+                                          : ''}
+                                  </Text>
+                                </View>
+                              )}
                             </View>
-
-                            <View
-                              className="right-content-text-box"
-                              style={{
-                                width: '60%',
-                                height: 100,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                              }}
-                            >
+                            <View className="right-content-text-box">
                               <View
                                 className="right-content-text-header"
                                 onTap={() => {
