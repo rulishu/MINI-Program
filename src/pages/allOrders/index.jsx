@@ -67,7 +67,7 @@ const Index = () => {
   ];
 
   return (
-    <View style={{ marginTop: 3 }}>
+    <View>
       <Tabs
         value={orderActive}
         background="#ffffff"
