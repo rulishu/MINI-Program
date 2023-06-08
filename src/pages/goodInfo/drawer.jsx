@@ -6,7 +6,7 @@ import { min, aPrice } from '@/utils/min';
 import Taro from '@tarojs/taro';
 
 const Index = () => {
-  const { visible, queryInfo, productDetails, type, attributeVos, skuSpecs, skuList } = useSelector(
+  const { visible, queryInfo, type, attributeVos, skuSpecs, skuList } = useSelector(
     (state) => state.goodInfo,
   );
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ const Index = () => {
   const [memberPrice, setMemberPrice] = useState();
   const [active, setActive] = useState({});
   const [activeSku, setActiveSku] = useState([]);
+  const [amount, setAmount] = useState(1);
 
   // 选中的规格值[查找会员价和相对应的图片]
   let newArr = skuList.map((item) => {
@@ -55,11 +56,12 @@ const Index = () => {
 
   // 商品金额明细
   const onChangeFuc = (e) => {
+    setAmount(Number(e));
     dispatch({
       type: 'goodInfo/update',
       payload: {
         productDetails: {
-          goodsTotalNum: Number(e),
+          // goodsTotalNum: Number(e),
           storageFee: 0,
           insurancePremium: 0,
           coupon: 0,
@@ -183,10 +185,10 @@ const Index = () => {
           </View>
           <View style={{ marginRight: 7 }}>
             <InputNumber
-              modelValue={productDetails?.goodsTotalNum}
+              modelValue={amount}
               min="1"
               max={queryInfo?.stock}
-              onOverlimit={productDetails?.goodsTotalNum <= 1 ? overlimit : morelimit}
+              onOverlimit={amount <= 1 ? overlimit : morelimit}
               onChangeFuc={(e) => {
                 onChangeFuc(e);
               }}
@@ -203,6 +205,7 @@ const Index = () => {
           }}
           onClick={() => {
             if (type === 'nowCart') {
+              setAmount(1);
               if (Object.keys(active).length !== Object.keys(attributeVos).length) {
                 Taro.showToast({
                   title: '请选择规格',
@@ -211,16 +214,16 @@ const Index = () => {
                 });
               } else {
                 dispatch({
-                  type: 'goodInfo/update',
+                  type: 'goodInfo/newConfirm',
                   payload: {
-                    visible: false,
+                    count: amount,
+                    skuId: skuInfo?.skuId,
                   },
                 });
                 dispatch({
-                  type: 'goodInfo/newConfirm',
+                  type: 'goodInfo/update',
                   payload: {
-                    count: productDetails?.goodsTotalNum,
-                    skuId: skuInfo?.skuId,
+                    visible: false,
                   },
                 });
               }
