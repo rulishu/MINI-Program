@@ -44,7 +44,7 @@ const GoodList = (props) => {
 
   return (
     <View className="list">
-      {dataList.map((item) => {
+      {dataList?.map((item) => {
         return (
           <View
             className="middle-search-result-info-item"
