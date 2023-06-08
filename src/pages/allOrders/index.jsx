@@ -1,68 +1,86 @@
 import React, { useEffect, lazy } from 'react';
-import { View } from '@tarojs/components';
+import { View, ScrollView } from '@tarojs/components';
 import { Tabs } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
+import { useRequest } from 'ahooks';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAllOrders } from '@/server/allOrders';
 import './index.scss';
 
 const Orders = lazy(() => import('./orders'));
 
 const Index = () => {
-  const { orderActive } = useSelector((state) => state.allOrders);
+  const { orderActive, pageNum, orderList, total } = useSelector((state) => state.allOrders);
   const dispatch = useDispatch();
+
+  const updateFn = (payload) => {
+    dispatch({
+      type: 'allOrders/update',
+      payload: payload,
+    });
+  };
+
+  const { run, loading } = useRequest(getAllOrders, {
+    manual: true,
+    onSuccess: ({ code, result }) => {
+      if (code && code === 200) {
+        updateFn({
+          total: result.total, // you had 'result.result' here, changed to 'result.total' assuming 'total' is the correct property name
+          orderList:
+            pageNum === 1 ? result.records || [] : [...orderList, ...(result.records || [])],
+          refreshHasMore:
+            pageNum === 1 ? false : [...orderList, ...(result.records || [])].length === total,
+        });
+        Taro.hideLoading();
+      }
+    },
+  });
+
   useEffect(() => {
-    const token = Taro.getStorageSync('token');
-    if (token !== '') {
-      Taro.showLoading({ title: '获取订单中...', mask: true });
-      let orderStatus;
-      if (orderActive === 1) {
-        orderStatus = 1;
-      }
-      if (orderActive === 2) {
-        orderStatus = 2;
-      }
-      if (orderActive === 3) {
-        orderStatus = 3;
-      }
-      if (orderActive === 4) {
-        orderStatus = 7;
-      }
-      dispatch({
-        type: 'allOrders/getAllOrders',
-        payload: {
-          pageNum: 1,
-          pageSize: 10,
-          orderStatus,
-        },
-      });
-    }
-  }, []);
+    Taro.showLoading({ title: '加载中...', mask: true });
+    run({
+      pageNum: pageNum,
+      pageSize: 20,
+      orderStatus: orderActive,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageNum, orderActive]);
+
+  const refesh = () => {
+    updateFn({ pageNum: 1 });
+    Taro.showLoading({ title: '加载中...', mask: true });
+    run({
+      pageNum: 1,
+      pageSize: 20,
+      orderStatus: orderActive,
+    });
+  };
 
   const tabList = [
     {
       id: 0,
       title: '全部',
-      children: <Orders keys={0} />,
+      children: <Orders />,
     },
     {
       id: 1,
       title: '待付款',
-      children: <Orders keys={1} />,
+      children: <Orders />,
     },
     {
       id: 2,
       title: '待发货',
-      children: <Orders keys={2} />,
+      children: <Orders />,
     },
     {
       id: 3,
       title: '待收货',
-      children: <Orders keys={3} />,
+      children: <Orders />,
     },
     {
       id: 4,
       title: '待评价',
-      children: <Orders keys={4} />,
+      children: <Orders />,
     },
   ];
 
@@ -72,39 +90,26 @@ const Index = () => {
         value={orderActive}
         background="#ffffff"
         onChange={({ paneKey }) => {
-          Taro.showLoading({ title: '获取订单中...', mask: true });
-          dispatch({
-            type: 'allOrders/update',
-            payload: {
-              orderActive: parseInt(paneKey),
-            },
-          });
-          let orderStatus;
-          if (paneKey === '1') {
-            orderStatus = 1;
-          }
-          if (paneKey === '2') {
-            orderStatus = 2;
-          }
-          if (paneKey === '3') {
-            orderStatus = 3;
-          }
-          if (paneKey === '4') {
-            orderStatus = 7;
-          }
-          dispatch({
-            type: 'allOrders/getAllOrders',
-            payload: {
-              pageNum: 1,
-              pageSize: 10,
-              orderStatus,
-            },
-          });
+          updateFn({ orderActive: parseInt(paneKey) });
         }}
       >
         {tabList.map((item) => (
           <Tabs.TabPane key={item.id} title={item.title} className="tabpane">
-            {item.children}
+            <ScrollView
+              style={{ height: '100vh' }}
+              scrollY
+              scrollWithAnimation
+              refresherEnabled
+              lowerThreshold={50}
+              refresherTriggered={loading}
+              onScrollToLower={() => updateFn({ pageNum: pageNum + 1 })}
+              onRefresherRefresh={refesh}
+            >
+              {React.cloneElement(item.children, {
+                keys: item.id,
+                refesh: refesh,
+              })}
+            </ScrollView>
           </Tabs.TabPane>
         ))}
       </Tabs>
