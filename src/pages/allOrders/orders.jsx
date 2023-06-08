@@ -96,7 +96,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
             <View>
               <Text>订单编号：{item.orderNumber}</Text>
             </View>
-            <View>
+            <View style={{ color: '#A85230', fontWeight: 500 }}>
               <Text>{orderStatusEnum[item.orderStatus]}</Text>
             </View>
           </View>
@@ -112,16 +112,10 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
                   ></Image>
                 </View>
                 <View className="order-item-middle-left-name">
-                  <Text
-                    className="order-item-middle-left-name-text"
-                    style={{ width: '80%', fontSize: 15 }}
-                  >
+                  <Text className="order-item-middle-left-name-text" style={{ width: '80%' }}>
                     {goodsItem.itemName}
                   </Text>
-                  <Text
-                    className="order-item-middle-left-name-text"
-                    style={{ width: '70%', fontSize: 10 }}
-                  >
+                  <Text className="order-item-middle-left-name-mes" style={{ width: '80%' }}>
                     {goodsItem.attributes.map((attributeItem) => {
                       let str = `${attributeItem.attributeName}:${attributeItem.value} `;
                       return str;
@@ -137,18 +131,16 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               </View>
             </View>
           ))}
-          <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15, marginBottom: -5 }}>
-            实付款： ￥{item.payPrice}
-          </View>
+          <Divider className="divider" />
         </View>
-        <Divider styles={{ color: 'rgb(170, 170, 170)' }} />
+        <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15, marginBottom: 10 }}>
+          实付款： ￥{item.payPrice}
+        </View>
         <View className="order-item-bottom">
           {item.orderStatus === 3 && (
             <Button
-              shape="square"
               className="bottom-btn"
               plain
-              size="small"
               type="default"
               onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
             >
@@ -157,10 +149,8 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
           )}
           {(item.orderStatus !== 1 || item.orderStatus !== 2 || item.orderStatus !== 3) && (
             <Button
-              shape="square"
               className="bottom-btn"
               plain
-              size="small"
               type="default"
               onClick={() => {
                 Taro.showModal({
@@ -185,10 +175,9 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
           )}
           {item.orderStatus === 1 && (
             <Button
-              shape="square"
               className="bottom-btn-pay"
-              size="small"
               type="danger"
+              plain
               onClick={() => {
                 payOrder({
                   orderNo: item?.orderNumber,
@@ -208,11 +197,10 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
           )}
           {item.orderStatus === 3 && (
             <Button
-              shape="square"
               className="bottom-btn"
-              size="small"
               // type="info"
               type="primary"
+              plain
               onClick={() => {
                 setIsConfirm(true);
                 setOrderAmount(item.items.reduce((total, obj) => total + obj.amount, 0));
