@@ -14,15 +14,37 @@ const Index = () => {
     useSelector((state) => state.goodInfo);
   const { payOrder } = usePay({
     success: () => {
-      Taro.navigateTo({ url: '/pages/allOrders/index' });
+      Taro.redirectTo({ url: '/pages/allOrders/index' });
       dispatch({
         type: 'allOrders/update',
         payload: {
           orderActive: 0,
         },
       });
+      dispatch({
+        type: 'goodInfo/update',
+        payload: {
+          currentAddress: {},
+          orderNotesInfo: '',
+          goodsName: '',
+          activeSku: [],
+          shoppingCartVOList: [],
+        },
+      });
     },
-    error: () => {},
+    error: () => {
+      Taro.redirectTo({ url: '/pages/allOrders/index' });
+      dispatch({
+        type: 'goodInfo/update',
+        payload: {
+          currentAddress: {},
+          orderNotesInfo: '',
+          goodsName: '',
+          activeSku: [],
+          shoppingCartVOList: [],
+        },
+      });
+    },
   });
   // 初始化收货地址内容
   // let delAddress = Taro.getStorageSync('defultAddress');

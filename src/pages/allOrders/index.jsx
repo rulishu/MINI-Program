@@ -1,9 +1,10 @@
 import React, { useEffect, lazy } from 'react';
-import { View, ScrollView } from '@tarojs/components';
-import { Tabs } from '@nutui/nutui-react-taro';
+import { View, Text, ScrollView } from '@tarojs/components';
+import { Tabs, Icon } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import { useRequest } from 'ahooks';
 import { useDispatch, useSelector } from 'react-redux';
+import NavBar from '../../component/navBar';
 import { getAllOrders } from '@/server/allOrders';
 import './index.scss';
 
@@ -83,37 +84,61 @@ const Index = () => {
       children: <Orders />,
     },
   ];
+  //返回
+  const goBack = () => {
+    Taro.switchTab({ url: '/pages/my/index' });
+  };
 
   return (
-    <View>
-      <Tabs
-        value={orderActive}
-        background="#ffffff"
-        onChange={({ paneKey }) => {
-          updateFn({ orderActive: parseInt(paneKey) });
-        }}
-      >
-        {tabList.map((item) => (
-          <Tabs.TabPane key={item.id} title={item.title} className="tabpane">
-            <ScrollView
-              style={{ height: '100vh' }}
-              scrollY
-              scrollWithAnimation
-              refresherEnabled
-              lowerThreshold={50}
-              refresherTriggered={loading}
-              onScrollToLower={() => updateFn({ pageNum: pageNum + 1 })}
-              onRefresherRefresh={refesh}
-            >
-              {React.cloneElement(item.children, {
-                keys: item.id,
-                refesh: refesh,
-              })}
-            </ScrollView>
-          </Tabs.TabPane>
-        ))}
-      </Tabs>
-    </View>
+    <>
+      <View>
+        <NavBar
+          background="#ffffff"
+          color="black"
+          // iconTheme="black"
+          // back
+          renderCenter={
+            <View className="navbar-head">
+              <View className="navbar-head-left">
+                <Icon size="18" name="rect-left" onTap={() => goBack()} />
+              </View>
+              <View className="navbar-head-right">
+                <Text>全部订单</Text>
+              </View>
+            </View>
+          }
+        />
+      </View>
+      <View>
+        <Tabs
+          value={orderActive}
+          background="#ffffff"
+          onChange={({ paneKey }) => {
+            updateFn({ orderActive: parseInt(paneKey) });
+          }}
+        >
+          {tabList.map((item) => (
+            <Tabs.TabPane key={item.id} title={item.title} className="tabpane">
+              <ScrollView
+                style={{ height: '100vh' }}
+                scrollY
+                scrollWithAnimation
+                refresherEnabled
+                lowerThreshold={50}
+                refresherTriggered={loading}
+                onScrollToLower={() => updateFn({ pageNum: pageNum + 1 })}
+                onRefresherRefresh={refesh}
+              >
+                {React.cloneElement(item.children, {
+                  keys: item.id,
+                  refesh: refesh,
+                })}
+              </ScrollView>
+            </Tabs.TabPane>
+          ))}
+        </Tabs>
+      </View>
+    </>
   );
 };
 export default Index;

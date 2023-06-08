@@ -58,7 +58,6 @@ export default {
         const result = yield call(infoDetails, params);
         if (result) {
           let skuList = result?.result?.itemSkuDtos;
-          // console.log('skuList', skuList);
           let attrLists = [];
           skuList.forEach((item) => {
             if (item?.attributes) {
@@ -193,6 +192,7 @@ export default {
             payload: {
               shoppingCartVOList: result.result.shoppingCartVOList || {},
               orderToken: result.result.orderToken,
+              currentAddress: {},
             },
           });
         } else {

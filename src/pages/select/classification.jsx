@@ -1,31 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, Video } from '@tarojs/components';
 import { Swiper, SwiperItem, Grid, GridItem } from '@nutui/nutui-react-taro';
 import './index.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const Index = (props) => {
-  const dispatch = useDispatch();
   const { itemList, title } = props;
-  const { secondLevelAreaClassAgent, list } = useSelector((state) => state.select);
-  useEffect(() => {
-    dispatch({
-      type: 'select/selectList',
-      payload: {
-        pageNum: 1,
-        pageSize: 20,
-        provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
-      },
-    });
-    // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
-  }, [secondLevelAreaClassAgent.at(0)?.areaId]);
+  const { list } = useSelector((state) => state.select);
 
   // 轮播视频
   const videos = itemList?.videos?.split(',');
 
   // 会员价
   const min = (item) => {
-    const data = item.filter((vel) => {
+    const data = item?.filter((vel) => {
       return vel.price !== 0;
     });
     let str =
@@ -58,6 +46,9 @@ const Index = (props) => {
     let str2 = str?.filter((s) => {
       return s;
     });
+    if (str2 === undefined) {
+      return;
+    }
     // js 最小值
     let str3 = Math.min(...str2);
     if (str3?.length === 0 || str3 === undefined || str3 === Infinity) {
@@ -127,6 +118,13 @@ const Index = (props) => {
               ></GridItem>
             ))}
           </Grid>
+          {list.length !== 0 ? (
+            <View className="pageEnd">
+              <Text>——页面到底了——</Text>
+            </View>
+          ) : (
+            ''
+          )}
         </View>
       </View>
     </View>

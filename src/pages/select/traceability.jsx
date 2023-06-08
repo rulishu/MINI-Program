@@ -3,14 +3,24 @@ import { View, ScrollView, Image } from '@tarojs/components';
 import { Tag, Popover, Button, Tabs } from '@nutui/nutui-react-taro';
 import selectMenu from '@/assets/images/selectMenu.svg';
 import Classification from './classification';
+import { selectList } from '@/server/select';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRequest } from 'ahooks';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { scrollTop, Threshold, firstLevelAreaClassAgent, secondLevelAreaClassAgent } = useSelector(
-    (state) => state.select,
-  );
+  const {
+    scrollTop,
+    Threshold,
+    firstLevelAreaClassAgent,
+    secondLevelAreaClassAgent,
+    list,
+    pageNum,
+    pageSize,
+    total,
+  } = useSelector((state) => state.select);
   useEffect(() => {
     dispatch({
       type: 'select/selectAreaClassBagent',
@@ -36,6 +46,48 @@ const Index = () => {
       value: a.id,
     };
   });
+
+  const updateFn = (payload) => {
+    dispatch({
+      type: 'select/update',
+      payload: payload,
+    });
+  };
+
+  const { run, loading } = useRequest(selectList, {
+    manual: true,
+    onSuccess: ({ code, result }) => {
+      if (code && code === 200) {
+        updateFn({
+          total: result.total,
+          list: pageNum === 1 ? result.records || [] : [...list, ...(result.records || [])],
+          refreshHasMore:
+            pageNum === 1 ? false : [...list, ...(result.records || [])].length === total,
+        });
+        Taro.hideLoading();
+      }
+    },
+  });
+
+  useEffect(() => {
+    Taro.showLoading({ title: '加载中...', mask: true });
+    run({
+      pageNum: pageNum,
+      pageSize: pageSize,
+      provenance: parseInt(secondLevelAreaClassAgent.at(tab5value)?.areaId),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageNum, tab5value]);
+
+  const refesh = () => {
+    updateFn({ pageNum: 1 });
+    Taro.showLoading({ title: '加载中...', mask: true });
+    run({
+      pageNum: 1,
+      pageSize: pageSize,
+      provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
+    });
+  };
   return (
     <View className="traceability" style={{ overflow: 'scroll' }}>
       <View className="traceability-top">
@@ -54,6 +106,7 @@ const Index = () => {
                   <Tag
                     plain
                     onClick={async () => {
+                      await updateFn({ list: [] });
                       setActiveTag(index);
                       await dispatch({
                         type: 'select/selectAreaClassBagent',
@@ -128,9 +181,9 @@ const Index = () => {
         <Tabs
           value={tab5value}
           style={{ height: '52vh' }}
-          onChange={({ paneKey }) => {
+          onChange={async ({ paneKey }) => {
             setTab5value(paneKey);
-            dispatch({
+            await dispatch({
               type: 'select/selectList',
               payload: {
                 pageNum: 1,
@@ -147,7 +200,23 @@ const Index = () => {
         >
           {secondLevelAreaClassAgent.map((item) => (
             <Tabs.TabPane key={item.id} title={item.shopName} className="tab-content">
-              <Classification itemList={item} title={item.shopName} />
+              <ScrollView
+                scrollY
+                style={{ height: '100vh' }}
+                scrollWithAnimation
+                refresherEnabled
+                lowerThreshold={50}
+                refresherTriggered={loading}
+                onScrollToLower={() => {
+                  let maxPage = Math.ceil(total / pageSize);
+                  if (maxPage > pageNum) {
+                    updateFn({ pageNum: pageNum + 1 });
+                  }
+                }}
+                onRefresherRefresh={refesh}
+              >
+                <Classification itemList={item} title={item.shopName} />
+              </ScrollView>
             </Tabs.TabPane>
           ))}
         </Tabs>
