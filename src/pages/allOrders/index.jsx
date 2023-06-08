@@ -33,6 +33,8 @@ const Index = () => {
             pageNum === 1 ? false : [...orderList, ...(result.records || [])].length === total,
         });
         Taro.hideLoading();
+      } else {
+        Taro.hideLoading();
       }
     },
   });
