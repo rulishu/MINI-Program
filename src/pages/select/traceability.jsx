@@ -26,6 +26,13 @@ const Index = () => {
       type: 'select/selectAreaClassBagent',
       payload: {
         id: parseInt(firstLevelAreaClassAgent.at(0)?.id),
+        callBack: (vel) => {
+          run({
+            pageNum: 1,
+            pageSize: pageSize,
+            provenance: vel,
+          });
+        },
       },
     });
     // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
@@ -112,14 +119,16 @@ const Index = () => {
                         type: 'select/selectAreaClassBagent',
                         payload: {
                           id: parseInt(item?.id),
-                        },
-                      });
-                      await dispatch({
-                        type: 'select/selectList',
-                        payload: {
-                          pageNum: 1,
-                          pageSize: 20,
-                          provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
+                          callBack: (vel) => {
+                            dispatch({
+                              type: 'select/selectList',
+                              payload: {
+                                pageNum: 1,
+                                pageSize: 20,
+                                provenance: vel,
+                              },
+                            });
+                          },
                         },
                       });
                     }}
@@ -149,14 +158,16 @@ const Index = () => {
                 type: 'select/selectAreaClassBagent',
                 payload: {
                   id: parseInt(item?.value),
-                },
-              });
-              await dispatch({
-                type: 'select/selectList',
-                payload: {
-                  pageNum: 1,
-                  pageSize: 20,
-                  provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
+                  callBack: (vel) => {
+                    dispatch({
+                      type: 'select/selectList',
+                      payload: {
+                        pageNum: 1,
+                        pageSize: 20,
+                        provenance: vel,
+                      },
+                    });
+                  },
                 },
               });
             }}

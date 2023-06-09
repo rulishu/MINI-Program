@@ -45,6 +45,7 @@ export default {
               secondLevelAreaClassAgent: result.result || [],
             },
           });
+          payload.callBack(parseInt(result.result?.at(0)?.areaId));
         }
       } catch (err) {}
     },
