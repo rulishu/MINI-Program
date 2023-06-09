@@ -41,27 +41,29 @@ const Index = (props) => {
           <View style={{ width: '100%' }}>
             {/* 二级标签 */}
             <ScrollView className="my-code" scrollX scrollWithAnimation>
-              {getCategoriesTwoTree?.map((item, index) => {
-                return (
-                  <Tag
-                    key={index}
-                    plain
-                    onClick={() => {
-                      setActiveItem(index);
-                    }}
-                    className="right-title"
-                    color={getCategoriesTwoTree && index !== activeItem ? '#999999' : '#965A3C'}
-                    // textColor="#999999"
-                  >
-                    <Text data-target-id={item?.id} onClick={(e) => onTagTap(e)}>
-                      {item?.marketingName}
-                    </Text>
-                  </Tag>
-                );
-              })}
+              <View className="two-tag">
+                {getCategoriesTwoTree?.map((item, index) => {
+                  return (
+                    <Tag
+                      key={index}
+                      plain
+                      onClick={() => {
+                        setActiveItem(index);
+                      }}
+                      className="right-title"
+                      color={getCategoriesTwoTree && index !== activeItem ? '#999999' : '#965A3C'}
+                      // textColor="#999999"
+                    >
+                      <Text data-target-id={item?.id} onClick={(e) => onTagTap(e)}>
+                        {item?.marketingName}
+                      </Text>
+                    </Tag>
+                  );
+                })}
+              </View>
             </ScrollView>
             {/* 二级标签下内容 */}
-            <View className="right-content" style={{ marginTop: 6 }}>
+            <View className="right-content" style={{ marginTop: 44 }}>
               {subList?.map((itm, idx) => {
                 return (
                   <>
