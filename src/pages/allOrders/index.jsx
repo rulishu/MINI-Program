@@ -1,4 +1,4 @@
-import React, { useEffect, lazy } from 'react';
+import React, { useEffect, lazy, useState } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
 import { Tabs, Icon } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
@@ -11,7 +11,9 @@ import './index.scss';
 const Orders = lazy(() => import('./orders'));
 
 const Index = () => {
-  const { orderActive, pageNum, orderList, total } = useSelector((state) => state.allOrders);
+  const { orderActive, pageNum, orderList, total, pageSize } = useSelector(
+    (state) => state.allOrders,
+  );
   const dispatch = useDispatch();
 
   const updateFn = (payload) => {
@@ -38,6 +40,7 @@ const Index = () => {
       }
     },
   });
+  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
 
   useEffect(() => {
     Taro.showLoading({ title: '加载中...', mask: true });
@@ -45,6 +48,17 @@ const Index = () => {
       pageNum: pageNum,
       pageSize: 20,
       orderStatus: orderActive,
+    });
+    //获取顶部导航栏位置
+    let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
+    const { top, height } = menuButtonInfo;
+    wx.getSystemInfo({
+      success: (res) => {
+        const { statusBarHeight } = res;
+        const margin = top - statusBarHeight;
+        const navHeight = height + statusBarHeight + margin * 2;
+        setHomeTopNavHeight(navHeight);
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNum, orderActive]);
@@ -111,7 +125,14 @@ const Index = () => {
           }
         />
       </View>
-      <View>
+      <View
+        style={{
+          position: 'fixed',
+          left: 0,
+          width: '100%',
+          top: homeTopNavHeight,
+        }}
+      >
         <Tabs
           value={orderActive}
           background="#ffffff"
@@ -128,7 +149,12 @@ const Index = () => {
                 refresherEnabled
                 lowerThreshold={50}
                 refresherTriggered={loading}
-                onScrollToLower={() => updateFn({ pageNum: pageNum + 1 })}
+                onScrollToLower={() => {
+                  let maxPage = Math.ceil(total / pageSize);
+                  if (maxPage > pageNum) {
+                    updateFn({ pageNum: pageNum + 1 });
+                  }
+                }}
                 onRefresherRefresh={refesh}
               >
                 {React.cloneElement(item.children, {

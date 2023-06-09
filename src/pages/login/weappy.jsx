@@ -74,7 +74,7 @@ const WeAppy = () => {
         </Button>
       ) : (
         <Button color="#09bb07" block onClick={login}>
-          微信一键登录
+          微信登录
         </Button>
       )}
       <View className="onload-footer">
