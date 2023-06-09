@@ -89,7 +89,7 @@ const Index = () => {
           />
         </View>
         <View className="head-infos">
-          <View className="head-info-name">
+          <View className="head-info-name" onTap={() => edit()}>
             <Text>{userInfos.nickName || '游客'}</Text>
             {/* <Image
               mode="widthFix"
