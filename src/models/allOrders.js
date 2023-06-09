@@ -10,6 +10,7 @@ export default {
     orderActive: 0,
     orderList: [],
     pageNum: 1,
+    pageSize: 20,
     total: 0,
     refreshHasMore: false,
   },
