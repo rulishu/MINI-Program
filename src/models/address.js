@@ -24,7 +24,8 @@ export default {
               return item.isDefault === 1;
             })
             .at(0);
-          Taro.setStorageSync('defultAddress', defultAddress);
+          const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
+          Taro.setStorageSync('defultAddress', lastAddress);
           yield put({
             type: 'update',
             payload: {

@@ -47,8 +47,8 @@ const Index = () => {
     },
   });
   // 初始化收货地址内容
-  // let delAddress = Taro.getStorageSync('defultAddress');
-  const curAddress = JSON.stringify(currentAddress) === '{}' ? '添加收货地址' : currentAddress;
+  let delAddress = Taro.getStorageSync('defultAddress');
+  const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
 
   // 处理确认订单展示数据
   const orderInfo = shoppingCartVOList?.at(0)?.cartVOList.at(0);
@@ -150,22 +150,20 @@ const Index = () => {
             <View className="address-left-icon">
               <Image src={payAddress} style={{ width: 16, height: 16 }} />
             </View>
-            {JSON.stringify(currentAddress) === '{}' ? (
+            {curAddress === '添加收货地址' ? (
               <View className="address-info">
                 <Text>添加收货地址</Text>
               </View>
             ) : (
               <View className="address-info">
                 <View className="city">
-                  <Text>
-                    {currentAddress?.province + currentAddress?.city + currentAddress?.area}
-                  </Text>
+                  <Text>{curAddress?.province + curAddress?.city + curAddress?.area}</Text>
                 </View>
                 <View className="address-details">
-                  <Text>{currentAddress?.addressDetails}</Text>
+                  <Text>{curAddress?.addressDetails}</Text>
                 </View>
                 <View className="address-details">
-                  <Text>{currentAddress?.consignee + ' ' + currentAddress?.phone}</Text>
+                  <Text>{curAddress?.consignee + ' ' + curAddress?.phone}</Text>
                 </View>
               </View>
             )}
