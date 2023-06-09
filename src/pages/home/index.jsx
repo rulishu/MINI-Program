@@ -209,6 +209,7 @@ const Index = () => {
             style={{
               height: '200px',
               width: '100%',
+              borderRadius: '10px',
             }}
           >
             {bannerList?.map((item) => {

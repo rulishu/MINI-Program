@@ -1,4 +1,5 @@
 export default definePageConfig({
-  navigationBarTitleText: '',
-  navigationStyle: 'custom',
+  navigationBarTitleText: '登录',
+  navigationBarBackgroundColor: '#ffffff',
+  navigationBarTextStyle: 'black',
 });
