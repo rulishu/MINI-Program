@@ -46,7 +46,7 @@ page {
     }
   }
   .nut-tabpane{
-    padding: 10px 0 0 2px!important;
+    padding: 0 0 0 2px!important;
   }
   // 右侧二级菜单
   .right{
@@ -62,6 +62,13 @@ page {
         overflow:hidden;          // 超出隐藏
         text-overflow:ellipsis;   // 省略号
         // overflow-x: auto;
+        .two-tag{
+          position: fixed;
+          background-color: #ffffff;
+          z-index:2;
+          padding: 20px 0 10px 0;
+          width:100%;
+        }
       }
       .right-title{
         margin-left:10px;
