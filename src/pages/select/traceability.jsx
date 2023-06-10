@@ -92,7 +92,7 @@ const Index = () => {
     run({
       pageNum: 1,
       pageSize: pageSize,
-      provenance: parseInt(secondLevelAreaClassAgent.at(0)?.areaId),
+      provenance: parseInt(secondLevelAreaClassAgent.at(tab5value)?.areaId),
     });
   };
   return (

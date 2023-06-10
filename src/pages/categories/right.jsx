@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
-import { Tag, Price, Skeleton } from '@nutui/nutui-react-taro';
+import { Tag, Skeleton } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import homeAdd from '@/assets/images/homeAdd.svg';
 import { min, aPrice } from '@/utils/min';
@@ -146,13 +146,16 @@ const Index = (props) => {
                                   style={{ display: 'flex', flexDirection: 'row' }}
                                   onClick={() => onTap(dto?.id)}
                                 >
-                                  <Price
+                                  {/* <Price
                                     price={min(dto?.itemSkuDtos)}
                                     size="normal"
                                     needSymbol={false}
                                     thousands
                                     style={{ color: '#d9001c' }}
-                                  />
+                                  /> */}
+                                  <Text style={{ color: '#d9001c', fontSize: 16 }}>
+                                    {dto?.itemSkuDtos && min(dto?.itemSkuDtos)}
+                                  </Text>
                                   <View>
                                     <Text
                                       style={{
