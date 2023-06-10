@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Video } from '@tarojs/components';
-import { Swiper, SwiperItem, Price, Icon, Button, Skeleton, Tag } from '@nutui/nutui-react-taro';
+import { Swiper, SwiperItem, Icon, Button, Skeleton, Tag } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import searchLeft from '@/assets/images/searchLeft.svg';
 import kefu from '@/assets/images/kefu.svg';
@@ -194,17 +194,20 @@ const Index = () => {
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                alignItems: 'center',
+                alignItems: 'baseline',
                 marginBottom: 2,
               }}
             >
-              <Price
+              {/* <Price
                 price={min(queryInfo?.itemSkuDtos)}
                 size="large"
                 needSymbol={false}
                 thousands
                 style={{ color: '#d9001c' }}
-              />
+              /> */}
+              <Text style={{ color: '#d9001c', fontSize: 24 }}>
+                {queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
+              </Text>
               <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
                 {queryInfo?.itemSkuDtos &&
                   aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}

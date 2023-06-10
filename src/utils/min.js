@@ -23,7 +23,7 @@ export const aPrice = (sma, item) => {
   if (sma === Infinity) {
     return;
   }
-  let price = sma?.replace(/[^0-9]/gi, '');
+  let price = sma?.replace('¥', '');
   let str = item
     ?.filter((a) => {
       return a.membershipPrice === Number(price);
