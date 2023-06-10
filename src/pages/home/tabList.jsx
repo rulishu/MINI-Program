@@ -54,7 +54,7 @@ const Index = () => {
       run({
         pageNum: 1,
         pageSize: pageSize,
-        id: parseInt(levelTab.at(0)?.id),
+        id: parseInt(levelTab[parseInt(tab4value)]?.id),
       });
     }
   };
