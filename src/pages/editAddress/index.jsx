@@ -130,6 +130,7 @@ const Index = () => {
           label="所在地区"
           placeholder="请选择省、市、区、街道"
           defaultValue={value1}
+          disabled
           onClick={() => setIsVisibleDemo1(true)}
         />
         <Cascader
