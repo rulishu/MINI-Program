@@ -46,6 +46,7 @@ export default {
               activeIndex: 0,
             },
           });
+          payload.callBack(userDto.id);
           Taro.navigateBack({
             delta: 1,
           });
@@ -94,7 +95,11 @@ export default {
               activeIndex: 0,
             },
           });
-          Taro.switchTab({ url: '/pages/home/index' });
+          payload.callBack(userDto.id);
+          Taro.navigateBack({
+            delta: 1,
+          });
+          // Taro.switchTab({ url: '/pages/home/index' });
         } else {
           Taro.showToast({
             title: '请授权获取手机号',
