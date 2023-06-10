@@ -46,7 +46,10 @@ export default {
               activeIndex: 0,
             },
           });
-          Taro.switchTab({ url: '/pages/home/index' });
+          Taro.navigateBack({
+            delta: 1,
+          });
+          // Taro.switchTab({ url: '/pages/home/index' });
         } else {
           Taro.showToast({
             title: '请稍后再试',
