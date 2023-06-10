@@ -201,7 +201,7 @@ const Index = () => {
                 <Text>x{orderInfo?.count}</Text>
               </View>
               <View className="goods-info-head-right-price">
-                <Text>￥{orderInfo?.unitPrice}.00</Text>
+                <Text>￥{orderInfo?.unitPrice}</Text>
               </View>
             </View>
           </View>
