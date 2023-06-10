@@ -31,7 +31,10 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   });
   const [isConfirm, setIsConfirm] = useState(false);
   const [orderAmount, setOrderAmount] = useState(0);
-  const { minutes, seconds } = formattedRes;
+  let { minutes, seconds } = formattedRes;
+  if (seconds.toString().length === 1) {
+    seconds = `0${seconds}`;
+  }
   const dispatch = useDispatch();
   const getList = () => {
     Taro.showLoading({ title: '获取订单中...', mask: true });

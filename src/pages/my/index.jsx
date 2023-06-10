@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
 // import { Button } from '@nutui/nutui-react-taro';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 import Heads from './heads';
 import Orders from './orders';
@@ -10,11 +10,12 @@ import Orders from './orders';
 import Option from './option';
 
 const Index = () => {
+  const { activeIndex } = useSelector((state) => state.global);
   const dispatch = useDispatch();
   useEffect(() => {
     const token = Taro.getStorageSync('token');
     const userInfo = Taro.getStorageSync('userInfo');
-    if (token !== '') {
+    if (token !== '' && activeIndex === 4) {
       dispatch({
         type: 'my/getUserInfos',
         payload: {
@@ -26,7 +27,7 @@ const Index = () => {
       });
     }
     // eslint-disable-next-line global-require
-  }, []);
+  }, [activeIndex]);
   // const onLout = () => {
   //   Taro.clearStorageSync();
   //   Taro.navigateTo({ url: '/pages/login/index' });

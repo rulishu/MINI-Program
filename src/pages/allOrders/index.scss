@@ -88,11 +88,11 @@ page {
           overflow: hidden;
           text-overflow: ellipsis;
           margin-bottom: 15px;
+          white-space: nowrap;
           font-size: 30px;
         }
         
         .order-item-middle-left-name-text{
-          white-space: nowrap;
           font-weight: 600;
         }
 
@@ -135,7 +135,7 @@ page {
         }
 
         .bottom-btn-pay {
-          width: 275px;
+          width: 280px;
         }
       }
     }
