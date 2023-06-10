@@ -114,9 +114,6 @@ const Index = () => {
           )}
         </View>
       </View>
-      <View className="semicircle">
-        <View className="semicircle-info"></View>
-      </View>
       <View className="head-list">
         {/* {list.map((item, index) => (
           <View key={index} className="head-list-item">

@@ -35,6 +35,7 @@ const Index = () => {
           afterServiceType: 1,
           reason: value2,
           id: item.id,
+          orderNumber: item.orderNumber,
           orderId: item.id,
           itemIds: item?.items?.map((a) => Number(a.id)),
           callBack: () => {
@@ -55,6 +56,7 @@ const Index = () => {
         payload: {
           afterServiceType: 2,
           reason: value2,
+          orderNumber: item.orderNumber,
           id: item.id,
           orderId: item.id,
           itemIds: item?.items?.map((a) => Number(a.id)),

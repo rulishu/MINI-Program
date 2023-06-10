@@ -82,7 +82,7 @@ const Index = () => {
           currentAddress: item,
         },
       });
-      Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+      Taro.navigateBack({ delta: 1 });
     }
   };
 
