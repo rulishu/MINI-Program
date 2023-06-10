@@ -255,7 +255,7 @@ page {
   margin-top: 32px;
   margin-left: 40px;
   margin-right: 40px;
-  padding-bottom: 30px;
+  // padding-bottom: 30px;
   border-bottom: 1px solid rgb(215, 215,215);
   .infoSpecsTitle{
     font-family: PingFangSC-Medium;
@@ -268,6 +268,7 @@ page {
     margin-top: 24px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     .infoSpecsButOne{
       // box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
       border-radius: 0;
@@ -276,6 +277,7 @@ page {
       font-weight: normal;
       text-align: center;
       margin-right: 20px;
+      margin-bottom: 30px;
       color: #aaaaaa;
       // border: 1px solid #333333;
     }
@@ -287,6 +289,7 @@ page {
       font-weight: normal;
       text-align: center;
       margin-right: 20px;
+      margin-bottom: 30px;
       background-color: #965A3C;
       color: #FFFFFF;
       border: 1px solid #965A3C;
