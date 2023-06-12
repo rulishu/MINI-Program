@@ -12,6 +12,7 @@ const Index = () => {
   const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState();
   const [memberPrice, setMemberPrice] = useState();
+  const [referencePrice, setReferencePrice] = useState();
   const [active, setActive] = useState({});
   const [activeSku, setActiveSku] = useState([]);
   const [amount, setAmount] = useState(1);
@@ -36,6 +37,7 @@ const Index = () => {
   useEffect(() => {
     setImageUrl(skuInfo?.imageUrl);
     setMemberPrice(skuInfo?.membershipPrice);
+    setReferencePrice(skuInfo?.referencePrice);
   }, [skuInfo, imageUrl, memberPrice]);
 
   // 数量提示
@@ -116,13 +118,15 @@ const Index = () => {
                 className="infoTextOne"
               /> */}
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
-                {queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
+                {memberPrice ? memberPrice : queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
               <Text
                 style={{ textDecoration: 'line-through', fontSize: 12, color: 'rgb(127,127,127)' }}
               >
-                {queryInfo?.itemSkuDtos &&
-                  aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
+                {referencePrice
+                  ? referencePrice
+                  : queryInfo?.itemSkuDtos &&
+                    aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
             </View>
             <View>
