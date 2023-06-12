@@ -12,13 +12,14 @@ const Index = () => {
   const { userInfos } = useSelector((state) => state.my);
 
   const time = (date) => {
-    //date作为一个时间变量传进来
-    //如果时间格式是正确的，那下面这一步转化时间格式就可以不用了
-    let dateBegin = new Date(date?.replace(/-/g, '/')); //将-转化为/，使用new Date
-    let nowDate = new Date(); //获取当前时间
-    let dateDiff = nowDate.getTime() - dateBegin.getTime(); //两个时间相差的毫秒数
-    let dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000)); //计算出相差天数
-    return dayDiff;
+    const creatDate = new Date(date.split(' ')[0]);
+    const now = new Date(); // 获取当前时间
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 获取今天的日期，时分秒都为0
+    const todayTimestamp = today.getTime(); // 获取今天0点的时间戳
+    const creatTimestamp = creatDate.getTime(); // 获取今天0点的时间戳
+    const dateDiff = todayTimestamp - creatTimestamp;
+    const joinDay = Math.ceil(dateDiff / (24 * 3600 * 1000));
+    return joinDay + 1;
   };
   // const list = [
   //   {
