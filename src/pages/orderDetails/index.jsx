@@ -78,7 +78,7 @@ const Index = () => {
       { id: 5, title: '创建时间', price: orderInfo?.createTime },
       { id: 6, title: '支付时间', price: orderInfo?.payDate },
     ];
-    if (val == 1 || val == 5) {
+    if (val == 1 || val == -2) {
       return data;
     } else if (val == 2 || val === 3 || val === 4 || val === 7) {
       return data2;
@@ -207,7 +207,7 @@ const Index = () => {
                     <Image
                       mode="widthFix"
                       src={a?.mainGraph}
-                      style={{ width: 128, height: 128 }}
+                      className="goods-info-head-img"
                     ></Image>
                   </View>
                   <View className="goods-info-head-info">
@@ -308,7 +308,7 @@ const Index = () => {
                 </View>
                 <View className="address-price-right">
                   <Text className="address-price-right-text">{a.price}</Text>
-                  <Text style={{ color: '#A05635', marginLeft: 10 }}>
+                  <Text style={{ color: '#A05635', fontSize: 14, marginLeft: 10 }}>
                     {a.title === '订单编号' ? '复制' : ''}
                   </Text>
                 </View>
@@ -469,6 +469,21 @@ const Index = () => {
                   type="default"
                 >
                   <Text style={{ fontSize: 14 }}>售后完成</Text>
+                </Button>
+              </View>
+            </>
+          )}
+          {orderStatus === -2 && (
+            <>
+              <View>
+                <Button
+                  shape="square"
+                  style={{ color: '#AAAAAA', fontWeight: 400 }}
+                  plain
+                  type="default"
+                  onClick={() => onDelOrder(orderInfo)}
+                >
+                  <Text style={{ fontSize: 14 }}>删除订单</Text>
                 </Button>
               </View>
             </>

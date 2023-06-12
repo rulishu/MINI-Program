@@ -72,10 +72,24 @@ const Index = (props) => {
               autoPlay="3000"
               initPage={0}
               paginationVisible
+              style={{
+                height: '150px',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
               {videos?.map((val, index) => (
                 <SwiperItem key={index}>
                   <Video
+                    style={{
+                      height: '150px',
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
                     id="video"
                     src={val}
                     initialTime={0}

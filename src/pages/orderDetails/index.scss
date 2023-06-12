@@ -66,9 +66,10 @@ page {
       .goods-info-head-left{
         display: flex;
         flex-direction: row;
+        align-items: center;
         .goods-info-head-img{
-          width: 128px;
-          height: 128px;
+          width: 128px !important;
+          height: 128px !important;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -82,11 +83,13 @@ page {
           flex-direction: column;
           .goods-info-head-info-title{
             line-height: 44px;
-            letter-spacing: 0px;
-            white-space:nowrap;        // 强制一行显示
-            overflow:hidden;          // 超出隐藏
-            text-overflow:ellipsis;   // 省略号
-            width: 200px;
+            display: flex;
+            flex-wrap: wrap;
+            // letter-spacing: 0px;
+            // white-space:nowrap;        // 强制一行显示
+            // overflow:hidden;          // 超出隐藏
+            // text-overflow:ellipsis;   // 省略号
+            // width: 200px;
           }
           .goods-info-head-info-doc{
             margin:10px 0;
@@ -163,10 +166,12 @@ page {
           overflow: hidden; // 超出隐藏
           text-overflow: ellipsis; // 省略号
           .address-price-right-text{
-            white-space: nowrap;// 强制一行显示
-            overflow: hidden; // 超出隐藏
-            text-overflow: ellipsis; // 省略号
-            width:360px;
+            display:flex;
+            flex-wrap: wrap;
+            // white-space: nowrap;// 强制一行显示
+            // overflow: hidden; // 超出隐藏
+            // text-overflow: ellipsis; // 省略号
+            width:380px;
           }
         }
       }
