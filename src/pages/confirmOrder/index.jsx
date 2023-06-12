@@ -151,7 +151,7 @@ const Index = () => {
   return (
     <View className="confirm">
       <View className="confirm-order">
-        <View className="address">
+        <View className="address" onTap={() => onSelectAddress()}>
           <View className="address-left">
             <View className="address-left-icon">
               <Image src={payAddress} style={{ width: 16, height: 16 }} />
@@ -174,7 +174,7 @@ const Index = () => {
               </View>
             )}
           </View>
-          <View onTap={() => onSelectAddress()}>
+          <View>
             <Icon name="rect-right" size="16" color="#7F7F7F" />
           </View>
         </View>
