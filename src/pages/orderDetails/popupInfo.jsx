@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Popup, TextArea } from '@nutui/nutui-react-taro';
 import { View, Text } from '@tarojs/components';
 import { useSelector, useDispatch } from 'react-redux';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
@@ -63,6 +64,7 @@ const Index = () => {
         },
       });
     }
+    Taro.navigateTo({ url: '/pages/afterSales/index' });
   };
 
   return (

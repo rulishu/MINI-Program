@@ -3,6 +3,7 @@ import { Button, Popup, Image } from '@nutui/nutui-react-taro';
 import { View, Text } from '@tarojs/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { orderBtn } from '@/utils/enum';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
@@ -37,6 +38,12 @@ const Index = () => {
           orderRefund: true,
           refundType: 'returnsRefunds',
         },
+      });
+    } else {
+      Taro.showToast({
+        title: '请选择售后类型',
+        icon: 'none',
+        duration: 2000,
       });
     }
   };
