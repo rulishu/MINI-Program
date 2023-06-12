@@ -46,7 +46,12 @@ const Index = () => {
                   payload: {
                     id: infoDetail.id,
                     callBack: () => {
-                      getList;
+                      dispatch({
+                        type: 'orderDetails/selectPrimaryKey',
+                        payload: {
+                          id: Number(infoDetail.id),
+                        },
+                      });
                       dispatchFn({ isConfirm: false });
                     },
                   },

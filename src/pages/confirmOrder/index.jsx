@@ -35,6 +35,12 @@ const Index = () => {
     error: () => {
       Taro.redirectTo({ url: '/pages/allOrders/index' });
       dispatch({
+        type: 'allOrders/update',
+        payload: {
+          orderActive: 0,
+        },
+      });
+      dispatch({
         type: 'goodInfo/update',
         payload: {
           currentAddress: {},

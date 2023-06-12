@@ -27,6 +27,7 @@ export default {
             type: 'update',
             payload: {
               orderInfo: result.result || '',
+              infoDetail: result.result || '',
             },
           });
         }
