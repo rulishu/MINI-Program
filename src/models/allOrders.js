@@ -79,6 +79,11 @@ export default {
               pageSize: 10,
             },
           });
+          Taro.showToast({
+            title: data.message,
+            icon: 'success',
+            duration: 2000,
+          });
           payload.callBack();
         } else {
           Taro.showToast({

@@ -138,7 +138,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
           <Divider className="divider" />
         </View>
         <View style={{ textAlign: 'right', fontWeight: 'bold', fontSize: 15, marginBottom: 10 }}>
-          实付款： ￥{item.payPrice}
+          {item.orderStatus === 1 ? `应付款 ￥${item.orderPrice}` : `实付款 ￥${item.payPrice}`}
         </View>
         <View className="order-item-bottom">
           {item.orderStatus === 3 && (
@@ -151,7 +151,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               查看物流
             </Button>
           )}
-          {(item.orderStatus !== 1 || item.orderStatus !== 2 || item.orderStatus !== 3) && (
+          {(item.orderStatus === -2 || item.orderStatus === 4 || item.orderStatus === 6) && (
             <Button
               className="bottom-btn"
               plain

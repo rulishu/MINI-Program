@@ -5,7 +5,6 @@ export default {
   namespace: 'global', // 这是模块名
   state: {
     // 初始化数据
-    name: '欢迎来到Taro-Ui',
     userInfo: {},
     vipTypeList: [],
     activeIndex: 0,
@@ -46,11 +45,19 @@ export default {
               activeIndex: 0,
             },
           });
-          payload.callBack(userDto.id);
+          const pageHistory = getCurrentPages();
+          if (pageHistory[0].route === 'pages/my/index') {
+            yield put({
+              type: 'update',
+              payload: {
+                activeIndex: 4,
+              },
+            });
+            payload.callBack(userDto.id);
+          }
           Taro.navigateBack({
             delta: 1,
           });
-          // Taro.switchTab({ url: '/pages/home/index' });
         } else {
           Taro.showToast({
             title: '请稍后再试',
