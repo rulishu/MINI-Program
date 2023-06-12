@@ -27,7 +27,22 @@ const Index = () => {
   // 获取头像
   const onChooseavatar = (e) => {
     let { avatarUrl } = e.detail;
-    setAvatar(avatarUrl);
+    wx.uploadFile({
+      url: 'https://rh.nihaosi.com/jcgl-user/oss/upload', //仅为示例，非真实的接口地址
+      filePath: avatarUrl,
+      name: 'file',
+      success(res) {
+        setAvatar(JSON.parse(res.data).result);
+        //do something
+      },
+      fail() {
+        Taro.showToast({
+          title: '上传失败',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
   };
 
   // 提交
