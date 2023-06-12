@@ -17,6 +17,14 @@ const WeAppy = () => {
             type: 'global/newLogin',
             payload: {
               jsCode: res.code,
+              callBack: (id) => {
+                dispatch({
+                  type: 'my/getUserInfos',
+                  payload: {
+                    id: id,
+                  },
+                });
+              },
             },
           });
         } else {
@@ -42,6 +50,14 @@ const WeAppy = () => {
                   jsCode: res.code,
                   encryptedData: detail.encryptedData,
                   iv: detail.iv,
+                  callBack: (id) => {
+                    dispatch({
+                      type: 'my/getUserInfos',
+                      payload: {
+                        id: id,
+                      },
+                    });
+                  },
                 },
               });
             } else {

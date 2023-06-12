@@ -1,16 +1,39 @@
 import React from 'react';
 import { View, Image } from '@tarojs/components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Skeleton } from '@nutui/nutui-react-taro';
+import Taro from '@tarojs/taro';
+import { getRequest } from '@/utils/min';
 import './index.scss';
 
 const Navs = () => {
+  const dispatch = useDispatch();
   const { activityList } = useSelector((state) => state.home);
-  // console.log('activityList', activityList, activityList?.map(a => a.path))
 
   // 点击活动图跳转
-  const goActivity = (jumpPath) => {
-    window.console.log('点击活动图跳转', jumpPath);
+  const goActivity = async (jumpPath) => {
+    const url = '/' + jumpPath;
+    if (url.indexOf('pages/home/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/categories/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/select/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/cart/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/my/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/goodInfo/index') !== -1) {
+      await dispatch({
+        type: 'goodInfo/infoDetails',
+        payload: {
+          id: getRequest(url),
+        },
+      });
+      Taro.navigateTo({ url: url });
+    } else {
+      Taro.navigateTo({ url: url });
+    }
   };
 
   return (

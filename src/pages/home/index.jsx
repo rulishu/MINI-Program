@@ -7,6 +7,7 @@ import { Swiper, SwiperItem, Skeleton } from '@nutui/nutui-react-taro';
 import homeSearch from '@/assets/images/homeSearch.svg';
 import homeAddress from '@/assets/images/homeAddress.svg';
 import Navs from './navs';
+import { getRequest } from '@/utils/min';
 import TabList from './tabList';
 
 const Index = () => {
@@ -82,8 +83,29 @@ const Index = () => {
   }, []);
 
   // 点击轮播图跳转
-  const goBanner = (jumpPath) => {
-    window.console.log('点击轮播图跳转', jumpPath);
+  const goBanner = async (jumpPath) => {
+    const url = '/' + jumpPath;
+    if (url.indexOf('pages/home/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/categories/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/select/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/cart/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/my/index') !== -1) {
+      Taro.switchTab({ url: url });
+    } else if (url.indexOf('pages/goodInfo/index') !== -1) {
+      await dispatch({
+        type: 'goodInfo/infoDetails',
+        payload: {
+          id: getRequest(url),
+        },
+      });
+      Taro.navigateTo({ url: url });
+    } else {
+      Taro.navigateTo({ url: url });
+    }
   };
 
   // 再次获取定位
