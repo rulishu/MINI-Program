@@ -105,7 +105,7 @@ const Index = () => {
       type: 'orderDetails/update',
       payload: {
         orderRefund: true,
-        refundType: 'refundOnly',
+        refundType: 'pendingRefund',
       },
     });
   };
