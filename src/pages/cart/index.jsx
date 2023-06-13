@@ -172,7 +172,7 @@ const Index = () => {
                     <View>
                       <Checkbox
                         checked={item?.state === 1 ? false : checked}
-                        onChange={() => handleChange(itm)}
+                        onChange={() => handleChange(item)}
                         disabled={item?.state === 1 ? true : false}
                       />
                     </View>
