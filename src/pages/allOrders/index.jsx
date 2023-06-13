@@ -75,7 +75,7 @@ const Index = () => {
         pageNum: 1,
         pageSize: 20,
         orderStatus: orderActive,
-      }).finally(() => {
+      })?.finally(() => {
         setRefreshLoading(false);
       });
     }
