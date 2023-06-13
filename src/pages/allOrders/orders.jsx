@@ -101,7 +101,11 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               <Text>订单编号：{item.orderNumber}</Text>
             </View>
             <View style={{ color: '#A85230', fontWeight: 500 }}>
-              <Text>{orderStatusEnum[item.orderStatus]}</Text>
+              <Text>
+                {item.orderStatus === -2 && item.refundStatus === 2
+                  ? '已退款'
+                  : orderStatusEnum[item.orderStatus]}
+              </Text>
             </View>
           </View>
           {item.items.map((goodsItem) => (
