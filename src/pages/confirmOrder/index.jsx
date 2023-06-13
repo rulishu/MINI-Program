@@ -22,6 +22,12 @@ const Index = () => {
         },
       });
       dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 4,
+        },
+      });
+      dispatch({
         type: 'goodInfo/update',
         payload: {
           currentAddress: {},
