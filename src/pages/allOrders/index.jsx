@@ -67,7 +67,7 @@ const Index = () => {
   }, [orderActive]);
 
   const refesh = () => {
-    if (ref.current === orderActive) {
+    if (!refreshLoading && tabList?.length && ref.current === orderActive) {
       setRefreshLoading(true);
       updateFn({ pageNum: 1 });
       Taro.showLoading({ title: '加载中...', mask: true });
