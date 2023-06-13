@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { searchHistoryList, searchSelectList, getHistory, deleteHistory } from '@/server/search';
+import {
+  searchHistoryList,
+  searchSelectList,
+  getHistory,
+  deleteHistory,
+  recentRecord,
+} from '@/server/search';
 
 export default {
   namespace: 'search', // 这是模块名
@@ -49,6 +55,7 @@ export default {
 
     // 搜索历史
     *getHistory({ payload }, { call, put }) {
+      Taro.showLoading({ title: '加载中...', mask: true });
       try {
         const params = { ...payload };
         const result = yield call(getHistory, params);
@@ -59,8 +66,13 @@ export default {
               historyLists: result.result.slice(0, 20) || [],
             },
           });
+          Taro.hideLoading();
+        } else {
+          Taro.hideLoading();
         }
-      } catch (err) {}
+      } catch (err) {
+        Taro.hideLoading();
+      }
     },
 
     // 删除搜索历史
@@ -74,6 +86,17 @@ export default {
             icon: 'success',
             duration: 2000,
           });
+        }
+      } catch (err) {}
+    },
+
+    // 记录游客状态搜索记录
+    *recentRecord({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(recentRecord, params);
+        if (result && result.code === 200) {
+          payload.callBack();
         }
       } catch (err) {}
     },
