@@ -127,7 +127,17 @@ const Index = () => {
           )}
           {/* 返回/客服/分享按钮 */}
           <View style={{ position: 'fixed', top: navTops, zIndex: 99 }}>
-            <View onClick={() => Taro.navigateBack({ delta: 1 })}>
+            <View
+              onClick={() => {
+                const shareStatus = Taro.getStorageSync('shareStatus');
+                if (shareStatus === 1) {
+                  Taro.switchTab({ url: '/pages/home/index' });
+                  Taro.clearStorageSync('shareStatus');
+                } else {
+                  Taro.navigateBack({ delta: 1 });
+                }
+              }}
+            >
               <Image mode="widthFix" src={searchLeft} style={{ width: 24, height: 24 }}></Image>
             </View>
             <View
