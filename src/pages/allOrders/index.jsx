@@ -39,6 +39,7 @@ const Index = () => {
         Taro.hideLoading();
         setRefreshLoading(false);
       } else {
+        // setRefreshLoading(false);
         Taro.hideLoading();
       }
     },
