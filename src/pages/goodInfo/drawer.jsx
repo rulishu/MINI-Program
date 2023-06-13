@@ -16,6 +16,7 @@ const Index = () => {
   const [active, setActive] = useState({});
   const [activeSku, setActiveSku] = useState([]);
   const [amount, setAmount] = useState(1);
+  const [stock, setStock] = useState();
 
   // 选中的规格值[查找会员价和相对应的图片]
   let newArr = skuList.map((item) => {
@@ -38,7 +39,8 @@ const Index = () => {
     setImageUrl(skuInfo?.imageUrl);
     setMemberPrice(skuInfo?.membershipPrice);
     setReferencePrice(skuInfo?.referencePrice);
-  }, [skuInfo, imageUrl, memberPrice]);
+    setStock(skuInfo?.stock);
+  }, [skuInfo, imageUrl, memberPrice, referencePrice, stock]);
 
   // 数量提示
   const overlimit = () => {
@@ -190,17 +192,32 @@ const Index = () => {
           <View>
             <Text>购买数量</Text>
           </View>
-          <View style={{ marginRight: 7 }}>
-            <InputNumber
-              modelValue={amount}
-              min="1"
-              max={queryInfo?.stock}
-              onOverlimit={amount <= 1 ? overlimit : morelimit}
-              onChangeFuc={(e) => {
-                onChangeFuc(e);
-              }}
-            />
-          </View>
+          {Object.keys(active).length > 0 &&
+          Object.keys(active).length === Object.keys(attributeVos).length ? (
+              <View style={{ marginRight: 7 }}>
+                <InputNumber
+                  modelValue={amount}
+                  min="1"
+                  max={stock}
+                  onOverlimit={amount <= 1 ? overlimit : morelimit}
+                  onChangeFuc={(e) => {
+                    onChangeFuc(e);
+                  }}
+                />
+              </View>
+            ) : (
+              <View style={{ marginRight: 7 }}>
+                <InputNumber
+                  modelValue={amount}
+                  min="1"
+                  max={stock}
+                  onChangeFuc={(e) => {
+                    onChangeFuc(e);
+                  }}
+                  disabled
+                />
+              </View>
+            )}
         </View>
         <Button
           type="primary"
