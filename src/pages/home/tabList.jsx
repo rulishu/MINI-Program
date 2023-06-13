@@ -77,7 +77,7 @@ const Index = () => {
         pageNum: 1,
         pageSize: pageSize,
         id: tab4value,
-      }).finally(() => {
+      })?.finally(() => {
         setRefreshLoading(false);
       });
     }
