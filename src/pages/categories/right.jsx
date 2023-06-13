@@ -27,14 +27,14 @@ const Index = (props) => {
         height: '100%',
       }}
       scrollIntoView={scrollIntoView}
-      scrollWithAnimation
+      // scrollWithAnimation
     >
       <View className="right" style={{ paddingBottom: 70, height: 'auto' }}>
         <View style={{ marginBottom: 8 }} className="right-title-box">
           <View style={{ width: '100%' }}>
             {/* 二级标签 */}
-            <ScrollView className="my-code" scrollX scrollWithAnimation>
-              <View className="two-tag">
+            <View className="two-tag">
+              <ScrollView className="my-code" scrollX scrollWithAnimation>
                 {getCategoriesTwoTree?.map((item, index) => {
                   return (
                     <Tag
@@ -47,16 +47,16 @@ const Index = (props) => {
                       color={getCategoriesTwoTree && index !== activeItem ? '#999999' : '#965A3C'}
                       // textColor="#999999"
                     >
-                      <Text data-target-id={item?.id} onClick={(e) => onTagTap(e)}>
+                      <Text data-target-id={item?.id} onClick={(e) => onTagTap(e, index)}>
                         {item?.marketingName}
                       </Text>
                     </Tag>
                   );
                 })}
-              </View>
-            </ScrollView>
+              </ScrollView>
+            </View>
             {/* 二级标签下内容 */}
-            <View className="right-content" style={{ marginTop: 44 }}>
+            <View className="right-content">
               {subList?.map((itm, idx) => {
                 return (
                   <>

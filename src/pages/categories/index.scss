@@ -57,17 +57,18 @@ page {
       flex-direction: row;
       flex-wrap: wrap;
       align-items: center;
-      .my-code{
-        white-space:nowrap;        // 强制一行显示
-        overflow:hidden;          // 超出隐藏
-        text-overflow:ellipsis;   // 省略号
-        // overflow-x: auto;
-        .two-tag{
-          position: fixed;
-          background-color: #ffffff;
-          z-index:2;
-          padding: 20px 0 10px 0;
-          width:100%;
+      .two-tag{
+        position: sticky;
+        top: 0;
+        padding: 10px 0 0 0;
+        background-color: #ffffff;
+        z-index: 99;
+        width: 100%;
+        .my-code{
+          white-space:nowrap;        // 强制一行显示
+          overflow:hidden;          // 超出隐藏
+          text-overflow:ellipsis;   // 省略号
+          // overflow-x: auto;
         }
       }
       .right-title{
