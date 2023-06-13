@@ -67,7 +67,6 @@ const Index = () => {
   }, [orderActive]);
 
   const refesh = () => {
-    // console.log('【 ref.current 】==>', ref.current);
     if (ref.current === orderActive) {
       setRefreshLoading(true);
       updateFn({ pageNum: 1 });
@@ -76,6 +75,8 @@ const Index = () => {
         pageNum: 1,
         pageSize: 20,
         orderStatus: orderActive,
+      }).finally(() => {
+        setRefreshLoading(false);
       });
     }
   };
