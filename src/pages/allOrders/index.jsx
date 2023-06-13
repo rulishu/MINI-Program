@@ -67,7 +67,8 @@ const Index = () => {
   }, [orderActive]);
 
   const refesh = () => {
-    if (!refreshLoading && ref.current === orderActive) {
+    // console.log('【 ref.current 】==>', ref.current);
+    if (ref.current === orderActive) {
       setRefreshLoading(true);
       updateFn({ pageNum: 1 });
       Taro.showLoading({ title: '加载中...', mask: true });
@@ -75,8 +76,6 @@ const Index = () => {
         pageNum: 1,
         pageSize: 20,
         orderStatus: orderActive,
-      })?.finally(() => {
-        setRefreshLoading(false);
       });
     }
   };
@@ -166,11 +165,11 @@ const Index = () => {
             return (
               <Tabs.TabPane key={item.id} title={item.title} paneKey={item.id} className="tabpane">
                 <ScrollView
-                  style={{ height: '99vh' }}
+                  style={{ height: '100vh' }}
                   scrollY
                   scrollWithAnimation
                   refresherEnabled
-                  lowerThreshold={10}
+                  lowerThreshold={50}
                   refresherTriggered={refreshLoading}
                   onScrollToLower={pullList}
                   onRefresherRefresh={refesh}
