@@ -22,3 +22,8 @@ export const getHistory = (params) => {
 export const deleteHistory = (params) => {
   return request.post(`/jcgl-user/app/searchHistory/recent/delete`, params);
 };
+
+// 记录游客状态搜索记录
+export const recentRecord = (params) => {
+  return request.post(`/jcgl-user/app/searchHistory/recent/record`, params);
+};
