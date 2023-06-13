@@ -3,17 +3,44 @@ import { View, Text } from '@tarojs/components';
 import { SearchBar } from '@nutui/nutui-react-taro'; //Input
 import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCurTimes } from '@/utils/min';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const { pageNum, pageSize, searchValue, historyLists } = useSelector((state) => state.search);
 
+  const token = Taro.getStorageSync('token');
   useEffect(() => {
-    // 搜索历史
-    dispatch({
-      type: 'search/getHistory',
-    });
+    // 游客搜索
+    if (token === '') {
+      let searchHistory = Taro.getStorageSync('searchHistory');
+      dispatch({
+        type: 'search/update',
+        payload: {
+          historyLists: (searchHistory && searchHistory?.reverse()) || [],
+        },
+      });
+    }
+    if (token !== '') {
+      dispatch({
+        type: 'search/recentRecord',
+        payload: {
+          recentEntities: Taro.getStorageSync('searchHistory'),
+          callBack: () => {
+            dispatch({
+              type: 'search/getHistory',
+            });
+          },
+        },
+      });
+    } else {
+      // 搜索历史
+      dispatch({
+        type: 'search/getHistory',
+      });
+    }
+
     dispatch({
       type: 'search/update',
       payload: {
@@ -36,13 +63,31 @@ const Index = () => {
       content: '确认删除历史搜索记录吗?',
       success: function (res) {
         if (res.confirm) {
-          dispatch({
-            type: 'search/deleteHistory',
-          }).then(() => {
+          // 游客删除历史
+          if (token === '') {
+            Taro.clearStorageSync('searchHistory');
             dispatch({
-              type: 'search/getHistory',
+              type: 'search/update',
+              payload: {
+                historyLists: [],
+              },
             });
-          });
+          } else {
+            dispatch({
+              type: 'search/deleteHistory',
+            }).then(() => {
+              Taro.clearStorageSync('searchHistory');
+              dispatch({
+                type: 'search/update',
+                payload: {
+                  historyLists: [],
+                },
+              });
+              dispatch({
+                type: 'search/getHistory',
+              });
+            });
+          }
         } else if (res.cancel) {
           return;
         }
@@ -59,6 +104,25 @@ const Index = () => {
         duration: 2000,
       });
     }
+    // 游客搜索
+    if (token === '') {
+      let searchHistory = Taro.getStorageSync('searchHistory');
+      if (!searchHistory) {
+        searchHistory = [];
+      }
+      searchHistory.push({
+        keyword: e,
+        searchTime: getCurTimes(),
+      });
+      Taro.setStorageSync('searchHistory', searchHistory);
+      await dispatch({
+        type: 'search/update',
+        payload: {
+          historyLists: searchHistory?.reverse(),
+        },
+      });
+    }
+
     await dispatch({
       type: 'search/update',
       payload: {
@@ -101,7 +165,7 @@ const Index = () => {
             </View>
             <View className="search-history-content">
               <View className="search-history-content-left">
-                {historyLists.map((item, index) => (
+                {historyLists?.map((item, index) => (
                   <View
                     key={index}
                     className="search-history-tab"
