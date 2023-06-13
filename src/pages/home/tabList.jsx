@@ -68,14 +68,16 @@ const Index = () => {
   };
 
   const refesh = ({ id }) => {
-    setRefreshLoading(true);
-    if (levelTab.length > 0 && id === tab4value) {
+    if (!refreshLoading && levelTab.length > 0 && id === tab4value) {
+      setRefreshLoading(true);
       updateFn({ pageNum: 1 });
       Taro.showLoading({ title: '加载中...', mask: true });
       run({
         pageNum: 1,
         pageSize: pageSize,
         id: tab4value,
+      }).finally(() => {
+        setRefreshLoading(false);
       });
     }
   };
