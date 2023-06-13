@@ -29,7 +29,7 @@ const Index = () => {
 
   // 仅退款
   const onClick = async (item) => {
-    if (refundType === 'refundOnly') {
+    if (refundType === 'pendingRefund') {
       await dispatch({
         type: 'orderDetails/serviceApply',
         payload: {
@@ -49,6 +49,18 @@ const Index = () => {
               },
             });
           },
+        },
+      });
+    } else if (refundType === 'refundOnly') {
+      await dispatch({
+        type: 'orderDetails/serviceApply',
+        payload: {
+          afterServiceType: 3,
+          reason: value2,
+          orderNumber: item.orderNumber,
+          id: item.id,
+          orderId: item.id,
+          itemIds: item?.items?.map((a) => Number(a.id)),
         },
       });
     } else if (refundType === 'returnsRefunds') {
