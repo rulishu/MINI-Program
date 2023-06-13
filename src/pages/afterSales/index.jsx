@@ -36,11 +36,11 @@ const Index = () => {
           orderList.map((item) => {
             // 订单收货类型
             let orderType;
-            if (item.afterServiceType === 1 && item.orderStatus === 2) {
+            if (item.afterServiceType === 1) {
               orderType = '未发货仅退款';
-            } else if (item.afterServiceType === 1 && item.orderStatus === 3) {
+            } else if (item.afterServiceType === 3) {
               orderType = '已发货仅退款';
-            } else if (item.afterServiceType === 2 && item.orderStatus === 3) {
+            } else if (item.afterServiceType === 2) {
               orderType = '已发货退货退款';
             } else {
               orderType = '未知状态';
@@ -70,13 +70,13 @@ const Index = () => {
             return (
               <View key={item.id} className="order-item">
                 <View className="order-item-top">
-                  <View style={{ display: 'flex', width: '70%' }}>
+                  <View style={{ display: 'flex', width: '65%' }}>
                     <View className="order-item-top-text">
                       <Text>售后单号:{item.afterServiceCode}</Text>
                     </View>
                     <Tag
                       plain
-                      style={{ marginLeft: '5px' }}
+                      style={{ marginLeft: '5px', height: '15px' }}
                       color="#A05635"
                       textColor="#A05635"
                       onClick={() => {

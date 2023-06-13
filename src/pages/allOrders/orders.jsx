@@ -101,7 +101,11 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               <Text>订单编号：{item.orderNumber}</Text>
             </View>
             <View style={{ color: '#A85230', fontWeight: 500 }}>
-              <Text>{orderStatusEnum[item.orderStatus]}</Text>
+              <Text>
+                {item.orderStatus === -2 && item.refundStatus === 2
+                  ? '已退款'
+                  : orderStatusEnum[item.orderStatus]}
+              </Text>
             </View>
           </View>
           {item.items.map((goodsItem) => (
@@ -151,7 +155,9 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               查看物流
             </Button>
           )}
-          {(item.orderStatus === -2 || item.orderStatus === 4 || item.orderStatus === 6) && (
+          {(item.orderStatus === -2 ||
+            item.orderStatus === 4 ||
+            (item.orderStatus === -2 && item.refundStatus === 2)) && (
             <Button
               className="bottom-btn"
               plain

@@ -74,7 +74,7 @@ const Index = () => {
   const onSelectAddress = (item) => {
     let pages = getCurrentPages(); // 页面对象
     let prevpage = pages[pages.length - 2]; // 上一个页面对象
-    let path = prevpage.route; // 上一个页面路由地址
+    let path = prevpage?.route; // 上一个页面路由地址
     if (path === 'pages/confirmOrder/index') {
       dispatch({
         type: 'goodInfo/update',
@@ -104,13 +104,13 @@ const Index = () => {
               }}
               onClose={() => closeRef.current.close()}
             >
-              <View
-                className="address-item"
-                onTap={() => {
-                  onSelectAddress(item);
-                }}
-              >
-                <View className="address-item-left">
+              <View className="address-item">
+                <View
+                  className="address-item-left"
+                  onTap={() => {
+                    onSelectAddress(item);
+                  }}
+                >
                   <View className="address-item-left-info">
                     <View className="address-item-left-info-top">
                       <View style={{ marginRight: 8 }}>
