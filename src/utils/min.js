@@ -60,3 +60,19 @@ export function getRequest(item) {
     //直接弹出第一个参数 （如果有多个参数 还要进行循环的）
   }
 }
+
+// 获取当前时间
+export const getCurTimes = () => {
+  const nowDate = new Date();
+  const date = {
+    year: nowDate.getFullYear(),
+    month: nowDate.getMonth() + 1,
+    date: nowDate.getDate(),
+  };
+  const newmonth = date.month < 10 ? '0' + date.month : date.month;
+  const day = date.date > 10 ? date.date : '0' + date.date;
+  const hh = new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours();
+  const mm = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
+  const ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
+  return date.year + '-' + newmonth + '-' + day + ' ' + hh + ':' + mm + ':' + ss;
+};

@@ -4,10 +4,12 @@ import { Empty, SearchBar } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import searchCart from '@/assets/images/searchCart.svg';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCurTimes } from '@/utils/min';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
+  const token = Taro.getStorageSync('token');
   const { pageNum, pageSize, selectLists, searchValue } = useSelector((state) => state.search);
 
   useEffect(() => {
@@ -35,6 +37,24 @@ const Index = () => {
         title: '请输入搜索内容',
         icon: 'none',
         duration: 2000,
+      });
+    }
+    // 游客搜索
+    if (token === '') {
+      let searchHistory = Taro.getStorageSync('searchHistory');
+      if (!searchHistory) {
+        searchHistory = [];
+      }
+      searchHistory.push({
+        keyword: e,
+        searchTime: getCurTimes(),
+      });
+      Taro.setStorageSync('searchHistory', searchHistory);
+      await dispatch({
+        type: 'search/update',
+        payload: {
+          historyLists: searchHistory?.reverse(),
+        },
       });
     }
     await dispatch({
