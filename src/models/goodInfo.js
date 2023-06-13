@@ -134,9 +134,7 @@ export default {
     // 预订单
     *orderSubmit({ payload }, { call, put }) {
       try {
-        const params = {
-          ...payload,
-        };
+        const { callBack, ...params } = payload;
         const result = yield call(orderSubmit, params);
         if (result && result.code === 200) {
           yield put({
@@ -146,6 +144,7 @@ export default {
             },
           });
           Taro.setStorageSync('submitInfo', result.result);
+          callBack();
         } else {
           Taro.showToast({
             title: result.message,
