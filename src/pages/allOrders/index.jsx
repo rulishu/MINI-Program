@@ -39,6 +39,7 @@ const Index = () => {
         Taro.hideLoading();
         setRefreshLoading(false);
       } else {
+        setRefreshLoading(false);
         Taro.hideLoading();
       }
     },
@@ -66,6 +67,7 @@ const Index = () => {
   }, [orderActive]);
 
   const refesh = () => {
+    // console.log('【 ref.current 】==>', ref.current);
     if (ref.current === orderActive) {
       setRefreshLoading(true);
       updateFn({ pageNum: 1 });
