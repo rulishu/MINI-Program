@@ -14,15 +14,11 @@ const Index = () => {
     wx.updateShareMenu({
       withShareTicket: true,
       success: function () {
-        Taro.showToast({
-          title: '分享成功',
-          icon: 'none',
-          duration: 2000,
-        });
         dispatch({
           type: 'goodInfo/update',
           payload: { shareVisible: false },
         });
+        Taro.setStorageSync('shareStatus', 1);
       },
     });
   };

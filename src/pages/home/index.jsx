@@ -96,13 +96,7 @@ const Index = () => {
     } else if (url.indexOf('pages/my/index') !== -1) {
       Taro.switchTab({ url: url });
     } else if (url.indexOf('pages/goodInfo/index') !== -1) {
-      await dispatch({
-        type: 'goodInfo/infoDetails',
-        payload: {
-          id: getRequest(url),
-        },
-      });
-      Taro.navigateTo({ url: url });
+      Taro.navigateTo({ url: `/pages/goodInfo/index?id=${getRequest(url)}` });
     } else {
       Taro.navigateTo({ url: url });
     }

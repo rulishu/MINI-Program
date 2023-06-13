@@ -3,13 +3,11 @@ import { View, Image, Text } from '@tarojs/components';
 import homeAdd from '@/assets/images/homeAdd.svg';
 import homeNoAdd from '@/assets/images/homeNoAdd.svg';
 import { Skeleton } from '@nutui/nutui-react-taro';
-import { useDispatch } from 'react-redux';
 import Taro from '@tarojs/taro';
 import { min, aPrice } from '@/utils/min';
 import './index.scss';
 
 const GoodList = (props) => {
-  const dispatch = useDispatch();
   const { dataList } = props;
 
   // 跳转商品详情
@@ -33,13 +31,7 @@ const GoodList = (props) => {
         duration: 2000,
       });
     }
-    await dispatch({
-      type: 'goodInfo/infoDetails',
-      payload: {
-        id: itm?.id,
-      },
-    });
-    Taro.navigateTo({ url: '/pages/goodInfo/index' });
+    Taro.navigateTo({ url: `/pages/goodInfo/index?id=${itm?.id}` });
   };
 
   return (
