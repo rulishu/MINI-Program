@@ -120,13 +120,15 @@ const Index = () => {
                 className="infoTextOne"
               /> */}
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
-                {memberPrice ? memberPrice : queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
+                {memberPrice
+                  ? `¥${memberPrice}`
+                  : queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
               <Text
                 style={{ textDecoration: 'line-through', fontSize: 12, color: 'rgb(127,127,127)' }}
               >
                 {referencePrice
-                  ? referencePrice
+                  ? `¥${referencePrice}`
                   : queryInfo?.itemSkuDtos &&
                     aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
