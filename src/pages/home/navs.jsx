@@ -1,13 +1,12 @@
 import React from 'react';
 import { View, Image } from '@tarojs/components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Skeleton } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import { getRequest } from '@/utils/min';
 import './index.scss';
 
 const Navs = () => {
-  const dispatch = useDispatch();
   const { activityList } = useSelector((state) => state.home);
 
   // 点击活动图跳转
@@ -24,13 +23,7 @@ const Navs = () => {
     } else if (url.indexOf('pages/my/index') !== -1) {
       Taro.switchTab({ url: url });
     } else if (url.indexOf('pages/goodInfo/index') !== -1) {
-      await dispatch({
-        type: 'goodInfo/infoDetails',
-        payload: {
-          id: getRequest(url),
-        },
-      });
-      Taro.navigateTo({ url: url });
+      Taro.navigateTo({ url: `/pages/goodInfo/index?id=${getRequest(url)}` });
     } else {
       Taro.navigateTo({ url: url });
     }

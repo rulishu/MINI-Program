@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, useState } from 'react';
+import React, { useEffect, lazy, useState, useRef } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
 import { Tabs, Icon } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
@@ -14,8 +14,10 @@ const Index = () => {
   const { orderActive, pageNum, orderList, total, pageSize } = useSelector(
     (state) => state.allOrders,
   );
+  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
+  const [refreshLoading, setRefreshLoading] = useState(false);
   const dispatch = useDispatch();
-
+  const ref = useRef(orderActive);
   const updateFn = (payload) => {
     dispatch({
       type: 'allOrders/update',
@@ -23,7 +25,7 @@ const Index = () => {
     });
   };
 
-  const { run, loading } = useRequest(getAllOrders, {
+  const { run } = useRequest(getAllOrders, {
     manual: true,
     onSuccess: ({ code, result }) => {
       if (code && code === 200) {
@@ -35,17 +37,18 @@ const Index = () => {
             pageNum === 1 ? false : [...orderList, ...(result.records || [])].length === total,
         });
         Taro.hideLoading();
+        setRefreshLoading(false);
       } else {
+        setRefreshLoading(false);
         Taro.hideLoading();
       }
     },
   });
-  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
 
   useEffect(() => {
     Taro.showLoading({ title: '加载中...', mask: true });
     run({
-      pageNum: pageNum,
+      pageNum: 1,
       pageSize: 20,
       orderStatus: orderActive,
     });
@@ -61,16 +64,34 @@ const Index = () => {
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNum, orderActive]);
+  }, [orderActive]);
 
   const refesh = () => {
-    updateFn({ pageNum: 1 });
-    Taro.showLoading({ title: '加载中...', mask: true });
-    run({
-      pageNum: 1,
-      pageSize: 20,
-      orderStatus: orderActive,
-    });
+    if (ref.current === orderActive) {
+      setRefreshLoading(true);
+      updateFn({ pageNum: 1 });
+      Taro.showLoading({ title: '加载中...', mask: true });
+      run({
+        pageNum: 1,
+        pageSize: 20,
+        orderStatus: orderActive,
+      }).finally(() => {
+        setRefreshLoading(false);
+      });
+    }
+  };
+
+  const pullList = () => {
+    let maxPage = Math.ceil(total / pageSize);
+    if (maxPage > pageNum && ref.current === orderActive) {
+      updateFn({ pageNum: pageNum + 1 });
+      Taro.showLoading({ title: '加载中...', mask: true });
+      run({
+        pageNum: pageNum,
+        pageSize: 20,
+        orderStatus: orderActive,
+      });
+    }
   };
 
   const tabList = [
@@ -100,10 +121,6 @@ const Index = () => {
       children: <Orders />,
     },
   ];
-  //返回
-  const goBack = () => {
-    Taro.switchTab({ url: '/pages/my/index' });
-  };
 
   return (
     <>
@@ -116,7 +133,11 @@ const Index = () => {
           renderCenter={
             <View className="navbar-head">
               <View className="navbar-head-left">
-                <Icon size="18" name="rect-left" onTap={() => goBack()} />
+                <Icon
+                  size="18"
+                  name="rect-left"
+                  onTap={() => Taro.switchTab({ url: '/pages/my/index' })}
+                />
               </View>
               <View className="navbar-head-right">
                 <Text>全部订单</Text>
@@ -138,32 +159,30 @@ const Index = () => {
           background="#ffffff"
           onChange={({ paneKey }) => {
             updateFn({ orderActive: parseInt(paneKey) });
+            ref.current = parseInt(paneKey);
           }}
         >
-          {tabList.map((item) => (
-            <Tabs.TabPane key={item.id} title={item.title} className="tabpane">
-              <ScrollView
-                style={{ height: '100vh' }}
-                scrollY
-                scrollWithAnimation
-                refresherEnabled
-                lowerThreshold={50}
-                refresherTriggered={loading}
-                onScrollToLower={() => {
-                  let maxPage = Math.ceil(total / pageSize);
-                  if (maxPage > pageNum) {
-                    updateFn({ pageNum: pageNum + 1 });
-                  }
-                }}
-                onRefresherRefresh={refesh}
-              >
-                {React.cloneElement(item.children, {
-                  keys: item.id,
-                  refesh: refesh,
-                })}
-              </ScrollView>
-            </Tabs.TabPane>
-          ))}
+          {tabList.map((item) => {
+            return (
+              <Tabs.TabPane key={item.id} title={item.title} paneKey={item.id} className="tabpane">
+                <ScrollView
+                  style={{ height: '100vh' }}
+                  scrollY
+                  scrollWithAnimation
+                  refresherEnabled
+                  lowerThreshold={50}
+                  refresherTriggered={refreshLoading}
+                  onScrollToLower={pullList}
+                  onRefresherRefresh={refesh}
+                >
+                  {React.cloneElement(item.children, {
+                    keys: item.id,
+                    refesh: refesh,
+                  })}
+                </ScrollView>
+              </Tabs.TabPane>
+            );
+          })}
         </Tabs>
       </View>
     </>

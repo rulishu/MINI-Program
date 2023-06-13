@@ -11,7 +11,8 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const { levelTab, levelList, pageNum, pageSize, total } = useSelector((state) => state.home);
-
+  const [refreshLoading, setRefreshLoading] = useState(false);
+  const [tab4value, setTab4value] = useState(null);
   const updateFn = (payload) => {
     dispatch({
       type: 'home/update',
@@ -19,7 +20,7 @@ const Index = () => {
     });
   };
 
-  const { run, loading } = useRequest(getLevelList, {
+  const { run } = useRequest(getLevelList, {
     manual: true,
     onSuccess: ({ code, result }) => {
       if (code && code === 200) {
@@ -30,36 +31,58 @@ const Index = () => {
           refreshHasMore:
             pageNum === 1 ? false : [...levelList, ...(result.records || [])].length === total,
         });
+        setRefreshLoading(false);
         Taro.hideLoading();
       } else {
+        setRefreshLoading(false);
         Taro.hideLoading();
       }
     },
   });
 
   useEffect(() => {
+    const defaultValue = levelTab && levelTab.length > 0 && levelTab[0].id;
+    setTab4value(defaultValue);
+  }, [levelTab]);
+
+  useEffect(() => {
     Taro.showLoading({ title: '加载中...', mask: true });
     run({
-      pageNum: pageNum,
+      pageNum: 1,
       pageSize: pageSize,
-      id: parseInt(levelTab[parseInt(tab4value)]?.id),
+      id: tab4value,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNum, tab4value, levelTab.length]);
+  }, [tab4value]);
 
-  const refesh = () => {
-    if (levelTab.length > 0) {
+  const pullList = ({ id }) => {
+    let maxPage = Math.ceil(total / pageSize);
+    if (maxPage > pageNum && id === tab4value) {
+      updateFn({ pageNum: pageNum + 1 });
+      Taro.showLoading({ title: '加载中...', mask: true });
+      run({
+        pageNum: pageNum,
+        pageSize: pageSize,
+        id: tab4value,
+      });
+    }
+  };
+
+  const refesh = ({ id }) => {
+    if (!refreshLoading && levelTab.length > 0 && id === tab4value) {
+      setRefreshLoading(true);
       updateFn({ pageNum: 1 });
       Taro.showLoading({ title: '加载中...', mask: true });
       run({
         pageNum: 1,
         pageSize: pageSize,
-        id: parseInt(levelTab[parseInt(tab4value)]?.id),
+        id: tab4value,
+      }).finally(() => {
+        setRefreshLoading(false);
       });
     }
   };
 
-  const [tab4value, setTab4value] = useState('0');
   return (
     <View className="index">
       <Tabs
@@ -67,41 +90,33 @@ const Index = () => {
         className="tabs"
         onChange={({ paneKey }) => {
           setTab4value(paneKey);
-          dispatch({
-            type: 'home/getLevelList',
-            payload: {
-              id: parseInt(levelTab[parseInt(paneKey)]?.id),
-              pageNum: pageNum,
-              pageSize: pageSize,
-            },
-          });
         }}
         titleScroll
         titleGutter="10"
       >
         {levelTab?.map((item) => (
-          <Tabs.TabPane key={item.id} title={item.marketingName} className="tab-content">
-            {levelList.length == 0 ? (
-              <Empty description="无数据" />
-            ) : (
-              <ScrollView
-                style={{ height: '50vh' }}
-                scrollY
-                scrollWithAnimation
-                refresherEnabled
-                lowerThreshold={50}
-                refresherTriggered={loading}
-                onScrollToLower={() => {
-                  let maxPage = Math.ceil(total / pageSize);
-                  if (maxPage > pageNum) {
-                    updateFn({ pageNum: pageNum + 1 });
-                  }
-                }}
-                onRefresherRefresh={refesh}
-              >
+          <Tabs.TabPane
+            key={item.id}
+            title={item.marketingName}
+            paneKey={item.id}
+            className="tab-content"
+          >
+            <ScrollView
+              style={{ height: '50vh' }}
+              scrollY
+              scrollWithAnimation
+              refresherEnabled
+              lowerThreshold={10}
+              refresherTriggered={refreshLoading}
+              onScrollToLower={() => pullList({ id: item.id })}
+              onRefresherRefresh={() => refesh({ id: item.id })}
+            >
+              {levelList.length == 0 ? (
+                <Empty description="无数据" />
+              ) : (
                 <GoodList dataList={levelList} />
-              </ScrollView>
-            )}
+              )}
+            </ScrollView>
           </Tabs.TabPane>
         ))}
       </Tabs>
