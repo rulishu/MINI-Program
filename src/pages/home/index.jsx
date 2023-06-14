@@ -262,7 +262,7 @@ const Index = () => {
       <View className="home-body" style={{ top: homeTopNavHeight + 220 }}>
         <Navs />
         <TabList />
-        <View className="tab-footer"></View>
+        {/* <View className="tab-footer"></View> */}
       </View>
     </View>
   );

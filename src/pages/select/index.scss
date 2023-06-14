@@ -72,14 +72,14 @@ page {
         height: 80px;
         width: 100%;
         white-space: nowrap;
-        padding:0 20px;
+        padding:0 10px;
         .scrollview-item{
           display: flex;
           flex-direction: row;
           align-items: center;
           justify-content: center;
           .tag{
-            width: 100px !important;
+            // width: 100px !important;
           }
         }
       }
@@ -120,6 +120,12 @@ page {
   .traceability-bottom{
     .tabs{
       padding:0;
+      .nut-tabs__titles-item__text{
+        width:84px;
+        white-space:nowrap;        // 强制一行显示
+        overflow:hidden;          // 超出隐藏
+        text-overflow:ellipsis;   // 省略号
+      }
       .tab-content {
         // background-color:#ffffff;
         background-color:transparent;
@@ -128,7 +134,7 @@ page {
 
     }
     .classification{
-      margin:10px 40px;
+      margin:10px 20px;
       .classification-content{
         margin-bottom:20px;
         .classification-content-title{
@@ -143,7 +149,7 @@ page {
            display:flex;
            flex-direction: row;
            flex-wrap: wrap;
-           justify-content: center;
+          //  justify-content: center;
            width:100%;
           .middle-search-result-info-item{
             width:100%;
@@ -218,6 +224,7 @@ page {
         color:#7F7F7F;
         margin:20px;
         font-size:24px;
+        width:100%;
       }
 
         }
@@ -230,7 +237,7 @@ page {
 
 /* 底部 */ 
 .tab-footer{
-  height: 70px;
-  padding-bottom:50rpx;
-  padding-top:20rpx;
+  // height: 70px;
+  // padding-bottom:50rpx;
+  // padding-top:20rpx;
 }

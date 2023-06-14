@@ -248,7 +248,7 @@ const Index = () => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 20px 80px 20px',
+            padding: '0 20px 20px 20px',
             backgroundColor: '#ffffff',
             paddingTop: 10,
           }}
