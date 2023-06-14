@@ -34,7 +34,7 @@ export default defineAppConfig({
     navigationBarTextStyle: 'black',
   },
   tabBar: {
-    custom: true,
+    // custom: true,
     list: [
       {
         iconPath: 'assets/tabar/homeIcon.png',
@@ -68,7 +68,7 @@ export default defineAppConfig({
       },
     ],
     color: '#000',
-    selectedColor: '#A05635',
+    selectedColor: '#B08B57',
     backgroundColor: '#ffffff',
     borderStyle: 'white',
   },
