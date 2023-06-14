@@ -11,7 +11,7 @@ const InfiniteUlStyle = {
 export default React.forwardRef(({ request, params, style, tab4value, renderList }, ref) => {
   const [state, setState] = useSetState({
     pageNum: 1,
-    pageSize: 20,
+    pageSize: 10,
     dataSource: [],
     total: 0,
     refreshHasMore: false,
@@ -27,7 +27,8 @@ export default React.forwardRef(({ request, params, style, tab4value, renderList
           total: result.total, // you had 'result.result' here, changed to 'result.total' assuming 'total' is the correct property name
           dataSource:
             pageNum === 1 ? result.records || [] : [...dataSource, ...(result.records || [])],
-          refreshHasMore: pageNum === 1 ? false : [...dataSource, ...data].length === total,
+          refreshHasMore:
+            pageNum === 1 ? false : [...dataSource, ...result.records].length === total,
         });
         Taro.hideLoading();
         setState({ refreshLoading: false });
