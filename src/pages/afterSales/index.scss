@@ -10,6 +10,21 @@ page {
   padding: 0 !important;
 }
 
+.navbar-head{
+  display: flex; 
+  flex-direction: row; 
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .navbar-head-left{
+    display: flex; 
+    width: 50%;
+  }
+  .navbar-head-right{
+    width: 100%;
+    font-size: 24px;
+  }
+}
 .order {
   display: flex;
   flex-direction: column;

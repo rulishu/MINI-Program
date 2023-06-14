@@ -6,23 +6,20 @@ import Taro from '@tarojs/taro';
 
 const InfiniteUlStyle = {
   height: '100vh',
-  width: '100%',
-  padding: '0',
-  overflowY: 'auto',
-  overflowX: 'hidden',
 };
 
-export default React.forwardRef(({ request, params, style, renderList }, ref) => {
+export default React.forwardRef(({ request, params, style, tab4value, renderList }, ref) => {
   const [state, setState] = useSetState({
     pageNum: 1,
     pageSize: 20,
     dataSource: [],
     total: 0,
     refreshHasMore: false,
+    refreshLoading: false,
   });
-  const { pageNum, pageSize, dataSource, total, refreshHasMore } = state;
+  const { pageNum, pageSize, dataSource, total, refreshHasMore, refreshLoading } = state;
 
-  const { run, loading } = useRequest(request, {
+  const { run } = useRequest(request, {
     manual: true,
     onSuccess: ({ code, result }) => {
       if (code && code === 200) {
@@ -33,13 +30,19 @@ export default React.forwardRef(({ request, params, style, renderList }, ref) =>
           refreshHasMore: pageNum === 1 ? false : [...dataSource, ...data].length === total,
         });
         Taro.hideLoading();
+        setState({ refreshLoading: false });
+      } else {
+        Taro.hideLoading();
+        setState({ refreshLoading: false });
       }
     },
   });
 
   useEffect(() => {
-    refresh();
-  }, [params]);
+    if (tab4value === params.id) {
+      refresh();
+    }
+  }, [tab4value]);
 
   // 上拉加载更多
   const loadMore = () => {
@@ -56,8 +59,9 @@ export default React.forwardRef(({ request, params, style, renderList }, ref) =>
 
   // 下拉刷新
   const refresh = () => {
-    setState({ pageNum: 1, dataSource: [] });
+    setState({ pageNum: 1 });
     Taro.showLoading({ title: '加载中...', mask: true });
+    setState({ refreshLoading: true });
     run({
       pageNum: pageNum,
       pageSize: pageSize,
@@ -72,15 +76,14 @@ export default React.forwardRef(({ request, params, style, renderList }, ref) =>
   });
   return (
     <ScrollView
-      style={InfiniteUlStyle}
+      style={{ ...InfiniteUlStyle, ...style }}
       scrollY
       scrollWithAnimation
       refresherEnabled
-      lowerThreshold={50}
-      refresherTriggered={loading}
+      lowerThreshold={10}
+      refresherTriggered={refreshLoading}
       onScrollToLower={loadMore}
       onRefresherRefresh={refresh}
-      {...style}
     >
       {dataSource.length === 0 ? (
         <Empty style={{ background: 'F5F5F5' }} description="暂无数据" />
