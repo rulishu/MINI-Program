@@ -51,7 +51,7 @@ const Index = () => {
           </Tabs.TabPane>
         </Tabs>
       </View>
-      <View className="tab-footer"></View>
+      {/* <View className="tab-footer"></View> */}
     </View>
   );
 };

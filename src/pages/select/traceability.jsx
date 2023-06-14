@@ -39,8 +39,8 @@ const Index = () => {
   }, [firstLevelAreaClassAgent.at(0)?.id]);
   const vStyleA = {
     display: 'inline-block',
-    width: '80px',
-    margin: '8px 0 20px 0',
+    // width: '80px',
+    margin: '8px 0 20px 10px',
   };
 
   const [tab5value, setTab5value] = useState('0');
@@ -191,7 +191,7 @@ const Index = () => {
       <View className="traceability-bottom">
         <Tabs
           value={tab5value}
-          style={{ height: '52vh' }}
+          style={{ height: '60vh' }}
           onChange={async ({ paneKey }) => {
             setTab5value(paneKey);
             await dispatch({
@@ -213,7 +213,7 @@ const Index = () => {
             <Tabs.TabPane key={item.id} title={item.shopName} className="tab-content">
               <ScrollView
                 scrollY
-                style={{ height: '100vh' }}
+                style={{ height: '60vh' }}
                 scrollWithAnimation
                 refresherEnabled
                 lowerThreshold={50}
