@@ -9,6 +9,7 @@ import homeAddress from '@/assets/images/homeAddress.svg';
 import Navs from './navs';
 import { getRequest } from '@/utils/min';
 import TabList from './tabList';
+import NavBar from '../../component/navBar';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -178,35 +179,49 @@ const Index = () => {
 
   return (
     <View className="index">
+      <NavBar
+        background="#A85230"
+        color="white"
+        renderCenter={
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <View className="address" onTap={() => getReAddress()}>
+              <Skeleton
+                width="200px"
+                height="10px"
+                animated
+                avatar
+                avatarSize="32px"
+                loading={addressInfo ? true : false}
+              >
+                <Image
+                  src={homeAddress}
+                  style={{ width: 14, height: 16, marginLeft: 8, marginRight: 8 }}
+                  className="homeAddressIcon"
+                />
+                <Text style={{ fontSize: 13, width: '80%' }}>
+                  {addressInfo ? addressInfo : '点击获取地址位置'}
+                </Text>
+              </Skeleton>
+            </View>
+            <View className="search" onTap={() => Taro.navigateTo({ url: '/pages/search/index' })}>
+              <Image src={homeSearch} style={{ width: 18, height: 18, marginLeft: 8 }} />
+            </View>
+          </View>
+        }
+      />
       <View className="page-homes-header-image"></View>
       {/* 首页顶部操作 */}
       <View
         className="home-top"
         style={{ top: homeTopMarginTop, left: homeTopMarginLeft, width: homeTopWidth }}
-      >
-        <View className="home-top-content">
-          <View className="address" onTap={() => getReAddress()}>
-            <Skeleton
-              width="200px"
-              height="10px"
-              animated
-              avatar
-              avatarSize="32px"
-              loading={addressInfo ? true : false}
-            >
-              <Image
-                src={homeAddress}
-                style={{ width: 14, height: 16, marginLeft: 8, marginRight: 8 }}
-                className="homeAddressIcon"
-              />
-              <Text>{addressInfo ? addressInfo : '点击获取地址位置'}</Text>
-            </Skeleton>
-          </View>
-          <View className="search" onTap={() => Taro.navigateTo({ url: '/pages/search/index' })}>
-            <Image src={homeSearch} style={{ width: 18, height: 18, marginLeft: 8 }} />
-          </View>
-        </View>
-      </View>
+      ></View>
       {/* 轮播图 */}
       <View className="demo-box home-banner" style={{ top: homeTopNavHeight + 20, height: 200 }}>
         <Skeleton
