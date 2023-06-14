@@ -30,21 +30,24 @@ const Index = () => {
         titleGutter="10"
         destroyInactiveTabPane
       >
-        {levelTab?.map((item) => (
-          <Tabs.TabPane
-            key={item.id}
-            title={item.marketingName}
-            paneKey={item.id}
-            className="tab-content"
-          >
-            <PullList
-              request={fetchData}
-              params={{ id: tab4value }}
-              style={{ height: '50vh' }}
-              renderList={(dataSource) => <GoodList dataList={dataSource} />}
-            />
-          </Tabs.TabPane>
-        ))}
+        {levelTab?.map((item) => {
+          return (
+            <Tabs.TabPane
+              key={item.id}
+              title={item.marketingName}
+              paneKey={item.id}
+              className="tab-content"
+            >
+              <PullList
+                request={fetchData}
+                params={{ id: item.id }}
+                tab4value={tab4value}
+                style={{ height: '50vh' }}
+                renderList={(dataSource) => <GoodList dataList={dataSource} />}
+              />
+            </Tabs.TabPane>
+          );
+        })}
       </Tabs>
       <View className="pageEnd">
         <Text>——页面到底了——</Text>

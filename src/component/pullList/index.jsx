@@ -8,7 +8,7 @@ const InfiniteUlStyle = {
   height: '100vh',
 };
 
-export default React.forwardRef(({ request, params, style, renderList }, ref) => {
+export default React.forwardRef(({ request, params, style, tab4value, renderList }, ref) => {
   const [state, setState] = useSetState({
     pageNum: 1,
     pageSize: 20,
@@ -39,8 +39,10 @@ export default React.forwardRef(({ request, params, style, renderList }, ref) =>
   });
 
   useEffect(() => {
-    refresh();
-  }, [params]);
+    if (tab4value === params.id) {
+      refresh();
+    }
+  }, [tab4value]);
 
   // 上拉加载更多
   const loadMore = () => {
