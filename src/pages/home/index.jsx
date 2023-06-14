@@ -19,7 +19,7 @@ const Index = () => {
   const [homeTopMarginLeft, setHomeTopMarginLeft] = useState(0);
   const [homeTopMarginTop, setHomeTopMarginTop] = useState(0);
   const [homeTopWidth, setHomeTopWidth] = useState(0);
-  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
+  const [homeTopNavHeight, setHomeTopNavHeight] = useState(88);
   useEffect(() => {
     dispatch({
       type: 'home/getBannerList',
