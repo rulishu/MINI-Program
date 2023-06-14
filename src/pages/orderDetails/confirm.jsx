@@ -1,5 +1,6 @@
 import React from 'react';
 import { Popup, Button, Empty } from '@nutui/nutui-react-taro';
+import Taro from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components';
 import { useSelector, useDispatch } from 'react-redux';
 import './index.scss';
@@ -46,12 +47,20 @@ const Index = () => {
                   payload: {
                     id: infoDetail.id,
                     callBack: () => {
+                      // dispatch({ 详情接口调用
+                      //   type: 'orderDetails/selectPrimaryKey',
+                      //   payload: {
+                      //     id: Number(infoDetail.id),
+                      //   },
+                      // });
+                      // 跳转订单列表
                       dispatch({
-                        type: 'orderDetails/selectPrimaryKey',
+                        type: 'allOrders/update',
                         payload: {
-                          id: Number(infoDetail.id),
+                          orderActive: 4,
                         },
                       });
+                      Taro.navigateTo({ url: '/pages/allOrders/index' });
                       dispatchFn({ isConfirm: false });
                     },
                   },
