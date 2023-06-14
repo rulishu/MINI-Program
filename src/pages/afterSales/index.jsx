@@ -191,7 +191,7 @@ const Index = () => {
 
                   <Divider styles={{ color: '#efefef', marginTop: '10px', marginBottom: '10px' }} />
                   <View className="order-item-bottom">
-                    {item.status === 1 && item.status === 1 && !item?.returnOrderNumber ? (
+                    {item.status === -1 || (item.status === 1 && !item?.returnOrderNumber) ? (
                       <Button
                         shape="square"
                         className="bottom-btn"
