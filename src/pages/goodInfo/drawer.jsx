@@ -89,7 +89,31 @@ const Index = () => {
     });
   };
   const addCart = () => {
-    if (Object.keys(active).length !== Object.keys(attributeVos).length) {
+    if (queryInfo?.onShelf === 0) {
+      Taro.showToast({
+        title: '商品已下架',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (queryInfo?.stock === 0) {
+      Taro.showToast({
+        title: '商品已售空',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (queryInfo?.isDelete === 1) {
+      Taro.showToast({
+        title: '商品已删除',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (amount > stock) {
+      Taro.showToast({
+        title: `商品已超过最大库存，这个规格的库存数为${stock}`,
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (Object.keys(active).length !== Object.keys(attributeVos).length) {
       Taro.showToast({
         title: '请选择规格',
         icon: 'none',
@@ -102,7 +126,31 @@ const Index = () => {
   };
   const nowCart = () => {
     setAmount(1);
-    if (Object.keys(active).length !== Object.keys(attributeVos).length) {
+    if (queryInfo?.onShelf === 0) {
+      Taro.showToast({
+        title: '商品已下架',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (queryInfo?.stock === 0) {
+      Taro.showToast({
+        title: '商品已售空',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (queryInfo?.isDelete === 1) {
+      Taro.showToast({
+        title: '商品已删除',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (amount > stock) {
+      Taro.showToast({
+        title: `商品已超过最大库存，库存数量为${stock}`,
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (Object.keys(active).length !== Object.keys(attributeVos).length) {
       Taro.showToast({
         title: '请选择规格',
         icon: 'none',
