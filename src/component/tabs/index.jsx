@@ -33,10 +33,12 @@ const defaultProps = {
   size: 'normal',
   leftAlign: false,
   autoHeight: false,
+  destroyInactiveTabPane: false,
 };
 const pxCheck = (value) => {
   return Number.isNaN(Number(value)) ? String(value) : `${value}px`;
 };
+
 const Tabs = (props) => {
   const {
     value,
@@ -59,20 +61,23 @@ const Tabs = (props) => {
     autoHeight,
     iconClassPrefix,
     iconFontClassName,
+    destroyInactiveTabPane,
     ...rest
   } = {
     ...defaultProps,
     ...props,
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const [currentItem, setCurrentItem] = useState({ index: 0 });
-  const titles = useRef([]);
+  const titlesRef = useRef([]);
+  const [activeKey, setActiveKey] = useState(value);
+
+  useEffect(() => {
+    setActiveKey(value);
+  }, [value]);
 
   useEffect(() => {
     let currentIndex = 0;
-    titles.current = [];
-    // eslint-disable-next-line consistent-return
+    titlesRef.current = [];
     React.Children.forEach(children, (child, idx) => {
       if (!React.isValidElement(child)) {
         return null;
@@ -84,14 +89,23 @@ const Tabs = (props) => {
         title.paneKey = getPaneKey(childProps?.paneKey, idx);
         title.disabled = childProps?.disabled;
         title.index = idx;
-        if (title.paneKey === value) {
+        if (title.paneKey === activeKey) {
           currentIndex = idx;
         }
       }
-      titles.current.push(title);
+      titlesRef.current.push(title);
     });
-    setCurrentItem(titles.current[currentIndex]);
-  }, [children]);
+    setCurrentItem(titlesRef.current[currentIndex] || {});
+  }, [children, activeKey]);
+
+  const setCurrentItem = (item) => {
+    onClick?.(item);
+    if (item.disabled) {
+      return;
+    }
+    setActiveKey(item.paneKey);
+    onChange?.(item);
+  };
 
   const b = bem('tabs');
   const classes = classNames(direction, b(''), className);
@@ -114,7 +128,7 @@ const Tabs = (props) => {
     background: type === 'line' ? color : '',
   };
 
-  const index = titles.current.findIndex((t) => t.paneKey === value);
+  const index = titlesRef.current.findIndex((t) => t.paneKey === activeKey);
 
   const contentStyle = {
     transform:
@@ -128,59 +142,50 @@ const Tabs = (props) => {
     return typeof paneKey === 'string' ? paneKey : String(paneKey || i);
   };
 
-  const tabChange = (item) => {
-    onClick && onClick(item);
-    if (item.disabled) {
-      return;
-    }
-    setCurrentItem(item);
-    onChange && onChange(item);
-  };
-
   return (
     <div className={classes} {...rest}>
       <div className={classesTitle} style={{ ...tabStyle, background }}>
         {!!titleNode && typeof titleNode === 'function'
           ? titleNode()
-          : titles.current.map((item, i) => (
-            <div
-              style={titleStyle}
-              onClick={() => tabChange(item, i)}
-              className={classNames(
-                {
-                  active: !item.disabled && String(item.paneKey) === String(value),
-                  disabled: item.disabled,
-                  'nut-tabs__titles-item-left-align': leftAlign,
-                },
-                `${b('')}__titles-item`,
-              )}
-              key={item.paneKey}
-            >
-              {type === 'line' && (
-                <div className={`${b('')}__titles-item__line`} style={tabsActiveStyle} />
-              )}
-              {type === 'smile' && (
-                <div className={`${b('')}__titles-item__smile`} style={tabsActiveStyle}>
-                  <Icon
-                    classPrefix={iconClassPrefix}
-                    fontClassName={iconFontClassName}
-                    color={color}
-                    name="joy-smile"
-                  />
-                </div>
-              )}
+          : titlesRef.current.map((item) => (
               <div
+                style={titleStyle}
+                onClick={() => setCurrentItem(item)}
                 className={classNames(
                   {
-                    ellipsis: ellipsis && !titleScroll && direction === 'horizontal',
+                    active: !item.disabled && String(item.paneKey) === String(activeKey),
+                    disabled: item.disabled,
+                    'nut-tabs__titles-item-left-align': leftAlign,
                   },
-                  `${b('')}__titles-item__text`,
+                  `${b('')}__titles-item`,
                 )}
+                key={item.paneKey}
               >
-                {item.title}
+                {type === 'line' && (
+                  <div className={`${b('')}__titles-item__line`} style={tabsActiveStyle} />
+                )}
+                {type === 'smile' && (
+                  <div className={`${b('')}__titles-item__smile`} style={tabsActiveStyle}>
+                    <Icon
+                      classPrefix={iconClassPrefix}
+                      fontClassName={iconFontClassName}
+                      color={color}
+                      name="joy-smile"
+                    />
+                  </div>
+                )}
+                <div
+                  className={classNames(
+                    {
+                      ellipsis: ellipsis && !titleScroll && direction === 'horizontal',
+                    },
+                    `${b('')}__titles-item__text`,
+                  )}
+                >
+                  {item.title}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
       </div>
       <div className={`${b('')}__content__wrap`}>
         <div className={`${b('')}__content`} style={contentStyle}>
@@ -191,15 +196,27 @@ const Tabs = (props) => {
 
             let childProps = {
               ...child.props,
-              activeKey: value,
+              activeKey: activeKey,
             };
 
-            if (String(value) !== getPaneKey(child.props?.paneKey, idx) && autoHeight) {
+            const paneKey = getPaneKey(child.props?.paneKey, idx);
+            const isActiveTab = paneKey === activeKey;
+            const shouldRenderTabPane = isActiveTab && !destroyInactiveTabPane;
+
+            if (!shouldRenderTabPane && autoHeight) {
+              return null;
+            }
+
+            if (!shouldRenderTabPane) {
               childProps = {
                 ...childProps,
-                autoHeightClassName: 'inactive',
+                style: {
+                  ...childProps.style,
+                  display: 'none',
+                },
               };
             }
+
             return React.cloneElement(child, childProps);
           })}
         </div>

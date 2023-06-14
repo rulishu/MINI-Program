@@ -31,7 +31,7 @@
       3
     ],
     "max-len": 0,
-    "indent": ["error", 2,{ "SwitchCase": 1 }],
+    "indent": "off",
     "id-match": 2,
     "no-debugger": 2,
     "no-alert": 2,
