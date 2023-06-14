@@ -8,6 +8,7 @@ import { min, aPrice } from '@/utils/min';
 import './index.scss';
 
 const Index = (props) => {
+  // eslint-disable-next-line no-unused-vars
   const { getCategoriesTwoTree } = props;
   const { subList } = useSelector((state) => state.categories);
   const [activeItem, setActiveItem] = useState(0);
@@ -24,7 +25,7 @@ const Index = (props) => {
       {/* 二级标签 */}
       <View className="two-tag">
         <ScrollView className="my-code" scrollX scrollWithAnimation>
-          {getCategoriesTwoTree?.map((item, index) => {
+          {subList?.map((item, index) => {
             return (
               <Tag
                 key={index}
@@ -33,7 +34,7 @@ const Index = (props) => {
                   setActiveItem(index);
                 }}
                 className="right-title"
-                color={getCategoriesTwoTree && index !== activeItem ? '#999999' : '#965A3C'}
+                color={subList && index !== activeItem ? '#999999' : '#965A3C'}
                 // textColor="#999999"
               >
                 <Text onClick={() => onTagTap(item?.id)}>{item?.marketingName}</Text>
@@ -49,8 +50,12 @@ const Index = (props) => {
         }}
         scrollIntoView={scrollIntoView}
         // scrollWithAnimation
+        lowerThreshold={20}
       >
-        <View className="right" style={{ height: 'auto' }}>
+        <View
+          className="right"
+          style={{ minHeight: 'calc(100% - 230rpx)', border: '1px solid red' }}
+        >
           <View style={{ marginBottom: 8 }} className="right-title-box">
             <View style={{ width: '100%' }}>
               {/* 二级标签下内容 */}
