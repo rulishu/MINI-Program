@@ -40,6 +40,7 @@ const Index = () => {
             >
               <PullList
                 request={fetchData}
+                paramsCode="id"
                 params={{ id: item.id }}
                 tab4value={tab4value}
                 style={{ height: '50vh' }}
