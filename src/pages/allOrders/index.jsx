@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
 import { Tabs, Icon } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
@@ -7,8 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../../component/navBar';
 import { getAllOrders } from '@/server/allOrders';
 import './index.scss';
-
-const Orders = lazy(() => import('./orders'));
+import Orders from './orders';
 
 const Index = () => {
   const { orderActive, pageNum, orderList, total, pageSize } = useSelector(
@@ -39,8 +38,8 @@ const Index = () => {
         Taro.hideLoading();
         setRefreshLoading(false);
       } else {
-        setRefreshLoading(false);
         Taro.hideLoading();
+        setRefreshLoading(false);
       }
     },
   });
@@ -67,16 +66,15 @@ const Index = () => {
   }, [orderActive]);
 
   const refesh = () => {
-    if (!refreshLoading && tabList?.length && ref.current === orderActive) {
-      setRefreshLoading(true);
+    // console.log('【 ref.current 】==>', ref.current);
+    if (ref.current === orderActive) {
       updateFn({ pageNum: 1 });
       Taro.showLoading({ title: '加载中...', mask: true });
+      setRefreshLoading(true);
       run({
         pageNum: 1,
         pageSize: 20,
         orderStatus: orderActive,
-      }).finally(() => {
-        setRefreshLoading(false);
       });
     }
   };
@@ -98,27 +96,27 @@ const Index = () => {
     {
       id: 0,
       title: '全部',
-      children: <Orders />,
+      // children: <Orders />,
     },
     {
       id: 1,
       title: '待付款',
-      children: <Orders />,
+      // children: <Orders />,
     },
     {
       id: 2,
       title: '待发货',
-      children: <Orders />,
+      // children: <Orders />,
     },
     {
       id: 3,
       title: '待收货',
-      children: <Orders />,
+      // children: <Orders />,
     },
     {
       id: 4,
       title: '待评价',
-      children: <Orders />,
+      // children: <Orders />,
     },
   ];
 
@@ -175,10 +173,7 @@ const Index = () => {
                   onScrollToLower={pullList}
                   onRefresherRefresh={refesh}
                 >
-                  {React.cloneElement(item.children, {
-                    keys: item.id,
-                    refesh: refesh,
-                  })}
+                  <Orders />
                 </ScrollView>
               </Tabs.TabPane>
             );

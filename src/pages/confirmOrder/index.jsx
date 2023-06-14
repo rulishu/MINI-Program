@@ -22,6 +22,12 @@ const Index = () => {
         },
       });
       dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 4,
+        },
+      });
+      dispatch({
         type: 'goodInfo/update',
         payload: {
           currentAddress: {},
@@ -132,19 +138,21 @@ const Index = () => {
         count: orderInfo?.count,
         remark: orderNotesInfo, //备注
         shoppingCartVOList: shoppingCartVOLists,
+        callBack: () => {
+          // 预订单
+          let submitDetail = Taro.getStorageSync('submitInfo');
+          // 支付
+          payOrder({
+            orderNo: submitDetail.orderNos?.at(0),
+            orderId: submitDetail.orderIds?.at(0),
+            gatewayId: 2,
+            gatewayCode: 'WX_PAY',
+            gatewayTerminal: 2,
+            paymentAmount: orderInfo?.totalPrice,
+            tradeType: 0,
+          });
+        },
       },
-    });
-    // 预订单
-    let submitDetail = Taro.getStorageSync('submitInfo');
-    // 支付
-    payOrder({
-      orderNo: submitDetail.orderNos?.at(0),
-      orderId: submitDetail.orderIds?.at(0),
-      gatewayId: 2,
-      gatewayCode: 'WX_PAY',
-      gatewayTerminal: 2,
-      paymentAmount: orderInfo?.totalPrice,
-      tradeType: 0,
     });
   };
 

@@ -1,4 +1,5 @@
 import { getCategoriesList, getList, selectAllLevelTwo } from '@/server/categories';
+import Taro from '@tarojs/taro';
 
 export default {
   namespace: 'categories', // 这是模块名
@@ -68,12 +69,14 @@ export default {
     },
     // 商品图片接口
     *getList({ payload }, { call, put }) {
+      Taro.showLoading({ title: '加载中...', mask: true });
       try {
         const params = {
           ...payload,
         };
         const result = yield call(getList, params);
         if (result && result.code === 200) {
+          Taro.hideLoading();
           yield put({
             type: 'update',
             payload: {
