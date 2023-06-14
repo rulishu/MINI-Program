@@ -202,11 +202,13 @@ const Index = () => {
                   <Text>{goodsName}</Text>
                 </View>
                 <View className="goods-info-head-info-doc">
-                  {activeSku.map((item) => (
-                    <Text key={item.id} className="doc">
-                      {item.value},
-                    </Text>
-                  ))}
+                  {Object.keys(activeSku).map((item) => {
+                    return (
+                      <Text key={item.id} className="doc">
+                        {`${item}:${activeSku[item]?.value}`},
+                      </Text>
+                    );
+                  })}
                 </View>
               </View>
             </View>

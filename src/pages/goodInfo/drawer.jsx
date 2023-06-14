@@ -14,7 +14,6 @@ const Index = () => {
   const [memberPrice, setMemberPrice] = useState();
   const [referencePrice, setReferencePrice] = useState();
   const [active, setActive] = useState({});
-  const [activeSku, setActiveSku] = useState([]);
   const [amount, setAmount] = useState(1);
   const [stock, setStock] = useState();
 
@@ -239,17 +238,10 @@ const Index = () => {
                         obj[attri?.attribute_name] = { id: valueItem?.id, value: valueItem?.value };
                         setActive(obj);
 
-                        let objSku = activeSku;
-                        objSku[attri?.attribute_value] = {
-                          id: valueItem?.id,
-                          value: valueItem?.value,
-                          label: attri?.attribute_name,
-                        };
-                        setActiveSku(objSku.filter((d) => d));
                         dispatch({
                           type: 'goodInfo/update',
                           payload: {
-                            activeSku: activeSku.filter((d) => d),
+                            activeSku: active,
                             goodsName: queryInfo?.itemName,
                           },
                         });
@@ -275,30 +267,30 @@ const Index = () => {
           </View>
           {Object.keys(active).length > 0 &&
           Object.keys(active).length === Object.keys(attributeVos).length ? (
-              <View style={{ marginRight: 7 }}>
-                <InputNumber
-                  modelValue={amount}
-                  min="1"
-                  max={stock}
-                  onOverlimit={amount <= 1 ? overlimit : morelimit}
-                  onChangeFuc={(e) => {
-                    onChangeFuc(e);
-                  }}
-                />
-              </View>
-            ) : (
-              <View style={{ marginRight: 7 }}>
-                <InputNumber
-                  modelValue={amount}
-                  min="1"
-                  max={stock}
-                  onChangeFuc={(e) => {
-                    onChangeFuc(e);
-                  }}
-                  disabled
-                />
-              </View>
-            )}
+            <View style={{ marginRight: 7 }}>
+              <InputNumber
+                modelValue={amount}
+                min="1"
+                max={stock}
+                onOverlimit={amount <= 1 ? overlimit : morelimit}
+                onChangeFuc={(e) => {
+                  onChangeFuc(e);
+                }}
+              />
+            </View>
+          ) : (
+            <View style={{ marginRight: 7 }}>
+              <InputNumber
+                modelValue={amount}
+                min="1"
+                max={stock}
+                onChangeFuc={(e) => {
+                  onChangeFuc(e);
+                }}
+                disabled
+              />
+            </View>
+          )}
         </View>
         {type === 'nowCart' || type === 'addCart' ? (
           <Button
