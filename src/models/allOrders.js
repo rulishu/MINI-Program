@@ -72,13 +72,6 @@ export default {
       try {
         const data = yield call(receipt, payload.id);
         if (data && data.code === 200) {
-          yield put({
-            type: 'getAllOrders',
-            payload: {
-              pageNum: 1,
-              pageSize: 10,
-            },
-          });
           Taro.showToast({
             title: data.message,
             icon: 'success',
