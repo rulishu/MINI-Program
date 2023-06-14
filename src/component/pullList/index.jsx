@@ -51,7 +51,7 @@ export default React.forwardRef(({ request, params, style, renderList, callback 
     callback?.({
       refresh: refresh,
     });
-  }, [params, callback]);
+  }, [params]);
 
   // 上拉加载更多
   const loadMore = () => {
@@ -85,9 +85,13 @@ export default React.forwardRef(({ request, params, style, renderList, callback 
     };
   });
 
+  const styles = {
+    ...style?.(dataSource),
+  };
+
   return (
     <ScrollView
-      style={{ ...InfiniteUlStyle, ...style }}
+      style={{ ...InfiniteUlStyle, ...styles }}
       scrollY
       scrollWithAnimation
       refresherEnabled
