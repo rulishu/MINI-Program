@@ -41,10 +41,15 @@ const Index = () => {
               <PullList
                 request={fetchData}
                 paramsCode="id"
-                params={{ id: item.id }}
+                params={{ id: tab4value }}
                 tab4value={tab4value}
                 style={{ height: '50vh' }}
                 renderList={(dataSource) => <GoodList dataList={dataSource} />}
+                callback={({ refresh }) => {
+                  if (tab4value === item.id) {
+                    refresh?.();
+                  }
+                }}
               />
             </Tabs.TabPane>
           );
