@@ -24,6 +24,9 @@ const WeAppy = () => {
                     id: id,
                   },
                 });
+                dispatch({
+                  type: 'my/getOrderNum',
+                });
               },
             },
           });
@@ -56,6 +59,9 @@ const WeAppy = () => {
                       payload: {
                         id: id,
                       },
+                    });
+                    dispatch({
+                      type: 'my/getOrderNum',
                     });
                   },
                 },
