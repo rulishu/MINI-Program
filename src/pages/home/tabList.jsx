@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { useSelector } from 'react-redux';
 import GoodList from './goodList';
 import { getLevelList } from '@/server/home';
@@ -40,6 +40,7 @@ const Index = () => {
             >
               <PullList
                 request={fetchData}
+                paramsCode="id"
                 params={{ id: item.id }}
                 tab4value={tab4value}
                 style={{ height: '50vh' }}
@@ -49,9 +50,6 @@ const Index = () => {
           );
         })}
       </Tabs>
-      <View className="pageEnd">
-        <Text>——页面到底了——</Text>
-      </View>
     </View>
   );
 };
