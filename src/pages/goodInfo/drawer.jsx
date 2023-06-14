@@ -42,6 +42,12 @@ const Index = () => {
     setStock(skuInfo?.stock);
   }, [skuInfo, imageUrl, memberPrice, referencePrice, stock]);
 
+  const updateFn = (params) => {
+    dispatch({
+      type: 'goodInfo/update',
+      payload: params,
+    });
+  };
   // 数量提示
   const overlimit = () => {
     return Taro.showToast({
@@ -82,7 +88,37 @@ const Index = () => {
       },
     });
   };
-
+  const addCart = () => {
+    if (Object.keys(active).length !== Object.keys(attributeVos).length) {
+      Taro.showToast({
+        title: '请选择规格',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else {
+      updateFn({ visible: false });
+      Taro.navigateTo({ url: '/pages/goodInfo/index' });
+    }
+  };
+  const nowCart = () => {
+    setAmount(1);
+    if (Object.keys(active).length !== Object.keys(attributeVos).length) {
+      Taro.showToast({
+        title: '请选择规格',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else {
+      dispatch({
+        type: 'goodInfo/newConfirm',
+        payload: {
+          count: amount,
+          skuId: skuInfo?.skuId,
+        },
+      });
+      updateFn({ visible: false });
+    }
+  };
   return (
     <Popup
       closeable
@@ -91,12 +127,7 @@ const Index = () => {
       closeIconSize={20}
       position="bottom"
       onClose={() => {
-        dispatch({
-          type: 'goodInfo/update',
-          payload: {
-            visible: false,
-          },
-        });
+        updateFn({ visible: false });
       }}
     >
       <View style={{ display: 'flex', flexDirection: 'column' }}>
@@ -221,60 +252,45 @@ const Index = () => {
               </View>
             )}
         </View>
-        <Button
-          type="primary"
-          style={{
-            marginBottom: 20,
-            marginLeft: 20,
-            marginRight: 20,
-            borderRadius: 6,
-          }}
-          onClick={() => {
-            if (type === 'nowCart') {
-              setAmount(1);
-              if (Object.keys(active).length !== Object.keys(attributeVos).length) {
-                Taro.showToast({
-                  title: '请选择规格',
-                  icon: 'none',
-                  duration: 2000,
-                });
-              } else {
-                dispatch({
-                  type: 'goodInfo/newConfirm',
-                  payload: {
-                    count: amount,
-                    skuId: skuInfo?.skuId,
-                  },
-                });
-                dispatch({
-                  type: 'goodInfo/update',
-                  payload: {
-                    visible: false,
-                  },
-                });
-              }
-            }
-            if (type === 'addCart') {
-              if (Object.keys(active).length !== Object.keys(attributeVos).length) {
-                Taro.showToast({
-                  title: '请选择规格',
-                  icon: 'none',
-                  duration: 2000,
-                });
-              } else {
-                dispatch({
-                  type: 'goodInfo/update',
-                  payload: {
-                    visible: false,
-                  },
-                });
-                Taro.navigateTo({ url: '/pages/goodInfo/index' });
-              }
-            }
-          }}
-        >
-          {type === 'nowCart' ? '立即购买' : '加入购物车'}
-        </Button>
+        {type === 'nowCart' || type === 'addCart' ? (
+          <Button
+            type="primary"
+            style={{
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+              borderRadius: 6,
+            }}
+            onClick={() => {
+              type === 'nowCart' ? nowCart() : type === 'addCart' && addCart();
+            }}
+          >
+            {type === 'nowCart' ? '立即购买' : type === 'addCart' && '加入购物车'}
+          </Button>
+        ) : (
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginBottom: 20,
+              marginLeft: 20,
+              marginRight: 20,
+              with: '100%',
+            }}
+          >
+            <Button style={{ borderRadius: '6px 0 0 6px', width: '40%' }} onClick={() => addCart()}>
+              加入购物车
+            </Button>
+            <Button
+              type="primary"
+              style={{ borderRadius: '0 6px 6px 0', width: '40%' }}
+              onClick={() => nowCart()}
+            >
+              立即购买
+            </Button>
+          </View>
+        )}
       </View>
     </Popup>
   );
