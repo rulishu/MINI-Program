@@ -9,6 +9,7 @@ import AfterSales from './afterSales';
 import { orderType, orderPay } from '../../utils/enum';
 import { useCountDown } from 'ahooks';
 import moment from 'moment';
+import back from '@/assets/images/back.svg';
 import usePay from '@/hooks/usePay';
 import Confirm from './confirm';
 import './index.scss';
@@ -169,8 +170,40 @@ const Index = () => {
     });
   };
 
+  // 返回按钮
+  const goBack = () => {
+    Taro.navigateBack({
+      delta: 1,
+    });
+  };
+
+  // 到期时间计算
+  const dateDiff = (date) => {
+    const now = new Date();
+    const target = new Date(date);
+    const diff = target - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    return `${days}天${hours}小时`;
+  };
+
   return (
     <View className="confirm">
+      <View class="return_view">
+        <Image mode="widthFix" src={back} className="return_img" onClick={goBack}></Image>
+        <View className="return_text">
+          <View>{orderType[orderStatus]}</View>
+          {orderStatus === 2 && <View className="return_mes">买家已付款，等待卖家发货</View>}
+          {orderStatus === 3 && (
+            <View className="return_mes">
+              {orderInfo.logisticsStatus === 0
+                ? '部分包裹已发货'
+                : `卖家已发货，${dateDiff(orderInfo.autoConfirmReceipt)}后自动确认`}
+            </View>
+          )}
+        </View>
+      </View>
+      <View style={{ height: '90px' }}></View>
       <View className="confirm-order">
         <View className="address">
           <View className="address-left">
