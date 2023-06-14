@@ -192,6 +192,7 @@ const Index = () => {
         <Tabs
           value={tab5value}
           style={{ height: '60vh' }}
+          tabStyle={{ width: 120 }}
           onChange={async ({ paneKey }) => {
             setTab5value(paneKey);
             await dispatch({
