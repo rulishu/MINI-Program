@@ -120,6 +120,12 @@ page {
   .traceability-bottom{
     .tabs{
       padding:0;
+      .nut-tabs__titles-item__text{
+        width:84px;
+        white-space:nowrap;        // 强制一行显示
+        overflow:hidden;          // 超出隐藏
+        text-overflow:ellipsis;   // 省略号
+      }
       .tab-content {
         // background-color:#ffffff;
         background-color:transparent;
@@ -128,7 +134,7 @@ page {
 
     }
     .classification{
-      margin:10px 40px;
+      margin:10px 20px;
       .classification-content{
         margin-bottom:20px;
         .classification-content-title{
@@ -218,6 +224,7 @@ page {
         color:#7F7F7F;
         margin:20px;
         font-size:24px;
+        width:100%;
       }
 
         }
