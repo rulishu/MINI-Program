@@ -102,7 +102,16 @@ export default {
               activeIndex: 0,
             },
           });
-          payload.callBack(userDto.id);
+          const pageHistory = getCurrentPages();
+          if (pageHistory[0].route === 'pages/my/index') {
+            yield put({
+              type: 'update',
+              payload: {
+                activeIndex: 4,
+              },
+            });
+            payload.callBack(userDto.id);
+          }
           Taro.navigateBack({
             delta: 1,
           });

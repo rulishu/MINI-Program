@@ -43,7 +43,7 @@ const Index = () => {
     consignee: '',
     phone: '',
     addressDetails: '',
-    isDefault: undefined,
+    isDefault: reData.isDefault,
   });
 
   const onOk = async () => {
