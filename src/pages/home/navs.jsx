@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image } from '@tarojs/components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Skeleton } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import { getRequest } from '@/utils/min';
@@ -8,20 +8,51 @@ import './index.scss';
 
 const Navs = () => {
   const { activityList } = useSelector((state) => state.home);
+  const dispatch = useDispatch();
 
   // 点击活动图跳转
   const goActivity = async (jumpPath) => {
     const url = '/' + jumpPath;
     if (url.indexOf('pages/home/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 0,
+        },
+      });
     } else if (url.indexOf('pages/categories/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 1,
+        },
+      });
     } else if (url.indexOf('pages/select/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 2,
+        },
+      });
     } else if (url.indexOf('pages/cart/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 3,
+        },
+      });
     } else if (url.indexOf('pages/my/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 4,
+        },
+      });
     } else if (url.indexOf('pages/goodInfo/index') !== -1) {
       Taro.navigateTo({ url: `/pages/goodInfo/index?id=${getRequest(url)}` });
     } else {

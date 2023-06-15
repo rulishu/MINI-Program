@@ -45,7 +45,15 @@ const Index = () => {
                 <Icon
                   size="18"
                   name="rect-left"
-                  onTap={() => Taro.switchTab({ url: '/pages/my/index' })}
+                  onTap={() => {
+                    Taro.switchTab({ url: '/pages/my/index' });
+                    dispatch({
+                      type: 'global/update',
+                      payload: {
+                        activeIndex: 4,
+                      },
+                    });
+                  }}
                 />
               </View>
               <View className="navbar-head-right">
