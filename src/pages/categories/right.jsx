@@ -90,10 +90,10 @@ const Index = (props) => {
                                       {dto.stock === 0
                                         ? '已售空'
                                         : dto.onShelf === 0
-                                          ? '已下架'
-                                          : dto.isDelete === 1
-                                            ? '已删除'
-                                            : ''}
+                                        ? '已下架'
+                                        : dto.isDelete === 1
+                                        ? '已删除'
+                                        : ''}
                                     </Text>
                                   </View>
                                 )}
@@ -169,7 +169,7 @@ const Index = (props) => {
                     </>
                   );
                 })}
-                <View style={{ marginBottom: 100 }}></View>
+                {/* <View style={{ marginBottom: 100 }}></View> */}
               </View>
             </View>
           </View>
