@@ -51,7 +51,7 @@ const Index = (props) => {
         scrollIntoView={scrollIntoView}
         // scrollWithAnimation
       >
-        <View className="right" style={{ height: 'auto' }}>
+        <View className="right" style={{ minHeight: 'calc(100% - 230rpx)' }}>
           <View style={{ marginBottom: 8 }} className="right-title-box">
             <View style={{ width: '100%' }}>
               {/* 二级标签下内容 */}
