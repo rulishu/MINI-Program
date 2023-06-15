@@ -108,7 +108,7 @@ const Index = () => {
       });
     } else if (amount > stock) {
       Taro.showToast({
-        title: `商品已超过最大库存，这个规格的库存数为${stock}`,
+        title: `库存数量为${stock}`,
         icon: 'none',
         duration: 2000,
       });
@@ -145,7 +145,7 @@ const Index = () => {
       });
     } else if (amount > stock) {
       Taro.showToast({
-        title: `商品已超过最大库存，库存数量为${stock}`,
+        title: `库存数量为${stock}`,
         icon: 'none',
         duration: 2000,
       });
@@ -266,8 +266,12 @@ const Index = () => {
           <View>
             <Text>购买数量</Text>
           </View>
-          {Object.keys(active).length > 0 &&
-          Object.keys(active).length === Object.keys(attributeVos).length ? (
+          {stock === 0 ? (
+            <View style={{ marginRight: 7 }}>
+              <InputNumber modelValue={0} min="0" disabled />
+            </View>
+          ) : Object.keys(active).length > 0 &&
+            Object.keys(active).length === Object.keys(attributeVos).length ? (
             <View style={{ marginRight: 7 }}>
               <InputNumber
                 modelValue={amount}
@@ -281,15 +285,7 @@ const Index = () => {
             </View>
           ) : (
             <View style={{ marginRight: 7 }}>
-              <InputNumber
-                modelValue={amount}
-                min="1"
-                max={stock}
-                onChangeFuc={(e) => {
-                  onChangeFuc(e);
-                }}
-                disabled
-              />
+              <InputNumber modelValue={amount} min="1" disabled />
             </View>
           )}
         </View>
