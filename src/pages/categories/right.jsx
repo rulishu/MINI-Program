@@ -52,10 +52,7 @@ const Index = (props) => {
         // scrollWithAnimation
         lowerThreshold={20}
       >
-        <View
-          className="right"
-          style={{ minHeight: 'calc(100% - 230rpx)', border: '1px solid red' }}
-        >
+        <View className="right" style={{ minHeight: 'calc(100% - 230rpx)' }}>
           <View style={{ marginBottom: 8 }} className="right-title-box">
             <View style={{ width: '100%' }}>
               {/* 二级标签下内容 */}
@@ -95,10 +92,10 @@ const Index = (props) => {
                                       {dto.stock === 0
                                         ? '已售空'
                                         : dto.onShelf === 0
-                                          ? '已下架'
-                                          : dto.isDelete === 1
-                                            ? '已删除'
-                                            : ''}
+                                        ? '已下架'
+                                        : dto.isDelete === 1
+                                        ? '已删除'
+                                        : ''}
                                     </Text>
                                   </View>
                                 )}

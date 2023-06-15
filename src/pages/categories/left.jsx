@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView } from '@tarojs/components'; //ScrollView
+import { View, ScrollView } from '@tarojs/components';
 import { Tabs, Empty } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import { getList } from '@/server/categories';
@@ -29,6 +29,7 @@ const Index = () => {
     setTab5value(getCategoriesTree?.[0]?.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCategoriesTree?.length]);
+
   const updateFn = (payload) => {
     dispatch({
       type: 'categories/update',
@@ -63,40 +64,40 @@ const Index = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // const onScrollToUpper = async () => {
 
-  //   if (0 < Number(tab5value) < getCategoriesTree.length - 1) {
-  //     setTab5value(Number(tab5value - 1))
-  //     await dispatch({
-  //       type: 'categories/getList',
-  //       payload: {
-  //         id: getCategoriesTree?.at(Number(tab5value - 1))?.id,
-  //         onShelf: 2,
-  //         groundType: 2,
-  //         pageNum: 1,
-  //         pageSize: 20,
-  //       },
-  //     });
-  //   }
-  // };
-  const onScrollToLower = async () => {
-    const tabIndex = getCategoriesTree.findIndex((item) => item?.id === tab5value);
-    if (tabIndex > -1) {
-      if (tabIndex === getCategoriesTree.length - 1) {
-      } else {
-        setTab5value(getCategoriesTree[tabIndex + 1]?.id);
-      }
-      await dispatch({
-        type: 'categories/getList',
-        payload: {
-          id: getCategoriesTree[tabIndex + 1]?.id,
-          onShelf: 2,
-          groundType: 2,
-          pageNum: 1,
-          pageSize: 20,
-        },
-      });
-    }
+  const onScrollToUpper = async () => {
+    // console.log('up')
+    //   if (0 < Number(tab5value) < getCategoriesTree.length - 1) {
+    //     setTab5value(Number(tab5value - 1))
+    //     await dispatch({
+    //       type: 'categories/getList',
+    //       payload: {
+    //         id: getCategoriesTree?.at(Number(tab5value - 1))?.id,
+    //         onShelf: 2,
+    //         groundType: 2,
+    //         pageNum: 1,
+    //         pageSize: 20,
+    //       },
+    //     });
+    //   }
+  };
+
+  const onScrollToLower = async (index) => {
+    // console.log('donw')
+    let nextIndex = index + 1;
+    nextIndex = Math.min(nextIndex, getCategoriesTree?.length - 1);
+    setTab5value(getCategoriesTree[nextIndex]?.id);
+
+    // await dispatch({
+    //   type: 'categories/getList',
+    //   payload: {
+    //     id: getCategoriesTree[tabIndex + 1]?.id,
+    //     onShelf: 2,
+    //     groundType: 2,
+    //     pageNum: 1,
+    //     pageSize: 20,
+    //   },
+    // });
   };
 
   return (
@@ -125,7 +126,7 @@ const Index = () => {
           leftAlign
           direction="vertical"
         >
-          {getCategoriesTree?.map((item) => {
+          {getCategoriesTree?.map((item, index) => {
             return (
               <Tabs.TabPane
                 key={item}
@@ -134,15 +135,16 @@ const Index = () => {
                 paneKey={item?.id}
               >
                 <ScrollView
-                  style={{ height: '100%' }}
+                  style={{ height: '90vh' }}
                   scrollY
-                  // enhanced
-                  lowerThreshold={500}
+                  enhanced
+                  // lowerThreshold={10}
+                  upperThreshold={150}
                   scrollWithAnimation
                   refresherTriggered={loading}
-                  onScrollToLower={onScrollToLower}
-                  // onScrollToUpper={onScrollToUpper}
-                  // disableUpperScroll={Number(tab5value) < getCategoriesTree.length ? "" : "always"}
+                  onScrollToLower={() => onScrollToLower(index)}
+                  onScrollToUpper={() => onScrollToUpper(index)}
+                  // onScroll={(e, b, c) => console.log('onScroll', e, b, c)}
                 >
                   <Right
                     getCategoriesTwoTree={item?.child}
