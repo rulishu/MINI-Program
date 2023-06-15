@@ -5,8 +5,8 @@ import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
-const Drawer = ({ id }) => {
-  const { visible } = useSelector((state) => state.sales);
+const Drawer = () => {
+  const { visible, orderId } = useSelector((state) => state.sales);
   const dispatch = useDispatch();
   const [waybillNumber, setWaybillNumber] = useState(0);
 
@@ -16,12 +16,13 @@ const Drawer = ({ id }) => {
       type: 'sales/bindReturns',
       payload: {
         returnOrderNumber: waybillNumber,
-        id,
+        id: orderId,
       },
     });
   };
   return (
     <Popup
+      overlayStyle={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
       visible={visible}
       onClose={() => {
         dispatch({

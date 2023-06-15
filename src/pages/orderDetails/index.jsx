@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider, Button } from '@nutui/nutui-react-taro';
 import { View, Text, Image } from '@tarojs/components';
 import payAddress from '@/assets/images/payAddress.svg';
@@ -9,6 +9,8 @@ import AfterSales from './afterSales';
 import { orderType, orderPay } from '../../utils/enum';
 import { useCountDown } from 'ahooks';
 import moment from 'moment';
+import back from '@/assets/images/back.svg';
+import NavBar from '../../component/navBar';
 import usePay from '@/hooks/usePay';
 import Confirm from './confirm';
 import './index.scss';
@@ -17,6 +19,7 @@ const Index = () => {
   const dispatch = useDispatch();
   const { orderStatus, orderInfo } = useSelector((state) => state.orderDetails);
   const { predictEndTime } = orderInfo;
+  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   const { payOrder } = usePay({
     success: () => {
       Taro.navigateTo({ url: '/pages/allOrders/index' });
@@ -55,8 +58,16 @@ const Index = () => {
   const { minutes, seconds } = formattedRes;
 
   useEffect(() => {
-    wx.setNavigationBarTitle({
-      title: orderType[orderStatus],
+    //获取顶部导航栏位置
+    let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
+    const { top, height } = menuButtonInfo;
+    wx.getSystemInfo({
+      success: (res) => {
+        const { statusBarHeight } = res;
+        const margin = top - statusBarHeight;
+        const navHeight = height + statusBarHeight + margin * 2;
+        setHomeTopNavHeight(navHeight);
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -72,7 +83,7 @@ const Index = () => {
 
     const data2 = [
       { id: 1, title: '订单编号', price: orderInfo.orderNumber },
-      { id: 2, title: '订单备注', price: orderInfo?.remark },
+      { id: 2, title: '买家留言', price: orderInfo?.remark },
       { id: 3, title: '支付方式', price: orderPay[orderInfo?.payType] },
       { id: 4, title: '支付单号', price: orderInfo?.paymentOrderNumber },
       { id: 5, title: '创建时间', price: orderInfo?.createTime },
@@ -169,331 +180,431 @@ const Index = () => {
     });
   };
 
+  // 返回按钮
+  const goBack = () => {
+    Taro.navigateBack({
+      delta: 1,
+    });
+  };
+
+  // 到期时间计算
+  const dateDiff = (date) => {
+    const now = new Date();
+    const target = new Date(date);
+    const diff = target - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    return `${days}天${hours}小时`;
+  };
+
+  // 复制
+  const onCopy = (e) => {
+    if (e.title === '订单编号') {
+      Taro.setClipboardData({
+        data: e.price,
+        success: function () {
+          Taro.showToast({
+            title: '复制成功',
+            icon: 'none',
+            duration: 2000,
+          });
+        },
+        fail: function () {
+          Taro.showToast({
+            title: '复制失败',
+            icon: 'none',
+            duration: 2000,
+          });
+        },
+      });
+    }
+  };
+
   return (
-    <View className="confirm">
-      <View className="confirm-order">
-        <View className="address">
-          <View className="address-left">
-            <View className="address-left-icon">
-              <Image src={payAddress} style={{ width: 16, height: 16 }} />
-            </View>
-            <View className="address-info">
-              <View className="city">
-                <Text>{address?.slice(0, 3)}</Text>
-              </View>
-              <View className="address-details">
-                <Text>{address?.slice(3, 4)}</Text>
-              </View>
-              <View className="address-details">
-                <Text>{orderInfo?.consignee + ' ' + orderInfo?.phone}</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View className="goods-info">
-          <View className="goods-info-head-top">
-            <View className="goods-info-head-top-code">
-              <Text>订单编号:{orderInfo?.orderNumber}</Text>
-            </View>
-            <View className="goods-info-head-top-phone">
-              <Text>联系客服</Text>
-            </View>
-          </View>
-          {orderInfo?.items?.map((a) => {
-            return (
-              <View className="goods-info-head" key={a.id}>
-                <View className="goods-info-head-left">
-                  <View className="goods-info-head-img">
-                    <Image
-                      mode="widthFix"
-                      src={a?.mainGraph}
-                      className="goods-info-head-img"
-                    ></Image>
+    <>
+      <View>
+        <NavBar
+          background="#ffffff"
+          color="black"
+          renderCenter={
+            <View class="return_view">
+              <Image mode="widthFix" src={back} className="return_img" onClick={goBack}></Image>
+              <View className="return_text">
+                <View>{orderType[orderStatus]}</View>
+                {orderStatus === 2 && <View className="return_mes">买家已付款，等待卖家发货</View>}
+                {orderStatus === 3 && (
+                  <View className="return_mes">
+                    {orderInfo.logisticsStatus === 0
+                      ? '部分包裹已发货'
+                      : `卖家已发货，${dateDiff(orderInfo.autoConfirmReceipt)}后自动确认`}
                   </View>
-                  <View className="goods-info-head-info">
-                    <View className="goods-info-head-info-title">
-                      <Text>{a.itemName}</Text>
+                )}
+              </View>
+            </View>
+          }
+        />
+      </View>
+      <View
+        className="confirm"
+        style={{
+          position: 'fixed',
+          left: 0,
+          width: '100%',
+          top: homeTopNavHeight,
+        }}
+      >
+        {/* <View class="return_view">
+        <Image mode="widthFix" src={back} className="return_img" onClick={goBack}></Image>
+        <View className="return_text">
+          <View>{orderType[orderStatus]}</View>
+          {orderStatus === 2 && <View className="return_mes">买家已付款，等待卖家发货</View>}
+          {orderStatus === 3 && (
+            <View className="return_mes">
+              {orderInfo.logisticsStatus === 0
+                ? '部分包裹已发货'
+                : `卖家已发货，${dateDiff(orderInfo.autoConfirmReceipt)}后自动确认`}
+            </View>
+          )}
+        </View>
+      </View> */}
+        <View
+          className="confirm-order"
+          style={{
+            position: 'fixed',
+            left: 0,
+            width: '100%',
+            top: homeTopNavHeight,
+          }}
+        >
+          <View className="address">
+            <View className="address-left">
+              <View className="address-left-icon">
+                <Image src={payAddress} style={{ width: 16, height: 16 }} />
+              </View>
+              <View className="address-info">
+                <View className="city">
+                  <Text>{address?.slice(0, 3)}</Text>
+                </View>
+                <View className="address-details">
+                  <Text>{address?.slice(3, 4)}</Text>
+                </View>
+                <View className="address-details">
+                  <Text>{orderInfo?.consignee + ' ' + orderInfo?.phone}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View className="goods-info">
+            <View className="goods-info-head-top">
+              <View className="goods-info-head-top-code">
+                <Text>订单编号:{orderInfo?.orderNumber}</Text>
+              </View>
+              <View className="goods-info-head-top-phone">
+                <Text>联系客服</Text>
+              </View>
+            </View>
+            {orderInfo?.items?.map((a) => {
+              return (
+                <View className="goods-info-head" key={a.id}>
+                  <View className="goods-info-head-left">
+                    <View className="goods-info-head-img">
+                      <Image
+                        mode="widthFix"
+                        src={a?.mainGraph}
+                        className="goods-info-head-img"
+                      ></Image>
                     </View>
-                    <View className="goods-info-head-info-doc">
-                      {a.attributes?.map((item) => (
-                        <Text key={item.id} className="doc">
-                          {item.value},
-                        </Text>
-                      ))}
+                    <View className="goods-info-head-info">
+                      <View className="goods-info-head-info-title">
+                        <Text>{a.itemName}</Text>
+                      </View>
+                      <View className="goods-info-head-info-doc">
+                        {a.attributes?.map((item) => (
+                          <Text key={item.id} className="doc">
+                            {item.value},
+                          </Text>
+                        ))}
+                      </View>
+                      <View className="goods-info-head-info-doc ">
+                        <Text className="doc-bg">{a?.suppliersId === 1 ? '自营' : '严选'}</Text>
+                      </View>
                     </View>
-                    <View className="goods-info-head-info-doc ">
-                      <Text className="doc-bg">{a?.suppliersId === 1 ? '自营' : '严选'}</Text>
+                  </View>
+                  <View className="goods-info-head-right">
+                    <View className="goods-info-head-right-num">
+                      <Text>x{a?.amount}</Text>
+                    </View>
+                    <View className="goods-info-head-right-price">
+                      <Text>
+                        <Text style={{ fontSize: 12 }}>¥</Text>
+                        {a?.unitPrice}
+                      </Text>
                     </View>
                   </View>
                 </View>
-                <View className="goods-info-head-right">
-                  <View className="goods-info-head-right-num">
-                    <Text>x{a?.amount}</Text>
+              );
+            })}
+            {orderStatus === 3 && (
+              <View className="after-sales">
+                <Button
+                  shape="square"
+                  style={{ color: '#AAAAAA', fontWeight: 400 }}
+                  plain
+                  type="default"
+                  onClick={() => onAfterSales()}
+                >
+                  <Text style={{ fontSize: 14 }}>申请售后</Text>
+                </Button>
+              </View>
+            )}
+            <Divider style={{ color: '#D7D7D7' }} />
+            <View className="address-price">
+              <View>
+                <Text>商品总价</Text>
+              </View>
+              <View>
+                <Text>
+                  <Text style={{ fontSize: 12 }}>¥</Text>
+                  {orderInfo?.orderPrice}
+                </Text>
+              </View>
+            </View>
+            <View className="address-price">
+              <View>
+                <Text>运费</Text>
+              </View>
+              <View>
+                <Text>
+                  包邮
+                  {/* <Text style={{ fontSize: 12 }}>¥</Text> */}
+                </Text>
+              </View>
+            </View>
+            <View className="address-price">
+              <View>
+                <Text>优惠劵</Text>
+              </View>
+              <View className="red-text">
+                <Text>
+                  <Text style={{ fontSize: 12 }}>¥</Text>
+                  0.00
+                </Text>
+              </View>
+            </View>
+            <View className="address-price">
+              <View>
+                <Text>合计</Text>
+              </View>
+              <View className="red-text">
+                <Text>
+                  <Text style={{ fontSize: 12 }}>¥</Text>
+                  {orderInfo?.orderPrice}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View className="amount-details">
+            {list1(orderStatus)?.map((a) => {
+              return (
+                <View key={a.id} className="address-price">
+                  <View>
+                    <Text>{a.title}</Text>
                   </View>
-                  <View className="goods-info-head-right-price">
-                    <Text>
-                      <Text style={{ fontSize: 12 }}>¥</Text>
-                      {a?.unitPrice}
+                  <View className="address-price-right">
+                    <Text className="address-price-right-text">{a.price}</Text>
+                    <Text
+                      style={{ color: '#A05635', fontSize: 14, marginLeft: 10 }}
+                      onClick={() => onCopy()}
+                    >
+                      {a.title === '订单编号' ? '复制' : ''}
                     </Text>
                   </View>
                 </View>
-              </View>
-            );
-          })}
-          {orderStatus === 3 && (
-            <View className="after-sales">
-              <Button
-                shape="square"
-                style={{ color: '#AAAAAA', fontWeight: 400 }}
-                plain
-                type="default"
-                onClick={() => onAfterSales()}
-              >
-                <Text style={{ fontSize: 14 }}>申请售后</Text>
-              </Button>
-            </View>
-          )}
-          <Divider style={{ color: '#D7D7D7' }} />
-          <View className="address-price">
-            <View>
-              <Text>商品总价</Text>
-            </View>
-            <View>
-              <Text>
-                <Text style={{ fontSize: 12 }}>¥</Text>
-                {orderInfo?.orderPrice}
-              </Text>
-            </View>
+              );
+            })}
           </View>
-          <View className="address-price">
-            <View>
-              <Text>运费</Text>
-            </View>
-            <View>
-              <Text>
-                包邮
-                {/* <Text style={{ fontSize: 12 }}>¥</Text> */}
-              </Text>
-            </View>
-          </View>
-          <View className="address-price">
-            <View>
-              <Text>优惠劵</Text>
-            </View>
-            <View className="red-text">
-              <Text>
-                <Text style={{ fontSize: 12 }}>¥</Text>
-                0.00
-              </Text>
-            </View>
-          </View>
-          <View className="address-price">
-            <View>
-              <Text>合计</Text>
-            </View>
-            <View className="red-text">
-              <Text>
-                <Text style={{ fontSize: 12 }}>¥</Text>
-                {orderInfo?.orderPrice}
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View className="amount-details">
-          {list1(orderStatus)?.map((a) => {
-            return (
-              <View key={a.id} className="address-price">
-                <View>
-                  <Text>{a.title}</Text>
-                </View>
-                <View className="address-price-right">
-                  <Text className="address-price-right-text">{a.price}</Text>
-                  <Text style={{ color: '#A05635', fontSize: 14, marginLeft: 10 }}>
-                    {a.title === '订单编号' ? '复制' : ''}
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
-        </View>
-        {/* <View className="pay">
+          {/* <View className="pay">
           <Text>联系客服</Text>
         </View> */}
-      </View>
-      <View className="footer-height"></View>
-      <View className="footer">
-        <View className="footer-content">
-          {orderStatus === 1 && (
-            <>
-              <View style={{ marginRight: 10 }}>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  onClick={() => onCloseOrder()}
-                  plain
-                  type="default"
-                >
-                  <Text style={{ fontSize: 14 }}>取消订单</Text>
-                </Button>
-              </View>
-              <View>
-                <Button
-                  onClick={() => onPay()}
-                  shape="square"
-                  type="danger"
-                  style={{ color: '#ffffff', border: 'none', width: 140 }}
-                >
-                  <Text>
-                    立即支付 {minutes}:{seconds}
-                  </Text>
-                </Button>
-              </View>
-            </>
-          )}
-          {orderStatus === 2 && (
-            <View>
-              <Button
-                shape="square"
-                style={{ color: '#AAAAAA', fontWeight: 400 }}
-                onClick={() => onOutOrder()}
-                plain
-                type="default"
-              >
-                <Text style={{ fontSize: 14 }}>申请退款</Text>
-              </Button>
-            </View>
-          )}
-          {orderStatus === 3 && (
-            <>
-              <View style={{ marginRight: 10 }}>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  plain
-                  type="default"
-                  onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
-                >
-                  <Text style={{ fontSize: 14 }}>查看物流</Text>
-                </Button>
-              </View>
-              <View>
-                <Button
-                  shape="square"
-                  type="primary"
-                  style={{ color: '#ffffff', border: 'none' }}
-                  onClick={() => {
-                    dispatch({
-                      type: 'orderDetails/update',
-                      payload: {
-                        isConfirm: true,
-                        orderAmount: orderInfo.items.reduce((total, obj) => total + obj.amount, 0),
-                      },
-                    });
-                  }}
-                >
-                  <Text style={{ fontSize: 14 }}>确认收货</Text>
-                </Button>
-              </View>
-            </>
-          )}
-          {orderStatus === 4 && (
-            <>
-              <View style={{ marginRight: 10 }}>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  plain
-                  type="default"
-                  onClick={() => onDelOrder(orderInfo)}
-                >
-                  <Text style={{ fontSize: 14 }}>删除订单</Text>
-                </Button>
-              </View>
-              <View>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  plain
-                  type="default"
-                  onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
-                >
-                  <Text style={{ fontSize: 14 }}>查看物流</Text>
-                </Button>
-              </View>
-            </>
-          )}
-          {orderStatus === 7 && (
-            <>
-              <View style={{ marginRight: 10 }}>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  plain
-                  type="default"
-                  onClick={() => onDelOrder(orderInfo)}
-                >
-                  <Text style={{ fontSize: 14 }}>删除订单</Text>
-                </Button>
-              </View>
-              <View>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  plain
-                  type="default"
-                  onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
-                >
-                  <Text style={{ fontSize: 14 }}>查看物流</Text>
-                </Button>
-              </View>
-            </>
-          )}
-          {orderStatus === 6 && (
-            <>
-              <View style={{ marginRight: 10 }}>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  plain
-                  type="default"
-                  onClick={() => onDelOrder(orderInfo)}
-                >
-                  <Text style={{ fontSize: 14 }}>删除订单</Text>
-                </Button>
-              </View>
-              <View>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  plain
-                  type="default"
-                >
-                  <Text style={{ fontSize: 14 }}>售后完成</Text>
-                </Button>
-              </View>
-            </>
-          )}
-          {orderStatus === -2 && (
-            <>
-              <View>
-                <Button
-                  shape="square"
-                  style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  plain
-                  type="default"
-                  onClick={() => onDelOrder(orderInfo)}
-                >
-                  <Text style={{ fontSize: 14 }}>删除订单</Text>
-                </Button>
-              </View>
-            </>
-          )}
         </View>
+        <View className="footer-height"></View>
+        <View className="footer">
+          <View className="footer-content">
+            {orderStatus === 1 && (
+              <>
+                <View style={{ marginRight: 10 }}>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    onClick={() => onCloseOrder()}
+                    plain
+                    type="default"
+                  >
+                    <Text style={{ fontSize: 14 }}>取消订单</Text>
+                  </Button>
+                </View>
+                <View>
+                  <Button
+                    onClick={() => onPay()}
+                    shape="square"
+                    type="danger"
+                    style={{ color: '#ffffff', border: 'none', width: 140 }}
+                  >
+                    <Text>
+                      立即支付 {minutes}:{seconds}
+                    </Text>
+                  </Button>
+                </View>
+              </>
+            )}
+            {orderStatus === 2 && (
+              <View>
+                <Button
+                  shape="square"
+                  style={{ color: '#AAAAAA', fontWeight: 400 }}
+                  onClick={() => onOutOrder()}
+                  plain
+                  type="default"
+                >
+                  <Text style={{ fontSize: 14 }}>申请退款</Text>
+                </Button>
+              </View>
+            )}
+            {orderStatus === 3 && (
+              <>
+                <View style={{ marginRight: 10 }}>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                    onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
+                  >
+                    <Text style={{ fontSize: 14 }}>查看物流</Text>
+                  </Button>
+                </View>
+                <View>
+                  <Button
+                    shape="square"
+                    type="primary"
+                    style={{ color: '#ffffff', border: 'none' }}
+                    onClick={() => {
+                      dispatch({
+                        type: 'orderDetails/update',
+                        payload: {
+                          isConfirm: true,
+                          orderAmount: orderInfo.items.reduce(
+                            (total, obj) => total + obj.amount,
+                            0,
+                          ),
+                        },
+                      });
+                    }}
+                  >
+                    <Text style={{ fontSize: 14 }}>确认收货</Text>
+                  </Button>
+                </View>
+              </>
+            )}
+            {orderStatus === 4 && (
+              <>
+                <View style={{ marginRight: 10 }}>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                    onClick={() => onDelOrder(orderInfo)}
+                  >
+                    <Text style={{ fontSize: 14 }}>删除订单</Text>
+                  </Button>
+                </View>
+                <View>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                    onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
+                  >
+                    <Text style={{ fontSize: 14 }}>查看物流</Text>
+                  </Button>
+                </View>
+              </>
+            )}
+            {orderStatus === 7 && (
+              <>
+                <View style={{ marginRight: 10 }}>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                    onClick={() => onDelOrder(orderInfo)}
+                  >
+                    <Text style={{ fontSize: 14 }}>删除订单</Text>
+                  </Button>
+                </View>
+                <View>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                    onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
+                  >
+                    <Text style={{ fontSize: 14 }}>查看物流</Text>
+                  </Button>
+                </View>
+              </>
+            )}
+            {orderStatus === 6 && (
+              <>
+                <View style={{ marginRight: 10 }}>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                    onClick={() => onDelOrder(orderInfo)}
+                  >
+                    <Text style={{ fontSize: 14 }}>删除订单</Text>
+                  </Button>
+                </View>
+                <View>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                  >
+                    <Text style={{ fontSize: 14 }}>售后完成</Text>
+                  </Button>
+                </View>
+              </>
+            )}
+            {orderStatus === -2 && (
+              <>
+                <View>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                    onClick={() => onDelOrder(orderInfo)}
+                  >
+                    <Text style={{ fontSize: 14 }}>删除订单</Text>
+                  </Button>
+                </View>
+              </>
+            )}
+          </View>
+        </View>
+        <Confirm />
+        <PopupInfo />
+        <AfterSales />
       </View>
-      <Confirm />
-      <PopupInfo />
-      <AfterSales />
-    </View>
+    </>
   );
 };
 export default Index;

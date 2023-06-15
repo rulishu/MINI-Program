@@ -21,22 +21,26 @@ const Index = () => {
     pageSize,
     total,
   } = useSelector((state) => state.select);
+  const { activeIndex } = useSelector((state) => state.global);
   useEffect(() => {
-    dispatch({
-      type: 'select/selectAreaClassBagent',
-      payload: {
-        id: parseInt(firstLevelAreaClassAgent.at(0)?.id),
-        callBack: (vel) => {
-          run({
-            pageNum: 1,
-            pageSize: pageSize,
-            provenance: vel,
-          });
+    if (activeIndex === 2) {
+      dispatch({
+        type: 'select/selectAreaClassBagent',
+        payload: {
+          id: parseInt(firstLevelAreaClassAgent.at(0)?.id),
+          callBack: (vel) => {
+            run({
+              pageNum: 1,
+              pageSize: pageSize,
+              provenance: vel,
+            });
+          },
         },
-      },
-    });
+      });
+    }
+
     // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
-  }, [firstLevelAreaClassAgent.at(0)?.id]);
+  }, [firstLevelAreaClassAgent.at(0)?.id, activeIndex]);
   const vStyleA = {
     display: 'inline-block',
     // width: '80px',
@@ -191,7 +195,7 @@ const Index = () => {
       <View className="traceability-bottom">
         <Tabs
           value={tab5value}
-          style={{ height: '60vh' }}
+          style={{ height: '52vh' }}
           tabStyle={{ width: 120 }}
           onChange={async ({ paneKey }) => {
             setTab5value(paneKey);

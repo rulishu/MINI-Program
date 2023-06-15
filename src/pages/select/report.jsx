@@ -6,7 +6,7 @@ import './index.scss';
 
 const Index = () => {
   return (
-    <View className="report" style={{ height: '64vh', overflow: 'scroll' }}>
+    <View className="report" style={{ height: '56vh', overflow: 'scroll' }}>
       <View className="steps-wrapper">
         <Steps
           direction="vertical"
