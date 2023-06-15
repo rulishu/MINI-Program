@@ -85,13 +85,9 @@ export default React.forwardRef(({ request, params, style, renderList, callback 
     };
   });
 
-  const styles = {
-    ...style?.(dataSource),
-  };
-
   return (
     <ScrollView
-      style={{ ...InfiniteUlStyle, ...styles }}
+      style={{ ...InfiniteUlStyle, ...style }}
       scrollY
       scrollWithAnimation
       refresherEnabled
