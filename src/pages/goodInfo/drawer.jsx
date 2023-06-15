@@ -14,7 +14,6 @@ const Index = () => {
   const [memberPrice, setMemberPrice] = useState();
   const [referencePrice, setReferencePrice] = useState();
   const [active, setActive] = useState({});
-  const [activeSku, setActiveSku] = useState([]);
   const [amount, setAmount] = useState(1);
   const [stock, setStock] = useState();
 
@@ -239,20 +238,14 @@ const Index = () => {
                         obj[attri?.attribute_name] = { id: valueItem?.id, value: valueItem?.value };
                         setActive(obj);
 
-                        let objSku = activeSku;
-                        objSku[attri?.attribute_value] = {
-                          id: valueItem?.id,
-                          value: valueItem?.value,
-                          label: attri?.attribute_name,
-                        };
-                        setActiveSku(objSku.filter((d) => d));
                         dispatch({
                           type: 'goodInfo/update',
                           payload: {
-                            activeSku: activeSku.filter((d) => d),
+                            activeSku: active,
                             goodsName: queryInfo?.itemName,
                           },
                         });
+                        setAmount(1);
                       }}
                       disabled={
                         attrindex === 0 ? false : Object.keys(active).length > 0 ? false : true

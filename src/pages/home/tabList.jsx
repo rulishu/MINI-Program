@@ -13,11 +13,9 @@ const Index = () => {
   const { activeIndex } = useSelector((state) => state.global);
 
   useEffect(() => {
-    if (activeIndex === 0) {
-      const defaultValue = levelTab && levelTab.length > 0 && levelTab[0].id;
-      setTab4value(defaultValue);
-    }
-  }, [levelTab, activeIndex]);
+    const defaultValue = levelTab && levelTab.length > 0 && levelTab[0].id;
+    setTab4value(defaultValue);
+  }, [levelTab]);
 
   const fetchData = useCallback(getLevelList, []);
 
@@ -41,19 +39,21 @@ const Index = () => {
               paneKey={item.id}
               className="tab-content"
             >
-              <PullList
-                request={fetchData}
-                paramsCode="id"
-                params={{ id: tab4value }}
-                tab4value={tab4value}
-                style={{ height: '50vh' }}
-                renderList={(dataSource) => <GoodList dataList={dataSource} />}
-                callback={({ refresh }) => {
-                  if (tab4value === item.id) {
-                    refresh?.();
-                  }
-                }}
-              />
+              {activeIndex === 0 && (
+                <PullList
+                  request={fetchData}
+                  paramsCode="id"
+                  params={{ id: tab4value }}
+                  tab4value={tab4value}
+                  style={{ height: '50vh' }}
+                  renderList={(dataSource) => <GoodList dataList={dataSource} />}
+                  callback={({ refresh }) => {
+                    if (tab4value === item.id) {
+                      refresh?.();
+                    }
+                  }}
+                />
+              )}
             </Tabs.TabPane>
           );
         })}
