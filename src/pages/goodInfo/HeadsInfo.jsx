@@ -132,6 +132,12 @@ const Index = () => {
                 const shareStatus = Taro.getStorageSync('shareStatus');
                 if (shareStatus === 1) {
                   Taro.switchTab({ url: '/pages/home/index' });
+                  dispatch({
+                    type: 'global/update',
+                    payload: {
+                      activeIndex: 0,
+                    },
+                  });
                   Taro.clearStorageSync('shareStatus');
                 } else {
                   Taro.navigateBack({ delta: 1 });
@@ -261,7 +267,7 @@ const Index = () => {
                   type: 'goodInfo/update',
                   payload: {
                     visible: true,
-                    type: 'addCart',
+                    type: 'skuCart',
                   },
                 })
               }

@@ -10,11 +10,14 @@ import PullList from '@/component/pullList';
 const Index = () => {
   const { levelTab } = useSelector((state) => state.home);
   const [tab4value, setTab4value] = useState(null);
+  const { activeIndex } = useSelector((state) => state.global);
 
   useEffect(() => {
-    const defaultValue = levelTab && levelTab.length > 0 && levelTab[0].id;
-    setTab4value(defaultValue);
-  }, [levelTab]);
+    if (activeIndex === 0) {
+      const defaultValue = levelTab && levelTab.length > 0 && levelTab[0].id;
+      setTab4value(defaultValue);
+    }
+  }, [levelTab, activeIndex]);
 
   const fetchData = useCallback(getLevelList, []);
 

@@ -20,13 +20,16 @@ const Index = () => {
   const [homeTopMarginTop, setHomeTopMarginTop] = useState(0);
   const [homeTopWidth, setHomeTopWidth] = useState(0);
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(88);
+  const { activeIndex } = useSelector((state) => state.global);
   useEffect(() => {
-    dispatch({
-      type: 'home/getBannerList',
-      payload: {
-        category: 1,
-      },
-    });
+    if (activeIndex === 0) {
+      dispatch({
+        type: 'home/getBannerList',
+        payload: {
+          category: 1,
+        },
+      });
+    }
     // 一级分类
     dispatch({ type: 'home/getLevel' });
     // 获取当前定位
@@ -81,21 +84,51 @@ const Index = () => {
       },
     });
     // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
-  }, []);
+  }, [activeIndex]);
 
   // 点击轮播图跳转
   const goBanner = async (jumpPath) => {
     const url = '/' + jumpPath;
     if (url.indexOf('pages/home/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 0,
+        },
+      });
     } else if (url.indexOf('pages/categories/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 1,
+        },
+      });
     } else if (url.indexOf('pages/select/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 2,
+        },
+      });
     } else if (url.indexOf('pages/cart/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 3,
+        },
+      });
     } else if (url.indexOf('pages/my/index') !== -1) {
       Taro.switchTab({ url: url });
+      dispatch({
+        type: 'global/update',
+        payload: {
+          activeIndex: 4,
+        },
+      });
     } else if (url.indexOf('pages/goodInfo/index') !== -1) {
       Taro.navigateTo({ url: `/pages/goodInfo/index?id=${getRequest(url)}` });
     } else {
