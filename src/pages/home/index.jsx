@@ -19,7 +19,7 @@ const Index = () => {
   const [homeTopMarginLeft, setHomeTopMarginLeft] = useState(0);
   const [homeTopMarginTop, setHomeTopMarginTop] = useState(0);
   const [homeTopWidth, setHomeTopWidth] = useState(0);
-  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
+  const [homeTopNavHeight, setHomeTopNavHeight] = useState(88);
   useEffect(() => {
     dispatch({
       type: 'home/getBannerList',
@@ -262,7 +262,7 @@ const Index = () => {
       <View className="home-body" style={{ top: homeTopNavHeight + 220 }}>
         <Navs />
         <TabList />
-        <View className="tab-footer"></View>
+        {/* <View className="tab-footer"></View> */}
       </View>
     </View>
   );

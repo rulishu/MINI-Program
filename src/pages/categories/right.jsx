@@ -171,7 +171,7 @@ const Index = (props) => {
                     </>
                   );
                 })}
-                <View style={{ marginBottom: 100 }}></View>
+                {/* <View style={{ marginBottom: 100 }}></View> */}
               </View>
             </View>
           </View>
