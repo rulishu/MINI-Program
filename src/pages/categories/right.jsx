@@ -50,7 +50,6 @@ const Index = (props) => {
         }}
         scrollIntoView={scrollIntoView}
         // scrollWithAnimation
-        lowerThreshold={20}
       >
         <View className="right" style={{ minHeight: 'calc(100% - 230rpx)' }}>
           <View style={{ marginBottom: 8 }} className="right-title-box">
@@ -171,7 +170,7 @@ const Index = (props) => {
                     </>
                   );
                 })}
-                {/* <View style={{ marginBottom: 100 }}></View> */}
+                <View style={{ marginBottom: 100 }}></View>
               </View>
             </View>
           </View>

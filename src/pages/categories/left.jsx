@@ -13,7 +13,7 @@ const Index = () => {
     (state) => state.categories,
   );
   const dispatch = useDispatch();
-  const [tab5value, setTab5value] = useState(getCategoriesTree?.[0]?.id);
+  const [tab5value, setTab5value] = useState(0);
 
   const updateFn = (payload) => {
     dispatch({
