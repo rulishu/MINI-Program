@@ -15,21 +15,6 @@ const Index = () => {
   const dispatch = useDispatch();
   const [tab5value, setTab5value] = useState(getCategoriesTree?.[0]?.id);
 
-  useEffect(() => {
-    dispatch({
-      type: 'categories/getList',
-      payload: {
-        id: getCategoriesTree?.at(0)?.id,
-        onShelf: 2,
-        groundType: 2,
-        pageNum: 1,
-        pageSize: 20,
-      },
-    });
-    setTab5value(getCategoriesTree?.[0]?.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getCategoriesTree?.length]);
-
   const updateFn = (payload) => {
     dispatch({
       type: 'categories/update',
@@ -62,11 +47,14 @@ const Index = () => {
       onShelf: 2,
       groundType: 2,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!getCategoriesTree?.length > 0) return;
+    setTab5value(getCategoriesTree?.[0]?.id);
+  }, [getCategoriesTree?.length]);
+
   const onScrollToUpper = async () => {
-    // console.log('up')
     //   if (0 < Number(tab5value) < getCategoriesTree.length - 1) {
     //     setTab5value(Number(tab5value - 1))
     //     await dispatch({
@@ -82,22 +70,25 @@ const Index = () => {
     //   }
   };
 
+  useEffect(() => {
+    if (tab5value) {
+      dispatch({
+        type: 'categories/getList',
+        payload: {
+          id: tab5value,
+          onShelf: 2,
+          groundType: 2,
+          pageNum: 1,
+          pageSize: 20,
+        },
+      });
+    }
+  }, [tab5value]);
+
   const onScrollToLower = async (index) => {
-    // console.log('donw')
     let nextIndex = index + 1;
     nextIndex = Math.min(nextIndex, getCategoriesTree?.length - 1);
     setTab5value(getCategoriesTree[nextIndex]?.id);
-
-    // await dispatch({
-    //   type: 'categories/getList',
-    //   payload: {
-    //     id: getCategoriesTree[tabIndex + 1]?.id,
-    //     onShelf: 2,
-    //     groundType: 2,
-    //     pageNum: 1,
-    //     pageSize: 20,
-    //   },
-    // });
   };
 
   return (
@@ -111,16 +102,6 @@ const Index = () => {
           tabStyle={{ position: 'sticky', top: '0px', zIndex: 1, width: '30vw' }}
           onChange={async ({ paneKey }) => {
             setTab5value(paneKey);
-            await dispatch({
-              type: 'categories/getList',
-              payload: {
-                id: getCategoriesTree?.at(paneKey)?.id,
-                onShelf: 2,
-                groundType: 2,
-                pageNum: 1,
-                pageSize: 20,
-              },
-            });
           }}
           titleScroll
           leftAlign
@@ -129,7 +110,7 @@ const Index = () => {
           {getCategoriesTree?.map((item, index) => {
             return (
               <Tabs.TabPane
-                key={item}
+                key={item.id}
                 title={item?.marketingName}
                 className="tabpane"
                 paneKey={item?.id}
@@ -137,9 +118,9 @@ const Index = () => {
                 <ScrollView
                   style={{ height: '90vh' }}
                   scrollY
-                  enhanced
-                  // lowerThreshold={10}
-                  upperThreshold={150}
+                  // enhanced
+                  // lowerThreshold={150}
+                  // upperThreshold={150}
                   scrollWithAnimation
                   refresherTriggered={loading}
                   onScrollToLower={() => onScrollToLower(index)}
