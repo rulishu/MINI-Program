@@ -182,7 +182,7 @@ const Index = () => {
                           textColor="#A05635"
                           onClick={() => {
                             wx.setClipboardData({
-                              data: item.returnOrderNumber,
+                              data: item.afterServiceCode,
                             });
                           }}
                         >
@@ -302,6 +302,7 @@ const Index = () => {
               <Empty style="background-color: #f2f2f2;" description="无数据" />
             )}
           </View>
+          <View className="footer"></View>
         </ScrollView>
         <Drawer />
       </View>
