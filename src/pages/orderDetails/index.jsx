@@ -169,6 +169,29 @@ const Index = () => {
     });
   };
 
+  // 复制
+  const onCopy = (e) => {
+    if (e.title === '订单编号') {
+      Taro.setClipboardData({
+        data: e.price,
+        success: function () {
+          Taro.showToast({
+            title: '复制成功',
+            icon: 'none',
+            duration: 2000,
+          });
+        },
+        fail: function () {
+          Taro.showToast({
+            title: '复制失败',
+            icon: 'none',
+            duration: 2000,
+          });
+        },
+      });
+    }
+  };
+
   return (
     <View className="confirm">
       <View className="confirm-order">
@@ -308,7 +331,10 @@ const Index = () => {
                 </View>
                 <View className="address-price-right">
                   <Text className="address-price-right-text">{a.price}</Text>
-                  <Text style={{ color: '#A05635', fontSize: 14, marginLeft: 10 }}>
+                  <Text
+                    style={{ color: '#A05635', fontSize: 14, marginLeft: 10 }}
+                    onClick={() => onCopy(a)}
+                  >
                     {a.title === '订单编号' ? '复制' : ''}
                   </Text>
                 </View>
