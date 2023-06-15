@@ -5,7 +5,11 @@ export default {
   namespace: 'sales', // 这是模块名
   state: {
     orderList: [],
+    orderId: 0, // 选中弹窗itemid
     visible: false,
+    pageNum: 1,
+    pageSize: 20,
+    total: 0,
   },
 
   effects: {
@@ -27,7 +31,7 @@ export default {
       } catch (err) {}
     },
 
-    // 取消售后
+    // 绑定退货单
     *bindReturns({ payload }, { call, put }) {
       try {
         const data = yield call(bindReturns, payload);
@@ -57,19 +61,14 @@ export default {
       } catch (err) {}
     },
 
-    // 绑定退货单
-    *cancelOrder({ payload }, { call, put }) {
+    // 取消售后
+    *cancelOrder({ payload }, { call }) {
       try {
-        const data = yield call(cancelSales, payload);
+        const { callBack, ...other } = payload;
+        const data = yield call(cancelSales, other);
         if (data && data.code === 200) {
-          yield put({
-            type: 'getAllOrders',
-            payload: {
-              pageNum: 1,
-              pageSize: 10,
-            },
-          });
           Taro.hideLoading();
+          callBack();
         } else {
           Taro.hideLoading();
         }

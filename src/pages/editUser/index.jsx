@@ -22,7 +22,7 @@ const Index = () => {
     // eslint-disable-next-line global-require
   }, []);
   const [avatar, setAvatar] = useState(userInfos.headUrl);
-  const [nickname, setNickname] = useState(userInfos.nickName);
+  const [nickname, setNickname] = useState(userInfos.consumerName);
 
   // 获取头像
   const onChooseavatar = (e) => {
@@ -52,7 +52,7 @@ const Index = () => {
       payload: {
         id: userInfo.id,
         headUrl: avatar,
-        nickName: nickname,
+        consumerName: nickname,
       },
     });
     wx.navigateBack({
