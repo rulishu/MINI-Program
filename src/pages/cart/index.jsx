@@ -11,13 +11,16 @@ const Index = () => {
   const { shoppingList } = useSelector((state) => state.cart);
   const [checked, setChecked] = useState(false);
   const [inputValue, setInputValue] = useState(1);
+  const { activeIndex } = useSelector((state) => state.global);
 
   useEffect(() => {
-    dispatch({
-      type: 'cart/goodsAll',
-    });
+    if (activeIndex === 3) {
+      dispatch({
+        type: 'cart/goodsAll',
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeIndex]);
   const list = [
     {
       id: 0,
@@ -248,7 +251,7 @@ const Index = () => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 20px 20px 20px',
+            padding: '0 20px 80px 20px',
             backgroundColor: '#ffffff',
             paddingTop: 10,
           }}
