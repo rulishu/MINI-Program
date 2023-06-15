@@ -66,16 +66,16 @@ const WeAppy = () => {
                   },
                 },
               });
-              Taro.reLaunch({
-                url: '/pages/home/index',
-                success() {
-                  Taro.showToast({
-                    title: '登录成功！',
-                    icon: 'success',
-                    duration: 2000,
-                  });
-                },
+              // Taro.reLaunch({
+              //   url: '',
+              //   success() {
+              Taro.showToast({
+                title: '登录成功！',
+                icon: 'success',
+                duration: 2000,
               });
+              //   },
+              // });
             } else {
               Taro.showToast({
                 title: '登录失败！',
