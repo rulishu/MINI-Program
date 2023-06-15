@@ -102,7 +102,12 @@ export default React.forwardRef(({ request, params, style, renderList, callback 
         ) : (
           renderList?.(dataSource)
         )}
-        {refreshHasMore && <Text style={endStyle}>——已到底部——</Text>}
+        {/* 处理总数小于或者等于每页条数情况 */}
+        {total === 0
+          ? ''
+          : (Math.floor(total / pageSize) < 1 || total === pageSize || refreshHasMore) && (
+              <Text style={endStyle}>——已到底部——</Text>
+            )}
       </Fragment>
     </ScrollView>
   );
