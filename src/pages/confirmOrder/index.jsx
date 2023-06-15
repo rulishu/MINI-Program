@@ -232,7 +232,7 @@ const Index = () => {
           </View>
           <View className="address-price">
             <View>
-              <Text>订单备注</Text>
+              <Text>买家留言</Text>
             </View>
             <View className="address-price-right-icon" onTap={() => onOrderNotes()}>
               <Icon name="rect-right" size="16" color="#7F7F7F" />

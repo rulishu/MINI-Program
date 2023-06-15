@@ -43,7 +43,7 @@ const Index = () => {
     >
       <View className="popupInfo">
         <View className="popupInfo-title">
-          <Text>订单备注</Text>
+          <Text>买家留言</Text>
         </View>
         <View className="popupInfo-textArea">
           <TextArea
