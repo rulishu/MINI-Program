@@ -88,7 +88,10 @@ const Index = () => {
     });
   };
   const addCart = () => {
-    if (queryInfo?.onShelf === 0) {
+    const token = Taro.getStorageSync('token');
+    if (token === '') {
+      Taro.navigateTo({ url: '/pages/login/index' });
+    } else if (queryInfo?.onShelf === 0) {
       Taro.showToast({
         title: '商品已下架',
         icon: 'none',
@@ -124,8 +127,11 @@ const Index = () => {
     }
   };
   const nowCart = () => {
+    const token = Taro.getStorageSync('token');
     setAmount(1);
-    if (queryInfo?.onShelf === 0) {
+    if (token === '') {
+      Taro.navigateTo({ url: '/pages/login/index' });
+    } else if (queryInfo?.onShelf === 0) {
       Taro.showToast({
         title: '商品已下架',
         icon: 'none',
@@ -182,7 +188,6 @@ const Index = () => {
           <View className="infoImage">
             <Image
               mode="widthFix"
-              // eslint-disable-next-line global-require
               src={imageUrl ? imageUrl : queryInfo?.mainGraph}
               className="infoImage"
             ></Image>
@@ -190,13 +195,6 @@ const Index = () => {
 
           <View className="infoTextBox">
             <View>
-              {/* <Price
-                price={min(queryInfo?.itemSkuDtos)}
-                size="large"
-                needSymbol={false}
-                thousands
-                className="infoTextOne"
-              /> */}
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
                 {memberPrice
                   ? `¥${memberPrice}`

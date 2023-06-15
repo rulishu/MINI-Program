@@ -214,13 +214,6 @@ const Index = () => {
                 marginBottom: 2,
               }}
             >
-              {/* <Price
-                price={min(queryInfo?.itemSkuDtos)}
-                size="large"
-                needSymbol={false}
-                thousands
-                style={{ color: '#d9001c' }}
-              /> */}
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
                 {queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
@@ -364,7 +357,10 @@ const Index = () => {
                 <Button
                   style={{ borderRadius: 0, width: '100%' }}
                   onClick={() => {
-                    if (queryInfo?.onShelf === 0) {
+                    const token = Taro.getStorageSync('token');
+                    if (token === '') {
+                      Taro.navigateTo({ url: '/pages/login/index' });
+                    } else if (queryInfo?.onShelf === 0) {
                       Taro.showToast({
                         title: '商品已下架',
                         icon: 'none',
@@ -401,7 +397,10 @@ const Index = () => {
                   type="primary"
                   style={{ borderRadius: 0, width: '100%' }}
                   onClick={() => {
-                    if (queryInfo?.onShelf === 0) {
+                    const token = Taro.getStorageSync('token');
+                    if (token === '') {
+                      Taro.navigateTo({ url: '/pages/login/index' });
+                    } else if (queryInfo?.onShelf === 0) {
                       Taro.showToast({
                         title: '商品已下架',
                         icon: 'none',
