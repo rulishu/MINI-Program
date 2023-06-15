@@ -29,9 +29,11 @@ const Index = () => {
           category: 1,
         },
       });
+      // 一级分类
+      dispatch({ type: 'home/getLevel' });
     }
-    // 一级分类
-    dispatch({ type: 'home/getLevel' });
+  }, [activeIndex]);
+  useEffect(() => {
     // 获取当前定位
     Taro.getLocation({
       type: 'wgs84',
@@ -84,7 +86,7 @@ const Index = () => {
       },
     });
     // eslint-disable-next-line global-require, react-hooks/exhaustive-deps
-  }, [activeIndex]);
+  }, []);
 
   // 点击轮播图跳转
   const goBanner = async (jumpPath) => {
@@ -295,7 +297,7 @@ const Index = () => {
       <View className="home-body" style={{ top: homeTopNavHeight + 220 }}>
         <Navs />
         <TabList />
-        {/* <View className="tab-footer"></View> */}
+        <View className="tab-footer"></View>
       </View>
     </View>
   );

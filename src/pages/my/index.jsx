@@ -43,7 +43,7 @@ const Index = () => {
           退出
         </Button>
       </View> */}
-      {/* <View className="tab-footer"></View> */}
+      <View className="tab-footer"></View>
     </View>
   );
 };

@@ -3,22 +3,25 @@ import { View, Text } from '@tarojs/components';
 import Report from './report';
 import Traceability from './traceability';
 import { Tabs } from '@nutui/nutui-react-taro';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
 
   const [tab9value, setTab9value] = useState('0');
+  const { activeIndex } = useSelector((state) => state.global);
   useEffect(() => {
-    dispatch({
-      type: 'select/selectAreaClassAagent',
-      payload: {
-        level: 1,
-      },
-    });
+    if (activeIndex === 2) {
+      dispatch({
+        type: 'select/selectAreaClassAagent',
+        payload: {
+          level: 1,
+        },
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeIndex]);
   return (
     <View className="strict-selection">
       <View className="strict-selection-top">
@@ -51,7 +54,7 @@ const Index = () => {
           </Tabs.TabPane>
         </Tabs>
       </View>
-      {/* <View className="tab-footer"></View> */}
+      <View className="tab-footer"></View>
     </View>
   );
 };

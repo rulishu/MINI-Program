@@ -12,6 +12,7 @@ const Index = () => {
   const { getCategoriesTree, pageSize, pageNum, total, subList } = useSelector(
     (state) => state.categories,
   );
+  const { activeIndex } = useSelector((state) => state.global);
   const dispatch = useDispatch();
   const [tab5value, setTab5value] = useState(getCategoriesTree?.[0]?.id);
 
@@ -71,7 +72,7 @@ const Index = () => {
   };
 
   useEffect(() => {
-    if (tab5value) {
+    if (tab5value && activeIndex === 1) {
       dispatch({
         type: 'categories/getList',
         payload: {
@@ -83,7 +84,7 @@ const Index = () => {
         },
       });
     }
-  }, [tab5value]);
+  }, [tab5value, activeIndex]);
 
   const onScrollToLower = async (index) => {
     let nextIndex = index + 1;
