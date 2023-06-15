@@ -245,6 +245,7 @@ const Index = () => {
                             goodsName: queryInfo?.itemName,
                           },
                         });
+                        setAmount(1);
                       }}
                       disabled={
                         attrindex === 0 ? false : Object.keys(active).length > 0 ? false : true
