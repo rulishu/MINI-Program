@@ -14,7 +14,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo } = useSelector((state) => state.goodInfo);
+  const { queryInfo, activeSku } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -44,15 +44,6 @@ const Index = () => {
     const len = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
     const newLen = queryInfo?.itemVideo ? len.concat(queryInfo?.itemVideo) : len;
     setTotal(newLen?.length);
-    // 提示
-    // if (type === 'addCart') {
-    //   Taro.showToast({
-    //     title: '已加入购物车',
-    //     icon: 'none',
-    //     duration: 2000,
-    //   });
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryInfo]);
 
   const onChange3 = (e) => {
@@ -284,13 +275,18 @@ const Index = () => {
                 }}
               >
                 <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>规格</Text>
-                {queryInfo?.itemSkuDtos?.at(0)?.attributes?.map((item) => {
-                  return (
-                    <Text style={{ paddingLeft: 15, fontSize: 15 }} key={item?.attributeId}>
-                      {item?.attributeName}
-                    </Text>
-                  );
-                })}
+
+                {activeSku?.length === 0 ? (
+                  <Text style={{ paddingLeft: 15, fontSize: 15 }}>请选择规格</Text>
+                ) : (
+                  Object.keys(activeSku).map((item) => {
+                    return (
+                      <Text style={{ paddingLeft: 15, fontSize: 15 }} key={item?.attributeId}>
+                        {`${item}: ${activeSku[item]?.value}`}
+                      </Text>
+                    );
+                  })
+                )}
               </View>
               <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
                 <Icon name="rect-right" size={20}></Icon>
