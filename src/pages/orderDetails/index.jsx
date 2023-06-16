@@ -55,7 +55,10 @@ const Index = () => {
       }
     },
   });
-  const { minutes, seconds } = formattedRes;
+  let { minutes, seconds } = formattedRes;
+  if (seconds.toString().length === 1) {
+    seconds = `0${seconds}`;
+  }
 
   useEffect(() => {
     //获取顶部导航栏位置
@@ -98,16 +101,35 @@ const Index = () => {
 
   // 立即支付
   const onPay = async () => {
-    Taro.showLoading({ title: '加载中', mask: true });
-    payOrder({
-      orderNo: orderInfo?.orderNumber,
-      orderId: orderInfo?.id,
-      gatewayId: 2,
-      gatewayCode: 'WX_PAY',
-      gatewayTerminal: 2,
-      paymentAmount: orderInfo?.totalPrice,
-      tradeType: 0,
-    });
+    if (minutes === 0 && seconds === '00') {
+      Taro.navigateBack({
+        delta: 1,
+        success: () => {
+          Taro.showToast({
+            title: '未按时支付订单',
+            icon: 'error',
+            duration: 2000,
+          });
+        },
+      });
+      dispatch({
+        type: 'allOrders/update',
+        payload: {
+          orderActive: 0,
+        },
+      });
+    } else {
+      Taro.showLoading({ title: '加载中', mask: true });
+      payOrder({
+        orderNo: orderInfo?.orderNumber,
+        orderId: orderInfo?.id,
+        gatewayId: 2,
+        gatewayCode: 'WX_PAY',
+        gatewayTerminal: 2,
+        paymentAmount: orderInfo?.totalPrice,
+        tradeType: 0,
+      });
+    }
   };
 
   // 申请退款
