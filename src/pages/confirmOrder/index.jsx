@@ -103,7 +103,7 @@ const Index = () => {
 
   // 选择地址
   const onSelectAddress = () => {
-    Taro.navigateTo({ url: '/pages/address/index' });
+    Taro.navigateTo({ url: `/pages/address/index?confirmAddress=${JSON.stringify(curAddress)}` });
   };
 
   // 订单备注
