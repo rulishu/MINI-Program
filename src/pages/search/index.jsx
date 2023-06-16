@@ -26,7 +26,7 @@ const Index = () => {
       dispatch({
         type: 'search/recentRecord',
         payload: {
-          recentEntities: Taro.getStorageSync('searchHistory'),
+          recentEntities: Taro.getStorageSync('searchHistory') || [],
           callBack: () => {
             dispatch({
               type: 'search/getHistory',

@@ -59,7 +59,7 @@ export const list1 = [
     id: 4,
     icon: order1,
     isPrice: false,
-    title: '订单备注',
+    title: '买家留言',
     price: '无备注',
   },
 ];

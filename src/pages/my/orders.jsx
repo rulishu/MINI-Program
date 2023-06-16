@@ -98,7 +98,10 @@ const Index = () => {
           {list.map((item, index) => (
             <View key={index} className="my-orders-list-item" onTap={() => goList(item)}>
               <View style={{ width: 24, height: 24 }}>
-                <Badge right="20" value={orderNumList[item.str]}>
+                <Badge
+                  right="20"
+                  value={orderNumList[item.str] !== 0 ? orderNumList[item.str] : ''}
+                >
                   <Image mode="widthFix" src={item.icon} style={{ width: 24, height: 24 }}></Image>
                 </Badge>
               </View>
