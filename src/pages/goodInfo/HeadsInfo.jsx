@@ -14,14 +14,13 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo, activeSku } = useSelector((state) => state.goodInfo);
+  const { queryInfo, activeSku, swiperList } = useSelector((state) => state.goodInfo);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(0);
   const pageHistory = getCurrentPages();
 
-  const list = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
   const itemList = queryInfo?.itemImageDtoList?.map((item) => item?.path);
 
   useEffect(() => {
@@ -76,26 +75,22 @@ const Index = () => {
       <View>
         <View>
           {/* 轮播图/可展示图片和video */}
-          {queryInfo?.mainGraphs && (
-            <Swiper
-              // initPage={1}
-              loop
-              onChange={onChange3}
-              pageContent={
-                <div style={pageStyle}>
-                  {current} / {total}
-                </div>
-              }
-              autoplay
-              circular
-            >
-              {queryInfo?.itemVideo && (
-                <SwiperItem>
+          <Swiper
+            loop
+            onChange={onChange3}
+            pageContent={
+              <div style={pageStyle}>
+                {current} / {total}
+              </div>
+            }
+          >
+            {swiperList.map((item, index) =>
+              item?.type === 'video' ? (
+                <SwiperItem key={index}>
                   <Video
                     id="video"
                     style={{ height: '40vh', width: '100%' }}
-                    src={queryInfo?.itemVideo}
-                    // "https://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400"
+                    src={item?.url}
                     initialTime={0}
                     controls
                     autoplay
@@ -106,34 +101,17 @@ const Index = () => {
                     showFullscreenBtn={false}
                   />
                 </SwiperItem>
-              )}
-
-              {list.map((item, index) => {
-                return (
-                  <SwiperItem key={index}>
-                    <Image style={{ height: '40vh', width: '100%' }} src={item}></Image>
-                  </SwiperItem>
-                );
-              })}
-            </Swiper>
-          )}
+              ) : (
+                <SwiperItem key={index}>
+                  <Image style={{ height: '40vh', width: '100%' }} src={item?.url} />
+                </SwiperItem>
+              ),
+            )}
+          </Swiper>
           {/* 返回/客服/分享按钮 */}
           <View style={{ position: 'fixed', top: navTops, zIndex: 99 }}>
             <View
               onClick={() => {
-                // const shareStatus = Taro.getStorageSync('shareStatus');
-                // if (shareStatus === 1) {
-                //   Taro.switchTab({ url: '/pages/home/index' });
-                //   dispatch({
-                //     type: 'global/update',
-                //     payload: {
-                //       activeIndex: 0,
-                //     },
-                //   });
-                //   Taro.clearStorageSync('shareStatus');
-                // } else {
-                //   Taro.navigateBack({ delta: 1 });
-                // }
                 if (pageHistory.length <= 1) {
                   dispatch({
                     type: 'global/update',
