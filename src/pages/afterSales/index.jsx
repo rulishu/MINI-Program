@@ -62,13 +62,12 @@ const Index = () => {
 
   const pullList = () => {
     let maxPage = Math.ceil(total / pageSize);
-    if (maxPage > pageNum && ref.current === orderActive) {
+    if (maxPage > pageNum) {
       updateFn({ pageNum: pageNum + 1 });
       Taro.showLoading({ title: '加载中...', mask: true });
       run({
-        pageNum: pageNum,
+        pageNum: pageNum + 1,
         pageSize: 20,
-        orderStatus: orderActive,
       });
     }
   };
