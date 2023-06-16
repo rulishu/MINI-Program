@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Video } from '@tarojs/components';
 import { Swiper, SwiperItem, Grid, GridItem } from '@nutui/nutui-react-taro';
 import './index.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Taro from '@tarojs/taro';
 
 const Index = (props) => {
+  const dispatch = useDispatch();
   const { itemList, title } = props;
-  const { list } = useSelector((state) => state.select);
-
+  const { list, currentIndex, interval } = useSelector((state) => state.select);
   // 轮播视频
   const videos = itemList?.videos?.split(',');
+  const [video, setVideos] = useState(videos?.at(0));
 
   // 会员价
   const min = (item) => {
@@ -58,6 +60,17 @@ const Index = (props) => {
     }
   };
 
+  // 视频轮播
+  const switchCard = (e) => {
+    dispatch({
+      type: 'select/update',
+      payload: {
+        currentIndex: e,
+      },
+    });
+    setVideos(videos?.at(e));
+  };
+  const w = Taro.getSystemInfoSync().screenWidth - 20;
   return (
     <View className="classification">
       <View className="classification-content">
@@ -68,10 +81,13 @@ const Index = (props) => {
           <View className="classification-content-banner">
             <Swiper
               height={150}
+              width={250}
               paginationColor="#426543"
               autoPlay="3000"
-              initPage={0}
+              interval={interval}
+              current={currentIndex}
               paginationVisible
+              onChange={switchCard}
               style={{
                 height: '150px',
                 width: '100%',
@@ -80,25 +96,37 @@ const Index = (props) => {
                 justifyContent: 'center',
               }}
             >
-              {videos?.map((val, index) => (
-                <SwiperItem key={index}>
-                  <Video
+              {videos?.map((val, index) => {
+                return (
+                  <SwiperItem
+                    key={index}
                     style={{
                       height: '150px',
-                      width: '100%',
+                      width: w,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
-                    id="video"
-                    src={val}
-                    initialTime={0}
-                    autoplay={false}
-                    loop={false}
-                    muted={false}
-                  />
-                </SwiperItem>
-              ))}
+                  >
+                    <Video
+                      style={{
+                        height: '150px',
+                        width: w,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      id="video"
+                      src={video}
+                      initialTime={0}
+                      autoplay
+                      loop
+                      muted={false}
+                      playBtnPosition="center"
+                    />
+                  </SwiperItem>
+                );
+              })}
             </Swiper>
           </View>
         )}

@@ -14,6 +14,8 @@ export default {
     pageNum: 1,
     pageSize: 20,
     total: 0,
+    currentIndex: 0,
+    interval: 2000,
   },
 
   effects: {
