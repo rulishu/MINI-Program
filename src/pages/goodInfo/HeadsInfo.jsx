@@ -233,7 +233,7 @@ const Index = () => {
                 marginBottom: 5,
               }}
             >
-              <View>
+              <View style={{ width: '100%' }}>
                 <Tag color="rgb(170, 170, 170)">
                   {queryInfo?.suppliersId === 1 ? '自营' : '严选'}
                 </Tag>
