@@ -477,7 +477,7 @@ const Index = () => {
                     <Text className="address-price-right-text">{a.price}</Text>
                     <Text
                       style={{ color: '#A05635', fontSize: 14, marginLeft: 10 }}
-                      onClick={() => onCopy()}
+                      onClick={() => onCopy(a)}
                     >
                       {a.title === '订单编号' ? '复制' : ''}
                     </Text>
