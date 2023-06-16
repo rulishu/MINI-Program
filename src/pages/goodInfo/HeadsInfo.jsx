@@ -19,6 +19,7 @@ const Index = () => {
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(0);
+  const pageHistory = getCurrentPages();
 
   const list = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
   const itemList = queryInfo?.itemImageDtoList?.map((item) => item?.path);
@@ -129,16 +130,27 @@ const Index = () => {
           <View style={{ position: 'fixed', top: navTops, zIndex: 99 }}>
             <View
               onClick={() => {
-                const shareStatus = Taro.getStorageSync('shareStatus');
-                if (shareStatus === 1) {
-                  Taro.switchTab({ url: '/pages/home/index' });
+                // const shareStatus = Taro.getStorageSync('shareStatus');
+                // if (shareStatus === 1) {
+                //   Taro.switchTab({ url: '/pages/home/index' });
+                //   dispatch({
+                //     type: 'global/update',
+                //     payload: {
+                //       activeIndex: 0,
+                //     },
+                //   });
+                //   Taro.clearStorageSync('shareStatus');
+                // } else {
+                //   Taro.navigateBack({ delta: 1 });
+                // }
+                if (pageHistory.length <= 1) {
                   dispatch({
                     type: 'global/update',
                     payload: {
                       activeIndex: 0,
                     },
                   });
-                  Taro.clearStorageSync('shareStatus');
+                  Taro.reLaunch({ url: '/pages/home/index' });
                 } else {
                   Taro.navigateBack({ delta: 1 });
                 }
