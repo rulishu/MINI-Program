@@ -8,13 +8,38 @@ import Taro from '@tarojs/taro';
 import Right from './right';
 import './index.scss';
 
+// function debounce(func, delay) {
+//   // let timer;
+//   let lastTime = 0;
+
+//   return function () {
+//     const currentTime = Date.now();
+
+//     if (currentTime - lastTime >= delay) {
+//       func.apply(this, arguments);
+//       lastTime = currentTime;
+//     }
+//   };
+// }
+
 const Index = () => {
-  const { getCategoriesTree, pageSize, pageNum, total, subList } = useSelector(
+  const { getCategoriesTree, pageSize, pageNum, total, subList, isLoading } = useSelector(
     (state) => state.categories,
   );
   const { activeIndex } = useSelector((state) => state.global);
   const dispatch = useDispatch();
   const [tab5value, setTab5value] = useState(0);
+
+  useEffect(() => {
+    Taro.showLoading({ title: '加载中...', mask: true });
+    run({
+      pageNum: 1,
+      pageSize: pageSize,
+      id: getCategoriesTree?.at(Number(tab5value))?.id,
+      onShelf: 2,
+      groundType: 2,
+    });
+  }, []);
 
   const updateFn = (payload) => {
     dispatch({
@@ -40,57 +65,44 @@ const Index = () => {
   });
 
   useEffect(() => {
-    Taro.showLoading({ title: '加载中...', mask: true });
-    run({
-      pageNum: 1,
-      pageSize: pageSize,
-      id: getCategoriesTree?.at(Number(tab5value))?.id,
-      onShelf: 2,
-      groundType: 2,
-    });
-  }, []);
-
-  useEffect(() => {
     if (!getCategoriesTree?.length > 0) return;
     setTab5value(getCategoriesTree?.[0]?.id);
   }, [getCategoriesTree?.length]);
 
-  const onScrollToUpper = async () => {
-    //   if (0 < Number(tab5value) < getCategoriesTree.length - 1) {
-    //     setTab5value(Number(tab5value - 1))
-    //     await dispatch({
-    //       type: 'categories/getList',
-    //       payload: {
-    //         id: getCategoriesTree?.at(Number(tab5value - 1))?.id,
-    //         onShelf: 2,
-    //         groundType: 2,
-    //         pageNum: 1,
-    //         pageSize: 20,
-    //       },
-    //     });
-    //   }
+  const onScrollToUpper = (index) => {
+    // console.log("【 onScrollToUpper 】==>", index);
+    if (index <= 0) return;
+
+    // let nextIndex = index - 1;
+    // setTab5value(getCategoriesTree[nextIndex]?.id);
   };
 
-  useEffect(() => {
-    if (tab5value && activeIndex === 1) {
-      dispatch({
-        type: 'categories/getList',
-        payload: {
-          id: tab5value,
-          onShelf: 2,
-          groundType: 2,
-          pageNum: 1,
-          pageSize: 20,
-        },
-      });
-    }
-  }, [tab5value, activeIndex]);
-
-  const onScrollToLower = async (index) => {
+  const onScrollToLower = (index) => {
     let nextIndex = index + 1;
     nextIndex = Math.min(nextIndex, getCategoriesTree?.length - 1);
     setTab5value(getCategoriesTree[nextIndex]?.id);
   };
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
+    if (tab5value && activeIndex === 1) {
+      if (tab5value) {
+        dispatch({
+          type: 'categories/getList',
+          payload: {
+            id: tab5value,
+            onShelf: 2,
+            groundType: 2,
+            pageNum: 1,
+            pageSize: 20,
+          },
+        });
+      }
+    }
+  }, [tab5value, activeIndex]);
 
   return (
     <View>
@@ -117,7 +129,7 @@ const Index = () => {
                 paneKey={item?.id}
               >
                 <ScrollView
-                  style={{ height: '90vh' }}
+                  style={{ height: '100vh' }}
                   scrollY
                   // enhanced
                   // lowerThreshold={150}
@@ -128,10 +140,27 @@ const Index = () => {
                   onScrollToUpper={() => onScrollToUpper(index)}
                   // onScroll={(e, b, c) => console.log('onScroll', e, b, c)}
                 >
-                  <Right
-                    getCategoriesTwoTree={item?.child}
-                    style={{ width: '70vw', backgroundColor: '#ffffff' }}
-                  />
+                  <View style={{ height: '100vh' }}>
+                    {/* <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View>
+                    <View style={{ height: '10vh' }}>123</View> */}
+                    <Right
+                      getCategoriesTwoTree={item?.child}
+                      style={{ width: '70vw', backgroundColor: '#ffffff' }}
+                    />
+                  </View>
                 </ScrollView>
               </Tabs.TabPane>
             );
