@@ -14,7 +14,6 @@ const Index = () => {
     useSelector((state) => state.goodInfo);
   const { payOrder } = usePay({
     success: () => {
-      Taro.redirectTo({ url: '/pages/allOrders/index' });
       dispatch({
         type: 'allOrders/update',
         payload: {
@@ -37,6 +36,7 @@ const Index = () => {
           shoppingCartVOList: [],
         },
       });
+      Taro.redirectTo({ url: '/pages/allOrders/index' });
     },
     error: () => {
       Taro.redirectTo({ url: '/pages/allOrders/index' });
@@ -103,7 +103,7 @@ const Index = () => {
 
   // 选择地址
   const onSelectAddress = () => {
-    Taro.navigateTo({ url: '/pages/address/index' });
+    Taro.navigateTo({ url: `/pages/address/index?confirmAddress=${JSON.stringify(curAddress)}` });
   };
 
   // 订单备注

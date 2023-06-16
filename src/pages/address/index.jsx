@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Button, Swipe } from '@nutui/nutui-react-taro';
 import editIcon from '../../assets/images/edit.svg';
-import Taro from '@tarojs/taro';
+import Taro, { useUnload } from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
@@ -18,8 +18,36 @@ const Index = () => {
         id: userInfo.id,
       },
     });
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useUnload(() => {
+    let pages = getCurrentPages(); // 页面对象
+    let prevpage = pages[pages.length - 2]; // 上一个页面对象
+    let path = prevpage?.route; // 上一个页面路由地址
+    if (path === 'pages/confirmOrder/index') {
+      if (addressList.length === 0) {
+        dispatch({
+          type: 'goodInfo/update',
+          payload: {
+            currentAddress: {},
+          },
+        });
+      } else {
+        const params = Taro.getCurrentInstance().router.params;
+        const curAddress = JSON.parse(params.confirmAddress);
+        let returnAddress;
+        returnAddress = addressList.filter((items) => items.id === curAddress.id && items);
+        if (returnAddress.length === 0) {
+          dispatch({
+            type: 'goodInfo/update',
+            payload: {
+              currentAddress: addressList[0],
+            },
+          });
+        }
+      }
+    }
+  });
   // 添加
   const add = async () => {
     Taro.navigateTo({ url: '/pages/addAddress/index' });

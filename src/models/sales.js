@@ -45,7 +45,7 @@ export default {
           });
           Taro.hideLoading();
           Taro.showToast({
-            title: '绑定成功',
+            title: '提交成功',
             icon: 'none',
             duration: 2000,
           });

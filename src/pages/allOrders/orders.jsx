@@ -207,7 +207,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
               </View>
             </Button>
           )}
-          {item.orderStatus === 3 && (
+          {item.orderStatus === 3 && item.logisticsStatus === 1 && (
             <Button
               className="bottom-btn"
               // type="info"

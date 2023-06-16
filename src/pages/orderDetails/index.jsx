@@ -546,27 +546,29 @@ const Index = () => {
                     <Text style={{ fontSize: 14 }}>查看物流</Text>
                   </Button>
                 </View>
-                <View>
-                  <Button
-                    shape="square"
-                    type="primary"
-                    style={{ color: '#ffffff', border: 'none' }}
-                    onClick={() => {
-                      dispatch({
-                        type: 'orderDetails/update',
-                        payload: {
-                          isConfirm: true,
-                          orderAmount: orderInfo.items.reduce(
-                            (total, obj) => total + obj.amount,
-                            0,
-                          ),
-                        },
-                      });
-                    }}
-                  >
-                    <Text style={{ fontSize: 14 }}>确认收货</Text>
-                  </Button>
-                </View>
+                {orderInfo.logisticsStatus === 1 && (
+                  <View>
+                    <Button
+                      shape="square"
+                      type="primary"
+                      style={{ color: '#ffffff', border: 'none' }}
+                      onClick={() => {
+                        dispatch({
+                          type: 'orderDetails/update',
+                          payload: {
+                            isConfirm: true,
+                            orderAmount: orderInfo.items.reduce(
+                              (total, obj) => total + obj.amount,
+                              0,
+                            ),
+                          },
+                        });
+                      }}
+                    >
+                      <Text style={{ fontSize: 14 }}>确认收货</Text>
+                    </Button>
+                  </View>
+                )}
               </>
             )}
             {orderStatus === 4 && (
