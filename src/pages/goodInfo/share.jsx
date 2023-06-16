@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text } from '@tarojs/components';
 import { Popup, Button } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
-import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
@@ -18,7 +17,6 @@ const Index = () => {
           type: 'goodInfo/update',
           payload: { shareVisible: false },
         });
-        Taro.setStorageSync('shareStatus', 1);
       },
     });
   };

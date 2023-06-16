@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import { Tag, Skeleton } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
@@ -13,12 +13,19 @@ const Index = (props) => {
   const { subList } = useSelector((state) => state.categories);
   const [activeItem, setActiveItem] = useState(0);
   const [scrollIntoView, setScrollIntoView] = useState(0);
+  const dispatch = useDispatch();
 
   const onTagTap = (id) => {
     setScrollIntoView(`a${id}`);
   };
   const onTap = (id) => {
     Taro.navigateTo({ url: `/pages/goodInfo/index?id=${id}` });
+    dispatch({
+      type: 'goodInfo/update',
+      payload: {
+        activeSku: [],
+      },
+    });
   };
   return (
     <>
