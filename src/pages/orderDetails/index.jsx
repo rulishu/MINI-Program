@@ -111,24 +111,41 @@ const Index = () => {
   };
 
   // 申请退款
-  const onOutOrder = () => {
-    dispatch({
-      type: 'orderDetails/update',
-      payload: {
-        orderRefund: true,
-        refundType: 'pendingRefund',
-      },
-    });
+  const onOutOrder = (item) => {
+    // 申请退款
+    if (item.afterSaleStatus === 0) {
+      dispatch({
+        type: 'orderDetails/update',
+        payload: {
+          orderRefund: true,
+          refundType: 'pendingRefund',
+        },
+      });
+    } else if (item.afterSaleStatus === 1) {
+      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后处理中';
+    } else if (item.afterSaleStatus === 2) {
+      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后完成';
+    }
   };
 
   // 申请售后
-  const onAfterSales = () => {
-    dispatch({
-      type: 'orderDetails/update',
-      payload: {
-        orderAfterSales: true,
-      },
-    });
+  const onAfterSales = (item) => {
+    const states = item.items?.at(0).afterSaleStatus;
+    if (states === 0) {
+      // 申请退款
+      dispatch({
+        type: 'orderDetails/update',
+        payload: {
+          orderAfterSales: true,
+        },
+      });
+    } else if (states === 1) {
+      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后处理中';
+    } else if (states === 2) {
+      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后完成';
+    } else if (states === 3) {
+      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后关闭';
+    }
   };
 
   // 取消订单
@@ -217,6 +234,30 @@ const Index = () => {
           });
         },
       });
+    }
+  };
+  // 退货退款
+  const onStateBtn = (item) => {
+    const states = item.items?.at(0).afterSaleStatus;
+    if (states === 0) {
+      return '申请退款';
+    } else if (states === 1) {
+      return '售后处理中';
+    } else if (states === 2) {
+      return '售后完成';
+    } else if (states === 3) {
+      return '售后关闭';
+    }
+  };
+
+  //仅退款
+  const onlyStateBtn = (item) => {
+    if (item.afterSaleStatus === 0) {
+      return '申请退款';
+    } else if (item.afterSaleStatus === 1) {
+      return '售后处理中';
+    } else if (item.afterSaleStatus === 2) {
+      return '售后完成';
     }
   };
 
@@ -351,9 +392,9 @@ const Index = () => {
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
                   plain
                   type="default"
-                  onClick={() => onAfterSales()}
+                  onClick={() => onAfterSales(orderInfo)}
                 >
-                  <Text style={{ fontSize: 14 }}>申请售后</Text>
+                  <Text style={{ fontSize: 14 }}>{onStateBtn(orderInfo)}</Text>
                 </Button>
               </View>
             )}
@@ -462,11 +503,11 @@ const Index = () => {
                 <Button
                   shape="square"
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
-                  onClick={() => onOutOrder()}
+                  onClick={() => onOutOrder(orderInfo)}
                   plain
                   type="default"
                 >
-                  <Text style={{ fontSize: 14 }}>申请退款</Text>
+                  <Text style={{ fontSize: 14 }}>{onlyStateBtn(orderInfo)}</Text>
                 </Button>
               </View>
             )}
