@@ -12,25 +12,25 @@ const GoodList = (props) => {
 
   // 跳转商品详情
   const goGoodInfo = async (itm) => {
-    if (itm.stock === 0) {
-      return Taro.showToast({
-        title: '该商品已售空',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (itm?.onShelf === 0) {
-      return Taro.showToast({
-        title: '商品已下架',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (itm?.isDelete === 1) {
-      return Taro.showToast({
-        title: '商品已删除',
-        icon: 'none',
-        duration: 2000,
-      });
-    }
+    // if (itm.stock === 0) {
+    //   return Taro.showToast({
+    //     title: '该商品已售空',
+    //     icon: 'none',
+    //     duration: 2000,
+    //   });
+    // } else if (itm?.onShelf === 0) {
+    //   return Taro.showToast({
+    //     title: '商品已下架',
+    //     icon: 'none',
+    //     duration: 2000,
+    //   });
+    // } else if (itm?.isDelete === 1) {
+    //   return Taro.showToast({
+    //     title: '商品已删除',
+    //     icon: 'none',
+    //     duration: 2000,
+    //   });
+    // }
     Taro.navigateTo({ url: `/pages/goodInfo/index?id=${itm?.id}` });
   };
 
@@ -79,13 +79,13 @@ const GoodList = (props) => {
                 {item?.savedPrice === 0 ||
                 item?.savedPrice === '' ||
                 item?.savedPrice === undefined ? (
-                    <Text></Text>
-                  ) : (
-                    <>
-                      <Text className="activity">自购省</Text>
-                      <Text className="activity-price">¥ {item?.savedPrice}</Text>
-                    </>
-                  )}
+                  <Text></Text>
+                ) : (
+                  <>
+                    <Text className="activity">自购省</Text>
+                    <Text className="activity-price">¥ {item?.savedPrice}</Text>
+                  </>
+                )}
               </View>
               <View className="search-result-content-bottom">
                 <View>
