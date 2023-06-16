@@ -14,7 +14,6 @@ const Index = () => {
     useSelector((state) => state.goodInfo);
   const { payOrder } = usePay({
     success: () => {
-      Taro.redirectTo({ url: '/pages/allOrders/index' });
       dispatch({
         type: 'allOrders/update',
         payload: {
@@ -37,6 +36,7 @@ const Index = () => {
           shoppingCartVOList: [],
         },
       });
+      Taro.redirectTo({ url: '/pages/allOrders/index' });
     },
     error: () => {
       Taro.redirectTo({ url: '/pages/allOrders/index' });
