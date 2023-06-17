@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import classNames from 'classnames';
 
 const defaultProps = {
@@ -12,7 +12,6 @@ const TabPane = (props) => {
     ...defaultProps,
     ...props,
   };
-
   const classPrefix = 'nut-tabpane';
   const classes = classNames(
     {
@@ -22,8 +21,7 @@ const TabPane = (props) => {
     autoHeightClassName,
     className,
   );
-
   return children ? <div className={classes}>{!disabled && children}</div> : null;
 };
 
-export default TabPane;
+export default memo(TabPane);

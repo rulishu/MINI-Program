@@ -1,22 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, ScrollView } from '@tarojs/components';
-import { Tabs, Icon } from '@nutui/nutui-react-taro';
+import React, { useEffect, useState, Fragment } from 'react';
+import { View, Text } from '@tarojs/components';
+import { Icon } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
-import { useRequest } from 'ahooks';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../../component/navBar';
 import { getAllOrders } from '@/server/allOrders';
 import './index.scss';
 import Orders from './orders';
+import PullList from '@/component/pullList';
+import Tabs from './component/tabs';
+import { tabList } from './eumn';
 
 const Index = () => {
-  const { orderActive, pageNum, orderList, total, pageSize } = useSelector(
-    (state) => state.allOrders,
-  );
+  const { orderActive } = useSelector((state) => state.allOrders);
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
-  const [refreshLoading, setRefreshLoading] = useState(false);
   const dispatch = useDispatch();
-  const ref = useRef(orderActive);
   const updateFn = (payload) => {
     dispatch({
       type: 'allOrders/update',
@@ -24,33 +22,7 @@ const Index = () => {
     });
   };
 
-  const { run } = useRequest(getAllOrders, {
-    manual: true,
-    onSuccess: ({ code, result }) => {
-      if (code && code === 200) {
-        updateFn({
-          total: result.total, // you had 'result.result' here, changed to 'result.total' assuming 'total' is the correct property name
-          orderList:
-            pageNum === 1 ? result.records || [] : [...orderList, ...(result.records || [])],
-          refreshHasMore:
-            pageNum === 1 ? false : [...orderList, ...(result.records || [])].length === total,
-        });
-        Taro.hideLoading();
-        setRefreshLoading(false);
-      } else {
-        Taro.hideLoading();
-        setRefreshLoading(false);
-      }
-    },
-  });
-
   useEffect(() => {
-    Taro.showLoading({ title: '加载中...', mask: true });
-    run({
-      pageNum: 1,
-      pageSize: 20,
-      orderStatus: orderActive,
-    });
     //获取顶部导航栏位置
     let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
     const { top, height } = menuButtonInfo;
@@ -65,63 +37,8 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderActive]);
 
-  const refesh = () => {
-    // console.log('【 ref.current 】==>', ref.current);
-    if (ref.current === orderActive) {
-      updateFn({ pageNum: 1 });
-      Taro.showLoading({ title: '加载中...', mask: true });
-      setRefreshLoading(true);
-      run({
-        pageNum: 1,
-        pageSize: 20,
-        orderStatus: orderActive,
-      });
-    }
-  };
-
-  const pullList = () => {
-    let maxPage = Math.ceil(total / pageSize);
-    if (maxPage > pageNum && ref.current === orderActive) {
-      updateFn({ pageNum: pageNum + 1 });
-      Taro.showLoading({ title: '加载中...', mask: true });
-      run({
-        pageNum: pageNum,
-        pageSize: 20,
-        orderStatus: orderActive,
-      });
-    }
-  };
-
-  const tabList = [
-    {
-      id: 0,
-      title: '全部',
-      // children: <Orders />,
-    },
-    {
-      id: 1,
-      title: '待付款',
-      // children: <Orders />,
-    },
-    {
-      id: 2,
-      title: '待发货',
-      // children: <Orders />,
-    },
-    {
-      id: 3,
-      title: '待收货',
-      // children: <Orders />,
-    },
-    {
-      id: 4,
-      title: '待评价',
-      // children: <Orders />,
-    },
-  ];
-
   return (
-    <>
+    <Fragment>
       <View>
         <NavBar
           background="#ffffff"
@@ -152,43 +69,39 @@ const Index = () => {
           }
         />
       </View>
-      <View
+      <Tabs
+        background="#ffffff"
         style={{
           position: 'fixed',
           left: 0,
           width: '100%',
           top: homeTopNavHeight,
         }}
-      >
-        <Tabs
-          value={orderActive}
-          background="#ffffff"
-          onChange={({ paneKey }) => {
-            updateFn({ orderActive: parseInt(paneKey) });
-            ref.current = parseInt(paneKey);
-          }}
-        >
-          {tabList.map((item) => {
-            return (
-              <Tabs.TabPane key={item.id} title={item.title} paneKey={item.id} className="tabpane">
-                <ScrollView
-                  style={{ height: '100vh' }}
-                  scrollY
-                  scrollWithAnimation
-                  refresherEnabled
-                  lowerThreshold={50}
-                  refresherTriggered={refreshLoading}
-                  onScrollToLower={pullList}
-                  onRefresherRefresh={refesh}
-                >
-                  <Orders />
-                </ScrollView>
-              </Tabs.TabPane>
-            );
-          })}
-        </Tabs>
-      </View>
-    </>
+        value={orderActive}
+        onChange={(paneKey) => {
+          updateFn({ orderActive: paneKey });
+        }}
+        tabList={tabList.map((item) => ({
+          ...item,
+          children: (
+            <PullList
+              request={getAllOrders}
+              params={{ orderStatus: orderActive }}
+              style={{ height: '100vh' }}
+              renderList={(dataSource, refresh) => {
+                return <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />;
+              }}
+              callback={({ refresh }) => {
+                refresh?.();
+              }}
+              emptyStyle={{ background: '#f2f2f2' }}
+              defaultPageSize={3}
+              scrollViewProps={{ lowerThreshold: 10 }}
+            />
+          ),
+        }))}
+      />
+    </Fragment>
   );
 };
 export default Index;

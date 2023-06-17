@@ -42,9 +42,7 @@ const Index = () => {
               {activeIndex === 0 && (
                 <PullList
                   request={fetchData}
-                  paramsCode="id"
                   params={{ id: tab4value }}
-                  tab4value={tab4value}
                   style={{ height: '50vh' }}
                   renderList={(dataSource) => <GoodList dataList={dataSource} />}
                   callback={({ refresh }) => {

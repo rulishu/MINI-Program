@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { Button, Divider, Popup, Empty } from '@nutui/nutui-react-taro';
+import { Button, Divider, Popup } from '@nutui/nutui-react-taro';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCountDown } from 'ahooks';
 import usePay from '@/hooks/usePay';
@@ -8,24 +8,14 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import moment from 'moment';
 
-const ListItem = ({ item, keys, orderActive, orderList }) => {
+const ListItem = ({ item, keys, orderActive, refresh }) => {
   const { predictEndTime } = item;
   // eslint-disable-next-line no-unused-vars
   const [countdown, formattedRes] = useCountDown({
     leftTime: moment(predictEndTime).valueOf() - moment().valueOf(),
     onEnd: async () => {
       if (keys === orderActive) {
-        orderList.filter((orderItem) => {
-          if (orderItem.id === item.id) {
-            orderItem.orderStatus = -2;
-          }
-        });
-        await dispatch({
-          type: 'allOrders/update',
-          payload: {
-            orderList: orderList,
-          },
-        });
+        refresh?.();
       }
     },
   });
@@ -36,32 +26,8 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
     seconds = `0${seconds}`;
   }
   const dispatch = useDispatch();
-  const getList = () => {
-    Taro.showLoading({ title: '获取订单中...', mask: true });
-    let orderStatus;
-    if (orderActive === 1) {
-      orderStatus = 1;
-    }
-    if (orderActive === 2) {
-      orderStatus = 2;
-    }
-    if (orderActive === 3) {
-      orderStatus = 3;
-    }
-    if (orderActive === 4) {
-      orderStatus = 7;
-    }
-    dispatch({
-      type: 'allOrders/getAllOrders',
-      payload: {
-        pageNum: 1,
-        pageSize: 10,
-        orderStatus,
-      },
-    });
-  };
   const { payOrder } = usePay({
-    success: () => getList(),
+    success: () => refresh?.(),
     error: () => {},
   });
   const goOrderDetails = async (status, info) => {
@@ -174,7 +140,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
                         type: 'allOrders/deleteOrder',
                         payload: {
                           id: item.id,
-                          callBack: () => getList(),
+                          callBack: () => refresh?.(),
                         },
                       });
                     }
@@ -252,7 +218,7 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
                   payload: {
                     id: item.id,
                     callBack: () => {
-                      getList();
+                      refresh?.();
                       setIsConfirm(false);
                     },
                   },
@@ -268,26 +234,20 @@ const ListItem = ({ item, keys, orderActive, orderList }) => {
   );
 };
 
-const Index = ({ keys }) => {
-  const { orderList, orderActive } = useSelector((state) => state.allOrders);
+const Index = ({ keys, dataSource, refresh }) => {
+  const { orderActive } = useSelector((state) => state.allOrders);
   return (
     <View className="order">
       <View className="order-content">
-        {orderList.length !== 0 ? (
-          orderList.map((item) => {
-            return (
-              <ListItem
-                item={item}
-                keys={keys}
-                orderActive={orderActive}
-                orderList={orderList}
-                key={item.id}
-              />
-            );
-          })
-        ) : (
-          <Empty style="background-color: #f2f2f2;" description="无数据" />
-        )}
+        {dataSource.map((item) => (
+          <ListItem
+            item={item}
+            keys={keys}
+            orderActive={orderActive}
+            key={item.id}
+            refresh={refresh}
+          />
+        ))}
       </View>
     </View>
   );
