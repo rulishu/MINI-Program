@@ -47,15 +47,14 @@ export default {
     interval: 2000,
     duration: 500,
     posterCode: '',
+    swiperList: [],
   },
 
   effects: {
     *infoDetails({ payload }, { call, put }) {
+      const { callback, id } = payload;
       try {
-        const params = {
-          ...payload,
-        };
-        const result = yield call(infoDetails, params);
+        const result = yield call(infoDetails, { id });
         if (result) {
           let skuList = result?.result?.itemSkuDtos;
           let attrLists = [];
@@ -99,10 +98,24 @@ export default {
             }
           });
           const attributeVos = arr;
+
+          // 轮播视频&&轮播图处理
+          const swiperList = [];
+          if (result?.result?.itemVideo) {
+            swiperList.push({ type: 'video', url: result?.result?.itemVideo });
+          }
+          if (result?.result?.mainGraphs && result?.result?.mainGraphs?.length > 0) {
+            result?.result?.mainGraphs.forEach((item) => {
+              if (item?.path) {
+                swiperList.push({ type: 'img', url: item?.path });
+              }
+            });
+          }
           yield put({
             type: 'update',
             payload: {
               queryInfo: result.result,
+              swiperList,
               attributeVos,
               skuList: skuList,
             },

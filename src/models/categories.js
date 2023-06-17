@@ -69,6 +69,7 @@ export default {
     },
     // 商品图片接口
     *getList({ payload }, { call, put }) {
+      yield put({ type: 'update', payload: { isLoading: true } });
       Taro.showLoading({ title: '加载中...', mask: true });
       try {
         const params = {
@@ -76,15 +77,20 @@ export default {
         };
         const result = yield call(getList, params);
         if (result && result.code === 200) {
-          Taro.hideLoading();
           yield put({
             type: 'update',
             payload: {
+              isLoading: false,
               subList: result.result,
             },
           });
+          Taro.hideLoading();
+        } else {
+          yield put({ type: 'update', payload: { isLoading: false } });
         }
-      } catch (err) {}
+      } catch (err) {
+        yield put({ type: 'update', payload: { isLoading: false } });
+      }
     },
   },
 

@@ -160,13 +160,13 @@ const Index = () => {
                     {item?.savedPrice === 0 ||
                     item?.savedPrice === '' ||
                     item?.savedPrice === undefined ? (
-                        <Text></Text>
-                      ) : (
-                        <>
-                          <Text className="activity">自购省</Text>
-                          <Text className="activity-price">¥ {item?.savedPrice}</Text>
-                        </>
-                      )}
+                      <Text></Text>
+                    ) : (
+                      <>
+                        <Text className="activity">自购省</Text>
+                        <Text className="activity-price">¥ {item?.savedPrice}</Text>
+                      </>
+                    )}
                   </View>
                   <View className="search-result-content-bottom">
                     <View>
