@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from '@tarojs/components';
 import { Tabs, Empty } from '@nutui/nutui-react-taro';
@@ -136,8 +137,8 @@ const Index = () => {
                   // upperThreshold={150}
                   scrollWithAnimation
                   refresherTriggered={loading}
-                  onScrollToLower={() => onScrollToLower(index)}
-                  onScrollToUpper={() => onScrollToUpper(index)}
+                  // onScrollToLower={() => onScrollToLower(index)}
+                  // onScrollToUpper={() => onScrollToUpper(index)}
                   // onScroll={(e, b, c) => console.log('onScroll', e, b, c)}
                 >
                   <View style={{ height: '100vh' }}>

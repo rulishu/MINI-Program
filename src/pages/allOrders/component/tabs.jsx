@@ -43,8 +43,15 @@ const Tabs = ({
             className={getBorderClassName(item.id)}
             onClick={() => handleTabClick(item)}
           >
+            {type === 'vertical' && (
+              <View className={classNames({ tabsLine: item.id === value })}></View>
+            )}
             <Text>{item.title}</Text>
-            <View className={classNames('tabsLine', { tabsLineActive: item.id === value })}></View>
+            {type === 'horizontal' && (
+              <View
+                className={classNames('tabsLine', { tabsLineActive: item.id === value })}
+              ></View>
+            )}
           </View>
         ))}
       </View>
