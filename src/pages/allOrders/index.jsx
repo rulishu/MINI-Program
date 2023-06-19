@@ -95,7 +95,7 @@ const Index = () => {
                 refresh?.();
               }}
               emptyStyle={{ background: '#f2f2f2' }}
-              defaultPageSize={3}
+              defaultPageSize={10}
               scrollViewProps={{ lowerThreshold: 10 }}
             />
           ),
