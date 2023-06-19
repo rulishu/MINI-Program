@@ -3,20 +3,24 @@ import { View, Text } from '@tarojs/components';
 import classNames from 'classnames';
 import './index.scss';
 
-const Tabs = ({ value, tabList = [], onChange, type, background, className, style }) => {
+const Tabs = ({
+  value,
+  tabList = [],
+  onChange,
+  type,
+  background,
+  className,
+  titleScroll = false,
+  style,
+}) => {
   const handleTabClick = (item) => {
     onChange?.(item.id);
   };
 
   const getBorderClassName = (index) => {
     const active = index === value;
-    const borderTopRight = index === value + 1;
-    const borderBtmRight = index === value - 1;
-
     return classNames('normal', {
       active,
-      borderTopRight,
-      borderBtmRight,
     });
   };
 
@@ -32,15 +36,22 @@ const Tabs = ({ value, tabList = [], onChange, type, background, className, styl
       className={classNames(type === 'vertical' ? 'vertical' : 'horizontal', className)}
       style={{ ...style }}
     >
-      <View className="tabs" style={{ background }}>
+      <View className={classNames('tabs', { scrollable: titleScroll })} style={{ background }}>
         {tabList.map((item) => (
-          <View className="tabsPack" key={item.id}>
-            <View className={getBorderClassName(item.id)} onClick={() => handleTabClick(item)}>
-              <Text>{item.title}</Text>
+          <View
+            key={item.id}
+            className={getBorderClassName(item.id)}
+            onClick={() => handleTabClick(item)}
+          >
+            {type === 'vertical' && (
+              <View className={classNames({ tabsLine: item.id === value })}></View>
+            )}
+            <Text>{item.title}</Text>
+            {type === 'horizontal' && (
               <View
                 className={classNames('tabsLine', { tabsLineActive: item.id === value })}
               ></View>
-            </View>
+            )}
           </View>
         ))}
       </View>

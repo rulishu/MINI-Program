@@ -71,7 +71,7 @@ const Index = () => {
     <View>
       <View className="heads">
         <View className="my-title">
-          <Text>我的</Text>
+          <Text>我的 1.0.0</Text>
         </View>
         <View className="option-icon">
           <View>

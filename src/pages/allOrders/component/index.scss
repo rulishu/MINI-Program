@@ -5,42 +5,61 @@
   flex: 1;
   display: flex;
   flex-direction: row;
-
   .tabs {
     width: 188px;
-    background-color: #fff;
     .normal {
+      font-size: 24px;
       height: 88px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: $primary-color;
+      min-width: 188px;
+      overflow: hidden;
+      position: relative;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      .tabsLine {
+        margin-right: 14px;
+        background: $primary-color;
+        width: 4px;
+        height: 24px;
+      }
     }
-
     .active {
       background-color: #fff;
     }
   }
-
   .tabMes {
     flex: 1;
     background-color: #fff;
+  }
+  .scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: nowrap; /* 防止换行 */
   }
 }
 
 .horizontal {
   .tabs {
+    border-radius: 0;
+    box-sizing: border-box;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    padding: 26px 50px 26px;
-    // background-color: #fff;
+    flex-shrink: 0;
+    height: 92px;
     .normal {
       display: flex;
       flex-direction: column;
       align-items: center;
+      flex: 1;
       font-size: 24px;
+      min-width: 100px; /* 设置最小宽度 */
+      overflow: hidden;
+      position: relative;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       .tabsLine {
         background: $primary-color;
         width: 48px;
@@ -59,5 +78,10 @@
       color:$primary-color;
       font-weight: bold;
     }
+  }
+  .scrollable {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap; /* 防止换行 */
   }
 }

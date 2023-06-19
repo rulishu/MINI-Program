@@ -116,7 +116,9 @@ const Index = (props) => {
                                   <Tag color="rgb(170, 170, 170)">
                                     {dto?.suppliersId === 1 ? '自营' : '严选'}
                                   </Tag>
-                                  <Text style={{ marginLeft: 10 }}>{dto?.itemName}</Text>
+                                  <Text style={{ marginLeft: 10, wordBreak: 'break-all' }}>
+                                    {dto?.itemName}
+                                  </Text>
                                 </View>
                                 {/* <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                 <View style={{ fontSize: 10, border: '1px solid #aaaaaa', padding: '2px 3px' }}>
@@ -146,7 +148,7 @@ const Index = (props) => {
                                     onClick={() => onTap(dto?.id)}
                                   >
                                     <Text style={{ color: '#d9001c', fontSize: 16 }}>
-                                      {dto?.itemSkuDtos && min(dto?.itemSkuDtos)}
+                                      {dto?.price}
                                     </Text>
                                     <View>
                                       <Text
