@@ -260,7 +260,7 @@ const Index = () => {
                   Object.keys(activeSku).map((item) => {
                     return (
                       <Text style={{ paddingLeft: 15, fontSize: 15 }} key={item?.attributeId}>
-                        {`${item}: ${activeSku[item]?.value}`}
+                        {`${activeSku[item]?.value}`}
                       </Text>
                     );
                   })
