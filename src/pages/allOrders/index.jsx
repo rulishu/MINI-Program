@@ -84,20 +84,23 @@ const Index = () => {
         tabList={tabList.map((item) => ({
           ...item,
           children: (
-            <PullList
-              request={getAllOrders}
-              params={{ orderStatus: orderActive }}
-              style={{ height: '100vh' }}
-              renderList={(dataSource, refresh) => {
-                return <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />;
-              }}
-              callback={({ refresh }) => {
-                refresh?.();
-              }}
-              emptyStyle={{ background: '#f2f2f2' }}
-              defaultPageSize={3}
-              scrollViewProps={{ lowerThreshold: 10 }}
-            />
+            <Fragment>
+              <PullList
+                request={getAllOrders}
+                params={{ orderStatus: orderActive }}
+                style={{ height: '100vh' }}
+                renderList={(dataSource, refresh) => {
+                  return <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />;
+                }}
+                callback={({ refresh }) => {
+                  refresh?.();
+                }}
+                emptyStyle={{ background: '#f2f2f2' }}
+                defaultPageSize={3}
+                scrollViewProps={{ lowerThreshold: 10 }}
+                bottomHeight={homeTopNavHeight + 92}
+              />
+            </Fragment>
           ),
         }))}
       />
