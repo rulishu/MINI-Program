@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Divider, Button } from '@nutui/nutui-react-taro';
 import { View, Text, Image } from '@tarojs/components';
 import payAddress from '@/assets/images/payAddress.svg';
@@ -19,7 +19,6 @@ const Index = () => {
   const dispatch = useDispatch();
   const { orderStatus, orderInfo } = useSelector((state) => state.orderDetails);
   const { predictEndTime } = orderInfo;
-  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   const { payOrder } = usePay({
     success: () => {
       Taro.navigateTo({ url: '/pages/allOrders/index' });
@@ -59,21 +58,6 @@ const Index = () => {
   if (seconds.toString().length === 1) {
     seconds = `0${seconds}`;
   }
-
-  useEffect(() => {
-    //获取顶部导航栏位置
-    let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
-    const { top, height } = menuButtonInfo;
-    wx.getSystemInfo({
-      success: (res) => {
-        const { statusBarHeight } = res;
-        const margin = top - statusBarHeight;
-        const navHeight = height + statusBarHeight + margin * 2;
-        setHomeTopNavHeight(navHeight);
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // 收货地址
   const address = orderInfo?.address?.split(' ');
@@ -307,15 +291,7 @@ const Index = () => {
           }
         />
       </View>
-      <View
-        className="confirm"
-        style={{
-          position: 'fixed',
-          left: 0,
-          width: '100%',
-          top: homeTopNavHeight,
-        }}
-      >
+      <View className="confirm">
         {/* <View class="return_view">
         <Image mode="widthFix" src={back} className="return_img" onClick={goBack}></Image>
         <View className="return_text">
@@ -330,15 +306,7 @@ const Index = () => {
           )}
         </View>
       </View> */}
-        <View
-          className="confirm-order"
-          style={{
-            position: 'fixed',
-            left: 0,
-            width: '100%',
-            top: homeTopNavHeight,
-          }}
-        >
+        <View className="confirm-order">
           <View className="address">
             <View className="address-left">
               <View className="address-left-icon">
