@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, Video } from '@tarojs/components';
-import { Swiper, SwiperItem, Grid, GridItem } from '@nutui/nutui-react-taro';
+import React from 'react';
+import { View, Text } from '@tarojs/components';
+import { Grid, GridItem } from '@nutui/nutui-react-taro';
 import './index.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import Taro from '@tarojs/taro';
 
 const Index = (props) => {
   const dispatch = useDispatch();
@@ -11,7 +10,6 @@ const Index = (props) => {
   const { list, currentIndex, interval } = useSelector((state) => state.select);
   // 轮播视频
   const videos = itemList?.videos?.split(',');
-  const [video, setVideos] = useState(videos?.at(0));
 
   // 会员价
   const min = (item) => {
@@ -68,9 +66,7 @@ const Index = (props) => {
         currentIndex: e,
       },
     });
-    setVideos(videos?.at(e));
   };
-  const w = Taro.getSystemInfoSync().screenWidth - 20;
   return (
     <View className="classification">
       <View className="classification-content">
@@ -79,55 +75,42 @@ const Index = (props) => {
         </View>
         {videos && (
           <View className="classification-content-banner">
-            <Swiper
+            <swiper
               height={150}
-              width={250}
-              paginationColor="#426543"
+              indicator-dots
+              indicator-color="#d7d7d7"
+              indicator-active-color="#A05635"
               autoPlay="3000"
               interval={interval}
               current={currentIndex}
               paginationVisible
-              onChange={switchCard}
-              style={{
-                height: '150px',
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              bindchange={switchCard}
+              isPreventDefault={false}
+              circular
+              isStopPropagation={false}
             >
               {videos?.map((val, index) => {
                 return (
-                  <SwiperItem
-                    key={index}
-                    style={{
-                      height: '150px',
-                      width: w,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Video
-                      style={{
-                        height: '150px',
-                        width: w,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      id="video"
-                      src={video}
-                      initialTime={0}
-                      autoplay
-                      loop
-                      muted={false}
-                      playBtnPosition="center"
-                    />
-                  </SwiperItem>
+                  val && (
+                    <swiper-item key={index}>
+                      <video
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                        }}
+                        id="video"
+                        src={val}
+                        initialTime={0}
+                        autoplay
+                        loop
+                        muted={false}
+                        playBtnPosition="center"
+                      />
+                    </swiper-item>
+                  )
                 );
               })}
-            </Swiper>
+            </swiper>
           </View>
         )}
 
