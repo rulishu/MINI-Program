@@ -1,4 +1,4 @@
-import { ScrollView, Text } from '@tarojs/components';
+import { ScrollView, Text, View } from '@tarojs/components';
 import React, { Fragment, useEffect, useImperativeHandle } from 'react';
 import { useSetState, useRequest } from 'ahooks';
 import { Empty } from '@nutui/nutui-react-taro';
@@ -27,6 +27,8 @@ export default React.forwardRef(
       emptyStyle,
       defaultPageSize = 10,
       scrollViewProps,
+      renderEmpty,
+      bottomHeight = 0,
     },
     ref,
   ) => {
@@ -91,7 +93,6 @@ export default React.forwardRef(
         });
       }
     };
-
     useImperativeHandle(ref, () => {
       return {
         refresh: refresh,
@@ -118,10 +119,10 @@ export default React.forwardRef(
           {/* 处理总数小于或者等于每页条数情况 */}
           {total === 0
             ? ''
-            : (Math.floor(total / pageSize) < 1 || total === pageSize || refreshHasMore) && (
-                <Text style={endStyle}>——已到底部——</Text>
-              )}
+            : (Math.floor(total / pageSize) < 1 || total === pageSize || refreshHasMore) &&
+              (renderEmpty?.() || <Text style={endStyle}>——已到底部——</Text>)}
         </Fragment>
+        <View style={{ height: bottomHeight }} />
       </ScrollView>
     );
   },

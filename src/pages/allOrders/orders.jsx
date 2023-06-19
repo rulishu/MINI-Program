@@ -157,15 +157,27 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
               type="danger"
               plain
               onClick={() => {
-                payOrder({
-                  orderNo: item?.orderNumber,
-                  orderId: item?.id,
-                  gatewayId: 2,
-                  gatewayCode: 'WX_PAY',
-                  gatewayTerminal: 2,
-                  paymentAmount: item?.orderPrice,
-                  tradeType: 0,
-                });
+                if (minutes === 0 && seconds === '00') {
+                  Taro.showToast({
+                    title: '未按时支付订单',
+                    icon: 'error',
+                    mask: true,
+                    duration: 2000,
+                    success: () => {
+                      setTimeout(refresh, 2000);
+                    },
+                  });
+                } else {
+                  payOrder({
+                    orderNo: item?.orderNumber,
+                    orderId: item?.id,
+                    gatewayId: 2,
+                    gatewayCode: 'WX_PAY',
+                    gatewayTerminal: 2,
+                    paymentAmount: item?.orderPrice,
+                    tradeType: 0,
+                  });
+                }
               }}
             >
               <View style={{ display: 'flex' }}>
