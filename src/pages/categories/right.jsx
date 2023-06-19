@@ -146,7 +146,7 @@ const Index = (props) => {
                                     onClick={() => onTap(dto?.id)}
                                   >
                                     <Text style={{ color: '#d9001c', fontSize: 16 }}>
-                                      {dto?.itemSkuDtos && min(dto?.itemSkuDtos)}
+                                      {dto?.price}
                                     </Text>
                                     <View>
                                       <Text

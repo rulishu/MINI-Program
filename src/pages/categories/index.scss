@@ -1,6 +1,6 @@
 page {
   height: 100%;
-  background: #ffffff; 
+  background: #ffffff;
 }
 .all{
   flex:1;
@@ -99,7 +99,7 @@ page {
               justify-content: center;
            }
           }
-       
+
           .right-content-text-box{
             margin-left: 13px;
             width: 60%;
@@ -109,6 +109,10 @@ page {
             justify-content: space-between;
             .right-content-text-header{
               font-size: 24px;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 4; /* 指定显示文本的行数 */
+              overflow: hidden; /* 超出隐藏 */
             }
           }
         }
@@ -139,4 +143,3 @@ page {
     }
   }
 }
-
