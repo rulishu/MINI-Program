@@ -30,17 +30,23 @@
 
 .horizontal {
   .tabs {
+    border-radius: 0;
+    box-sizing: border-box;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    padding: 26px 50px 26px;
-    // background-color: #fff;
+    flex-shrink: 0;
+    height: 92px;
     .normal {
       display: flex;
       flex-direction: column;
       align-items: center;
+      flex: 1;
       font-size: 24px;
+      min-width: 100px; /* 设置最小宽度 */
+      overflow: hidden;
+      position: relative;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       .tabsLine {
         background: $primary-color;
         width: 48px;
@@ -59,5 +65,10 @@
       color:$primary-color;
       font-weight: bold;
     }
+  }
+  .scrollable {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap; /* 防止换行 */
   }
 }
