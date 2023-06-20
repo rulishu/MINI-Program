@@ -7,12 +7,13 @@ page {
     display: flex;
     .left-nav {
       width: 22%;
-      height: calc(100vh - 100px);
+      height: calc(100vh);
       overflow: scroll;
     }
     .cate-body {
+      background-color: #fff;
       width: 78%;
-      height: calc(100vh - 100px);
+      height: calc(100vh);
       overflow: scroll;
     }
   }
