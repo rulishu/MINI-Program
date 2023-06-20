@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from '@tarojs/components';
 import { Popup, Button } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
@@ -23,13 +24,39 @@ const Index = () => {
 
   // 保存海报
   const onPoster = () => {
-    dispatch({
-      type: 'goodInfo/update',
-      payload: {
-        shareVisible: false,
-        posterVisible: true,
-      },
-    });
+    const token = Taro.getStorageSync('token');
+    const userInfo = Taro.getStorageSync('userInfo');
+    if (token !== '') {
+      dispatch({
+        type: 'my/getUserInfos',
+        payload: {
+          id: userInfo.id,
+        },
+      });
+      dispatch({
+        type: 'goodInfo/update',
+        payload: {
+          shareVisible: false,
+          posterVisible: true,
+        },
+      });
+      Taro.showLoading({
+        title: '海报生成中',
+        icon: 'none',
+        mask: true,
+      });
+      dispatch({
+        type: 'goodInfo/miniprogramcode',
+      });
+      // 这里实际上应该向后台发请求后去小程序码
+      setTimeout(() => {
+        async () => {
+          Taro.hideLoading();
+        };
+      }, 1000);
+    } else {
+      Taro.navigateTo({ url: '/pages/login/index' });
+    }
     // Taro.previewImage({
     //   current: '', // 当前显示图片的http链接
     //   urls: images // 需要预览的图片http链接列表
