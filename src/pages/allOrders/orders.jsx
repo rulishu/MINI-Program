@@ -113,7 +113,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
             : `实付款 ￥${item.payPrice}`}
         </View>
         <View className="order-item-bottom">
-          {item.orderStatus === 3 && (
+          {(item.orderStatus === 3 || item.orderStatus === 4) && (
             <Button
               className="bottom-btn"
               plain
@@ -121,6 +121,11 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
               onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
             >
               查看物流
+            </Button>
+          )}
+          {item.orderStatus === 4 && (
+            <Button className="bottom-btn" plain type="default">
+              评价
             </Button>
           )}
           {(item.orderStatus === -2 ||
