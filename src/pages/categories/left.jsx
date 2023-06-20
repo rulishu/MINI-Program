@@ -56,35 +56,22 @@ const Index = () => {
         </Sidebar>
       </View>
       <View className="cate-body">
-        <ScrollView
-          style={{ height: 300 }}
-          scrollY
-          lowerThreshold={10}
-          upperThreshold={10}
-          scrollWithAnimation
-          onScrollToLower={onScrollToLower}
-          onScrollToUpper={onScrollToUpper}
-        >
-          <View>
-            {getCategoriesTree.length > 0 ? (
-              <Right
-                getCategoriesTwoTree={getCategoriesTree[value]?.child || []}
-                style={{ width: '70vw', backgroundColor: '#ffffff' }}
-              />
-            ) : (
-              <View
-                style={{
-                  height: '90vh',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Empty image="empty" description="无数据" />
-              </View>
-            )}
-          </View>
-        </ScrollView>
+        <View>
+          {getCategoriesTree.length > 0 ? (
+            <Right onScrollToLower={onScrollToLower} onScrollToUpper={onScrollToUpper} />
+          ) : (
+            <View
+              style={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Empty image="empty" description="无数据" />
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );

@@ -3,14 +3,13 @@ import { View } from '@tarojs/components';
 import { useSelector } from 'react-redux';
 import GoodList from './goodList';
 import { getLevelList } from '@/server/home';
-import Tabs from '@/component/tabs';
 import './index.scss';
 import PullList from '@/component/pullList';
+import Tabs from '@/component/aTabs';
 
 const Index = () => {
   const { levelTab } = useSelector((state) => state.home);
   const [tab4value, setTab4value] = useState(null);
-  const { activeIndex } = useSelector((state) => state.global);
 
   useEffect(() => {
     const defaultValue = levelTab && levelTab.length > 0 && levelTab[0].id;
@@ -24,38 +23,25 @@ const Index = () => {
       <Tabs
         value={tab4value}
         className="tabs"
-        onChange={({ paneKey }) => {
-          setTab4value(paneKey);
-        }}
+        type="horizontal"
         titleScroll
-        titleGutter="10"
-        destroyInactiveTabPane
-      >
-        {levelTab?.map((item) => {
-          return (
-            <Tabs.TabPane
-              key={item.id}
-              title={item.marketingName}
-              paneKey={item.id}
-              className="tab-content"
-            >
-              {activeIndex === 0 && (
-                <PullList
-                  request={fetchData}
-                  params={{ id: tab4value }}
-                  style={{ height: '50vh' }}
-                  renderList={(dataSource) => <GoodList dataList={dataSource} />}
-                  callback={({ refresh }) => {
-                    if (tab4value === item.id) {
-                      refresh?.();
-                    }
-                  }}
-                />
-              )}
-            </Tabs.TabPane>
-          );
-        })}
-      </Tabs>
+        onChange={(paneKey) => setTab4value(paneKey)}
+        tabList={levelTab.map((item) => ({
+          title: item.marketingName,
+          id: item.id,
+          children: (
+            <PullList
+              request={fetchData}
+              params={{ id: tab4value }}
+              style={{ height: '50vh' }}
+              renderList={(dataSource) => <GoodList dataList={dataSource} />}
+              callback={({ refresh }) => {
+                refresh?.();
+              }}
+            />
+          ),
+        }))}
+      />
     </View>
   );
 };
