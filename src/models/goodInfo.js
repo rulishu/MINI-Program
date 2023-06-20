@@ -237,8 +237,13 @@ export default {
               posterCode: result.result || '',
             },
           });
+          Taro.hideLoading();
+        } else {
+          Taro.hideLoading();
         }
-      } catch (err) {}
+      } catch (err) {
+        Taro.hideLoading();
+      }
     },
   },
 
