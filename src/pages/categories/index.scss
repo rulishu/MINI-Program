@@ -1,52 +1,20 @@
 page {
   height: 100%;
-  background: #ffffff;
+  background: #f7f8fa;
 }
 .all{
-  flex:1;
-  display: flex;
-  flex-direction: column;
-  .all-left{
-    width:20%;
-    background-color: #F6F6F6;
-  }
-  .all-right{
-    width:80%;
-    background-color: #ffffff;
-  }
-  // 左侧一级菜单
-  .left{
-    // height: 100%;
-    width:144px;
-    .left-selected{
-      width:6px;
-      height:30px;
-      border-top-right-radius: 16px;
-      border-bottom-right-radius: 16px;
-      margin-right:8px;
+  .cate-list {
+    display: flex;
+    .left-nav {
+      width: 22%;
+      height: calc(100vh - 100px);
+      overflow: scroll;
     }
-    .left-noselected{
-      width:6px;
-      height:30px;
-      margin-right:8px;
-
+    .cate-body {
+      width: 78%;
+      height: calc(100vh - 100px);
+      overflow: scroll;
     }
-    .left-content{
-      width:150px;
-      height:110px;
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-    }
-    .left-content-selected{
-     background-color: #ffffff;
-    }
-    .left-title{
-      font-size: 24px;
-    }
-  }
-  .nut-tabpane{
-    padding: 0 0 0 2px!important;
   }
   // 右侧二级菜单
   .right{
@@ -143,3 +111,5 @@ page {
     }
   }
 }
+
+
