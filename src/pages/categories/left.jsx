@@ -57,10 +57,10 @@ const Index = () => {
       </View>
       <View className="cate-body">
         <ScrollView
-          style={{ height: '100vh' }}
+          style={{ height: 300 }}
           scrollY
-          // lowerThreshold={50}
-          // upperThreshold={10}
+          lowerThreshold={10}
+          upperThreshold={10}
           scrollWithAnimation
           onScrollToLower={onScrollToLower}
           onScrollToUpper={onScrollToUpper}
