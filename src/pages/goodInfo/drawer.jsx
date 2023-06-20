@@ -123,7 +123,7 @@ const Index = () => {
       });
     } else {
       updateFn({ visible: false });
-      Taro.navigateTo({ url: '/pages/goodInfo/index' });
+      return Taro.navigateTo({ url: `/pages/goodInfo/index?id=${queryInfo?.id}` });
     }
   };
   const nowCart = () => {
@@ -169,7 +169,6 @@ const Index = () => {
           skuId: skuInfo?.skuId,
         },
       });
-      updateFn({ visible: false });
     }
   };
   return (

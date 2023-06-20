@@ -10,8 +10,15 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch(); //queryInfo,
-  const { goodsName, currentAddress, orderNotesInfo, shoppingCartVOList, orderToken, activeSku } =
-    useSelector((state) => state.goodInfo);
+  const {
+    goodsName,
+    currentAddress,
+    orderNotesInfo,
+    shoppingCartVOList,
+    orderToken,
+    activeSku,
+    queryInfo,
+  } = useSelector((state) => state.goodInfo);
   const { payOrder } = usePay({
     success: () => {
       dispatch({
@@ -138,6 +145,7 @@ const Index = () => {
         count: orderInfo?.count,
         remark: orderNotesInfo, //备注
         shoppingCartVOList: shoppingCartVOLists,
+        id: queryInfo?.id,
         callBack: () => {
           // 预订单
           let submitDetail = Taro.getStorageSync('submitInfo');
