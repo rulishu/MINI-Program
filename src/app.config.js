@@ -27,12 +27,6 @@ export default defineAppConfig({
       desc: '你的位置信息将用于获取收货地址信息',
     },
   },
-  window: {
-    backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black',
-  },
   tabBar: {
     custom: true,
     list: [

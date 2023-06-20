@@ -8,41 +8,17 @@ import { useRequest } from 'ahooks';
 import Taro from '@tarojs/taro';
 import Right from './right';
 import './index.scss';
-import { Sidebar } from '@taroify/core';
+import { Sidebar, ConfigProvider } from '@taroify/core';
 
 const Index = () => {
-  const { getCategoriesTree, subList } = useSelector((state) => state.categories);
-  const { activeIndex } = useSelector((state) => state.global);
+  const { getCategoriesTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
-  const [tab5value, setTab5value] = useState(0);
-
-  const updateFn = (payload) => {
-    dispatch({
-      type: 'categories/update',
-      payload: payload,
-    });
-  };
+  const [value, setValue] = useState(0);
+  const [activeItem, setActiveItem] = useState(0);
 
   useEffect(() => {
-    if (!getCategoriesTree?.length > 0) return;
-    setTab5value(getCategoriesTree?.[0]?.id);
-  }, [getCategoriesTree?.length]);
-
-  const onScrollToUpper = () => {
-    if (tab5value <= 0) return;
-    let nextIndex = tab5value - 1;
-    setTab5value(nextIndex);
-  };
-
-  const onScrollToLower = () => {
-    let nextIndex = tab5value + 1;
-    if (nextIndex === getCategoriesTree.length) return;
-    setTab5value(nextIndex);
-  };
-
-  useEffect(() => {
-    const id = getCategoriesTree?.[tab5value]?.id;
-    if (id && tab5value && activeIndex === 1) {
+    const id = getCategoriesTree?.[value]?.id;
+    if (id) {
       dispatch({
         type: 'categories/getList',
         payload: {
@@ -52,16 +28,28 @@ const Index = () => {
         },
       });
     }
-  }, [tab5value, activeIndex]);
+  }, [value, getCategoriesTree]);
+
+  const onScrollToUpper = () => {
+    if (value <= 0) return;
+    let nextIndex = value - 1;
+    setValue(nextIndex);
+  };
+
+  const onScrollToLower = () => {
+    let nextIndex = value + 1;
+    if (nextIndex === getCategoriesTree.length) return;
+    setValue(nextIndex);
+  };
 
   return (
     <View className="cate-list" style={{ display: 'flex' }}>
       <View className="left-nav">
         <Sidebar
-          style={{ height: '100vh' }}
-          value={tab5value}
-          onChange={(value) => {
-            setTab5value(value);
+          value={value}
+          onChange={(val) => {
+            setValue(val);
+            setActiveItem(0);
           }}
         >
           {getCategoriesTree?.map((item) => {
@@ -70,35 +58,27 @@ const Index = () => {
         </Sidebar>
       </View>
       <View className="cate-body">
-        <ScrollView
-          style={{ height: '100vh' }}
-          scrollY
-          lowerThreshold={10}
-          upperThreshold={10}
-          scrollWithAnimation
-          onScrollToLower={onScrollToLower}
-          onScrollToUpper={onScrollToUpper}
-        >
-          <View>
-            {getCategoriesTree.length > 0 ? (
-              <Right
-                getCategoriesTwoTree={getCategoriesTree[tab5value]?.child || []}
-                style={{ width: '70vw', backgroundColor: '#ffffff' }}
-              />
-            ) : (
-              <View
-                style={{
-                  height: '90vh',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Empty image="empty" description="无数据" />
-              </View>
-            )}
-          </View>
-        </ScrollView>
+        <View>
+          {getCategoriesTree.length > 0 ? (
+            <Right
+              onScrollToLower={onScrollToLower}
+              onScrollToUpper={onScrollToUpper}
+              activeItem={activeItem}
+              setActiveItem={setActiveItem}
+            />
+          ) : (
+            <View
+              style={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Empty image="empty" description="无数据" />
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );

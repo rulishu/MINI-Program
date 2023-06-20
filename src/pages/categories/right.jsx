@@ -9,9 +9,8 @@ import './index.scss';
 
 const Index = (props) => {
   // eslint-disable-next-line no-unused-vars
-  const { getCategoriesTwoTree } = props;
+  const { onScrollToLower, onScrollToUpper, activeItem, setActiveItem } = props;
   const { subList } = useSelector((state) => state.categories);
-  const [activeItem, setActiveItem] = useState(0);
   const [scrollIntoView, setScrollIntoView] = useState(0);
   const dispatch = useDispatch();
 
@@ -52,11 +51,11 @@ const Index = (props) => {
       </View>
       <ScrollView
         scrollY
-        style={{
-          height: '100%',
-        }}
+        style={{ height: '100vh' }}
         scrollIntoView={scrollIntoView}
-        // scrollWithAnimation
+        // onScrollToLower={onScrollToLower}
+        // onScrollToUpper={onScrollToUpper}
+        scrollWithAnimation
       >
         <View className="right" style={{ minHeight: 'calc(100% - 230rpx)' }}>
           <View style={{ marginBottom: 8 }} className="right-title-box">
