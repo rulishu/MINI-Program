@@ -47,6 +47,10 @@ export default {
               subList: result.result,
             },
           });
+          setTimeout(() => {
+            Taro.hideLoading();
+          }, 300);
+        } else {
           Taro.hideLoading();
         }
       } catch (err) {}
