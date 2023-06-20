@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './index.scss';
 import { Overlay, Divider } from '@nutui/nutui-react-taro';
 import { Swiper, SwiperItem, Image, View, Text } from '@tarojs/components';
@@ -20,7 +20,7 @@ const PictureStyle = {
   backgroundColor: '#ffffff',
   width: '74vw',
   textAlign: 'center',
-  padding: '20px 0',
+  // padding: '20px 0',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -33,26 +33,6 @@ const Index = () => {
   const { queryInfo, posterVisible, currentIndex, autoplay, interval, duration, posterCode } =
     useSelector((state) => state.goodInfo);
   const { userInfos } = useSelector((state) => state.my);
-  useEffect(() => {
-    dispatch({
-      type: 'goodInfo/miniprogramcode',
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const token = Taro.getStorageSync('token');
-    const userInfo = Taro.getStorageSync('userInfo');
-    if (token !== '') {
-      dispatch({
-        type: 'my/getUserInfos',
-        payload: {
-          id: userInfo.id,
-        },
-      });
-    }
-    // eslint-disable-next-line global-require
-  }, []);
 
   // 关闭
   const onClose = () => {
@@ -90,31 +70,17 @@ const Index = () => {
     })?.membershipPrice || 0;
 
   // 保存图片
-  const onPicture = async () => {
-    await wx
-      .createSelectorQuery()
-      .select('#myCanvas') // 在 WXML 中填入的 id
+  const onPicture = (img) => {
+    // console.log('保存图片', img)
+    wx.createSelectorQuery()
+      .select('#myCanvas')
       .fields({ node: true, size: true })
-      .exec((res) => {
-        // Canvas 对象
-        const canvas = res[0].node;
-        // 渲染上下文
-        // const ctx = canvas.getContext('2d')
-        // 生成图片
-        wx.canvasToTempFilePath({
-          canvas,
-          success: (ress) => {
-            // 生成的图片临时文件路径
-            const tempFilePath = ress.tempFilePath;
-            // console.log('tempFilePath', tempFilePath)
-            // 下载
-            picture(tempFilePath);
-          },
-        });
+      .exec(async (res) => {
+        init(res, img);
       });
   };
-
   const picture = async (tempFilePath) => {
+    // console.log('xiazai', tempFilePath)
     await Taro.getSetting({
       complete() {},
     })
@@ -178,6 +144,127 @@ const Index = () => {
       .catch(() => {});
   };
 
+  //canvas单行文本自动省略
+  const fittingString = (_ctx, str, maxWidth) => {
+    let strWidth = _ctx.measureText(str).width;
+    const ellipsis = '…';
+    const ellipsisWidth = _ctx.measureText(ellipsis).width;
+    if (strWidth <= maxWidth || maxWidth <= ellipsisWidth) {
+      return str;
+    } else {
+      var len = str.length;
+      while (strWidth >= maxWidth - ellipsisWidth && len-- > 0) {
+        str = str.slice(0, len);
+        strWidth = _ctx.measureText(str).width;
+      }
+      return str + ellipsis;
+    }
+  };
+
+  const drawBall = (context, canvas, img) => {
+    // console.log('drawBall', context, canvas, img)
+    function ball() {
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.beginPath(0);
+      context.fill();
+      context.stroke();
+      context.font = '24px Arial';
+      context.fillStyle = '#000000';
+      if (min === max) {
+        context.fillText(`¥ ${min === max ? min : min + '~' + max}`, 10, 390, 300);
+        context.fillStyle = '#929292';
+        context.font = '12px Arial';
+        context.fillText(` 原价：¥ ${queryInfo.price}`, 80, 390, 300);
+      } else {
+        context.fillText(`¥ ${min === max ? min : min + '~' + max}`, 10, 390, 300);
+        context.fillStyle = '#929292';
+        context.font = '12px Arial';
+        context.fillText(` 原价：¥ ${queryInfo.price}`, 140, 390, 300);
+      }
+      context.fillStyle = '#000000';
+      context.font = '16px Arial';
+      context.fillText(
+        `${fittingString(context, queryInfo.itemName, 280)}`,
+        // `${queryInfo.itemName}`,
+        10,
+        420,
+      );
+      context.fillStyle = '#000000';
+      context.font = '12px Arial';
+      context.fillText(`${userInfos.consumerName} 为你推荐`, 50, 450, 250);
+      context.fillStyle = '#929292';
+      context.font = '10px Arial';
+      context.fillText(`值得买的好宝贝，别错过了哟`, 10, 480, 300);
+      if (userInfos.headUrl === '' || userInfos.headUrl === undefined) {
+        // 绘制
+        context.beginPath();
+        context.arc(25, 445, 15, 0, Math.PI * 2);
+        context.fillStyle = '#D7D7D7';
+        context.fill();
+      }
+    }
+    ball();
+    // 图片
+    const image = canvas.createImage();
+    image.src = img;
+
+    image.onload = () => {
+      context.drawImage(image, 0, 0, 290, 360); // 图片资源，x坐标，y坐标，图片宽度，图片高度
+
+      // console.log('111', image)
+      const image1 = canvas.createImage();
+      image1.src = userInfos.headUrl;
+      // console.log('userInfos.headUrl,', userInfos.headUrl);
+      image1.onload = () => {
+        context.save();
+        context.beginPath();
+        context.arc(25, 445, 15, 0, 2 * Math.PI);
+        context.clip(); //剪切路径
+        context.drawImage(image1, 10, 430, 30, 30); // 图片资源，x坐标，y坐标，图片宽度，图片高度
+        //恢复状态
+        context.restore();
+
+        // console.log('222', image1)
+        const image2 = canvas.createImage();
+        image2.src = posterCode;
+        // console.log('userInfos.posterCode,', posterCode);
+
+        image2.onload = () => {
+          // console.log('333', image2)
+          context.drawImage(image2, 200, 430, 60, 60); // 图片资源，x坐标，y坐标，图片宽度，图片高度
+
+          // 生成图片
+          wx.canvasToTempFilePath({
+            canvas,
+            success: (ress) => {
+              // console.log('生成图片', ress)
+              // 生成的图片临时文件路径
+              const tempFilePath = ress.tempFilePath;
+              // 下载
+              picture(tempFilePath);
+            },
+          });
+        };
+      };
+    };
+  };
+
+  const init = (res, img) => {
+    const width = res[0].width;
+    const height = res[0].height;
+    const canvas = res[0].node;
+    const ctx = canvas.getContext('2d');
+    const dpr = wx.getSystemInfoSync().pixelRatio;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.scale(dpr, dpr);
+    // const renderLoop = () => {
+    //   canvas.requestAnimationFrame(renderLoop)
+    // }
+    // canvas.requestAnimationFrame(renderLoop)
+    drawBall(ctx, canvas, img);
+  };
   return (
     <Overlay visible={posterVisible} onClick={onClose}>
       <div style={WrapperStyle}>
@@ -196,11 +283,16 @@ const Index = () => {
             {queryInfo?.mainGraphs?.map((item, index) => {
               return (
                 <SwiperItem class="swiper-item-wrap" key={index}>
-                  <canvas
-                    type="2d"
-                    class={currentIndex == index ? 'swiper-item current' : 'swiper-item'}
-                    id="myCanvas"
-                  >
+                  {true && (
+                    <canvas
+                      style="width: 74vw; height: 100%;background-color:#ffffff;z-index:2;position: absolute; top: 0; left: -10000px;"
+                      canvas-id="myCanvas"
+                      class="canvas"
+                      type="2d"
+                      id="myCanvas"
+                    ></canvas>
+                  )}
+                  <View class={currentIndex == index ? 'swiper-item current' : 'swiper-item'}>
                     <View className=".swiper-imgs">
                       <Image class="swiper-item-img" src={item.path}></Image>
                     </View>
@@ -236,19 +328,23 @@ const Index = () => {
                         </View>
                       </View>
                     </View>
-                  </canvas>
+                  </View>
                 </SwiperItem>
               );
             })}
           </Swiper>
         </View>
         <View style={PictureStyle}>
-          <Text style={{ color: '#A05635' }} onClick={() => onPicture()}>
-            {' '}
-            保存图片
-          </Text>
+          <View
+            style={{ width: '100%', paddingTop: 20 }}
+            onClick={() => onPicture(queryInfo?.mainGraphs[currentIndex]?.path)}
+          >
+            <Text style={{ color: '#A05635' }}>保存图片</Text>
+          </View>
           <Divider styles={{ color: '#D7D7D7', borderColor: '#D7D7D7', width: '80%' }} />
-          <Text onClick={() => onClose()}>取消</Text>
+          <View style={{ width: '100%', paddingBottom: 20 }} onClick={() => onClose()}>
+            <Text>取消</Text>
+          </View>
         </View>
       </div>
     </Overlay>
