@@ -41,7 +41,6 @@ const Index = (props) => {
                 }}
                 className="right-title"
                 color={subList && index !== activeItem ? '#999999' : '#965A3C'}
-                // textColor="#999999"
               >
                 <Text onClick={() => onTagTap(item?.id)}>{item?.marketingName}</Text>
               </Tag>

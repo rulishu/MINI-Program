@@ -1,4 +1,4 @@
-import { getCategoriesList, getList, selectAllLevelTwo } from '@/server/categories';
+import { getList, selectAllLevelTwo } from '@/server/categories';
 import Taro from '@tarojs/taro';
 
 export default {
@@ -13,48 +13,12 @@ export default {
   },
 
   effects: {
-    // 获取分类列表
-    *getCategoriesList({ payload }, { call, put }) {
-      try {
-        const params = {
-          ...payload,
-        };
-        const result = yield call(getCategoriesList, params);
-        if (result && result.code === 200) {
-          yield put({
-            type: 'update',
-            payload: {
-              categoriesList: result.result,
-            },
-          });
-        }
-      } catch (err) {}
-    },
-
-    // // 一二级分类接口
-    // *getCategoriesTreeList({ payload }, { call, put }) {
-    //   try {
-    //     const params = {
-    //       ...payload,
-    //       appId: 'jcgl-mall-admin',
-    //     };
-    //     const result = yield call(getCategoriesTreeList, params);
-    //     if (result && result.code === 200) {
-    //       yield put({
-    //         type: 'update',
-    //         payload: {
-    //           getCategoriesTree: result.result,
-    //         },
-    //       });
-    //     }
-    //   } catch (err) { }
-    // },
     // 营销类目接口
     *selectAllLevelTwo({ payload }, { call, put }) {
+      Taro.showLoading({ title: '加载中...', mask: true });
       try {
         const params = {
           ...payload,
-          appId: 'jcgl-mall-admin',
         };
         const result = yield call(selectAllLevelTwo, params);
         if (result && result.code === 200) {
@@ -64,6 +28,7 @@ export default {
               getCategoriesTree: result.result,
             },
           });
+          Taro.hideLoading();
         }
       } catch (err) {}
     },
