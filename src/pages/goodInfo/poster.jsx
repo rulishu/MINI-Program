@@ -71,7 +71,6 @@ const Index = () => {
 
   // 保存图片
   const onPicture = (img) => {
-    // console.log('保存图片', img)
     wx.createSelectorQuery()
       .select('#myCanvas')
       .fields({ node: true, size: true })
@@ -80,7 +79,6 @@ const Index = () => {
       });
   };
   const picture = async (tempFilePath) => {
-    // console.log('xiazai', tempFilePath)
     await Taro.getSetting({
       complete() {},
     })
@@ -99,11 +97,23 @@ const Index = () => {
                       icon: 'none',
                       duration: 2000,
                     });
+                    dispatch({
+                      type: 'goodInfo/update',
+                      payload: {
+                        posterVisible: false,
+                      },
+                    });
                   } else {
                     Taro.showToast({
                       title: '图片保存失败！',
                       icon: 'none',
                       duration: 2000,
+                    });
+                    dispatch({
+                      type: 'goodInfo/update',
+                      payload: {
+                        posterVisible: false,
+                      },
                     });
                   }
                 });
@@ -127,11 +137,23 @@ const Index = () => {
                         icon: 'none',
                         duration: 2000,
                       });
+                      dispatch({
+                        type: 'goodInfo/update',
+                        payload: {
+                          posterVisible: false,
+                        },
+                      });
                     } else {
                       Taro.showToast({
                         title: '图片保存失败！',
                         icon: 'none',
                         duration: 2000,
+                      });
+                      dispatch({
+                        type: 'goodInfo/update',
+                        payload: {
+                          posterVisible: false,
+                        },
                       });
                     }
                   });
@@ -162,7 +184,6 @@ const Index = () => {
   };
 
   const drawBall = (context, canvas, img) => {
-    // console.log('drawBall', context, canvas, img)
     function ball() {
       context.fillStyle = '#ffffff';
       context.fillRect(0, 0, canvas.width, canvas.height);
@@ -208,41 +229,29 @@ const Index = () => {
     // 图片
     const image = canvas.createImage();
     image.src = img;
-
     image.onload = () => {
       context.drawImage(image, 0, 0, 290, 360); // 图片资源，x坐标，y坐标，图片宽度，图片高度
-
-      // console.log('111', image)
       const image1 = canvas.createImage();
       image1.src = userInfos.headUrl;
-      // console.log('userInfos.headUrl,', userInfos.headUrl);
       image1.onload = () => {
         context.save();
         context.beginPath();
         context.arc(25, 445, 15, 0, 2 * Math.PI);
         context.clip(); //剪切路径
         context.drawImage(image1, 10, 430, 30, 30); // 图片资源，x坐标，y坐标，图片宽度，图片高度
-        //恢复状态
         context.restore();
-
-        // console.log('222', image1)
         const image2 = canvas.createImage();
         image2.src = posterCode;
-        // console.log('userInfos.posterCode,', posterCode);
-
         image2.onload = () => {
-          // console.log('333', image2)
           context.drawImage(image2, 200, 430, 60, 60); // 图片资源，x坐标，y坐标，图片宽度，图片高度
-
           // 生成图片
           wx.canvasToTempFilePath({
             canvas,
-            success: (ress) => {
-              // console.log('生成图片', ress)
+            success: async (ress) => {
               // 生成的图片临时文件路径
               const tempFilePath = ress.tempFilePath;
               // 下载
-              picture(tempFilePath);
+              await picture(tempFilePath);
             },
           });
         };
@@ -266,7 +275,7 @@ const Index = () => {
     drawBall(ctx, canvas, img);
   };
   return (
-    <Overlay visible={posterVisible} onClick={onClose}>
+    <Overlay visible={posterVisible}>
       <div style={WrapperStyle}>
         <View class="banner-wrap">
           <Swiper
