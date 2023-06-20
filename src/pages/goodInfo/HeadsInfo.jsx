@@ -307,8 +307,8 @@ const Index = () => {
                     </View>
                   );
                 })}
-                <View style={{ marginBottom: 70 }}>{title()}</View>
               </View>
+              <View style={{ marginBottom: 70 }}></View>
             </View>
           </View>
           {/* 页脚按钮 */}
@@ -319,104 +319,126 @@ const Index = () => {
               bottom: 0,
               width: '100%',
               background: '#ffffff',
+              padding: '0 0 15px 0',
               display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: '10px 0 15px 0',
+              flexDirection: 'column',
             }}
           >
-            <View style={{ display: 'flex', flexDirection: 'row', marginRight: 25, width: '20%' }}>
+            {(queryInfo?.onShelf === 0 || queryInfo?.stock === 0 || queryInfo?.isDelete === 1) && (
               <View
-                style={{ marginRight: 15, marginLeft: 15 }}
-                onClick={() =>
-                  dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })
-                }
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  background: '#E9E9E9',
+                  padding: '1px 0',
+                }}
               >
-                <Image mode="widthFix" src={shareblack} style={{ width: 25, height: 25 }}></Image>
+                {title()}
               </View>
-              <View>
-                <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
-              </View>
-            </View>
-            <View style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
-              <View style={{ marginRight: 10, width: '45%' }}>
-                <Button
-                  style={{ borderRadius: 0, width: '100%' }}
-                  onClick={() => {
-                    const token = Taro.getStorageSync('token');
-                    if (token === '') {
-                      Taro.navigateTo({ url: '/pages/login/index' });
-                    } else if (queryInfo?.onShelf === 0) {
-                      Taro.showToast({
-                        title: '商品已下架',
-                        icon: 'none',
-                        duration: 2000,
-                      });
-                    } else if (queryInfo?.stock === 0) {
-                      Taro.showToast({
-                        title: '商品已售空',
-                        icon: 'none',
-                        duration: 2000,
-                      });
-                    } else if (queryInfo?.isDelete === 1) {
-                      Taro.showToast({
-                        title: '商品已删除',
-                        icon: 'none',
-                        duration: 2000,
-                      });
-                    } else {
-                      dispatch({
-                        type: 'goodInfo/update',
-                        payload: {
-                          visible: true,
-                          type: 'addCart',
-                        },
-                      });
-                    }
-                  }}
+            )}
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingTop: 10,
+              }}
+            >
+              <View
+                style={{ display: 'flex', flexDirection: 'row', marginRight: 25, width: '20%' }}
+              >
+                <View
+                  style={{ marginRight: 15, marginLeft: 15 }}
+                  onClick={() =>
+                    dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })
+                  }
                 >
-                  加入购物车
-                </Button>
+                  <Image mode="widthFix" src={shareblack} style={{ width: 25, height: 25 }}></Image>
+                </View>
+                <View>
+                  <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
+                </View>
               </View>
-              <View style={{ width: '45%' }}>
-                <Button
-                  type="primary"
-                  style={{ borderRadius: 0, width: '100%' }}
-                  onClick={() => {
-                    const token = Taro.getStorageSync('token');
-                    if (token === '') {
-                      Taro.navigateTo({ url: '/pages/login/index' });
-                    } else if (queryInfo?.onShelf === 0) {
-                      Taro.showToast({
-                        title: '商品已下架',
-                        icon: 'none',
-                        duration: 2000,
-                      });
-                    } else if (queryInfo?.stock === 0) {
-                      Taro.showToast({
-                        title: '商品已售空',
-                        icon: 'none',
-                        duration: 2000,
-                      });
-                    } else if (queryInfo?.isDelete === 1) {
-                      Taro.showToast({
-                        title: '商品已删除',
-                        icon: 'none',
-                        duration: 2000,
-                      });
-                    } else {
-                      dispatch({
-                        type: 'goodInfo/update',
-                        payload: {
-                          visible: true,
-                          type: 'nowCart',
-                        },
-                      });
-                    }
-                  }}
-                >
-                  立即购买
-                </Button>
+              <View style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
+                <View style={{ marginRight: 10, width: '45%' }}>
+                  <Button
+                    style={{ borderRadius: 0, width: '100%' }}
+                    onClick={() => {
+                      const token = Taro.getStorageSync('token');
+                      if (token === '') {
+                        Taro.navigateTo({ url: '/pages/login/index' });
+                      } else if (queryInfo?.onShelf === 0) {
+                        Taro.showToast({
+                          title: '商品已下架',
+                          icon: 'none',
+                          duration: 2000,
+                        });
+                      } else if (queryInfo?.stock === 0) {
+                        Taro.showToast({
+                          title: '商品已售空',
+                          icon: 'none',
+                          duration: 2000,
+                        });
+                      } else if (queryInfo?.isDelete === 1) {
+                        Taro.showToast({
+                          title: '商品已删除',
+                          icon: 'none',
+                          duration: 2000,
+                        });
+                      } else {
+                        dispatch({
+                          type: 'goodInfo/update',
+                          payload: {
+                            visible: true,
+                            type: 'addCart',
+                          },
+                        });
+                      }
+                    }}
+                  >
+                    加入购物车
+                  </Button>
+                </View>
+                <View style={{ width: '45%' }}>
+                  <Button
+                    type="primary"
+                    style={{ borderRadius: 0, width: '100%' }}
+                    onClick={() => {
+                      const token = Taro.getStorageSync('token');
+                      if (token === '') {
+                        Taro.navigateTo({ url: '/pages/login/index' });
+                      } else if (queryInfo?.onShelf === 0) {
+                        Taro.showToast({
+                          title: '商品已下架',
+                          icon: 'none',
+                          duration: 2000,
+                        });
+                      } else if (queryInfo?.stock === 0) {
+                        Taro.showToast({
+                          title: '商品已售空',
+                          icon: 'none',
+                          duration: 2000,
+                        });
+                      } else if (queryInfo?.isDelete === 1) {
+                        Taro.showToast({
+                          title: '商品已删除',
+                          icon: 'none',
+                          duration: 2000,
+                        });
+                      } else {
+                        dispatch({
+                          type: 'goodInfo/update',
+                          payload: {
+                            visible: true,
+                            type: 'nowCart',
+                          },
+                        });
+                      }
+                    }}
+                  >
+                    立即购买
+                  </Button>
+                </View>
               </View>
             </View>
           </View>
