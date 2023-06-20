@@ -8,7 +8,7 @@ import { getAllOrders } from '@/server/allOrders';
 import './index.scss';
 import Orders from './orders';
 import PullList from '@/component/pullList';
-import Tabs from './component/tabs';
+import Tabs from '@/component/aTabs';
 import { tabList } from './eumn';
 
 const Index = () => {
