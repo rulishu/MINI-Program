@@ -164,6 +164,9 @@ export default {
             icon: 'none',
             duration: 2000,
           });
+          setTimeout(() => {
+            Taro.navigateTo({ url: `/pages/goodInfo/index?id=${params?.id}` });
+          }, 500);
         }
       } catch (err) {}
     },
@@ -213,6 +216,7 @@ export default {
               shoppingCartVOList: result.result.shoppingCartVOList || {},
               orderToken: result.result.orderToken,
               currentAddress: {},
+              visible: false,
             },
           });
         }
