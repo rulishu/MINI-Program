@@ -47,9 +47,17 @@ const Index = () => {
       <View className="left-nav">
         <Sidebar
           value={value}
-          onChange={(val) => {
+          onChange={async (val) => {
             setValue(val);
             setActiveItem(0);
+            await dispatch({
+              type: 'categories/getList',
+              payload: {
+                id: value,
+                onShelf: 2,
+                groundType: 2,
+              },
+            });
           }}
         >
           {getCategoriesTree?.map((item) => {
