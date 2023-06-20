@@ -14,6 +14,7 @@ const Index = () => {
   const { getCategoriesTree } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
+  const [activeItem, setActiveItem] = useState(0);
 
   useEffect(() => {
     const id = getCategoriesTree?.[value]?.id;
@@ -48,6 +49,7 @@ const Index = () => {
           value={value}
           onChange={(val) => {
             setValue(val);
+            setActiveItem(0);
           }}
         >
           {getCategoriesTree?.map((item) => {
@@ -58,7 +60,12 @@ const Index = () => {
       <View className="cate-body">
         <View>
           {getCategoriesTree.length > 0 ? (
-            <Right onScrollToLower={onScrollToLower} onScrollToUpper={onScrollToUpper} />
+            <Right
+              onScrollToLower={onScrollToLower}
+              onScrollToUpper={onScrollToUpper}
+              activeItem={activeItem}
+              setActiveItem={setActiveItem}
+            />
           ) : (
             <View
               style={{

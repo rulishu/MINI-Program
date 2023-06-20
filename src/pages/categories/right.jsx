@@ -9,9 +9,8 @@ import './index.scss';
 
 const Index = (props) => {
   // eslint-disable-next-line no-unused-vars
-  const { onScrollToLower, onScrollToUpper } = props;
+  const { onScrollToLower, onScrollToUpper, activeItem, setActiveItem } = props;
   const { subList } = useSelector((state) => state.categories);
-  const [activeItem, setActiveItem] = useState(0);
   const [scrollIntoView, setScrollIntoView] = useState(0);
   const dispatch = useDispatch();
 
@@ -58,10 +57,7 @@ const Index = (props) => {
         // onScrollToUpper={onScrollToUpper}
         scrollWithAnimation
       >
-        <View
-          className="right"
-          style={{ minHeight: 'calc(100% - 230rpx)', border: '1px solid red' }}
-        >
+        <View className="right" style={{ minHeight: 'calc(100% - 230rpx)' }}>
           <View style={{ marginBottom: 8 }} className="right-title-box">
             <View style={{ width: '100%' }}>
               {/* 二级标签下内容 */}
