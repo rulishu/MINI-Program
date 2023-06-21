@@ -22,6 +22,7 @@ export default defineAppConfig({
     'pages/orderDetails/index',
     'pages/dealDone/index',
     'pages/evaluate/index',
+    'pages/allEvaluate/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
