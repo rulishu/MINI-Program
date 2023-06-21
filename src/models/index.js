@@ -11,6 +11,7 @@ import sales from './sales';
 import orderDetails from './orderDetails';
 import select from './select';
 import logisticsInfo from './logisticsInfo';
+import evaluate from './evaluate';
 
 export default [
   global,
@@ -26,4 +27,5 @@ export default [
   orderDetails,
   select,
   logisticsInfo,
+  evaluate,
 ]; // 这里是数组, 数组中的每个项都是独立的模块
