@@ -48,6 +48,17 @@ const Index = () => {
     Taro.navigateTo({ url: `/pages/evaluate/index` });
   };
 
+  // 返回订单列表
+  const goOrderList = () => {
+    Taro.navigateTo({ url: '/pages/allOrders/index' });
+    dispatch({
+      type: 'allOrders/update',
+      payload: {
+        orderActive: 0,
+      },
+    });
+  };
+
   return (
     <View className="index">
       <View>
@@ -57,7 +68,7 @@ const Index = () => {
           renderCenter={
             <View className="navbar-head">
               <View className="navbar-head-left">
-                <Icon size="18" name="rect-left" onTap={() => goHome()} />
+                <Icon size="18" name="rect-left" onTap={() => goOrderList()} />
               </View>
               <View className="navbar-head-right">
                 <Text>交易完成</Text>
