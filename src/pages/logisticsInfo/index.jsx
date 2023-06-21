@@ -1,11 +1,16 @@
 /* eslint-disable global-require */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import { Steps, Step, Tabs } from '@nutui/nutui-react-taro';
+import { useRequest } from 'ahooks';
+import { useSelector, useDispatch } from 'react-redux';
+import { getBannerList } from '@/server/logisticsInfo';
 import { logisticsList } from './item';
 import './index.scss';
 
 const Index = () => {
+  const { id } = useSelector((state) => state.logisticsInfo);
   const [tab1value, setTab1value] = useState('0');
   const ImageList = [
     { imageUrl: require('@/assets/images/home8.png') },
@@ -13,6 +18,32 @@ const Index = () => {
     { imageUrl: require('@/assets/images/home8.png') },
   ];
   const tabList = [{ tabTitle: '包裹1' }, { tabTitle: '包裹2' }, { tabTitle: '包裹3' }];
+  const dispatch = useDispatch();
+  const updateFn = (payload) => {
+    dispatch({
+      type: 'logisticsInfo/update',
+      payload: payload,
+    });
+  };
+  const { run } = useRequest(getBannerList, {
+    manual: true,
+    onSuccess: ({ code, result }) => {
+      if (code && code === 200) {
+        updateFn({
+          orderList: result && result?.records,
+        });
+        Taro.hideLoading();
+      } else {
+        Taro.hideLoading();
+      }
+    },
+  });
+
+  useEffect(() => {
+    run({ id });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View className="index">
       <Tabs

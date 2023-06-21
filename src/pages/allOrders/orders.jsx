@@ -118,7 +118,15 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
               className="bottom-btn"
               plain
               type="default"
-              onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
+              onClick={() => {
+                dispatch({
+                  type: 'logisticsInfo/update',
+                  payload: {
+                    id: Number(item.id),
+                  },
+                });
+                Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+              }}
             >
               查看物流
             </Button>
