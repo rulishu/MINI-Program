@@ -44,7 +44,9 @@ const Index = () => {
   };
 
   // 立即评价
-  const goEvaluate = () => {};
+  const goEvaluate = () => {
+    Taro.navigateTo({ url: `/pages/evaluate/index` });
+  };
 
   return (
     <View className="index">
