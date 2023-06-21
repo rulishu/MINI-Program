@@ -226,6 +226,9 @@ const Index = () => {
               backgroundColor: '#ffffff',
               height: 50,
             }}
+            onClick={() => {
+              dispatch({ type: 'goodInfo/update', payload: { couponVisible: true } });
+            }}
           >
             <View
               style={{

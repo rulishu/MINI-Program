@@ -4,6 +4,7 @@ import { View } from '@tarojs/components';
 import Share from './share';
 import HeadsInfo from './HeadsInfo';
 import Poster from './poster';
+import Coupon from './coupon';
 import Taro from '@tarojs/taro';
 import { useDispatch } from 'react-redux';
 
@@ -24,6 +25,7 @@ const Index = () => {
       <HeadsInfo />
       <Share />
       <Poster />
+      <Coupon />
     </View>
   );
 };

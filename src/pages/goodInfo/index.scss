@@ -135,7 +135,6 @@ page {
     font-family: PingFangSC-Regular, PingFang SC;
     line-height: 42rpx;
   }
- 
     .share-image-item1-info{
       display: flex;
       flex-direction: column;
@@ -294,3 +293,67 @@ page {
   transform: scale(1);
   opacity: 1
 }
+
+// 领劵弹窗CSS
+.couponBorderBox{
+  margin: 20px 40px;
+  .couponBorderBox-title{
+    font-size: 36px;
+    margin-bottom: 30px;
+  }
+  .couponBorderBox-list{
+    height: 180px;
+    border: 1px solid #d7d7d7;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    .couponBorderBox-list-left{
+      width: 30%;
+      height: 100%;
+      border-right: 1px solid #d7d7d7;
+      border-radius: 20px;
+      font-family: "Arial Normal", Arial, sans-serif;
+      .couponBorderBox-list-left-box{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .couponBorderBox-list-right{
+      margin: 20px 30px;
+      width: 70%;
+     .couponBorderBox-list-right-content{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .couponBorderBox-list-right-content-text{
+        color: #aaaaaa;
+      }
+      .couponBorderBox-list-right-content-button{
+        border: 1px solid red;
+        border-radius: 20px;
+        width: 120px;
+        text-align: center;
+      }
+      .couponBorderBox-list-right-content-buttoned{
+        border: 1px solid #555555;
+        color: #555555;
+        border-radius: 20px;
+        width: 120px;
+        text-align: center;
+      }
+     }
+     .couponBorderBox-list-right-timeRange{
+      font-family: "微软雅黑", sans-serif;
+      font-weight: 300;
+      font-size: 30px;
+      color: rgb(0, 0, 0)
+    }
+    }
+  }
+}
+
+
