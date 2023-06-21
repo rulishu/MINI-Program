@@ -1,23 +1,17 @@
 /* eslint-disable global-require */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { Steps, Step, Tabs } from '@nutui/nutui-react-taro';
+import { Steps, Step } from '@nutui/nutui-react-taro';
+import Tabs from '@/component/aTabs';
 import { useRequest } from 'ahooks';
 import { useSelector, useDispatch } from 'react-redux';
-import { getBannerList } from '@/server/logisticsInfo';
+import { getPackageList } from '@/server/logisticsInfo';
 import { logisticsList } from './item';
 import './index.scss';
 
 const Index = () => {
-  const { id } = useSelector((state) => state.logisticsInfo);
-  const [tab1value, setTab1value] = useState('0');
-  const ImageList = [
-    { imageUrl: require('@/assets/images/home8.png') },
-    { imageUrl: require('@/assets/images/home8.png') },
-    { imageUrl: require('@/assets/images/home8.png') },
-  ];
-  const tabList = [{ tabTitle: '包裹1' }, { tabTitle: '包裹2' }, { tabTitle: '包裹3' }];
+  const { id, packageActive, packageList } = useSelector((state) => state.logisticsInfo);
   const dispatch = useDispatch();
   const updateFn = (payload) => {
     dispatch({
@@ -25,12 +19,17 @@ const Index = () => {
       payload: payload,
     });
   };
-  const { run } = useRequest(getBannerList, {
+  const { run } = useRequest(getPackageList, {
     manual: true,
     onSuccess: ({ code, result }) => {
       if (code && code === 200) {
+        let list =
+          result &&
+          result?.map((item, index) => {
+            return { ...item, title: `包裹${index + 1}`, id: index };
+          });
         updateFn({
-          orderList: result && result?.records,
+          packageList: list,
         });
         Taro.hideLoading();
       } else {
@@ -40,71 +39,84 @@ const Index = () => {
   });
 
   useEffect(() => {
+    Taro.showLoading({ title: '加载中...', mask: true });
     run({ id });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <View className="index">
-      <Tabs
-        value={tab1value}
-        onChange={({ paneKey }) => {
-          setTab1value(paneKey);
-        }}
-      >
-        {tabList?.map((tabItem) => {
-          return (
-            <Tabs.TabPane title={tabItem?.tabTitle} className="tabPane" key={tabItem}>
-              <View className="logisticsInfo">
-                <View className="logisticsInfo-head">
-                  {ImageList?.map((imageItem) => {
-                    return (
-                      <View key={imageItem} className="logisticsInfo-img">
-                        <Image
-                          mode="widthFix"
-                          className="logisticsInfo-img"
-                          // eslint-disable-next-line global-require
-                          src={imageItem?.imageUrl}
-                        ></Image>
-                      </View>
-                    );
-                  })}
-                </View>
-                <View className="logisticsInfo-cont">
-                  <View className="logisticsInfo-content">
-                    <View className="logisticsInfo-content-head">
-                      <View>中通快递 87897879</View>
-                      <View style={{ marginLeft: 10, color: '#965A3C' }}>复制</View>
-                    </View>
-                    <View className="logisticsInfo-content-middle">
-                      <View className="steps-wrapper">
-                        <Steps direction="vertical" progressDot current={5}>
-                          {logisticsList.map((item) => (
-                            <Step
-                              key={item.id}
-                              icon={item.icon}
-                              iconColor={item.icon === 'check-checked' ? '#222B45' : '#A85230'}
-                              size="14"
-                              activeIndex={item.id}
-                              title={
-                                <View className="title">
-                                  <p className="state">{item.state}</p>
-                                  <p className="time">{item.time}</p>
-                                </View>
-                              }
-                              content={<View className="content">{item.content}</View>}
-                            ></Step>
-                          ))}
-                        </Steps>
-                      </View>
-                    </View>
+      {packageList?.length !== 0 && (
+        <Tabs
+          value={packageActive}
+          onChange={(paneKey) => {
+            updateFn({
+              packageActive: paneKey,
+            });
+          }}
+          tabList={packageList?.map((tabItem) => {
+            return {
+              ...tabItem,
+              children: (
+                <View className="logisticsInfo">
+                  <View className="logisticsInfo-head">
+                    {tabItem.items?.map((goodsItem) => {
+                      return (
+                        <View key={goodsItem} className="logisticsInfo-img">
+                          <Image className="logisticsInfo-img" src={goodsItem?.mainGraph}></Image>
+                        </View>
+                      );
+                    })}
                   </View>
+                  {tabItem.logisticsCompany && (
+                    <View className="logisticsInfo-cont">
+                      <View className="logisticsInfo-content">
+                        <View className="logisticsInfo-content-head">
+                          <View>
+                            {tabItem.logisticsCompany} {tabItem.trackingNumber}
+                          </View>
+                          <View
+                            style={{ marginLeft: 10, color: '#965A3C' }}
+                            onClick={() => {
+                              wx.setClipboardData({
+                                data: tabItem.trackingNumber,
+                              });
+                            }}
+                          >
+                            复制
+                          </View>
+                        </View>
+                        <View className="logisticsInfo-content-middle">
+                          <View className="steps-wrapper">
+                            <Steps direction="vertical" progressDot current={5}>
+                              {logisticsList.map((item) => (
+                                <Step
+                                  key={item.id}
+                                  icon={item.icon}
+                                  iconColor={item.icon === 'check-checked' ? '#222B45' : '#A85230'}
+                                  size="14"
+                                  activeIndex={item.id}
+                                  title={
+                                    <View className="title">
+                                      <p className="state">{item.state}</p>
+                                      <p className="time">{item.time}</p>
+                                    </View>
+                                  }
+                                  content={<View className="content">{item.content}</View>}
+                                ></Step>
+                              ))}
+                            </Steps>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  )}
                 </View>
-              </View>
-            </Tabs.TabPane>
-          );
-        })}
-      </Tabs>
+              ),
+            };
+          })}
+        />
+      )}
     </View>
   );
 };
