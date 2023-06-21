@@ -23,9 +23,10 @@ export default {
   namespace: 'goodInfo', // 这是模块名
   state: {
     // 初始化数据
-    visible: false,
+    visible: false, // 购买弹窗
     type: '',
-    shareVisible: false,
+    shareVisible: false, //分享弹窗
+    couponVisible: false, // 优惠卷弹窗
     queryInfo: {},
     productDetails: { ...productDetail },
     confirmList: [],
