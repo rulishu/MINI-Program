@@ -25,6 +25,7 @@ export default defineAppConfig({
     'pages/allEvaluate/index',
     'pages/myFans/index',
     'pages/myCoupons/index',
+    'pages/dealer/index',
     'pages/flashSkill/index',
   ],
   requiredPrivateInfos: ['getLocation'],

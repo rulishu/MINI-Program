@@ -1,0 +1,119 @@
+page {
+  height: 100%;
+  background: #F2F2F2;
+}
+.dealer{
+  margin:20px;
+  .dealer-crown{
+    display: flex;
+    flex-direction: row;
+    .dealer-crown-img{
+      width:100px;
+      height:100px;
+      margin-right:20px;
+    }
+    .dealer-crown-info{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      .name{
+        font-size: 26px;
+        font-weight: bold;
+      }
+      .type{
+        font-size: 20px;
+        font-weight: 300;
+      }
+
+    }
+
+  }
+  .dealer-mid{
+    margin: 20px 0;
+    border:1px solid #D7D7D7;
+    background-color: #ffffff;
+    padding:20px;
+    .title{
+      font-size: 26px;
+    }
+    .doc{
+      margin-top:10px;
+      font-size: 20px;
+      color:#B1B1B1;
+    }
+    .dealer-mid-body{
+      font-size: 20px;
+      .dealer-mid-body-info{
+        width:100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .dealer-mid-body-info-left{
+          width:80%;
+        }
+        .dealer-mid-body-info-right{
+          width:20%;
+          display: flex;
+          justify-content: flex-end;
+          .btn{
+            padding:0 20px;
+          }
+        }
+      }
+      .dealer-mid-body-info-left-bot{
+        margin:0 0 20px 0;
+        width:80%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        .doc{
+          color:#B1B1B1;
+        }
+        .text{
+          color:#B1B1B1;
+          .text-active{
+            color:#333333;
+          }
+        }
+      }
+    }
+  }
+  .dealer-bot{
+    margin: 20px 0;
+    border:1px solid #D7D7D7;
+    background-color: #ffffff;
+    padding:20px;
+    .title{
+      font-size: 26px;
+    }
+    .dealer-bot-info{
+      background-color: #F2F2F2;
+      padding:40px;
+      margin-top: 20px;
+      font-size: 26px;
+    }
+  }
+  .dealer-foot{
+    color:#B1B1B1;
+    font-size: 20px;
+
+  }
+}
+/* 弹窗 */
+.info{
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  .info-bottom{
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    .title{
+      font-weight: bold;
+      color:#333333;
+    }
+  }
+} 

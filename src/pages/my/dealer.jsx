@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components';
 import { Icon } from '@nutui/nutui-react-taro';
-// import Taro from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import { useDispatch } from 'react-redux';
 import { Divider, Button, Swiper } from '@taroify/core';
 import './index.scss';
@@ -35,7 +35,7 @@ const Index = () => {
           <View
             className="my-orders-all"
             onTap={async () => {
-              // Taro.navigateTo({ url: '' });
+              Taro.navigateTo({ url: '/pages/dealer/index' });
               await dispatch({
                 type: 'allOrders/update',
                 payload: {
