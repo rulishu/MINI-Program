@@ -7,9 +7,9 @@ import './index.scss';
 const Index = () => {
   const [value, setValue] = useState(0);
   const list = [
-    { index: 0, title: '待使用（3）' },
-    { index: 1, title: '已使用' },
-    { index: 2, title: '已过期' },
+    { state: 0, title: '待使用（3）' },
+    { state: 1, title: '已使用' },
+    { state: 2, title: '已过期' },
   ];
   return (
     <View>
@@ -17,7 +17,7 @@ const Index = () => {
         {list?.map((item) => {
           return (
             <Tabs.TabPane title={item?.title} key={item?.index}>
-              <MyCoupons />
+              <MyCoupons state={item?.state} />
             </Tabs.TabPane>
           );
         })}
