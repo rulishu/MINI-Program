@@ -5,6 +5,7 @@ import Taro from '@tarojs/taro';
 import { useSelector, useDispatch } from 'react-redux';
 import payAddress from '@/assets/images/payAddress.svg';
 import PopupInfo from './popupInfo';
+import Coupon from './coupon';
 import usePay from '@/hooks/usePay';
 import './index.scss';
 
@@ -269,7 +270,12 @@ const Index = () => {
                 <Text>免邮</Text>
               </View>
             </View>
-            <View className="address-price">
+            <View
+              className="address-price"
+              onClick={() => {
+                dispatch({ type: 'goodInfo/update', payload: { couponOrderVisible: true } });
+              }}
+            >
               <View>
                 <Text>优惠劵</Text>
               </View>
@@ -312,6 +318,7 @@ const Index = () => {
         </View>
       </View>
       <PopupInfo />
+      <Coupon />
     </View>
   );
 };

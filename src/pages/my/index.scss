@@ -107,7 +107,7 @@ page {
 }
 }
 .card{
-  margin:12rpx 40.38rpx;
+  margin:20rpx 40.38rpx;
   .my-orders-card{
     width:100%;
     background-color: #ffffff;
@@ -116,7 +116,13 @@ page {
       display:flex;
       flex-direction: row;
       justify-content: space-between;
-      padding: 25rpx 25rpx 0 25rpx;
+      padding: 20px 20px 0 20px;
+    }
+    .title-bg{
+      background-color: #D7D7D7;
+      border-top-left-radius: 15rpx;
+      border-top-right-radius: 15rpx;
+      padding-bottom: 20px;
     }
     .my-orders-title{
       font-size: 27rpx;
@@ -124,6 +130,10 @@ page {
       font-weight: 500;
       color: #000000;
       line-height: 38rpx;
+      .my-orders-title-money{
+        font-size: 36px;
+        font-weight: bold;
+      }
     }
     .my-orders-all{
       font-size: 23rpx;
@@ -131,6 +141,46 @@ page {
       font-weight: 500;
       color: rgba(0,0,0,0.5);
       line-height: 33rpx;
+      display: flex;
+      align-items: center;
+    }
+    .banner{
+      margin-right:20px;
+      .vertical-swiper {
+        .taroify-swiper-item {
+          color: #8D8D8D;
+          font-size: 20px;
+          font-weight: 300;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height:20px;
+        }
+      }
+    }
+    .withdrawal{
+      padding: 0 25rpx;
+      .title{
+        font-size: 24px;
+        font-weight: 300;
+      }
+      .withdrawal-info{
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding:10px 0 25px 0;
+        .moneys{
+          font-weight: bold;
+          font-size: 24px;
+          .money{
+            font-size: 36px;
+          }
+        }
+       
+        .btn{
+          padding:0 25px;
+        }
+      }
     }
     .my-orders-list{
       display:flex;
