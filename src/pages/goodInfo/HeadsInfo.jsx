@@ -10,6 +10,7 @@ import cart from '@/assets/images/cart.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import Drawer from './drawer';
 import { min, aPrice } from '@/utils/min';
+import { Countdown } from '@taroify/core';
 import './index.scss';
 
 const Index = () => {
@@ -172,6 +173,29 @@ const Index = () => {
                 }
               >
                 <Image mode="widthFix" src={share} style={{ width: 20, height: 20 }} />
+              </View>
+            </View>
+          </View>
+          {/* 限时抢购 */}
+          <View className="flashSale">
+            <View className="flashSaleBox">
+              <View className="flashSaleBox-left">
+                <View className="flashSaleBox-left-title">限时抢购</View>
+                <View className="flashSaleBox-left-number">已抢0件</View>
+              </View>
+              <View className="flashSaleBox-right">
+                <View className="flashSaleBox-right-title">距离开枪仅剩16天</View>
+                <Countdown value={30 * 60 * 60 * 1000}>
+                  {(curr) => (
+                    <>
+                      <View className="block">{curr.hours}</View>
+                      <View className="colon">:</View>
+                      <View className="block">{curr.minutes}</View>
+                      <View className="colon">:</View>
+                      <View className="block">{curr.seconds}</View>
+                    </>
+                  )}
+                </Countdown>
               </View>
             </View>
           </View>
