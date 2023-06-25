@@ -5,9 +5,7 @@ page {
 .tabPane{
   background-color:#f2f2f2;
 }
-.nut-tabpane{
-  padding: 0 10px 0 10px !important;
-}
+
 .logisticsInfo{
   display: flex;
   flex-direction: column;
@@ -16,15 +14,24 @@ page {
     flex-direction: row;
     justify-content: flex-start;
     background: #FFFFFF;
+    margin: 20px;
+    margin-top: 0;
     padding:32px 40px;
+    .logisticsInfo-img-view{
+      display: flex;
+      align-items: flex-end;
+      margin-right: 20px;
+      font-size: 30px;
+
       .logisticsInfo-img{
         width:112px;
         height:112px;
-        margin-right: 20px;
+        margin-right: 10px;
       }
+    }
   }
   .logisticsInfo-cont{
-    margin-top:34px;
+    margin:0 20px;
     background: #FFFFFF;
   .logisticsInfo-content{
     padding:20px 40px;
@@ -63,4 +70,8 @@ page {
     }
   }
 }
+}
+
+.empty{
+  margin: 0 20px;
 }

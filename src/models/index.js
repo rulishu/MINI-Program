@@ -10,6 +10,7 @@ import allOrders from './allOrders';
 import sales from './sales';
 import orderDetails from './orderDetails';
 import select from './select';
+import logisticsInfo from './logisticsInfo';
 import evaluate from './evaluate';
 import myFans from './myFans';
 import dealer from './dealer';
@@ -27,6 +28,7 @@ export default [
   sales,
   orderDetails,
   select,
+  logisticsInfo,
   evaluate,
   myFans,
   dealer,

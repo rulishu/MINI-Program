@@ -467,6 +467,7 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     onClick={() => onCloseOrder()}
                     plain
                     type="default"
@@ -478,6 +479,7 @@ const Index = () => {
                   <Button
                     onClick={() => onPay()}
                     shape="square"
+                    size="small"
                     type="danger"
                     style={{ color: '#ffffff', border: 'none', width: 140 }}
                   >
@@ -491,6 +493,7 @@ const Index = () => {
             {orderStatus === 2 && (
               <View>
                 <Button
+                  size="small"
                   shape="square"
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
                   onClick={() => onOutOrder(orderInfo)}
@@ -508,8 +511,17 @@ const Index = () => {
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
+                    size="small"
                     type="default"
-                    onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
+                    onClick={() => {
+                      dispatch({
+                        type: 'logisticsInfo/update',
+                        payload: {
+                          id: Number(orderInfo.id),
+                        },
+                      });
+                      Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                    }}
                   >
                     <Text style={{ fontSize: 14 }}>查看物流</Text>
                   </Button>
@@ -518,6 +530,7 @@ const Index = () => {
                   <View>
                     <Button
                       shape="square"
+                      size="small"
                       type="primary"
                       style={{ color: '#ffffff', border: 'none' }}
                       onClick={() => {
@@ -547,9 +560,30 @@ const Index = () => {
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
                     type="default"
+                    size="small"
                     onClick={() => onDelOrder(orderInfo)}
                   >
                     <Text style={{ fontSize: 14 }}>删除订单</Text>
+                  </Button>
+                </View>
+                <View style={{ marginRight: 10 }}>
+                  <Button
+                    shape="square"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
+                    plain
+                    type="default"
+                    onClick={() => {
+                      dispatch({
+                        type: 'logisticsInfo/update',
+                        payload: {
+                          id: Number(orderInfo.id),
+                        },
+                      });
+                      Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                    }}
+                  >
+                    <Text style={{ fontSize: 14 }}>查看物流</Text>
                   </Button>
                 </View>
                 <View>
@@ -557,10 +591,10 @@ const Index = () => {
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
+                    size="small"
                     type="default"
-                    onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
                   >
-                    <Text style={{ fontSize: 14 }}>查看物流</Text>
+                    <Text style={{ fontSize: 14 }}>评价</Text>
                   </Button>
                 </View>
               </>
@@ -571,6 +605,7 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     plain
                     type="default"
                     onClick={() => onDelOrder(orderInfo)}
@@ -582,9 +617,18 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     plain
                     type="default"
-                    onClick={() => Taro.navigateTo({ url: '/pages/logisticsInfo/index' })}
+                    onClick={() => {
+                      dispatch({
+                        type: 'logisticsInfo/update',
+                        payload: {
+                          id: Number(orderInfo.id),
+                        },
+                      });
+                      Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                    }}
                   >
                     <Text style={{ fontSize: 14 }}>查看物流</Text>
                   </Button>
@@ -597,6 +641,7 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     plain
                     type="default"
                     onClick={() => onDelOrder(orderInfo)}
@@ -604,9 +649,30 @@ const Index = () => {
                     <Text style={{ fontSize: 14 }}>删除订单</Text>
                   </Button>
                 </View>
+                <View style={{ marginRight: 10 }}>
+                  <Button
+                    shape="square"
+                    size="small"
+                    style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    plain
+                    type="default"
+                    onClick={() => {
+                      dispatch({
+                        type: 'logisticsInfo/update',
+                        payload: {
+                          id: Number(orderInfo.id),
+                        },
+                      });
+                      Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                    }}
+                  >
+                    <Text style={{ fontSize: 14 }}>查看物流</Text>
+                  </Button>
+                </View>
                 <View>
                   <Button
                     shape="square"
+                    size="small"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
                     type="default"
@@ -621,6 +687,7 @@ const Index = () => {
                 <View>
                   <Button
                     shape="square"
+                    size="small"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
                     type="default"
