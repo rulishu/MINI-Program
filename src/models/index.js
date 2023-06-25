@@ -10,7 +10,10 @@ import allOrders from './allOrders';
 import sales from './sales';
 import orderDetails from './orderDetails';
 import select from './select';
+import logisticsInfo from './logisticsInfo';
 import evaluate from './evaluate';
+import myFans from './myFans';
+import dealer from './dealer';
 
 export default [
   global,
@@ -25,5 +28,8 @@ export default [
   sales,
   orderDetails,
   select,
+  logisticsInfo,
   evaluate,
+  myFans,
+  dealer,
 ]; // 这里是数组, 数组中的每个项都是独立的模块
