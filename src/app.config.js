@@ -23,6 +23,7 @@ export default defineAppConfig({
     'pages/dealDone/index',
     'pages/evaluate/index',
     'pages/allEvaluate/index',
+    'pages/myCoupons/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
