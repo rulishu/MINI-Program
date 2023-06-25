@@ -25,6 +25,7 @@ const Index = () => {
     {
       title: '我的粉丝',
       num: 0,
+      url: '/pages/myFans/index',
     },
     {
       title: '我的积分',
@@ -75,6 +76,9 @@ const Index = () => {
     Taro.navigateTo({ url: '/pages/poster/index' });
   };
 
+  const goUrl = (url) => {
+    Taro.navigateTo({ url: url });
+  };
   return (
     <View>
       <View className="heads">
@@ -125,7 +129,7 @@ const Index = () => {
       </View>
       <View className="head-list">
         {list.map((item, index) => (
-          <View key={index} className="head-list-item">
+          <View key={index} className="head-list-item" onClick={() => goUrl(item.url)}>
             <View className="head-list-item-title">
               <Text>{item.num}</Text>
             </View>
