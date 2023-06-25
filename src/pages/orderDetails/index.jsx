@@ -467,6 +467,7 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     onClick={() => onCloseOrder()}
                     plain
                     type="default"
@@ -478,6 +479,7 @@ const Index = () => {
                   <Button
                     onClick={() => onPay()}
                     shape="square"
+                    size="small"
                     type="danger"
                     style={{ color: '#ffffff', border: 'none', width: 140 }}
                   >
@@ -491,6 +493,7 @@ const Index = () => {
             {orderStatus === 2 && (
               <View>
                 <Button
+                  size="small"
                   shape="square"
                   style={{ color: '#AAAAAA', fontWeight: 400 }}
                   onClick={() => onOutOrder(orderInfo)}
@@ -508,6 +511,7 @@ const Index = () => {
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
+                    size="small"
                     type="default"
                     onClick={() => {
                       dispatch({
@@ -526,6 +530,7 @@ const Index = () => {
                   <View>
                     <Button
                       shape="square"
+                      size="small"
                       type="primary"
                       style={{ color: '#ffffff', border: 'none' }}
                       onClick={() => {
@@ -555,6 +560,7 @@ const Index = () => {
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
                     type="default"
+                    size="small"
                     onClick={() => onDelOrder(orderInfo)}
                   >
                     <Text style={{ fontSize: 14 }}>删除订单</Text>
@@ -564,6 +570,7 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     plain
                     type="default"
                     onClick={() => {
@@ -584,6 +591,7 @@ const Index = () => {
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
+                    size="small"
                     type="default"
                   >
                     <Text style={{ fontSize: 14 }}>评价</Text>
@@ -597,6 +605,7 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     plain
                     type="default"
                     onClick={() => onDelOrder(orderInfo)}
@@ -608,6 +617,7 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     plain
                     type="default"
                     onClick={() => {
@@ -631,6 +641,7 @@ const Index = () => {
                   <Button
                     shape="square"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
+                    size="small"
                     plain
                     type="default"
                     onClick={() => onDelOrder(orderInfo)}
@@ -641,6 +652,7 @@ const Index = () => {
                 <View style={{ marginRight: 10 }}>
                   <Button
                     shape="square"
+                    size="small"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
                     type="default"
@@ -660,6 +672,7 @@ const Index = () => {
                 <View>
                   <Button
                     shape="square"
+                    size="small"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
                     type="default"
@@ -674,6 +687,7 @@ const Index = () => {
                 <View>
                   <Button
                     shape="square"
+                    size="small"
                     style={{ color: '#AAAAAA', fontWeight: 400 }}
                     plain
                     type="default"

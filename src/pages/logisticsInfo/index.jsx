@@ -1,4 +1,3 @@
-/* eslint-disable global-require */
 import React, { useEffect } from 'react';
 import { View, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
@@ -7,11 +6,10 @@ import Tabs from '@/component/aTabs';
 import { useRequest } from 'ahooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPackageList } from '@/server/logisticsInfo';
-import { logisticsList } from './item';
 import './index.scss';
 
 const Index = () => {
-  const { id, packageActive, packageList } = useSelector((state) => state.logisticsInfo);
+  const { id, packageActive, packageList, traceInfo } = useSelector((state) => state.logisticsInfo);
   const dispatch = useDispatch();
   const updateFn = (payload) => {
     dispatch({
@@ -31,6 +29,12 @@ const Index = () => {
         updateFn({
           packageList: list,
         });
+        if (result.length !== 0) {
+          dispatch({
+            type: 'logisticsInfo/getTrace',
+            payload: { num: result[packageActive]?.trackingNumber },
+          });
+        }
         Taro.hideLoading();
       } else {
         Taro.hideLoading();
@@ -50,8 +54,9 @@ const Index = () => {
         <View className="logisticsInfo-head">
           {tabItem.items?.map((goodsItem) => {
             return (
-              <View key={goodsItem} className="logisticsInfo-img">
+              <View key={goodsItem} className="logisticsInfo-img-view">
                 <Image className="logisticsInfo-img" src={goodsItem?.mainGraph}></Image>
+                <View>x{goodsItem?.amount}</View>
               </View>
             );
           })}
@@ -77,20 +82,19 @@ const Index = () => {
               <View className="logisticsInfo-content-middle">
                 <View className="steps-wrapper">
                   <Steps direction="vertical" progressDot current={5}>
-                    {logisticsList.map((item) => (
+                    {traceInfo?.map((item, index) => (
                       <Step
-                        key={item.id}
-                        icon={item.icon}
+                        key={index}
                         iconColor={item.icon === 'check-checked' ? '#222B45' : '#A85230'}
                         size="14"
-                        activeIndex={item.id}
+                        activeIndex={traceInfo.length}
                         title={
                           <View className="title">
-                            <p className="state">{item.state}</p>
+                            <p className="state">{item?.status}</p>
                             <p className="time">{item.time}</p>
                           </View>
                         }
-                        content={<View className="content">{item.content}</View>}
+                        content={<View className="content">{item?.context}</View>}
                       ></Step>
                     ))}
                   </Steps>
@@ -113,6 +117,11 @@ const Index = () => {
           onChange={(paneKey) => {
             updateFn({
               packageActive: paneKey,
+              traceInfo: [],
+            });
+            dispatch({
+              type: 'logisticsInfo/getTrace',
+              payload: { num: packageList[paneKey]?.trackingNumber },
             });
           }}
           tabList={packageList?.map((tabItem) => {
@@ -123,7 +132,7 @@ const Index = () => {
           })}
         />
       ) : packageList?.length !== 0 ? (
-        LogisticsInfo(packageList[0])
+        <View style={{ marginTop: '10px' }}>{LogisticsInfo(packageList[0])}</View>
       ) : (
         <Empty description="无数据" className="empty" />
       )}
