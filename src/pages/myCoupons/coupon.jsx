@@ -1,7 +1,9 @@
 import React from 'react';
 import { View } from '@tarojs/components';
+import './index.scss';
 
-const Index = () => {
+const Index = (props) => {
+  const { state } = props;
   const list = [
     {
       id: 1,
@@ -73,6 +75,13 @@ const Index = () => {
               {`${item?.fistTime} 至 ${item?.lastTime}`}
             </View>
           </View>
+          {state === 1 ? (
+            <View className="coupon-state">已使用</View>
+          ) : state === 2 ? (
+            <View className="coupon-state">已过期</View>
+          ) : (
+            ''
+          )}
         </View>
       ))}
     </View>

@@ -26,6 +26,7 @@ export default defineAppConfig({
     'pages/myFans/index',
     'pages/myCoupons/index',
     'pages/dealer/index',
+    'pages/flashSkill/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
