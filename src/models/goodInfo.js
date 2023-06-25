@@ -26,7 +26,8 @@ export default {
     visible: false, // 购买弹窗
     type: '',
     shareVisible: false, //分享弹窗
-    couponVisible: false, // 优惠卷弹窗
+    couponVisible: false, // 详情优惠卷
+    couponOrderVisible: false, // 确认订单优惠券
     queryInfo: {},
     productDetails: { ...productDetail },
     confirmList: [],
