@@ -21,24 +21,32 @@ const Index = () => {
     const joinDay = Math.ceil(dateDiff / (24 * 3600 * 1000));
     return joinDay + 1;
   };
-  // const list = [
-  //   {
-  //     title: '我的粉丝',
-  //     num: 233,
-  //   },
-  //   {
-  //     title: '今日涨粉',
-  //     num: 12,
-  //   },
-  //   {
-  //     title: '今日分润',
-  //     num: 78.23,
-  //   },
-  //   {
-  //     title: '待提现金额',
-  //     num: 1278.23,
-  //   },
-  // ];
+  const list = [
+    {
+      title: '我的粉丝',
+      num: 0,
+    },
+    {
+      title: '我的积分',
+      num: 0,
+    },
+    {
+      title: '我的卡劵',
+      num: 0,
+    },
+    // {
+    //   title: '今日涨粉',
+    //   num: 12,
+    // },
+    // {
+    //   title: '今日分润',
+    //   num: 78.23,
+    // },
+    // {
+    //   title: '待提现金额',
+    //   num: 1278.23,
+    // },
+  ];
 
   //编辑信息
   const edit = () => {
@@ -116,7 +124,7 @@ const Index = () => {
         </View>
       </View>
       <View className="head-list">
-        {/* {list.map((item, index) => (
+        {list.map((item, index) => (
           <View key={index} className="head-list-item">
             <View className="head-list-item-title">
               <Text>{item.num}</Text>
@@ -125,7 +133,7 @@ const Index = () => {
               <Text>{item.title}</Text>
             </View>
           </View>
-        ))} */}
+        ))}
       </View>
     </View>
   );
