@@ -24,6 +24,7 @@ export default defineAppConfig({
     'pages/evaluate/index',
     'pages/allEvaluate/index',
     'pages/myFans/index',
+    'pages/myCoupons/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
