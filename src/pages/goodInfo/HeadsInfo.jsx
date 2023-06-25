@@ -315,6 +315,7 @@ const Index = () => {
                 backgroundColor: '#ffffff',
                 height: 150,
               }}
+              onClick={() => Taro.navigateTo({ url: '/pages/allEvaluate/index' })}
             >
               <View style={{ width: '100%', padding: '10px 15px', height: '30%' }}>
                 <View
