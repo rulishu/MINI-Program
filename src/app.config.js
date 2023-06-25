@@ -24,6 +24,7 @@ export default defineAppConfig({
     'pages/evaluate/index',
     'pages/allEvaluate/index',
     'pages/myCoupons/index',
+    'pages/flashSkill/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
