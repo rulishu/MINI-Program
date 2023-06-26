@@ -14,6 +14,7 @@ import logisticsInfo from './logisticsInfo';
 import evaluate from './evaluate';
 import myFans from './myFans';
 import dealer from './dealer';
+import dividendDetails from './dividendDetails';
 
 export default [
   global,
@@ -32,4 +33,5 @@ export default [
   evaluate,
   myFans,
   dealer,
+  dividendDetails,
 ]; // 这里是数组, 数组中的每个项都是独立的模块

@@ -27,6 +27,7 @@ export default defineAppConfig({
     'pages/myCoupons/index',
     'pages/dealer/index',
     'pages/flashSkill/index',
+    'pages/dividendDetails/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
