@@ -30,10 +30,12 @@ const Index = () => {
     {
       title: '我的积分',
       num: 0,
+      url: '/pages/flashSkill/index',
     },
     {
       title: '我的卡劵',
       num: 0,
+      url: '/pages/myCoupons/index',
     },
     // {
     //   title: '今日涨粉',

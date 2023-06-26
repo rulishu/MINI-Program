@@ -290,9 +290,7 @@ const Index = () => {
                 </View>
               </View>
               <View className="commentDetailBox-content">
-                <View
-                  style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-                >
+                <View className="commentDetailBox-content-box">
                   <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ width: 30, height: 30 }}>
                       <Image
@@ -334,9 +332,7 @@ const Index = () => {
               <View className="footButtonsBox-title">{title()}</View>
             )}
             <View className="footButtonsBox-buttons">
-              <View
-                style={{ display: 'flex', flexDirection: 'row', marginRight: 25, width: '20%' }}
-              >
+              <View className="footButtonsBox-buttons-box">
                 <View
                   style={{ marginRight: 15, marginLeft: 15 }}
                   onClick={() =>
