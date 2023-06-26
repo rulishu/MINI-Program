@@ -10,6 +10,7 @@ import cart from '@/assets/images/cart.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import Drawer from './drawer';
 import { min, aPrice } from '@/utils/min';
+import { Countdown } from '@taroify/core';
 import './index.scss';
 
 const Index = () => {
@@ -48,19 +49,6 @@ const Index = () => {
   const onChange3 = (e) => {
     setCurrent(e + 1);
   };
-
-  const pageStyle = {
-    position: 'absolute',
-    bottom: 30,
-    right: 20,
-    width: '46px',
-    height: '22px',
-    background: 'rgba(0, 0, 0, 0.33)',
-    borderRadius: '22px',
-    textAlign: 'center',
-    color: '#fff',
-    fontSize: '14px',
-  };
   const title = () => {
     if (queryInfo?.onShelf === 0) {
       return '商品已下架';
@@ -70,6 +58,49 @@ const Index = () => {
       return '商品已删除';
     }
   };
+  const onClickCart = (type) => {
+    const token = Taro.getStorageSync('token');
+    if (token === '') {
+      Taro.navigateTo({ url: '/pages/login/index' });
+    } else if (queryInfo?.onShelf === 0) {
+      Taro.showToast({
+        title: '商品已下架',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (queryInfo?.stock === 0) {
+      Taro.showToast({
+        title: '商品已售空',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (queryInfo?.isDelete === 1) {
+      Taro.showToast({
+        title: '商品已删除',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else {
+      if (type === 'addCart') {
+        dispatch({
+          type: 'goodInfo/update',
+          payload: {
+            visible: true,
+            type: 'addCart',
+          },
+        });
+      } else if (type === 'nowCart') {
+        dispatch({
+          type: 'goodInfo/update',
+          payload: {
+            visible: true,
+            type: 'nowCart',
+          },
+        });
+      }
+    }
+  };
+
   return (
     <Skeleton animated loading={queryInfo?.mainGraphs ? true : false}>
       <View>
@@ -79,7 +110,7 @@ const Index = () => {
             loop
             onChange={onChange3}
             pageContent={
-              <div style={pageStyle}>
+              <div className="currentPages">
                 {current} / {total}
               </div>
             }
@@ -125,73 +156,52 @@ const Index = () => {
                 }
               }}
             >
-              <Image mode="widthFix" src={searchLeft} style={{ width: 24, height: 24 }}></Image>
+              <Image mode="widthFix" src={searchLeft} style={{ width: 24, height: 24 }} />
             </View>
-            <View
-              style={{
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'row',
-                left: navLefts,
-                marginTop: 5,
-              }}
-            >
-              <View
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 30,
-                  height: 30,
-                  borderRadius: 24,
-                  background: '#acacac',
-                  marginRight: 10,
-                }}
-                onClick={() => {}}
-              >
+            <View className="shareButtonsBox" style={{ left: navLefts }}>
+              <View className="shareButtonsBox-kefu">
                 <Image
                   mode="widthFix"
                   src={kefu}
                   style={{ width: 20, height: 20, color: '#ffffff' }}
-                ></Image>
+                />
               </View>
               <View
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 30,
-                  height: 30,
-                  borderRadius: 24,
-                  background: '#acacac',
-                }}
+                className="shareButtonsBox-share"
                 onClick={() =>
                   dispatch({ type: 'goodInfo/update', payload: { shareVisible: true } })
                 }
               >
-                <Image mode="widthFix" src={share} style={{ width: 20, height: 20 }}></Image>
+                <Image mode="widthFix" src={share} style={{ width: 20, height: 20 }} />
+              </View>
+            </View>
+          </View>
+          {/* 限时抢购 */}
+          <View className="flashSale">
+            <View className="flashSaleBox">
+              <View className="flashSaleBox-left">
+                <View className="flashSaleBox-left-title">限时抢购</View>
+                <View className="flashSaleBox-left-number">已抢0件</View>
+              </View>
+              <View className="flashSaleBox-right">
+                <View className="flashSaleBox-right-title">距离开枪仅剩16天</View>
+                <Countdown value={30 * 60 * 60 * 1000}>
+                  {(curr) => (
+                    <>
+                      <View className="block">{curr.hours}</View>
+                      <View className="colon">:</View>
+                      <View className="block">{curr.minutes}</View>
+                      <View className="colon">:</View>
+                      <View className="block">{curr.seconds}</View>
+                    </>
+                  )}
+                </Countdown>
               </View>
             </View>
           </View>
           {/* 详情文本 */}
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-              margin: '10px 10px',
-              backgroundColor: '#ffffff',
-              padding: '25px 15px 15px 15px',
-            }}
-          >
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'baseline',
-                marginBottom: 2,
-              }}
-            >
+          <View className="detailTextBox">
+            <View className="detailTextBox-price">
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
                 {queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
@@ -200,14 +210,7 @@ const Index = () => {
                   aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
             </View>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 5,
-              }}
-            >
+            <View className="detailTextBox-state">
               <View style={{ width: '100%' }}>
                 <Tag color="rgb(170, 170, 170)">
                   {queryInfo?.suppliersId === 1 ? '自营' : '严选'}
@@ -219,37 +222,13 @@ const Index = () => {
           </View>
           {/* 优惠卷 */}
           <View
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              margin: '10px 10px',
-              backgroundColor: '#ffffff',
-              height: 50,
-            }}
-            onClick={() => {
-              dispatch({ type: 'goodInfo/update', payload: { couponVisible: true } });
-            }}
+            className="couponDetailBox"
+            onClick={() => dispatch({ type: 'goodInfo/update', payload: { couponVisible: true } })}
           >
-            <View
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-              }}
-            >
+            <View className="couponDetailBox-layout">
               <View style={{ display: 'flex', alignItems: 'center' }}>
                 <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>优惠卷</Text>
-                <View
-                  style={{
-                    padding: '0 10px',
-                    fontSize: 15,
-                    borderRadius: 50,
-                    border: '1px solid red',
-                  }}
-                >
-                  满100减10
-                </View>
+                <View className="couponDetailBox-content">满100减10</View>
               </View>
               <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
                 <Icon name="rect-right" size={20}></Icon>
@@ -259,13 +238,7 @@ const Index = () => {
           {/* 规格值 */}
           <View style={{ margin: '10px 10px', backgroundColor: '#ffffff', height: 100 }}>
             <View
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottom: '1px solid #f2f2f2',
-                height: '50%',
-              }}
+              className="skuDetailBox"
               onClick={() =>
                 dispatch({
                   type: 'goodInfo/update',
@@ -295,39 +268,17 @@ const Index = () => {
               </View>
             </View>
             {/* 运费 */}
-            <View
-              style={{
-                height: '50%',
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-              }}
-            >
+            <View className="freightDetailBox">
               <Text style={{ paddingLeft: 15, color: '#7f7f7f' }}>运费</Text>
               <Text style={{ paddingLeft: 15, fontSize: 15 }}>{queryInfo?.templateName}</Text>
             </View>
             {/* 评价 */}
             <View
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                margin: '10px 0',
-                backgroundColor: '#ffffff',
-                height: 150,
-              }}
+              className="commentDetailBox"
               onClick={() => Taro.navigateTo({ url: '/pages/allEvaluate/index' })}
             >
               <View style={{ width: '100%', padding: '10px 15px', height: '30%' }}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderBottom: '1px solid #f2f2f2',
-                    paddingBottom: 10,
-                  }}
-                >
+                <View className="commentDetailBox-header">
                   <View>
                     <Text>评价</Text>
                     <Text>(102)</Text>
@@ -338,14 +289,7 @@ const Index = () => {
                   </View>
                 </View>
               </View>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  padding: '10px 15px',
-                  height: '70%',
-                }}
-              >
+              <View className="commentDetailBox-content">
                 <View
                   style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
                 >
@@ -370,24 +314,9 @@ const Index = () => {
               </View>
             </View>
             {/* 商品详情 */}
-            <View
-              style={{
-                margin: '10px 0',
-                background: '#ffffff',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
+            <View className="goodInfoDetailBox">
               <View style={{ marginLeft: 15, marginTop: 20 }}>商品详情</View>
-              <View
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: 10,
-                  flexDirection: 'column',
-                }}
-              >
+              <View className="goodInfoDetailBox-list">
                 {itemList?.map((item) => {
                   return (
                     <View key={item} style={{ width: '100%', display: 'flex' }}>
@@ -400,38 +329,11 @@ const Index = () => {
             </View>
           </View>
           {/* 页脚按钮 */}
-          <View
-            style={{
-              position: 'fixed',
-              left: 0,
-              bottom: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              width: '100%',
-              background: '#ffffff',
-              padding: '0 0 15px 0',
-            }}
-          >
+          <View className="footButtonsBox">
             {(queryInfo?.onShelf === 0 || queryInfo?.stock === 0 || queryInfo?.isDelete === 1) && (
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  background: '#E9E9E9',
-                  padding: '1px 0',
-                }}
-              >
-                {title()}
-              </View>
+              <View className="footButtonsBox-title">{title()}</View>
             )}
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingTop: 10,
-              }}
-            >
+            <View className="footButtonsBox-buttons">
               <View
                 style={{ display: 'flex', flexDirection: 'row', marginRight: 25, width: '20%' }}
               >
@@ -452,36 +354,7 @@ const Index = () => {
                   <Button
                     style={{ borderRadius: 0, width: '100%' }}
                     onClick={() => {
-                      const token = Taro.getStorageSync('token');
-                      if (token === '') {
-                        Taro.navigateTo({ url: '/pages/login/index' });
-                      } else if (queryInfo?.onShelf === 0) {
-                        Taro.showToast({
-                          title: '商品已下架',
-                          icon: 'none',
-                          duration: 2000,
-                        });
-                      } else if (queryInfo?.stock === 0) {
-                        Taro.showToast({
-                          title: '商品已售空',
-                          icon: 'none',
-                          duration: 2000,
-                        });
-                      } else if (queryInfo?.isDelete === 1) {
-                        Taro.showToast({
-                          title: '商品已删除',
-                          icon: 'none',
-                          duration: 2000,
-                        });
-                      } else {
-                        dispatch({
-                          type: 'goodInfo/update',
-                          payload: {
-                            visible: true,
-                            type: 'addCart',
-                          },
-                        });
-                      }
+                      onClickCart('addCart');
                     }}
                   >
                     加入购物车
@@ -492,36 +365,7 @@ const Index = () => {
                     type="primary"
                     style={{ borderRadius: 0, width: '100%' }}
                     onClick={() => {
-                      const token = Taro.getStorageSync('token');
-                      if (token === '') {
-                        Taro.navigateTo({ url: '/pages/login/index' });
-                      } else if (queryInfo?.onShelf === 0) {
-                        Taro.showToast({
-                          title: '商品已下架',
-                          icon: 'none',
-                          duration: 2000,
-                        });
-                      } else if (queryInfo?.stock === 0) {
-                        Taro.showToast({
-                          title: '商品已售空',
-                          icon: 'none',
-                          duration: 2000,
-                        });
-                      } else if (queryInfo?.isDelete === 1) {
-                        Taro.showToast({
-                          title: '商品已删除',
-                          icon: 'none',
-                          duration: 2000,
-                        });
-                      } else {
-                        dispatch({
-                          type: 'goodInfo/update',
-                          payload: {
-                            visible: true,
-                            type: 'nowCart',
-                          },
-                        });
-                      }
+                      onClickCart('nowCart');
                     }}
                   >
                     立即购买
