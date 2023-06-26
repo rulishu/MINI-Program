@@ -30,7 +30,7 @@ const Index = () => {
           </View>
           <View className="info-bottom">
             <View className="title">今日地盘分润(预估)</View>
-            <View>今日地盘 (发起方+收件方) 订单分润.还未结算的金额</View>
+            <View>今日地盘 (发起方+收件方) 订单分润.还未结</View>
             <View>算的金额</View>
           </View>
           <View className="info-bottom">
