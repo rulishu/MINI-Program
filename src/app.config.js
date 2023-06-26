@@ -28,6 +28,7 @@ export default defineAppConfig({
     'pages/dealer/index',
     'pages/flashSkill/index',
     'pages/dividendDetails/index',
+    'pages/proxyDividendDetails/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {

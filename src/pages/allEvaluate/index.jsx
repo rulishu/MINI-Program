@@ -2,22 +2,15 @@ import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Icon, Empty } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
-import { useDispatch } from 'react-redux';
 import NavBar from '../../component/navBar';
 import { list } from './item';
 import './index.scss';
 
 const Index = () => {
-  const dispatch = useDispatch();
-
-  // 返回订单列表
+  // 返回上一页
   const goOrderList = () => {
-    Taro.navigateTo({ url: '/pages/allOrders/index' });
-    dispatch({
-      type: 'allOrders/update',
-      payload: {
-        orderActive: 0,
-      },
+    Taro.navigateBack({
+      delta: 1,
     });
   };
 
