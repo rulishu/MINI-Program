@@ -97,6 +97,39 @@ const Index = () => {
   // 一键好评
   const onGoodEvaluate = () => {
     setActive('推荐');
+    const skus = orderInfo.items
+      ?.at(0)
+      .attributes.map((attributeItem) => {
+        let str = `${attributeItem.value}${attributeItem.attributeName}`;
+        return str;
+      })
+      .toString();
+    const skuIds = orderInfo.items?.map((a) => a.itemId).toString();
+    dispatch({
+      type: 'evaluate/getAddEvaluation',
+      payload: {
+        releaseData: [
+          {
+            comment: textareaValue,
+            image: '',
+            mainImage: '',
+            orderId: orderInfo?.orderNumber,
+            rating: 1,
+            sku: orderInfo.items?.at(0)?.attributes.length >= 2 ? skus?.replace(',', '*') : skus,
+            skuId: Number(skuIds),
+          },
+        ],
+        callBack: () => {
+          Taro.navigateTo({ url: '/pages/allOrders/index' });
+          dispatch({
+            type: 'allOrders/update',
+            payload: {
+              orderActive: 0,
+            },
+          });
+        },
+      },
+    });
   };
 
   return (
