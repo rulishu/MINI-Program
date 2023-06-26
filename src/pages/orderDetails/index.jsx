@@ -267,6 +267,11 @@ const Index = () => {
     }
   };
 
+  // 评价
+  const onEvaluate = () => {
+    Taro.navigateTo({ url: `/pages/evaluate/index?id=${Number(orderInfo.id)}` });
+  };
+
   return (
     <>
       <View>
@@ -593,6 +598,7 @@ const Index = () => {
                     plain
                     size="small"
                     type="default"
+                    onClick={() => onEvaluate()}
                   >
                     <Text style={{ fontSize: 14 }}>评价</Text>
                   </Button>
