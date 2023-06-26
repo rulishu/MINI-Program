@@ -3,150 +3,80 @@ page {
   width: 100%;
   background: #F5F5F5;
 }
-// 地址
-.cartHeader{
-  left: 1.1px;
-  top: 1.08px;  
-  margin: 20px 20px;
-.cartHeaderMap{
-  width: 25px;
-  height: 30px;
-  color: #231F20;
+// 清空
+.cartBoxHeader{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
 }
-.cartHeaderText{
-  margin-left: 10px;
-  font-size: 30px;
-  font-family: PingFangSC-Regular;
-  font-weight: normal;
-  line-height: 20px;
-  letter-spacing: 0px;
-  color: #997A40;
-}
-}
-// 商品信息
-.swipeCell{
-  margin: 10px 28px;
-  border-radius: 16px;
-  background: #FFFFFF;
-  box-shadow: 0px 16px 24px 0px rgba(138, 149, 158, 0.08);
-  .swipeCellBorder{
-    border: 4px dashed #8A959E;
+// 购物车列表
+.cartBoxListBox{
+  display: flex;
+  flex-direction: row;
+  padding: 30px 20px 30px 20px;
+  align-items: center;
+  .cartBoxListBox-state{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  }
+  .cartBoxListBox-right{
+    height: 200px;
     display: flex;
     flex-direction: column;
-    .cartCardText{
-      font-family: PingFangSC-Regular;
-      font-size: 34px;
-      font-weight: normal;
-      line-height: 20px;
-      letter-spacing: 0px;
-      color: #0D0F23;
+    justify-content: space-between;
+    margin-left: 20px;
+    width: 58%;
+    .cartBoxListBox-right-title{
+      white-space: nowrap; // 强制一行显示
+      overflow: hidden; // 超出隐藏
+      text-overflow: ellipsis; // 省略号
     }
-    .cartCard{
+    .cartBoxListBox-right-state{
       display: flex;
       flex-direction: row;
-      .cartCardLeft{
-        width:183px;
-        margin-top: 20px;
-      }
-      .cartCardRight{
-        display: flex;
-        flex-direction: column;
-        margin-left: 20px;
-        .cartCardRightTitle{
-          margin: 20px 10px 20px 10px;
-          font-family: PingFangSC-Regular;
-          font-weight: normal;
-          line-height: 22px;
-          letter-spacing: 0px;
-          color: #A0A1B4;
+      justify-content: space-between;
+      align-items: center;
+      .inputNumberStyle{
+        .nut-icon{
+          border: 1px solid rgb(215, 215,215);
+          padding: 0px 10px;
         }
-        .cartCardRightContent{
-          margin: 10px 10px;
-          font-family: PingFangSC-Regular;
-          font-weight: normal;
-          line-height: 17px;
-          letter-spacing: 0px;
-          color: #F6565D;
-        }
-        .cartCardRightPrice{
-          margin: 15px 10px;
-          font-family: PingFangSC-Regular;
-          font-size: 18px;
-          font-weight: normal;
-          line-height: 31px;
-          letter-spacing: 0px;
-          color: #4E55AF;
-        }
-        .cartCardRightAdd{
-          margin: 10px 10px;
-          background: #FFFFFF;
-          height: 32px;
+        .nut-number-input{
+          width: 20px !important;
+          margin-left: 15px;
+          margin-right: 15px;
+          background: #ffffff;
         }
       }
     }
   }
-
 }
-.swipeButtonBorderLeft{
-  border-top: 4px dashed #8A959E;
-  border-bottom: 4px dashed #8A959E;
-  background: #1677FF;
-}
-.swipeButtonBorderRight{
-  border: 4px dashed #8A959E;
-  background: #E02020;
-}
-// 结算
-.foot{
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.16);
-  .cartFooter{
+// 页脚结算
+.cartFooterBox{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px 160px 40px;
+  background-color: #ffffff;
+  padding-top: 20px;
+  .cartFooterBox-total{
     display: flex;
     flex-direction: column;
-    justify-content:center;
-    padding: 0 20px 180px 20px;
-    background-color: rgb(255, 255,255);
-    .cartFooterCard{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      margin: 30px 0;
-    }
-    .cartFooterCheck{
-      font-family: PingFangSC-Regular;
-      font-weight: normal;
-      line-height: 24px;
-      letter-spacing: 0px;
-      color: #A0A1B4;
-    }
-    .cartFooterText{
-      font-family: PingFangSC-Regular;
-      font-weight: normal;
-      line-height: 24px;
-      letter-spacing: 0px;
-      color: #A0A1B4;
-    }
-    .cartFooterButton{
-      background: #A85230;
-    }
+    align-items: center;
+    margin-right: 20px;
   }
 }
 // 空页面
 .empty{
   height: 94vh;
 }
-.inputNumberStyle{
-  .nut-icon{
-    border: 1px solid rgb(215, 215,215);
-    padding: 0px 10px;
-  }
-  .nut-number-input{
-    width: 20px !important;
-    margin-left: 15px;
-    margin-right: 15px;
-    background: #ffffff;
-  }
-}
+
 

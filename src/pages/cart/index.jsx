@@ -106,15 +106,7 @@ const Index = () => {
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
         {/* 清空 */}
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            marginBottom: 10,
-          }}
-          onClick={() => onClear()}
-        >
+        <View className="cartBoxHeader" onClick={() => onClear()}>
           <Image
             mode="widthFix"
             // eslint-disable-next-line global-require
@@ -147,28 +139,9 @@ const Index = () => {
                     backgroundColor: item?.state === 1 ? '#c7c7c7' : '',
                   }}
                 >
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      padding: '15px 10px 15px 10px',
-                      alignItems: 'center',
-                    }}
-                  >
+                  <View className="cartBoxListBox">
                     {item?.state === 1 && (
-                      <View
-                        style={{
-                          position: 'absolute',
-                          left: '50%',
-                          top: '50%',
-                          transform: 'translate(-50%,-50%)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: '#ffffff',
-                          // border: '1px solid red'
-                        }}
-                      >
+                      <View className="cartBoxListBox-state">
                         <Text>异常状态</Text>
                       </View>
                     )}
@@ -187,23 +160,8 @@ const Index = () => {
                         style={{ width: 100, height: 100 }}
                       ></Image>
                     </View>
-                    <View
-                      style={{
-                        height: 100,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        marginLeft: 10,
-                        width: '58%',
-                      }}
-                    >
-                      <View
-                        style={{
-                          whiteSpace: 'nowrap', // 强制一行显示
-                          overflow: 'hidden', // 超出隐藏
-                          textOverflow: 'ellipsis', // 省略号
-                        }}
-                      >
+                    <View className="cartBoxListBox-right">
+                      <View className="cartBoxListBox-right-title">
                         <Text style={{ color: '#333333', fontSize: 15 }}> {item?.title}</Text>
                       </View>
                       <View>
@@ -217,14 +175,7 @@ const Index = () => {
                         )}
                       </View>
                       {item?.state !== 1 && (
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}
-                        >
+                        <View className="cartBoxListBox-right-state">
                           <Price price={item?.price} size="normal" needSymbol thousands />
                           <InputNumber
                             className="inputNumberStyle"
@@ -245,36 +196,13 @@ const Index = () => {
       </View>
       {/* 页脚结算 */}
       <View style={{ position: 'fixed', bottom: 0, width: '100%' }}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 20px 80px 20px',
-            backgroundColor: '#ffffff',
-            paddingTop: 10,
-          }}
-        >
+        <View className="cartFooterBox">
           <View>
-            <Checkbox
-              className="cartFooterCheck"
-              textPosition="right"
-              label="全选"
-              checked={false}
-              onChange={handleChange}
-            />
+            <Checkbox textPosition="right" label="全选" checked={false} onChange={handleChange} />
           </View>
 
           <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginRight: 10,
-              }}
-            >
+            <View className="cartFooterBox-total">
               <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ 111</Text>
               <Text style={{ fontSize: 12 }}> 不含运费</Text>
             </View>
