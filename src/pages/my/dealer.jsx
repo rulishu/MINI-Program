@@ -45,7 +45,7 @@ const Index = () => {
             }}
           >
             <View className="banner">
-              <Swiper className="vertical-swiper" direction="vertical" autoplay={2000}>
+              <Swiper className="vertical-swiper" direction="vertical" autoplay={3000}>
                 {info.banner.map((a) => {
                   return <Swiper.Item key={a.id}>{a.title}</Swiper.Item>;
                 })}

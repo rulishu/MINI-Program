@@ -25,7 +25,7 @@ const Index = () => {
     let prevpage = pages[pages.length - 2]; // 上一个页面对象
     let path = prevpage?.route; // 上一个页面路由地址
     const params = Taro.getCurrentInstance().router.params;
-    const curAddress = JSON.parse(params.confirmAddress);
+    const curAddress = params.confirmAddress ? JSON.parse(params.confirmAddress) : {};
     const skuId = params.skuId;
     const count = params.count;
     if (path === 'pages/confirmOrder/index') {
@@ -124,7 +124,20 @@ const Index = () => {
     let pages = getCurrentPages(); // 页面对象
     let prevpage = pages[pages.length - 2]; // 上一个页面对象
     let path = prevpage?.route; // 上一个页面路由地址
+    const params = Taro.getCurrentInstance().router.params;
+    const skuId = params.skuId;
+    const count = params.count;
     if (path === 'pages/confirmOrder/index') {
+      dispatch({
+        type: 'goodInfo/newConfirm',
+        payload: {
+          areaCode: item.areaCode,
+          skuLockVoList: {
+            count: count,
+            skuId: skuId,
+          },
+        },
+      });
       dispatch({
         type: 'goodInfo/update',
         payload: {

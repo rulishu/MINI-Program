@@ -213,13 +213,18 @@ export default {
               ?.at(0);
             const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
             Taro.setStorageSync('defultAddress', lastAddress);
+            yield put({
+              type: 'update',
+              payload: {
+                currentAddress: {},
+              },
+            });
           }
           yield put({
             type: 'update',
             payload: {
               shoppingCartVOList: result.result.shoppingCartVOList || {},
               orderToken: result.result.orderToken,
-              currentAddress: {},
               visible: false,
             },
           });
