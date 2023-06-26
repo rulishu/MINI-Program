@@ -76,3 +76,19 @@ export const getCurTimes = () => {
   const ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
   return date.year + '-' + newmonth + '-' + day + ' ' + hh + ':' + mm + ':' + ss;
 };
+
+// 时间格式转化
+export function changeStr(data) {
+  if (data < 10) {
+    return '0' + data;
+  } else {
+    return data;
+  }
+}
+
+export function changeDate(date) {
+  if (date) {
+    const d = new Date(date);
+    return changeStr(d.getMonth() + 1) + '月/' + d.getFullYear();
+  }
+}

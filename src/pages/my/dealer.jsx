@@ -63,7 +63,7 @@ const Index = () => {
           <View
             className="my-orders-all"
             onTap={async () => {
-              // Taro.navigateTo({ url: '' });
+              Taro.navigateTo({ url: '/pages/dividendDetails/index' });
               await dispatch({
                 type: 'allOrders/update',
                 payload: {
