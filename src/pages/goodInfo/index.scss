@@ -450,6 +450,11 @@ page {
     flex-direction: column;
     padding: 20px 30px;
     height: 70%;
+    .commentDetailBox-content-box{
+      display: flex;
+      flex-direction: row; 
+      justify-content: space-between;
+    }
     .evaluationInfo{
       text-overflow: -o-ellipsis-lastline;
       overflow: hidden;				//溢出内容隐藏
@@ -496,6 +501,12 @@ page {
     flex-direction: row;
     align-items: center;
     padding-top: 20px;
+    .footButtonsBox-buttons-box{
+      display: flex;
+      flex-direction: row; 
+      margin-right: 50px;
+      width: 20%;
+    }
   }
 }
 // 领劵弹窗CSS
