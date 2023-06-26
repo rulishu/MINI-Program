@@ -59,6 +59,8 @@ const Index = () => {
             type: 'goodInfo/newConfirm',
             payload: {
               areaCode: addressList[0]?.areaCode,
+              cityCode: addressList[0]?.cityCode,
+              provinceCode: addressList[0]?.provinceCode,
               skuLockVoList: {
                 count: count,
                 skuId: skuId,
@@ -132,6 +134,8 @@ const Index = () => {
         type: 'goodInfo/newConfirm',
         payload: {
           areaCode: item.areaCode,
+          cityCode: item.cityCode,
+          provinceCode: item.provinceCode,
           skuLockVoList: {
             count: count,
             skuId: skuId,
