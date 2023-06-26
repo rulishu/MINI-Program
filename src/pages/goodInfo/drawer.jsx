@@ -165,10 +165,12 @@ const Index = () => {
       dispatch({
         type: 'goodInfo/newConfirm',
         payload: {
-          skuLockVoList: {
-            count: amount,
-            skuId: skuInfo?.skuId,
-          },
+          skuLockVoList: [
+            {
+              count: amount,
+              skuId: skuInfo?.skuId,
+            },
+          ],
         },
       });
     }
