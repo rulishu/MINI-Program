@@ -250,7 +250,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
                     callBack: () => {
                       refresh?.();
                       setIsConfirm(false);
-                      Taro.navigateTo({ url: '/pages/dealDone/index' });
+                      Taro.navigateTo({ url: `/pages/dealDone/index?id=${Number(item.id)}` });
                     },
                   },
                 });
