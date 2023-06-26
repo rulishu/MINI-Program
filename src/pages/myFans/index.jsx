@@ -139,6 +139,7 @@ const Index = () => {
                           <View className="screen">
                             <Popover
                               className="popover"
+                              location="bottom-end"
                               visible={lightTheme}
                               onClick={() => {
                                 lightTheme ? setLightTheme(false) : setLightTheme(true);

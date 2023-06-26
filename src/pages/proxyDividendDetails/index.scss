@@ -1,0 +1,159 @@
+page {
+  height: 100%;
+  background: #F2F2F2;
+}
+.fans{
+  margin:20px;
+  .fans-head{
+    background-color: #A05635;
+    padding:20px;
+    .fans-head-top{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #ffffff;
+      font-size: 26px;
+      padding:20px;
+      margin:0 0 20px 0;
+      .fans-head-top-right{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+    .fans-head-bottom{
+      margin-top:10px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 26px;
+      color:#ffffff;
+      .fans-head-bottom-item{
+        width:50%;
+        margin-bottom: 20px;
+        .fans-head-bottom-item-num{
+          font-size: 36px;
+          font-weight: bold;
+        }
+      }
+    }
+    .fans-head-foot{
+      font-size: 20px;
+      color:#f3f0f0;
+      font-weight: 300;
+    }
+  }
+  .fans-body{
+    .fans-body-title{
+      margin:20px 0;
+      .title-info{
+        display: flex;
+        justify-content: space-between;
+        .screen{
+          display: flex;
+          align-items: center;
+          .popover{
+            .popover-menu-item-name{
+              width:120px;
+              white-space:nowrap;        // 强制一行显示
+              overflow:hidden;          // 超出隐藏
+              text-overflow:ellipsis;   // 省略号
+            }
+          }
+        }
+      }
+      .tag{
+        margin-right:20px;
+        color:#333333;
+      }
+    }
+    .fansList-crown{
+      border:1px solid #D7D7D7;
+      background-color: #ffffff;
+      display:flex;
+      justify-content: space-between;
+      margin:20px 0;
+      padding:20px 40px;
+      font-size: 24px;
+      .joined{
+        display: flex;
+        align-items: center;
+        .joined-icon{
+          display: flex;
+          flex-direction: column;
+          margin:0 0 0 10px;
+        }
+      }
+      
+    }
+  }
+}
+.info{
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  .info-bottom{
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    .title{
+      font-weight: bold;
+      color:#333333;
+    }
+  }
+}
+.dividendDetails{
+  margin:0 0 20px 0;
+  background-color: #ffffff;
+  border:1px solid #D7D7D7;
+  padding:20px;
+  .selectTime{
+    margin:0 0 20px 0;
+  }
+  .dividendDetails-info{
+    border:1px solid #D7D7D7;
+    background-color: #ffffff;
+    padding:20px;
+    margin-bottom: 20px;
+    .dividendDetails-info-top{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      .dividendDetails-info-top-left{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .name{
+          margin:0 10px;
+          font-size: 24px;
+          font-weight: 300;
+        }
+      }
+    }
+    .dividendDetails-info-mid{
+      font-weight: 300;
+      font-size: 24px;
+    }
+    .dividendDetails-info-bot{
+      margin:20px 0 0 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 300;
+      font-size: 24px;
+    }
+  }
+}
+.foot{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  padding-bottom: 40px;
+}

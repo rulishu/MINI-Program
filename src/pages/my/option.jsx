@@ -32,6 +32,9 @@ const Index = () => {
     if (item.title === '专属海报') {
       Taro.navigateTo({ url: item.url });
     }
+    if (item.title === '代理管理') {
+      Taro.navigateTo({ url: item.url });
+    }
   };
   const list = [
     {
@@ -50,7 +53,8 @@ const Index = () => {
     },
     {
       icon: my12,
-      title: '优惠卷',
+      title: '代理管理',
+      url: '/pages/proxyDividendDetails/index',
     },
     // {
     //   icon: my12,
