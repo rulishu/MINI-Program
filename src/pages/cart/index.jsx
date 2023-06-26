@@ -282,7 +282,17 @@ const Index = () => {
               style={{ borderRadius: 5, width: 80 }}
               type="primary"
               onClick={() => {
-                Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+                dispatch({
+                  type: 'goodInfo/newConfirm',
+                  payload: {
+                    skuLockVoList: [
+                      {
+                        count: 1,
+                        skuId: 1363,
+                      },
+                    ],
+                  },
+                });
               }}
             >
               结算
