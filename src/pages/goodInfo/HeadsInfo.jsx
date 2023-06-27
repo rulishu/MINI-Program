@@ -16,6 +16,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const { queryInfo, activeSku, swiperList } = useSelector((state) => state.goodInfo);
+  const { evaluationRating, evaluationList } = useSelector((state) => state.evaluate);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -281,7 +282,7 @@ const Index = () => {
                 <View className="commentDetailBox-header">
                   <View>
                     <Text>评价</Text>
-                    <Text>(102)</Text>
+                    <Text>{`(${evaluationList?.length})`}</Text>
                   </View>
                   <View style={{ display: 'flex', alignItems: 'center' }}>
                     <Text>查看全部</Text>
@@ -289,27 +290,32 @@ const Index = () => {
                   </View>
                 </View>
               </View>
-              <View className="commentDetailBox-content">
-                <View className="commentDetailBox-content-box">
-                  <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    <View style={{ width: 30, height: 30 }}>
-                      <Image
-                        mode="widthFix"
-                        // eslint-disable-next-line global-require
-                        style={{ width: 30, height: 30, background: '#aaaaaa' }}
-                      ></Image>
+              {evaluationRating?.slice(0, 2).map((item) => {
+                return (
+                  <View className="commentDetailBox-content" key={item?.id}>
+                    <View className="commentDetailBox-content-box">
+                      <View className="commentDetailBox-content-box-left">
+                        <View style={{ width: 20, height: 20 }}>
+                          <Image
+                            mode="widthFix"
+                            src={item?.headUrl}
+                            style={{ width: 20, height: 20, background: '#aaaaaa' }}
+                          ></Image>
+                        </View>
+                        <View style={{ paddingLeft: 5 }}>{item?.consumerName}</View>
+                      </View>
+                      <View className="commentDetailBox-content-box-right">
+                        <Tag color="#965A3C" style={{ fontSize: 10 }}>
+                          推荐
+                        </Tag>
+                        <Text>{item?.createTime}</Text>
+                        {/* <Text style={{ paddingLeft: 2 }}>来自四川</Text> */}
+                      </View>
                     </View>
-                    <View style={{ paddingLeft: 10 }}>Miracle-</View>
+                    <View className="evaluationInfo">{item?.comment}</View>
                   </View>
-                  <View style={{ color: '#aaaaaa' }}>
-                    <Text>2023.06.02</Text>
-                    <Text style={{ paddingLeft: 10 }}>来自四川</Text>
-                  </View>
-                </View>
-                <View className="evaluationInfo">
-                  东西真的很不错，吃起来的时候一点都不输外面餐厅卖的大几百的，就是借款还款计划空间,就是借款还款计划空间,就是借款还款计划空间,就是借款还款计划空间,就是借款还款计划空间
-                </View>
-              </View>
+                );
+              })}
             </View>
             {/* 商品详情 */}
             <View className="goodInfoDetailBox">
