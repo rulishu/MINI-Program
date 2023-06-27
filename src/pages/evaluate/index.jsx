@@ -69,23 +69,42 @@ const Index = () => {
         return str;
       })
       .toString();
-    dispatch({
-      type: 'evaluate/update',
-      payload: {
-        releaseOpen: true,
-        releaseData: [
-          {
-            comment: textareaValue,
-            image: imgs,
-            mainImage: mainImages,
-            orderId: orderInfo?.orderNumber,
-            rating: active == '推荐' ? 1 : active == '一般' ? 2 : active == '不推荐' ? 3 : '',
-            sku: orderInfo.items?.at(0)?.attributes.length >= 2 ? skus?.replace(',', '*') : skus,
-            skuId: Number(skuIds),
-          },
-        ],
+    const releaseData = [
+      {
+        comment: textareaValue,
+        image: imgs,
+        mainImage: mainImages,
+        orderId: orderInfo?.orderNumber,
+        rating: active == '推荐' ? 1 : active == '一般' ? 2 : active == '不推荐' ? 3 : '',
+        sku: orderInfo.items?.at(0)?.attributes.length >= 2 ? skus?.replace(',', '*') : skus,
+        skuId: Number(skuIds),
       },
-    });
+    ];
+    if (orderInfo.items.length < 2) {
+      dispatch({
+        type: 'evaluate/getAddEvaluation',
+        payload: {
+          releaseData,
+          callBack: () => {
+            Taro.navigateTo({ url: '/pages/allOrders/index' });
+            dispatch({
+              type: 'allOrders/update',
+              payload: {
+                orderActive: 0,
+              },
+            });
+          },
+        },
+      });
+    } else {
+      dispatch({
+        type: 'evaluate/update',
+        payload: {
+          releaseOpen: true,
+          releaseData,
+        },
+      });
+    }
     setNum(1);
   };
 
