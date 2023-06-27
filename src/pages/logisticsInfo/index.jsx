@@ -101,7 +101,7 @@ const Index = () => {
                     </Steps>
                   </View>
                 ) : (
-                  <Empty description="无数据" className="empty" />
+                  <Empty description="无数据" />
                 )}
               </View>
             </View>

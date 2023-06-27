@@ -8,13 +8,14 @@ import Orders from './orders';
 import { tabList } from './eumn';
 import Tabs from '@/component/aTabs';
 import { FilterOutlined, ArrowUp, ArrowDown, QuestionOutlined, Arrow } from '@taroify/icons';
-import { Popover, Divider } from '@nutui/nutui-react-taro';
+import { Tag, Popover, Divider, Cell, CellGroup } from '@nutui/nutui-react-taro';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const { orderActive } = useSelector((state) => state.myFans);
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
+  const [lightTheme, setLightTheme] = useState(false);
   useEffect(() => {
     //获取顶部导航栏位置
     let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
@@ -32,7 +33,7 @@ const Index = () => {
 
   const updateFn = (payload) => {
     dispatch({
-      type: 'myFans/update',
+      type: 'proxyManagement/update',
       payload: payload,
     });
   };
@@ -45,22 +46,27 @@ const Index = () => {
   };
 
   // 提示
-  const onPrompt = () => {
-    dispatch({
-      type: 'myFans/update',
-      payload: {
-        popupOpen: true,
-      },
+  const onPrompt = (type) => {
+    updateFn({
+      popupOpen: true,
+      popType: type,
     });
   };
 
-  const [lightTheme, setLightTheme] = useState(false);
   const itemList = [
     { name: '全部' },
     { name: '奋斗者' },
     { name: '二级经销商' },
     { name: '一级经销商' },
   ];
+
+  const organizationList = [
+    { name: '杭州市代', type: '市代' },
+    { name: '宁波市代', type: '市代' },
+    { name: '绍兴市代', type: '市代' },
+    { name: '萧山区代', type: '区/县级' },
+  ];
+
   return (
     <View className="content">
       <View className="head">
@@ -75,7 +81,7 @@ const Index = () => {
           <View className="sharing-title">
             <View>
               <Text style={{ marginRight: '5px' }}>地盘分润(发起方)</Text>
-              <QuestionOutlined onClick={() => onPrompt()} />
+              <QuestionOutlined onClick={() => onPrompt(1)} />
             </View>
             <Arrow />
           </View>
@@ -98,7 +104,7 @@ const Index = () => {
           <View className="sharing-title">
             <View>
               <Text style={{ marginRight: '5px' }}>地盘分润(收件方)</Text>
-              <QuestionOutlined onClick={() => onPrompt()} />
+              <QuestionOutlined onClick={() => onPrompt(1)} />
             </View>
             <Arrow />
           </View>
@@ -116,6 +122,32 @@ const Index = () => {
               <Text>12.00</Text>
             </View>
           </View>
+        </View>
+      </View>
+      <View className="organization">
+        <View className="organization-title">
+          <Text style={{ marginRight: '5px' }}>组织结构</Text>
+          <QuestionOutlined onClick={() => onPrompt(2)} />
+        </View>
+        <View className="cellgroup">
+          <CellGroup>
+            {organizationList?.map((item, index) => {
+              return (
+                <Cell
+                  key={index}
+                  title={
+                    <View style={{ display: 'flex' }}>
+                      <Tag color="#E9E9E9" textColor="#999999">
+                        {item.type}
+                      </Tag>
+                      <View className="cell-title">{item.name}</View>
+                    </View>
+                  }
+                  isLink
+                />
+              );
+            })}
+          </CellGroup>
         </View>
       </View>
       <View className="fans-body">
