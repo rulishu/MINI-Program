@@ -8,7 +8,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { releaseOpen } = useSelector((state) => state.evaluate);
+  const { releaseOpen, releaseData } = useSelector((state) => state.evaluate);
 
   // 关闭
   const onClose = () => {
@@ -23,18 +23,25 @@ const Index = () => {
   // 发布
   const onClick = () => {
     dispatch({
-      type: 'evaluate/update',
+      type: 'evaluate/getAddEvaluation',
       payload: {
-        releaseOpen: false,
+        releaseData,
+        callBack: () => {
+          dispatch({
+            type: 'evaluate/update',
+            payload: {
+              releaseOpen: false,
+            },
+          });
+          Taro.navigateTo({ url: '/pages/allOrders/index' });
+          dispatch({
+            type: 'allOrders/update',
+            payload: {
+              orderActive: 0,
+            },
+          });
+        },
       },
-    });
-    Taro.showToast({
-      title: '评论已发布',
-      icon: 'none',
-      duration: 2000,
-    });
-    Taro.navigateBack({
-      delta: 1,
     });
   };
 

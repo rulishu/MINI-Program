@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { evaluationList } from '@/server/evaluate';
+import { evaluationList, getAddEvaluation } from '@/server/evaluate';
 
 export default {
   namespace: 'evaluate',
@@ -29,6 +29,22 @@ export default {
             },
           });
         }
+      } catch (err) {}
+    },
+    // 批量创建订单商品评价
+    *getAddEvaluation({ payload }, { call, put }) {
+      const { releaseData, callBack } = payload;
+      try {
+        const params = [...releaseData];
+        const data = yield call(getAddEvaluation, params);
+        if (data && data.code === 200) {
+          Taro.showToast({
+            title: '评论已发布',
+            icon: 'none',
+            duration: 2000,
+          });
+        }
+        callBack();
       } catch (err) {}
     },
   },
