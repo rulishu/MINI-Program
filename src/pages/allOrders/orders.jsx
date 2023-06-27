@@ -58,6 +58,11 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
     [-2]: '已取消',
   };
 
+  // 评价
+  const onEvaluate = () => {
+    Taro.navigateTo({ url: `/pages/evaluate/index?id=${Number(item.id)}` });
+  };
+
   return (
     <Fragment>
       <View className="order-item">
@@ -132,7 +137,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
             </Button>
           )}
           {item.orderStatus === 4 && (
-            <Button className="bottom-btn" plain type="default">
+            <Button className="bottom-btn" plain type="default" onClick={() => onEvaluate()}>
               评价
             </Button>
           )}
@@ -245,7 +250,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
                     callBack: () => {
                       refresh?.();
                       setIsConfirm(false);
-                      Taro.navigateTo({ url: '/pages/dealDone/index' });
+                      Taro.navigateTo({ url: `/pages/dealDone/index?id=${Number(item.id)}` });
                     },
                   },
                 });

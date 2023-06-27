@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Empty, Icon, Button } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { min, aPrice } from '@/utils/min';
 import NavBar from '../../component/navBar';
 import homeAdd from '@/assets/images/homeAdd.svg';
@@ -27,6 +27,19 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { orderInfo } = useSelector((state) => state.orderDetails);
+
+  const params = Taro.getCurrentInstance().router.params;
+  useEffect(() => {
+    dispatch({
+      type: 'orderDetails/selectPrimaryKey',
+      payload: {
+        id: params?.id,
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // 跳转商品详情
   const goGoodInfo = async (itm) => {
     Taro.navigateTo({ url: `/pages/goodInfo/index?id=${itm?.id}` });
@@ -45,7 +58,7 @@ const Index = () => {
 
   // 立即评价
   const goEvaluate = () => {
-    Taro.navigateTo({ url: `/pages/evaluate/index` });
+    Taro.navigateTo({ url: `/pages/evaluate/index?id=${Number(orderInfo.id)}` });
   };
 
   // 返回订单列表
