@@ -290,7 +290,7 @@ const Index = () => {
                   </View>
                 </View>
               </View>
-              {evaluationRating?.slice(0, 1).map((item) => {
+              {evaluationRating?.slice(0, 2).map((item) => {
                 return (
                   <View className="commentDetailBox-content" key={item?.id}>
                     <View className="commentDetailBox-content-box">
