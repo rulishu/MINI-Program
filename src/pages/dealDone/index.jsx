@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Empty, Icon, Button } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
@@ -6,29 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { min, aPrice } from '@/utils/min';
 import NavBar from '../../component/navBar';
 import homeAdd from '@/assets/images/homeAdd.svg';
-import { list } from './item';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
-  useEffect(() => {
-    //获取顶部导航栏位置
-    let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
-    const { top, height } = menuButtonInfo;
-    wx.getSystemInfo({
-      success: (res) => {
-        const { statusBarHeight } = res;
-        const margin = top - statusBarHeight;
-        const navHeight = height + statusBarHeight + margin * 2;
-        setHomeTopNavHeight(navHeight);
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const { orderInfo } = useSelector((state) => state.orderDetails);
-
   const params = Taro.getCurrentInstance().router.params;
   useEffect(() => {
     dispatch({
@@ -37,9 +18,18 @@ const Index = () => {
         id: params?.id,
       },
     });
+    dispatch({
+      type: 'dealDone/selectItemTopTen',
+      payload: {
+        pageSize: 100,
+        pageNum: 1,
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { orderInfo } = useSelector((state) => state.orderDetails);
+  const { levelList } = useSelector((state) => state.dealDone);
   // 跳转商品详情
   const goGoodInfo = async (itm) => {
     Taro.navigateTo({ url: `/pages/goodInfo/index?id=${itm?.id}` });
@@ -90,14 +80,7 @@ const Index = () => {
           }
         />
       </View>
-      <View
-        style={{
-          position: 'fixed',
-          left: 0,
-          width: '100%',
-          top: homeTopNavHeight,
-        }}
-      >
+      <View>
         <View className="option">
           <View style={{ marginRight: 10 }}>
             <Button size="small" plain shape="square" color="#AAAAAA" onClick={() => goHome()}>
@@ -111,11 +94,11 @@ const Index = () => {
           </View>
         </View>
         <View className="middle-search-result">
-          {list.length === 0 ? (
+          {levelList.length === 0 ? (
             <Empty className="empty" description="无数据" imageSize={100} />
           ) : (
             <View className="middle-search-result-info">
-              {list.map((item) => (
+              {levelList.map((item) => (
                 <View
                   className="middle-search-result-info-item"
                   key={item.id}
