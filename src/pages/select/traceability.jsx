@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Image } from '@tarojs/components';
-import { Tag, Popover, Button, Tabs } from '@nutui/nutui-react-taro';
+import { Tag, Popover, Button } from '@nutui/nutui-react-taro';
 import selectMenu from '@/assets/images/selectMenu.svg';
 import Classification from './classification';
 import { selectList } from '@/server/select';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRequest } from 'ahooks';
 import Taro from '@tarojs/taro';
+import { Sidebar } from '@taroify/core';
 import './index.scss';
 
 const Index = () => {
@@ -47,7 +48,7 @@ const Index = () => {
     margin: '8px 0 20px 10px',
   };
 
-  const [tab5value, setTab5value] = useState('0');
+  const [tab5value, setTab5value] = useState(0);
   const [activeTag, setActiveTag] = useState(0);
   const [lightTheme, setLightTheme] = useState(false);
 
@@ -192,50 +193,58 @@ const Index = () => {
           </Popover>
         </View>
       </View>
-      <View className="traceability-bottom">
-        <Tabs
-          value={tab5value}
-          style={{ height: '52vh' }}
-          tabStyle={{ width: 120 }}
-          onChange={async ({ paneKey }) => {
-            setTab5value(paneKey);
-            await dispatch({
-              type: 'select/selectList',
-              payload: {
-                pageNum: 1,
-                pageSize: 20,
-                provenance: parseInt(secondLevelAreaClassAgent[parseInt(paneKey)]?.areaId),
-              },
-            });
-          }}
-          className="tabs"
-          background="#ffffff"
-          titleScroll
-          direction="vertical"
-          playBtnPosition="center"
-        >
-          {secondLevelAreaClassAgent.map((item) => (
-            <Tabs.TabPane key={item.id} title={item.shopName} className="tab-content">
-              <ScrollView
-                scrollY
-                style={{ height: '60vh' }}
-                scrollWithAnimation
-                refresherEnabled
-                lowerThreshold={50}
-                refresherTriggered={loading}
-                onScrollToLower={() => {
-                  let maxPage = Math.ceil(total / pageSize);
-                  if (maxPage > pageNum) {
-                    updateFn({ pageNum: pageNum + 1 });
-                  }
-                }}
-                onRefresherRefresh={refesh}
-              >
-                <Classification itemList={item} title={item.shopName} />
-              </ScrollView>
-            </Tabs.TabPane>
-          ))}
-        </Tabs>
+      <View style={{ display: 'flex' }}>
+        <View className="traceability-bottom">
+          <Sidebar
+            value={tab5value}
+            style={{ height: '52vh', backgroundColor: '#F7F8FA' }}
+            // tabStyle={{ width: 106 }}
+            onChange={async (paneKey) => {
+              setTab5value(paneKey);
+              await dispatch({
+                type: 'select/selectList',
+                payload: {
+                  pageNum: 1,
+                  pageSize: 20,
+                  provenance: parseInt(secondLevelAreaClassAgent[parseInt(paneKey)]?.areaId),
+                },
+              });
+            }}
+            // className="tabs"
+            // background="#ffffff"
+            // titleScroll
+            // direction="vertical"
+            // playBtnPosition="center"
+          >
+            {secondLevelAreaClassAgent.map((item) => (
+              <Sidebar.Tab key={item.id} style={{ fontSize: 12 }}>
+                {item.shopName}
+              </Sidebar.Tab>
+            ))}
+          </Sidebar>
+        </View>
+        <View className="traceability-bottom-right">
+          <ScrollView
+            scrollY
+            style={{ height: '52vh' }}
+            scrollWithAnimation
+            refresherEnabled
+            lowerThreshold={50}
+            refresherTriggered={loading}
+            onScrollToLower={() => {
+              let maxPage = Math.ceil(total / pageSize);
+              if (maxPage > pageNum) {
+                updateFn({ pageNum: pageNum + 1 });
+              }
+            }}
+            onRefresherRefresh={refesh}
+          >
+            <Classification
+              itemList={secondLevelAreaClassAgent.at(Number(tab5value))}
+              title={secondLevelAreaClassAgent.at(Number(tab5value))?.shopName}
+            />
+          </ScrollView>
+        </View>
       </View>
     </View>
   );

@@ -111,7 +111,11 @@ const Index = () => {
 
   // 选择地址
   const onSelectAddress = () => {
-    Taro.navigateTo({ url: `/pages/address/index?confirmAddress=${JSON.stringify(curAddress)}` });
+    Taro.navigateTo({
+      url: `/pages/address/index?confirmAddress=${JSON.stringify(curAddress)}&count=${
+        shoppingCartVOList[0]?.cartVOList[0]?.count
+      }&skuId=${shoppingCartVOList[0]?.skuId}`,
+    });
   };
 
   // 订单备注

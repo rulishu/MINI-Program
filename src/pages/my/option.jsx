@@ -54,7 +54,7 @@ const Index = () => {
     {
       icon: my12,
       title: '代理管理',
-      url: '/pages/proxyDividendDetails/index',
+      url: '/pages/proxyManagement/index',
     },
     // {
     //   icon: my12,

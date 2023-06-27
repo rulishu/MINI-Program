@@ -17,6 +17,8 @@ import dealer from './dealer';
 import dividendDetails from './dividendDetails';
 import proxyDividendDetails from './proxyDividendDetails';
 import myCoupons from './myCoupons';
+import proxyManagement from './proxyManagement';
+import dealDone from './dealDone';
 
 export default [
   global,
@@ -38,4 +40,6 @@ export default [
   dividendDetails,
   proxyDividendDetails,
   myCoupons,
+  proxyManagement,
+  dealDone,
 ]; // 这里是数组, 数组中的每个项都是独立的模块

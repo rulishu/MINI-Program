@@ -203,21 +203,28 @@ export default {
         };
         const result = yield call(newConfirm, params);
         if (result.code === 200) {
-          Taro.navigateTo({ url: '/pages/confirmOrder/index' });
-          // 默认地址
-          const defultAddress = result.result.addresses
-            ?.filter((item) => {
-              return item.isDefault === 1;
-            })
-            ?.at(0);
-          const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
-          Taro.setStorageSync('defultAddress', lastAddress);
+          if (!params?.areaCode) {
+            Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+            // 默认地址
+            const defultAddress = result.result.addresses
+              ?.filter((item) => {
+                return item.isDefault === 1;
+              })
+              ?.at(0);
+            const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
+            Taro.setStorageSync('defultAddress', lastAddress);
+            yield put({
+              type: 'update',
+              payload: {
+                currentAddress: {},
+              },
+            });
+          }
           yield put({
             type: 'update',
             payload: {
               shoppingCartVOList: result.result.shoppingCartVOList || {},
               orderToken: result.result.orderToken,
-              currentAddress: {},
               visible: false,
             },
           });

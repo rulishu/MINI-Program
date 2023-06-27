@@ -80,25 +80,29 @@ const Index = () => {
                 </View>
               </View>
               <View className="logisticsInfo-content-middle">
-                <View className="steps-wrapper">
-                  <Steps direction="vertical" progressDot current={5}>
-                    {traceInfo?.map((item, index) => (
-                      <Step
-                        key={index}
-                        iconColor={item.icon === 'check-checked' ? '#222B45' : '#A85230'}
-                        size="14"
-                        activeIndex={traceInfo.length}
-                        title={
-                          <View className="title">
-                            <p className="state">{item?.status}</p>
-                            <p className="time">{item.time}</p>
-                          </View>
-                        }
-                        content={<View className="content">{item?.context}</View>}
-                      ></Step>
-                    ))}
-                  </Steps>
-                </View>
+                {traceInfo.length !== 0 ? (
+                  <View>
+                    <Steps direction="vertical" progressDot current={5}>
+                      {traceInfo?.map((item, index) => (
+                        <Step
+                          key={index}
+                          iconColor={item.icon === 'check-checked' ? '#222B45' : '#A85230'}
+                          size="14"
+                          activeIndex={traceInfo.length}
+                          title={
+                            <View className="title">
+                              <p className="state">{item?.status}</p>
+                              <p className="time">{item.time}</p>
+                            </View>
+                          }
+                          content={<View className="content">{item?.context}</View>}
+                        ></Step>
+                      ))}
+                    </Steps>
+                  </View>
+                ) : (
+                  <Empty description="无数据" />
+                )}
               </View>
             </View>
           </View>
@@ -123,6 +127,7 @@ const Index = () => {
               type: 'logisticsInfo/getTrace',
               payload: { num: packageList[paneKey]?.trackingNumber },
             });
+            Taro.showLoading({ title: '加载中...', mask: true });
           }}
           tabList={packageList?.map((tabItem) => {
             return {
