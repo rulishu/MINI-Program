@@ -1,4 +1,5 @@
 import { packageTrace } from '@/server/logisticsInfo';
+import Taro from '@tarojs/taro';
 // import Taro from '@tarojs/taro';
 
 export default {
@@ -23,8 +24,13 @@ export default {
               traceInfo: result.result.data || [],
             },
           });
+          Taro.hideLoading();
+        } else {
+          Taro.hideLoading();
         }
-      } catch (err) {}
+      } catch (err) {
+        Taro.hideLoading();
+      }
     },
   },
   reducers: {

@@ -24,6 +24,10 @@ const Index = () => {
     let pages = getCurrentPages(); // 页面对象
     let prevpage = pages[pages.length - 2]; // 上一个页面对象
     let path = prevpage?.route; // 上一个页面路由地址
+    const params = Taro.getCurrentInstance().router.params;
+    const curAddress = params.confirmAddress ? JSON.parse(params.confirmAddress) : {};
+    const skuId = params.skuId;
+    const count = params.count;
     if (path === 'pages/confirmOrder/index') {
       if (addressList.length === 0) {
         dispatch({
@@ -32,9 +36,16 @@ const Index = () => {
             currentAddress: {},
           },
         });
+        dispatch({
+          type: 'goodInfo/newConfirm',
+          payload: {
+            skuLockVoList: {
+              count: count,
+              skuId: skuId,
+            },
+          },
+        });
       } else {
-        const params = Taro.getCurrentInstance().router.params;
-        const curAddress = JSON.parse(params.confirmAddress);
         let returnAddress;
         returnAddress = addressList.filter((items) => items.id === curAddress.id && items);
         if (returnAddress.length === 0) {
@@ -42,6 +53,18 @@ const Index = () => {
             type: 'goodInfo/update',
             payload: {
               currentAddress: addressList[0],
+            },
+          });
+          dispatch({
+            type: 'goodInfo/newConfirm',
+            payload: {
+              areaCode: addressList[0]?.areaCode,
+              cityCode: addressList[0]?.cityCode,
+              provinceCode: addressList[0]?.provinceCode,
+              skuLockVoList: {
+                count: count,
+                skuId: skuId,
+              },
             },
           });
         }
@@ -103,7 +126,22 @@ const Index = () => {
     let pages = getCurrentPages(); // 页面对象
     let prevpage = pages[pages.length - 2]; // 上一个页面对象
     let path = prevpage?.route; // 上一个页面路由地址
+    const params = Taro.getCurrentInstance().router.params;
+    const skuId = params.skuId;
+    const count = params.count;
     if (path === 'pages/confirmOrder/index') {
+      dispatch({
+        type: 'goodInfo/newConfirm',
+        payload: {
+          areaCode: item.areaCode,
+          cityCode: item.cityCode,
+          provinceCode: item.provinceCode,
+          skuLockVoList: {
+            count: count,
+            skuId: skuId,
+          },
+        },
+      });
       dispatch({
         type: 'goodInfo/update',
         payload: {

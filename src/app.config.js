@@ -29,6 +29,7 @@ export default defineAppConfig({
     'pages/flashSkill/index',
     'pages/dividendDetails/index',
     'pages/proxyDividendDetails/index',
+    'pages/proxyManagement/index',
   ],
   requiredPrivateInfos: ['getLocation'],
   permission: {
