@@ -87,14 +87,16 @@ page {
       .allEvaluate-info-item-foot{
         display: flex;
         flex-direction: row;
+        margin-top: 20px;
         flex-wrap: wrap;
-        .images{
-          margin:20px 20px 0 0;
-        }
+        margin-left: 20px;
         .image{
-          width:160px !important;
-          height:160px !important;
+          width: 200px !important;
+          height: 200px;
+          width: calc(33.33% - 15px);
           background-color: #D7D7D7;
+          margin-right: 15px;
+          margin-bottom: 15px;
         }
       }
     }
