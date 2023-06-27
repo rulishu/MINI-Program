@@ -274,49 +274,51 @@ const Index = () => {
               <Text style={{ paddingLeft: 15, fontSize: 15 }}>{queryInfo?.templateName}</Text>
             </View>
             {/* 评价 */}
-            <View
-              className="commentDetailBox"
-              onClick={() => Taro.navigateTo({ url: '/pages/allEvaluate/index' })}
-            >
-              <View style={{ width: '100%', padding: '10px 15px', height: '30%' }}>
-                <View className="commentDetailBox-header">
-                  <View>
-                    <Text>评价</Text>
-                    <Text>{`(${evaluationList?.length})`}</Text>
-                  </View>
-                  <View style={{ display: 'flex', alignItems: 'center' }}>
-                    <Text>查看全部</Text>
-                    <Icon name="rect-right" size={20}></Icon>
+            {evaluationRating.length > 0 && (
+              <View
+                className="commentDetailBox"
+                onClick={() => Taro.navigateTo({ url: '/pages/allEvaluate/index' })}
+              >
+                <View style={{ width: '100%', padding: '10px 15px', height: '30%' }}>
+                  <View className="commentDetailBox-header">
+                    <View>
+                      <Text>评价</Text>
+                      <Text>{`(${evaluationList?.length})`}</Text>
+                    </View>
+                    <View style={{ display: 'flex', alignItems: 'center' }}>
+                      <Text>查看全部</Text>
+                      <Icon name="rect-right" size={20}></Icon>
+                    </View>
                   </View>
                 </View>
-              </View>
-              {evaluationRating?.slice(0, 2).map((item) => {
-                return (
-                  <View className="commentDetailBox-content" key={item?.id}>
-                    <View className="commentDetailBox-content-box">
-                      <View className="commentDetailBox-content-box-left">
-                        <View style={{ width: 20, height: 20 }}>
-                          <Image
-                            mode="widthFix"
-                            src={item?.headUrl}
-                            style={{ width: 20, height: 20, background: '#aaaaaa' }}
-                          ></Image>
+                {evaluationRating?.slice(0, 2).map((item) => {
+                  return (
+                    <View className="commentDetailBox-content" key={item?.id}>
+                      <View className="commentDetailBox-content-box">
+                        <View className="commentDetailBox-content-box-left">
+                          <View style={{ width: 20, height: 20 }}>
+                            <Image
+                              mode="widthFix"
+                              src={item?.headUrl}
+                              style={{ width: 20, height: 20, background: '#aaaaaa' }}
+                            ></Image>
+                          </View>
+                          <View style={{ paddingLeft: 5 }}>{item?.consumerName}</View>
                         </View>
-                        <View style={{ paddingLeft: 5 }}>{item?.consumerName}</View>
+                        <View className="commentDetailBox-content-box-right">
+                          <Tag color="#965A3C" style={{ fontSize: 10 }}>
+                            推荐
+                          </Tag>
+                          <Text>{item?.createTime}</Text>
+                          {/* <Text style={{ paddingLeft: 2 }}>来自四川</Text> */}
+                        </View>
                       </View>
-                      <View className="commentDetailBox-content-box-right">
-                        <Tag color="#965A3C" style={{ fontSize: 10 }}>
-                          推荐
-                        </Tag>
-                        <Text>{item?.createTime}</Text>
-                        {/* <Text style={{ paddingLeft: 2 }}>来自四川</Text> */}
-                      </View>
+                      <View className="evaluationInfo">{item?.comment}</View>
                     </View>
-                    <View className="evaluationInfo">{item?.comment}</View>
-                  </View>
-                );
-              })}
-            </View>
+                  );
+                })}
+              </View>
+            )}
             {/* 商品详情 */}
             <View className="goodInfoDetailBox">
               <View style={{ marginLeft: 15, marginTop: 20 }}>商品详情</View>
