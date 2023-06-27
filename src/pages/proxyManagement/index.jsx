@@ -10,6 +10,7 @@ import Tabs from '@/component/aTabs';
 import { FilterOutlined, ArrowUp, ArrowDown, QuestionOutlined, Arrow } from '@taroify/icons';
 import { Tag, Popover, Divider, Cell, CellGroup } from '@nutui/nutui-react-taro';
 import './index.scss';
+import Taro from '@tarojs/taro';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,10 @@ const Index = () => {
     });
   };
 
+  const goDetails = () => {
+    Taro.navigateTo({ url: `/pages/proxyDividendDetails/index` });
+  };
+
   const itemList = [
     { name: '全部' },
     { name: '奋斗者' },
@@ -83,7 +88,7 @@ const Index = () => {
               <Text style={{ marginRight: '5px' }}>地盘分润(发起方)</Text>
               <QuestionOutlined onClick={() => onPrompt(1)} />
             </View>
-            <Arrow />
+            <Arrow onClick={goDetails} />
           </View>
           <View className="sharing-info">
             <View className="info-item">
@@ -106,7 +111,7 @@ const Index = () => {
               <Text style={{ marginRight: '5px' }}>地盘分润(收件方)</Text>
               <QuestionOutlined onClick={() => onPrompt(1)} />
             </View>
-            <Arrow />
+            <Arrow onClick={goDetails} />
           </View>
           <View className="sharing-info">
             <View className="info-item">
