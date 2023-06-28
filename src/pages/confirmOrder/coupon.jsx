@@ -2,6 +2,8 @@ import React from 'react';
 import { Popup, Checkbox, Button } from '@taroify/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from '@tarojs/components';
+import Coupons from '@/component/coupons';
+import './index.scss';
 
 const Index = () => {
   const { couponOrderVisible } = useSelector((state) => state.goodInfo);
@@ -26,6 +28,14 @@ const Index = () => {
       lastTime: '2023.6.10',
     },
   ];
+  // eslint-disable-next-line no-unused-vars
+  const render = (item) => {
+    return (
+      <View>
+        <Checkbox className="custom-color" />
+      </View>
+    );
+  };
   return (
     <Popup
       open={couponOrderVisible}
@@ -39,24 +49,16 @@ const Index = () => {
       <View className="couponBorderBox">
         <View className="couponBorderBox-title">优惠卷</View>
         {list?.map((item) => (
-          <View className="couponBorderBox-list" key={item?.id}>
-            <View className="couponBorderBox-list-left">
-              <View className="couponBorderBox-list-left-box">
-                <View>{item?.discount}</View>
-                <View>{item?.reduction}</View>
-              </View>
-            </View>
-            <View className="couponBorderBox-list-right">
-              <View>{item?.title}</View>
-              <View className="couponBorderBox-list-right-content">
-                <View className="couponBorderBox-list-right-content-text">{item?.content}</View>
-                <Checkbox className="custom-color" />
-              </View>
-              <View className="couponBorderBox-list-right-timeRange resize">
-                {`${item?.fistTime} 至 ${item?.lastTime}`}
-              </View>
-            </View>
-          </View>
+          <Coupons
+            key={item?.id}
+            discount={item?.discount}
+            reduction={item?.reduction}
+            title={item?.title}
+            content={item?.content}
+            render={render(item)}
+            fistTime={item?.fistTime}
+            lastTime={item?.lastTime}
+          />
         ))}
         <View className="couponBorderBox-footer">
           <Button color="primary" block>
