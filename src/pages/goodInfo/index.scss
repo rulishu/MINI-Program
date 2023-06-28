@@ -327,8 +327,9 @@ page {
 // 限时抢购
 .flashSale{
   margin: 20px 20px 0px 20px;
-  height: 130px;
-  background-color: #965A3C;
+  background-color: #1E1E1E;
+  border-radius: 20px 20px 0 0;
+  color: #ffffff;
   .flashSaleBox{
     display: flex;
     flex-direction: row;
@@ -339,10 +340,11 @@ page {
     .flashSaleBox-left{
       .flashSaleBox-left-title{
         font-size: 36px;
-        font-weight: 400px;
+        font-weight: bold;
+        font-style: italic;
       }
       .flashSaleBox-left-number{
-        font-size: 30px;
+        font-size: 24px;
         color: #ffffff;
       }
     }
@@ -352,23 +354,24 @@ page {
       align-items: center;
       justify-content: space-between;
       .flashSaleBox-right-title{
-        font-size: 30px;
+        font-size: 24px;
         color: #ffffff;
-        border-color: #555555;
-        background-color: #bababa;
+        margin-bottom: 5px;
+        // border-color: #555555;
+        // background-color: #bababa;
       }
       .colon {
         display: inline-block;
         margin: 0 4px * 2;
-        color: #ee0a24;
+        color: #ffffff;
       }
       .block {
         display: inline-block;
         width: 22px * 2;
-        color: #fff;
+        color: #333333;
         font-size: 12px * 2;
         text-align: center;
-        background-color: #ee0a24;
+        background-color: #ffffff;
         border-radius: 4px * 2;
       }
     }

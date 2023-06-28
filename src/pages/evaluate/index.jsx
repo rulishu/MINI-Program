@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, Textarea } from '@tarojs/components';
-import { Collapse, Button, Uploader } from '@taroify/core';
-import Taro, { chooseImage } from '@tarojs/taro';
+import { Collapse, Button } from '@taroify/core';
+import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
+import Uploads from '@/component/Uploads';
 import Popup from './popup';
-import { fileToBase64 } from '@/utils/min';
 import './index.scss';
 
 const Index = () => {
@@ -27,35 +27,6 @@ const Index = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  function onUpload() {
-    chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-    }).then(async ({ tempFiles }) => {
-      let file = await fileToBase64(tempFiles[0]?.path);
-      if (file) {
-        dispatch({
-          type: 'evaluate/upload',
-          payload: {
-            file,
-            callBack: (res) => {
-              setFiles([
-                ...files,
-                ...tempFiles.map(({ type, originalFileObj }) => ({
-                  type,
-                  // url: path,
-                  url: res,
-                  name: originalFileObj?.name,
-                })),
-              ]);
-            },
-          },
-        });
-      }
-    });
-  }
 
   // 推荐
   const onBtnState = (event, item) => {
@@ -236,14 +207,7 @@ const Index = () => {
                       onInput={(e) => onChangeTextarea(e)}
                       placeholder="20字以上，认真填写的评价更容易被优先展示~"
                     />
-                    <Uploader
-                      className="uploader"
-                      value={files}
-                      multiple
-                      maxFiles={6}
-                      onUpload={onUpload}
-                      onChange={setFiles}
-                    />
+                    <Uploads value={files} multiple maxFiles={6} onChange={setFiles} />
                   </View>
                 </Collapse.Item>
               );

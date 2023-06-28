@@ -22,7 +22,7 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              couponUserAllList: result?.result?.records,
+              couponUserAllList: result?.result,
             },
           });
         }
@@ -39,7 +39,7 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              couponUsedAllList: result?.result?.records,
+              couponUsedAllList: result?.result,
             },
           });
         }
@@ -56,7 +56,7 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              couponUsedStaleAllList: result?.result?.records,
+              couponUsedStaleAllList: result?.result,
             },
           });
         }
