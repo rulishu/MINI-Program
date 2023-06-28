@@ -15,10 +15,12 @@ const Index = (props) => {
       <View className="couponBorderBox-list-right">
         <View>{couponData?.title}</View>
         <View className="couponBorderBox-list-right-content">
-          <View className="couponBorderBox-list-right-content-text">{couponData?.content}</View>
+          <View className="couponBorderBox-list-right-content-text">
+            {couponData?.type === 1 ? '代金券' : '满减券'}
+          </View>
           {render}
         </View>
-        <View className="couponBorderBox-list-right-timeRange resize">
+        <View className="couponBorderBox-list-right-timeRange">
           {`${couponData?.fistTime} 至 ${couponData?.lastTime}`}
         </View>
         {state === 1 ? (
