@@ -1,3 +1,4 @@
+import Taro from '@tarojs/taro';
 // 最低价
 export const min = (data) => {
   const datas = data?.filter((vel) => {
@@ -92,3 +93,20 @@ export function changeDate(date) {
     return changeStr(d.getMonth() + 1) + '月/' + d.getFullYear();
   }
 }
+
+// 转base64
+export const fileToBase64 = (filePath) => {
+  return new Promise((resolve) => {
+    let fileManager = Taro.getFileSystemManager();
+    fileManager.readFile({
+      filePath,
+      encoding: 'base64',
+      success: (e) => {
+        resolve(`data:image/jpg;base64,${e.data}`);
+      },
+      fail: () => {
+        return;
+      },
+    });
+  });
+};

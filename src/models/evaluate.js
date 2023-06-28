@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { evaluationList, getAddEvaluation } from '@/server/evaluate';
+import { evaluationList, getAddEvaluation, upload } from '@/server/evaluate';
 
 export default {
   namespace: 'evaluate',
@@ -9,6 +9,7 @@ export default {
     releaseOpen: false,
     evaluationRating: [],
     evaluationList: [],
+    imagesList: '',
   },
 
   effects: {
@@ -45,6 +46,28 @@ export default {
           });
         }
         callBack();
+      } catch (err) {}
+    },
+
+    // 上传图片
+    *upload({ payload }, { call, put }) {
+      const { file, callBack } = payload;
+      try {
+        const data = yield call(upload, file);
+        if (data && data.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              imagesList: data.result || '',
+            },
+          });
+          callBack(data.result);
+          Taro.showToast({
+            title: '上传成功',
+            icon: 'none',
+            duration: 2000,
+          });
+        }
       } catch (err) {}
     },
   },

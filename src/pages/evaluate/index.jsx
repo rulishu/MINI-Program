@@ -4,6 +4,7 @@ import { Collapse, Button, Uploader } from '@taroify/core';
 import Taro, { chooseImage } from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Popup from './popup';
+import { fileToBase64 } from '@/utils/min';
 import './index.scss';
 
 const Index = () => {
@@ -32,15 +33,27 @@ const Index = () => {
       count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
-    }).then(({ tempFiles }) => {
-      setFiles([
-        ...files,
-        ...tempFiles.map(({ path, type, originalFileObj }) => ({
-          type,
-          url: path,
-          name: originalFileObj?.name,
-        })),
-      ]);
+    }).then(async ({ tempFiles }) => {
+      let file = await fileToBase64(tempFiles[0]?.path);
+      if (file) {
+        dispatch({
+          type: 'evaluate/upload',
+          payload: {
+            file,
+            callBack: (res) => {
+              setFiles([
+                ...files,
+                ...tempFiles.map(({ type, originalFileObj }) => ({
+                  type,
+                  // url: path,
+                  url: res,
+                  name: originalFileObj?.name,
+                })),
+              ]);
+            },
+          },
+        });
+      }
     });
   }
 
