@@ -15,16 +15,30 @@ const Index = () => {
   ];
   useEffect(() => {
     dispatch({ type: 'myCoupons/couponUserAll' });
-    dispatch({ type: 'myCoupons/couponUsedAll' });
-    dispatch({ type: 'myCoupons/couponUsedStaleAll' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <View>
-      <Tabs theme="card" value={value} onChange={setValue} style={{}}>
+      <Tabs
+        theme="card"
+        value={value}
+        onChange={async (val) => {
+          setValue(val);
+          if (val === 0) {
+            dispatch({ type: 'myCoupons/couponUserAll' });
+          }
+          if (val === 1) {
+            dispatch({ type: 'myCoupons/couponUsedAll' });
+          }
+          if (val === 2) {
+            dispatch({ type: 'myCoupons/couponUsedStaleAll' });
+          }
+        }}
+      >
         {list?.map((item) => {
           return (
-            <Tabs.TabPane title={item?.title} key={item?.index}>
-              <MyCoupons state={item?.state} />
+            <Tabs.TabPane title={item?.title} key={item?.state}>
+              <MyCoupons activeTab={value} />
             </Tabs.TabPane>
           );
         })}
