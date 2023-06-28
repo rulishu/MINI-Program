@@ -2,74 +2,33 @@ import React from 'react';
 import { View } from '@tarojs/components';
 import Coupons from '@/component/coupons';
 import './index.scss';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 const Index = (props) => {
-  const { state } = props;
-  const list = [
-    {
-      id: 1,
-      discount: '¥10',
-      reduction: '满100可用',
-      title: '满100减10元券',
-      content: '酒类优惠卷',
-      fistTime: '2023.6.5',
-      lastTime: '2023.6.10',
-      state: 1,
-    },
-    {
-      id: 2,
-      discount: '9折',
-      reduction: '满50可用',
-      title: '满50打9折券',
-      content: '白酒类优惠卷',
-      fistTime: '2023.6.5',
-      lastTime: '2023.6.10',
-      state: 1,
-    },
-    {
-      id: 3,
-      discount: '¥5',
-      reduction: '满50可用',
-      title: '满50打减5元劵',
-      content: '白酒类优惠卷',
-      fistTime: '2023.6.5',
-      lastTime: '2023.6.10',
-      state: 1,
-    },
-    {
-      id: 4,
-      discount: '¥5',
-      reduction: '满50可用',
-      title: '满50打减5元劵',
-      content: '白酒类优惠卷',
-      fistTime: '2023.6.5',
-      lastTime: '2023.6.10',
-      state: 0,
-    },
-    {
-      id: 5,
-      discount: '¥5',
-      reduction: '满50可用',
-      title: '满50打减5元劵',
-      content: '白酒类优惠卷',
-      fistTime: '2023.6.5',
-      lastTime: '2023.6.10',
-      state: 1,
-    },
-  ];
+  const { activeTab } = props;
+  const { couponUserAllList, couponUsedAllList, couponUsedStaleAllList } = useSelector(
+    (state) => state.myCoupons,
+  );
+
   return (
     <View className="couponBorderBox">
-      {list?.map((item) => (
+      {(activeTab === 0
+        ? couponUserAllList
+        : activeTab === 1
+        ? couponUsedAllList
+        : couponUsedStaleAllList
+      ).map((item) => (
         <Coupons
           key={item?.id}
-          state={state}
+          state={activeTab}
           couponData={{
-            discount: item?.discount,
-            reduction: item?.reduction,
-            title: item?.title,
-            content: item?.content,
-            fistTime: item?.fistTime,
-            lastTime: item?.lastTime,
+            discount: `¥${item?.price}`,
+            reduction: `满${item?.minimumConsumption}可用`,
+            title: `满${item?.minimumConsumption}减${item?.price}元券`,
+            type: item?.type,
+            fistTime: moment().format('YYYY-MM-DD', item?.useBeginDate),
+            lastTime: moment().format('YYYY-MM-DD', item?.useEndTime),
           }}
         />
       ))}
