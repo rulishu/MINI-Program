@@ -10,6 +10,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const [num, setNum] = useState(0);
+  const [value, setValue] = useState([0]);
   const [files, setFiles] = useState([]);
   const [active, setActive] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
@@ -135,6 +136,11 @@ const Index = () => {
     });
   };
 
+  // 展开/收起
+  const onChangeCollapes = (e) => {
+    setValue(e);
+  };
+
   return (
     <View className="evaluate">
       <View className="evaluate-top-title">
@@ -149,8 +155,8 @@ const Index = () => {
       </View>
       <View className="evaluate-body">
         <View>
-          <Collapse defaultValue={[0]}>
-            {orderInfo.items?.map((item) => {
+          <Collapse value={value} onChange={(e) => onChangeCollapes(e)}>
+            {orderInfo.items?.map((item, ind) => {
               return (
                 <Collapse.Item
                   key={item.id}
@@ -199,7 +205,7 @@ const Index = () => {
                       </View>
                     </>
                   }
-                  extra="收起"
+                  extra={ind === value.at(0) ? '收起' : '展开'}
                 >
                   <View style={{ width: '100%' }}>
                     <Textarea
