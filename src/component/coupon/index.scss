@@ -1,0 +1,65 @@
+.nb-coupon__box {
+    display: flex;
+    background-size: 100% 100%;
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-image: url("https://storage.360buyimg.com/jdcdkh/open/1.0.0/assets/bg-coupon-red.f6ae2e19.png");
+
+    .nb-coupon__main {
+        position: relative;
+        display: flex;
+        padding: 16px;
+        align-items: center;
+        text-align: left;
+        width: 69%;
+        color: rgb(255, 255, 255);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .couponBorderBox-list-left-box {
+            margin-right: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .couponBorderBox-list-right {
+            overflow: hidden;
+        }
+    }
+
+    .nb-coupon__btns {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nb-coupon__label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 28px;
+        line-height: 28px;
+        padding: 0 4px;
+        font-size: 20px;
+        font-weight: 400;
+        color: red;
+        background: #fff;
+        border-radius: 6px 0;
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+
+.font {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
