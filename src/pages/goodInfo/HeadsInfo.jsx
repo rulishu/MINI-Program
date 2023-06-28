@@ -10,7 +10,7 @@ import cart from '@/assets/images/cart.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import Drawer from './drawer';
 import { min, aPrice } from '@/utils/min';
-import { Countdown } from '@taroify/core';
+import { Countdown, Badge } from '@taroify/core';
 import './index.scss';
 
 const Index = () => {
@@ -350,7 +350,9 @@ const Index = () => {
                   <Image mode="widthFix" src={shareblack} style={{ width: 25, height: 25 }}></Image>
                 </View>
                 <View>
-                  <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
+                  <Badge content={1}>
+                    <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
+                  </Badge>
                 </View>
               </View>
               <View style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
