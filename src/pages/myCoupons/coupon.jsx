@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from '@tarojs/components';
+import Coupons from '@/component/coupons';
 import './index.scss';
 
 const Index = (props) => {
@@ -59,30 +60,16 @@ const Index = (props) => {
   return (
     <View className="couponBorderBox">
       {list?.map((item) => (
-        <View className="couponBorderBox-list" key={item?.id}>
-          <View className="couponBorderBox-list-left">
-            <View className="couponBorderBox-list-left-box">
-              <View>{item?.discount}</View>
-              <View>{item?.reduction}</View>
-            </View>
-          </View>
-          <View className="couponBorderBox-list-right">
-            <View>{item?.title}</View>
-            <View className="couponBorderBox-list-right-content">
-              <View className="couponBorderBox-list-right-content-text">{item?.content}</View>
-            </View>
-            <View className="couponBorderBox-list-right-timeRange resize">
-              {`${item?.fistTime} 至 ${item?.lastTime}`}
-            </View>
-          </View>
-          {state === 1 ? (
-            <View className="coupon-state">已使用</View>
-          ) : state === 2 ? (
-            <View className="coupon-state">已过期</View>
-          ) : (
-            ''
-          )}
-        </View>
+        <Coupons
+          key={item?.id}
+          discount={item?.discount}
+          reduction={item?.reduction}
+          title={item?.title}
+          content={item?.content}
+          fistTime={item?.fistTime}
+          lastTime={item?.lastTime}
+          state={state}
+        />
       ))}
     </View>
   );
