@@ -2,6 +2,8 @@ import React from 'react';
 import { Popup } from '@taroify/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from '@tarojs/components';
+import Coupons from '@/component/coupons';
+import './index.scss';
 
 const Index = () => {
   const { couponVisible } = useSelector((state) => state.goodInfo);
@@ -58,6 +60,19 @@ const Index = () => {
       state: 1,
     },
   ];
+  const render = (item) => {
+    return (
+      <View
+        className={
+          item?.state === 1
+            ? 'couponBorderBox-list-right-content-button'
+            : 'couponBorderBox-list-right-content-buttoned'
+        }
+      >
+        {item?.state === 1 ? '领取' : '已领取'}
+      </View>
+    );
+  };
   return (
     <Popup
       open={couponVisible}
@@ -71,32 +86,16 @@ const Index = () => {
       <View className="couponBorderBox">
         <View className="couponBorderBox-title">优惠卷</View>
         {list?.map((item) => (
-          <View className="couponBorderBox-list" key={item?.id}>
-            <View className="couponBorderBox-list-left">
-              <View className="couponBorderBox-list-left-box">
-                <View>{item?.discount}</View>
-                <View>{item?.reduction}</View>
-              </View>
-            </View>
-            <View className="couponBorderBox-list-right">
-              <View>{item?.title}</View>
-              <View className="couponBorderBox-list-right-content">
-                <View className="couponBorderBox-list-right-content-text">{item?.content}</View>
-                <View
-                  className={
-                    item?.state === 1
-                      ? 'couponBorderBox-list-right-content-button'
-                      : 'couponBorderBox-list-right-content-buttoned'
-                  }
-                >
-                  {item?.state === 1 ? '领取' : '已领取'}
-                </View>
-              </View>
-              <View className="couponBorderBox-list-right-timeRange resize">
-                {`${item?.fistTime} 至 ${item?.lastTime}`}
-              </View>
-            </View>
-          </View>
+          <Coupons
+            key={item?.id}
+            discount={item?.discount}
+            reduction={item?.reduction}
+            title={item?.title}
+            content={item?.content}
+            render={render(item)}
+            fistTime={item?.fistTime}
+            lastTime={item?.lastTime}
+          />
         ))}
       </View>
     </Popup>
