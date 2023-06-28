@@ -2,27 +2,42 @@ import React from 'react';
 import { View, Text } from '@tarojs/components';
 import { Icon } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Divider, Button, Swiper } from '@taroify/core';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
+  const { userInfos } = useSelector((state) => state.my);
   const info = {
     id: 1,
     type: 1,
-    banner: [
+    money: '0.00',
+    withdrawal: '0.00',
+  };
+
+  const stepInfo = {
+    0: [
       {
-        id: 100,
         title: '升级后，自购最高省30%',
       },
       {
-        id: 101,
         title: '再享最高30%粉丝订单分润',
       },
     ],
-    money: '0.00',
-    withdrawal: '0.00',
+    1: [
+      {
+        title: '升级后可享自购+返10%',
+      },
+      {
+        title: '+返跨级粉丝10%订单分润',
+      },
+    ],
+    2: [
+      {
+        title: '已享顶级经销权益',
+      },
+    ],
   };
 
   return (
@@ -46,9 +61,11 @@ const Index = () => {
           >
             <View className="banner">
               <Swiper className="vertical-swiper" direction="vertical" autoplay={3000}>
-                {info.banner.map((a) => {
-                  return <Swiper.Item key={a.id}>{a.title}</Swiper.Item>;
-                })}
+                {stepInfo[userInfos?.level === '3' ? 0 : userInfos?.level === '1' ? 1 : 2].map(
+                  (a, index) => {
+                    return <Swiper.Item key={index}>{a.title}</Swiper.Item>;
+                  },
+                )}
               </Swiper>
             </View>
             <Icon name="rect-right" size="10"></Icon>
