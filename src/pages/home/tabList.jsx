@@ -8,6 +8,7 @@ import PullList from '@/component/pullList';
 import Tabs from '@/component/aTabs';
 
 const Index = () => {
+  const { activeIndex } = useSelector((state) => state.global);
   const { levelTab } = useSelector((state) => state.home);
   const [tab4value, setTab4value] = useState(null);
 
@@ -20,28 +21,30 @@ const Index = () => {
 
   return (
     <View className="index">
-      <Tabs
-        value={tab4value}
-        className="tabs"
-        type="horizontal"
-        titleScroll
-        onChange={(paneKey) => setTab4value(paneKey)}
-        tabList={levelTab.map((item) => ({
-          title: item.marketingName,
-          id: item.id,
-          children: (
-            <PullList
-              request={fetchData}
-              params={{ id: tab4value }}
-              style={{ height: '50vh' }}
-              renderList={(dataSource) => <GoodList dataList={dataSource} />}
-              callback={({ refresh }) => {
-                refresh?.();
-              }}
-            />
-          ),
-        }))}
-      />
+      {activeIndex === 0 && (
+        <Tabs
+          value={tab4value}
+          className="tabs"
+          type="horizontal"
+          titleScroll
+          onChange={(paneKey) => setTab4value(paneKey)}
+          tabList={levelTab.map((item) => ({
+            title: item.marketingName,
+            id: item.id,
+            children: (
+              <PullList
+                request={fetchData}
+                params={{ id: tab4value }}
+                style={{ height: '50vh' }}
+                renderList={(dataSource) => <GoodList dataList={dataSource} />}
+                callback={({ refresh }) => {
+                  refresh?.();
+                }}
+              />
+            ),
+          }))}
+        />
+      )}
     </View>
   );
 };
