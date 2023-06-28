@@ -6,6 +6,8 @@
   flex-direction: row;
   margin-bottom: 10px;
   position: relative;
+  background-color: #ff4835;
+  color: #ffffff;
   .couponBorderBox-list-left{
     width: 30%;
     height: 100%;
@@ -50,5 +52,6 @@
     align-items: center;
     justify-content: center;
     border: 1px solid #d7d7d7;
+    color: #aaaaaa;
   }
 }

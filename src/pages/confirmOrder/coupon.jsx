@@ -51,13 +51,15 @@ const Index = () => {
         {list?.map((item) => (
           <Coupons
             key={item?.id}
-            discount={item?.discount}
-            reduction={item?.reduction}
-            title={item?.title}
-            content={item?.content}
             render={render(item)}
-            fistTime={item?.fistTime}
-            lastTime={item?.lastTime}
+            couponData={{
+              discount: item?.discount,
+              reduction: item?.reduction,
+              title: item?.title,
+              content: item?.content,
+              fistTime: item?.fistTime,
+              lastTime: item?.lastTime,
+            }}
           />
         ))}
         <View className="couponBorderBox-footer">
