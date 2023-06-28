@@ -11,3 +11,8 @@ export const evaluationList = (params) => {
 export const getAddEvaluation = (params) => {
   return request.post(`/jcgl-mall/app/evaluation/batch/create`, params);
 };
+
+// 上传图片
+export const upload = (params) => {
+  return request.post(`/jcgl-user/oss/uploadBase64`, params);
+};
