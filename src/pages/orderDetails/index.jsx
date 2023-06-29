@@ -355,11 +355,12 @@ const Index = () => {
                         <Text>{a.itemName}</Text>
                       </View>
                       <View className="goods-info-head-info-doc">
-                        {a.attributes?.map((item) => (
-                          <Text key={item.id} className="doc">
-                            {item.value},
-                          </Text>
-                        ))}
+                        <Text className="doc">
+                          {a.attributes.map((attributeItem) => {
+                            let str = `${attributeItem.attributeName}:${attributeItem.value} `;
+                            return str;
+                          })}
+                        </Text>
                       </View>
                       <View className="goods-info-head-info-doc ">
                         <Text className="doc-bg">{a?.suppliersId === 1 ? '自营' : '严选'}</Text>
