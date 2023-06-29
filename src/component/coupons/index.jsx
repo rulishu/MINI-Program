@@ -15,9 +15,7 @@ const Index = (props) => {
       <View className="couponBorderBox-list-right">
         <View>{couponData?.title}</View>
         <View className="couponBorderBox-list-right-content">
-          <View className="couponBorderBox-list-right-content-text">
-            {couponData?.type === 1 ? '代金券' : '满减券'}
-          </View>
+          <View className="couponBorderBox-list-right-content-text">{couponData?.name}</View>
           {render}
         </View>
         <View className="couponBorderBox-list-right-timeRange">
