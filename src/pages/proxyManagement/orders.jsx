@@ -75,7 +75,10 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
               </View>
             ))}
           </View>
-          <View className="fansList-info-bottom">{item.createTime}</View>
+          <View className="fansList-info-bottom">
+            <Text>注册来源: {item.consignee}</Text>
+            <Text>{item.createTime}</Text>
+          </View>
         </View>
       </View>
     </Fragment>

@@ -15,7 +15,7 @@ const Index = (props) => {
       <View className="couponBorderBox-list-right">
         <View>{couponData?.title}</View>
         <View className="couponBorderBox-list-right-content">
-          <View className="couponBorderBox-list-right-content-text">{couponData?.name}</View>
+          <View className="couponBorderBox-list-right-content-text">{couponData?.content}</View>
           {render}
         </View>
         <View className="couponBorderBox-list-right-timeRange">
