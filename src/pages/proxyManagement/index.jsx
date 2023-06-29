@@ -13,7 +13,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { orderActive } = useSelector((state) => state.myFans);
+  const { orderActive } = useSelector((state) => state.proxyManagement);
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   const [lightTheme, setLightTheme] = useState(false);
   useEffect(() => {
@@ -161,6 +161,38 @@ const Index = () => {
             ...item,
             children: (
               <Fragment>
+                <View className="fansList-crown">
+                  <View className="joined">
+                    <Text>加入时间</Text>
+                    <View className="joined-icon">
+                      <ArrowUp />
+                      <ArrowDown />
+                    </View>
+                  </View>
+                  <View className="joined">
+                    <Text>粉丝数量</Text>
+                    <View className="joined-icon">
+                      <ArrowUp />
+                      <ArrowDown />
+                    </View>
+                  </View>
+                  <View className="screen">
+                    <Popover
+                      className="popover"
+                      location="bottom-end"
+                      visible={lightTheme}
+                      onClick={() => {
+                        lightTheme ? setLightTheme(false) : setLightTheme(true);
+                      }}
+                      list={itemList}
+                    >
+                      <View className="screen">
+                        <View>筛选</View>
+                        <FilterOutlined />
+                      </View>
+                    </Popover>
+                  </View>
+                </View>
                 <PullList
                   request={getAllOrders}
                   params={{ orderStatus: orderActive }}
@@ -168,38 +200,6 @@ const Index = () => {
                   renderList={(dataSource, refresh) => {
                     return (
                       <>
-                        <View className="fansList-crown">
-                          <View className="joined">
-                            <Text>加入时间</Text>
-                            <View className="joined-icon">
-                              <ArrowUp />
-                              <ArrowDown />
-                            </View>
-                          </View>
-                          <View className="joined">
-                            <Text>粉丝数量</Text>
-                            <View className="joined-icon">
-                              <ArrowUp />
-                              <ArrowDown />
-                            </View>
-                          </View>
-                          <View className="screen">
-                            <Popover
-                              className="popover"
-                              location="bottom-end"
-                              visible={lightTheme}
-                              onClick={() => {
-                                lightTheme ? setLightTheme(false) : setLightTheme(true);
-                              }}
-                              list={itemList}
-                            >
-                              <View className="screen">
-                                <View>筛选</View>
-                                <FilterOutlined />
-                              </View>
-                            </Popover>
-                          </View>
-                        </View>
                         <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />
                       </>
                     );
