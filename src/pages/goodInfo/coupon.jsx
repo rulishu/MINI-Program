@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popup } from '@taroify/core';
+import { Popup, Button } from '@taroify/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from '@tarojs/components';
 import Coupons from '@/component/coupons';
@@ -62,7 +62,7 @@ const Index = () => {
   ];
   const render = (item) => {
     return (
-      <View
+      <Button
         className={
           item?.state === 1
             ? 'couponBorderBox-list-right-content-button'
@@ -70,7 +70,7 @@ const Index = () => {
         }
       >
         {item?.state === 1 ? '领取' : '已领取'}
-      </View>
+      </Button>
     );
   };
   return (
