@@ -85,6 +85,7 @@ page {
         font-weight: bold;
         font-size: 28px;
         margin-left: 10px;
+        line-height: 41px;
       }
     }
   }
@@ -106,7 +107,7 @@ page {
         .joined-icon {
           display: flex;
           flex-direction: column;
-          margin: 0 0 0 10px;
+          margin: 0 0 0 20px;
         }
       }
 
@@ -205,6 +206,8 @@ page {
     .fansList-info-bottom {
       font-size: 26px;
       color: #B3B3B3;
+      display: flex;
+      justify-content: space-between;
       font-weight: 300;
     }
 

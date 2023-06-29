@@ -10,6 +10,7 @@ import Tabs from '@/component/aTabs';
 import { FilterOutlined, ArrowUp, ArrowDown, QuestionOutlined, Arrow } from '@taroify/icons';
 import { Tag, Popover, Divider, Cell, CellGroup } from '@nutui/nutui-react-taro';
 import './index.scss';
+import Taro from '@tarojs/taro';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,15 @@ const Index = () => {
     });
   };
 
+  const goDetails = () => {
+    Taro.navigateTo({ url: `/pages/proxyDividendDetails/index` });
+  };
+
+  // 点击组织结构
+  const onClickOrganization = (cellInfo) => {
+    window.console.log(cellInfo);
+  };
+
   const itemList = [
     { name: '全部' },
     { name: '奋斗者' },
@@ -73,7 +83,7 @@ const Index = () => {
         <View>
           <View className="head-name">{proxyUserInfo.text}</View>
           <View className="head-info">
-            {proxyUserInfo.type}|{proxyUserInfo.city}|{proxyUserInfo.numer}
+            {proxyUserInfo.type} | {proxyUserInfo.city} | {proxyUserInfo.numer}
           </View>
         </View>
         <Divider styles={{ color: '#B3B3B3', marginTop: '10px', marginBottom: '0' }} />
@@ -83,7 +93,7 @@ const Index = () => {
               <Text style={{ marginRight: '5px' }}>地盘分润(发起方)</Text>
               <QuestionOutlined onClick={() => onPrompt(1)} />
             </View>
-            <Arrow />
+            <Arrow onClick={goDetails} />
           </View>
           <View className="sharing-info">
             <View className="info-item">
@@ -106,7 +116,7 @@ const Index = () => {
               <Text style={{ marginRight: '5px' }}>地盘分润(收件方)</Text>
               <QuestionOutlined onClick={() => onPrompt(1)} />
             </View>
-            <Arrow />
+            <Arrow onClick={goDetails} />
           </View>
           <View className="sharing-info">
             <View className="info-item">
@@ -135,6 +145,9 @@ const Index = () => {
               return (
                 <Cell
                   key={index}
+                  onClick={() => {
+                    onClickOrganization(item);
+                  }}
                   title={
                     <View style={{ display: 'flex' }}>
                       <Tag color="#E9E9E9" textColor="#999999">
@@ -198,11 +211,7 @@ const Index = () => {
                   params={{ orderStatus: orderActive }}
                   style={{ height: '70vh' }}
                   renderList={(dataSource, refresh) => {
-                    return (
-                      <>
-                        <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />
-                      </>
-                    );
+                    return <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />;
                   }}
                   callback={({ refresh }) => {
                     refresh?.();
