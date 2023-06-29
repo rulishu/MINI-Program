@@ -26,7 +26,7 @@ const Index = (props) => {
             discount: `¥${item?.price}`,
             reduction: `满${item?.minimumConsumption}可用`,
             title: `满${item?.minimumConsumption}减${item?.price}元券`,
-            name: item?.name,
+            content: item?.name,
             fistTime: moment().format('YYYY-MM-DD', item?.useBeginDate),
             lastTime: moment().format('YYYY-MM-DD', item?.useEndTime),
           }}
