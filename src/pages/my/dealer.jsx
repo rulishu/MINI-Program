@@ -45,7 +45,13 @@ const Index = () => {
       <View className="my-orders-card">
         <View className="my-orders title-bg">
           <View>
-            <Text className="my-orders-title">奋斗者</Text>
+            <Text className="my-orders-title">
+              {userInfos?.level === '3'
+                ? '奋斗者'
+                : userInfos?.level === '1'
+                ? '一级经销商'
+                : '二级经销商'}
+            </Text>
           </View>
           <View
             className="my-orders-all"
