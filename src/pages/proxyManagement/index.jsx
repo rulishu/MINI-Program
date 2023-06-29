@@ -58,6 +58,11 @@ const Index = () => {
     Taro.navigateTo({ url: `/pages/proxyDividendDetails/index` });
   };
 
+  // 点击组织结构
+  const onClickOrganization = (cellInfo) => {
+    window.console.log(cellInfo);
+  };
+
   const itemList = [
     { name: '全部' },
     { name: '奋斗者' },
@@ -78,7 +83,7 @@ const Index = () => {
         <View>
           <View className="head-name">{proxyUserInfo.text}</View>
           <View className="head-info">
-            {proxyUserInfo.type}|{proxyUserInfo.city}|{proxyUserInfo.numer}
+            {proxyUserInfo.type} | {proxyUserInfo.city} | {proxyUserInfo.numer}
           </View>
         </View>
         <Divider styles={{ color: '#B3B3B3', marginTop: '10px', marginBottom: '0' }} />
@@ -140,6 +145,9 @@ const Index = () => {
               return (
                 <Cell
                   key={index}
+                  onClick={() => {
+                    onClickOrganization(item);
+                  }}
                   title={
                     <View style={{ display: 'flex' }}>
                       <Tag color="#E9E9E9" textColor="#999999">
@@ -166,48 +174,44 @@ const Index = () => {
             ...item,
             children: (
               <Fragment>
+                <View className="fansList-crown">
+                  <View className="joined">
+                    <Text>加入时间</Text>
+                    <View className="joined-icon">
+                      <ArrowUp />
+                      <ArrowDown />
+                    </View>
+                  </View>
+                  <View className="joined">
+                    <Text>粉丝数量</Text>
+                    <View className="joined-icon">
+                      <ArrowUp />
+                      <ArrowDown />
+                    </View>
+                  </View>
+                  <View className="screen">
+                    <Popover
+                      className="popover"
+                      location="bottom-end"
+                      visible={lightTheme}
+                      onClick={() => {
+                        lightTheme ? setLightTheme(false) : setLightTheme(true);
+                      }}
+                      list={itemList}
+                    >
+                      <View className="screen">
+                        <View>筛选</View>
+                        <FilterOutlined />
+                      </View>
+                    </Popover>
+                  </View>
+                </View>
                 <PullList
                   request={getAllOrders}
                   params={{ orderStatus: orderActive }}
                   style={{ height: '70vh' }}
                   renderList={(dataSource, refresh) => {
-                    return (
-                      <>
-                        <View className="fansList-crown">
-                          <View className="joined">
-                            <Text>加入时间</Text>
-                            <View className="joined-icon">
-                              <ArrowUp />
-                              <ArrowDown />
-                            </View>
-                          </View>
-                          <View className="joined">
-                            <Text>粉丝数量</Text>
-                            <View className="joined-icon">
-                              <ArrowUp />
-                              <ArrowDown />
-                            </View>
-                          </View>
-                          <View className="screen">
-                            <Popover
-                              className="popover"
-                              location="bottom-end"
-                              visible={lightTheme}
-                              onClick={() => {
-                                lightTheme ? setLightTheme(false) : setLightTheme(true);
-                              }}
-                              list={itemList}
-                            >
-                              <View className="screen">
-                                <View>筛选</View>
-                                <FilterOutlined />
-                              </View>
-                            </Popover>
-                          </View>
-                        </View>
-                        <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />
-                      </>
-                    );
+                    return <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />;
                   }}
                   callback={({ refresh }) => {
                     refresh?.();

@@ -2,150 +2,173 @@ page {
   height: 100%;
   background: #E6E8EA;
 }
-.goOut{
-  display:flex;
+
+.goOut {
+  display: flex;
   align-items: center;
   justify-content: center;
 }
-.tab-footer{
+
+.tab-footer {
   height: 70px;
-  padding-bottom:50rpx;
-  padding-top:20rpx;
+  padding-bottom: 50rpx;
+  padding-top: 20rpx;
 }
-.heads{
-  display:flex;
+
+.heads {
+  display: flex;
   flex-direction: row;
-  justify-content:space-between;
-  align-items:center;
+  justify-content: space-between;
+  align-items: center;
   // margin: 20rpx 40rpx;
 }
-.option-icon{
+
+.option-icon {
   // margin-left:80rpx;
   // width: 200rpx;
-  display:flex;
+  display: flex;
   flex-direction: row;
-  justify-content:space-between;
+  justify-content: space-between;
   align-items: center;
   margin: 180rpx 40rpx 0 0;
 
 
 }
-.my-title{
+
+.my-title {
   // margin:84.62rpx 38.46rpx 42.31rpx 38.46rpx;
   font-weight: 500;
   color: #B08B57;
   line-height: 38rpx;
   margin: 180rpx 0 20rpx 40rpx;
 }
-.head-info{
-  margin-left:44.23rpx;
+
+.head-info {
+  margin-left: 44.23rpx;
   margin-top: 40px;
-  display:flex;
+  display: flex;
   flex-direction: row;
-  .my-headIcon{
+
+  .my-headIcon {
     width: 114rpx;
     height: 113rpx;
   }
-  .head-infos{
-    margin-left:36.54rpx;
-    width:50%;
-  .head-info-name{
-    font-size: 31rpx;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
-    color: #000000;
-    line-height: 42rpx;
-    display:flex;
-    align-items: center;
-    .head-info-name-xf{
-      margin-left:8rpx;
-      font-size: 27rpx;
+
+  .head-infos {
+    margin-left: 36.54rpx;
+    width: 50%;
+
+    .head-info-name {
+      font-size: 31rpx;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #000000;
+      line-height: 42rpx;
+      display: flex;
+      align-items: center;
+
+      .head-info-name-xf {
+        margin-left: 8rpx;
+        font-size: 27rpx;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #B08B57;
+        line-height: 38rpx;
+      }
+    }
+
+    .head-info-id {
+      color: #808183;
+      font-size: 24rpx;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
-      color: #B08B57;
-      line-height: 38rpx;
+      line-height: 27rpx;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
     }
   }
-  .head-info-id{
-    color:#808183;
-    font-size: 24rpx;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    line-height: 27rpx;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  }
 }
 
 
-.head-list{
+.head-list {
   margin: 63.42rpx 36.54rpx 40rpx 36.54rpx;
-  display:flex;
+  display: flex;
   flex-direction: row;
   justify-content: space-around;
-.head-list-item{
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  .head-list-item-title{
-    font-size: 31rpx;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
-    color: #B08B57;
-    line-height: 42rpx;
-    margin-bottom:10rpx;
-  }
-  .head-list-item-num{
-    font-size: 23rpx;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
-    color: rgba(0,0,0,0.5);
-    line-height: 33rpx;
+
+  .head-list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .head-list-item-title {
+      font-size: 31rpx;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #B08B57;
+      line-height: 42rpx;
+      margin-bottom: 10rpx;
+    }
+
+    .head-list-item-num {
+      font-size: 23rpx;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.5);
+      line-height: 33rpx;
+    }
   }
 }
-}
-.card{
-  margin:20rpx 40.38rpx;
-  .my-orders-card{
-    width:100%;
+
+.card {
+  margin: 20rpx 40.38rpx;
+
+  .my-orders-card {
+    width: 100%;
     background-color: #ffffff;
     border-radius: 15rpx;
-    .my-orders{
-      display:flex;
+
+    .my-orders {
+      display: flex;
       flex-direction: row;
       justify-content: space-between;
       padding: 20px 20px 0 20px;
     }
-    .title-bg{
+
+    .title-bg {
       background-color: #A05635;
       border-top-left-radius: 15rpx;
       border-top-right-radius: 15rpx;
       padding-bottom: 20px;
     }
-    .my-orders-title{
+
+    .my-orders-title {
       font-size: 27rpx;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
-      color: #ffffff;
       line-height: 38rpx;
-      .my-orders-title-money{
+      color: #000000;
+
+      .my-orders-title-money {
         font-size: 36px;
         font-weight: bold;
       }
     }
-    .my-orders-all{
+
+    .my-orders-all {
       font-size: 23rpx;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
-      color: #ffffff;
+      color: rgba(0,0,0,0.5);
       line-height: 33rpx;
       display: flex;
       align-items: center;
     }
-    .banner{
-      margin-right:10px;
+
+    .banner {
+      margin-right: 10px;
+
       .vertical-swiper {
         .taroify-swiper-item {
           color: #d8d8d8;
@@ -154,118 +177,135 @@ page {
           display: flex;
           justify-content: center;
           align-items: center;
-          height:20px;
+          height: 20px;
         }
       }
     }
-    .withdrawal{
+
+    .withdrawal {
       padding: 0 25rpx;
-      .title{
+
+      .title {
         font-size: 24px;
         font-weight: 300;
       }
-      .withdrawal-info{
-        display:flex;
+
+      .withdrawal-info {
+        display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding:10px 0 25px 0;
-        .moneys{
+        padding: 10px 0 25px 0;
+
+        .moneys {
           font-weight: bold;
           font-size: 24px;
-          .money{
+
+          .money {
             font-size: 36px;
           }
         }
-       
-        .btn{
-          padding:0 25px;
+
+        .btn {
+          padding: 0 25px;
         }
       }
     }
-    .my-orders-list{
-      display:flex;
+
+    .my-orders-list {
+      display: flex;
       flex-direction: row;
       justify-content: space-around;
-      padding:25rpx;
-      .my-orders-list-item{
-        display:flex;
+      padding: 25rpx;
+
+      .my-orders-list-item {
+        display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-          .my-orders-list-item-num{
-            margin-top:10rpx;
-            font-size: 23rpx;
-            font-family: PingFangSC-Medium, PingFang SC;
-            font-weight: 500;
-            color: rgba(0,0,0,0.85);
-            line-height: 33rpx;
-          }
-      }
-    }
-    .logistics{
-      padding:0 25rpx 25rpx 25rpx;
-      .my-orders-logistics{
-        padding:13rpx 20rpx;
-        // height:140rpx;
-        background: rgba(0,0,0,0.04);
-        border-radius: 15rpx;
-        .my-orders-logistics-title{
+
+        .my-orders-list-item-num {
+          margin-top: 10rpx;
           font-size: 23rpx;
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
-          color: rgba(0,0,0,0.5);
+          color: rgba(0, 0, 0, 0.85);
+          line-height: 33rpx;
+        }
+      }
+    }
+
+    .logistics {
+      padding: 0 25rpx 25rpx 25rpx;
+
+      .my-orders-logistics {
+        padding: 13rpx 20rpx;
+        // height:140rpx;
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: 15rpx;
+
+        .my-orders-logistics-title {
+          font-size: 23rpx;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.5);
           line-height: 33rpx;
 
         }
-        .my-orders-logistics-info{
-          margin-top:12rpx;
-          display:flex;
+
+        .my-orders-logistics-info {
+          margin-top: 12rpx;
+          display: flex;
           flex-direction: row;
-          .my-orders-logistics-headIcon{
+
+          .my-orders-logistics-headIcon {
             width: 65rpx;
             height: 65rpx;
-            background-color:#ffffff;
+            background-color: #ffffff;
           }
-          .my-orders-logistics-content{
-            margin-left:20rpx;
+
+          .my-orders-logistics-content {
+            margin-left: 20rpx;
             font-size: 23rpx;
             font-family: PingFangSC-Medium, PingFang SC;
             font-weight: 500;
-            color: rgba(0,0,0,0.5);
+            color: rgba(0, 0, 0, 0.5);
             line-height: 33rpx;
           }
 
         }
-        
+
       }
     }
-   
-    
+
+
   }
 }
-.option{
-  margin:20rpx 40.38rpx;
-  .option-list{
-    padding:20rpx;
+
+.option {
+  margin: 20rpx 40.38rpx;
+
+  .option-list {
+    padding: 20rpx;
     background-color: #ffffff;
     border-radius: 15rpx;
-    display:flex;
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    .option-list-item{
-      display:flex;
+
+    .option-list-item {
+      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width:25%;
+      width: 25%;
 
-      .option-list-item-title{
-        margin-top:20rpx;
+      .option-list-item-title {
+        margin-top: 20rpx;
         font-size: 23rpx;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
-        color: rgba(0,0,0,0.85);
+        color: rgba(0, 0, 0, 0.85);
         line-height: 33rpx;
         display: flex;
         align-items: center;
@@ -275,4 +315,3 @@ page {
 
   }
 }
-

@@ -45,7 +45,7 @@ const Index = () => {
       <View className="my-orders-card">
         <View className="my-orders title-bg">
           <View>
-            <Text className="my-orders-title">
+            <Text className="my-orders-title" style={{ color: '#ffffff' }}>
               {userInfos?.level === '3'
                 ? '奋斗者'
                 : userInfos?.level === '1'
@@ -55,6 +55,7 @@ const Index = () => {
           </View>
           <View
             className="my-orders-all"
+            style={{ color: '#ffffff' }}
             onTap={async () => {
               Taro.navigateTo({ url: '/pages/dealer/index' });
               await dispatch({
