@@ -99,11 +99,12 @@ const Index = () => {
                         <Text>{item.itemName}</Text>
                       </View>
                       <View className="popupInfo-textArea-box-content-left-doc">
-                        {item.attributes.map((val) => (
-                          <Text key={item.id} className="doc">
-                            {val.value},
-                          </Text>
-                        ))}
+                        <Text className="doc">
+                          {item.attributes.map((attributeItem) => {
+                            let str = `${attributeItem.attributeName}:${attributeItem.value} `;
+                            return str;
+                          })}
+                        </Text>
                       </View>
                     </View>
                     <View className="popupInfo-textArea-box-content-left-doc ">
