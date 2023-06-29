@@ -14,7 +14,7 @@ import Taro from '@tarojs/taro';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { orderActive } = useSelector((state) => state.myFans);
+  const { orderActive } = useSelector((state) => state.proxyManagement);
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   const [lightTheme, setLightTheme] = useState(false);
   useEffect(() => {
