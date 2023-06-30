@@ -15,6 +15,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const { orderActive } = useSelector((state) => state.myFans);
+  const [activeName, setActiveName] = useState('筛选');
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   useEffect(() => {
     //获取顶部导航栏位置
@@ -137,10 +138,14 @@ const Index = () => {
                       onClick={() => {
                         lightTheme ? setLightTheme(false) : setLightTheme(true);
                       }}
+                      onChoose={(it) => {
+                        let name = it.name === '全部' ? '筛选' : it.name;
+                        setActiveName(name);
+                      }}
                       list={itemList}
                     >
                       <View className="screen">
-                        <View>筛选</View>
+                        <View>{activeName}</View>
                         <FilterOutlined />
                       </View>
                     </Popover>

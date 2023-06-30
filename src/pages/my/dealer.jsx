@@ -57,7 +57,7 @@ const Index = () => {
             className="my-orders-all"
             style={{ color: '#ffffff' }}
             onTap={async () => {
-              Taro.navigateTo({ url: '/pages/dealer/index' });
+              Taro.navigateTo({ url: '/pagesB/dealer/index' });
               await dispatch({
                 type: 'allOrders/update',
                 payload: {
@@ -87,7 +87,7 @@ const Index = () => {
           <View
             className="my-orders-all"
             onTap={async () => {
-              Taro.navigateTo({ url: '/pages/dividendDetails/index' });
+              Taro.navigateTo({ url: '/pagesB/dividendDetails/index' });
               await dispatch({
                 type: 'allOrders/update',
                 payload: {
