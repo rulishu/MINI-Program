@@ -48,7 +48,7 @@ const Index = () => {
 
   // 立即评价
   const goEvaluate = () => {
-    Taro.navigateTo({ url: `/pagesB/evaluate/index?id=${Number(orderInfo.id)}` });
+    Taro.navigateTo({ url: `/evaluatePackage/evaluate/index?id=${Number(orderInfo.id)}` });
   };
 
   // 返回订单列表

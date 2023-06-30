@@ -25,17 +25,17 @@ const Index = () => {
     {
       title: '我的粉丝',
       num: 0,
-      url: '/pagesB/myFans/index',
+      url: '/dealerPackage/myFans/index',
     },
     {
       title: '我的积分',
       num: 0,
-      url: '/pagesB/flashSkill/index',
+      url: '/goodsPackage/flashSkill/index',
     },
     {
       title: '我的卡劵',
       num: 0,
-      url: '/pagesB/myCoupons/index',
+      url: '/goodsPackage/myCoupons/index',
     },
     // {
     //   title: '今日涨粉',
