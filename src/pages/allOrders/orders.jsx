@@ -60,7 +60,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
 
   // 评价
   const onEvaluate = () => {
-    Taro.navigateTo({ url: `/pages/evaluate/index?id=${Number(item.id)}` });
+    Taro.navigateTo({ url: `/pagesB/evaluate/index?id=${Number(item.id)}` });
   };
 
   return (
@@ -250,7 +250,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
                     callBack: () => {
                       refresh?.();
                       setIsConfirm(false);
-                      Taro.navigateTo({ url: `/pages/dealDone/index?id=${Number(item.id)}` });
+                      Taro.navigateTo({ url: `/pagesB/dealDone/index?id=${Number(item.id)}` });
                     },
                   },
                 });

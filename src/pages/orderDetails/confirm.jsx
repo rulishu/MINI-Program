@@ -60,7 +60,9 @@ const Index = () => {
                           orderActive: 4,
                         },
                       });
-                      Taro.navigateTo({ url: `/pages/dealDone/index?id=${Number(infoDetail.id)}` });
+                      Taro.navigateTo({
+                        url: `/pagesB/dealDone/index?id=${Number(infoDetail.id)}`,
+                      });
                       dispatchFn({ isConfirm: false });
                     },
                   },
