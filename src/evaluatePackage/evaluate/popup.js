@@ -33,7 +33,7 @@ const Index = () => {
               releaseOpen: false,
             },
           });
-          Taro.navigateTo({ url: '/pages/allOrders/index' });
+          Taro.navigateTo({ url: '/orderPackage/allOrders/index' });
           dispatch({
             type: 'allOrders/update',
             payload: {

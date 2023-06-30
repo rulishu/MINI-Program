@@ -44,10 +44,10 @@ const Index = () => {
           shoppingCartVOList: [],
         },
       });
-      Taro.redirectTo({ url: '/pages/allOrders/index' });
+      Taro.redirectTo({ url: '/orderPackage/allOrders/index' });
     },
     error: () => {
-      Taro.redirectTo({ url: '/pages/allOrders/index' });
+      Taro.redirectTo({ url: '/orderPackage/allOrders/index' });
       dispatch({
         type: 'allOrders/update',
         payload: {
@@ -112,7 +112,7 @@ const Index = () => {
   // 选择地址
   const onSelectAddress = () => {
     Taro.navigateTo({
-      url: `/pages/address/index?confirmAddress=${JSON.stringify(curAddress)}&count=${
+      url: `/userPackage/address/index?confirmAddress=${JSON.stringify(curAddress)}&count=${
         shoppingCartVOList[0]?.cartVOList[0]?.count
       }&skuId=${shoppingCartVOList[0]?.skuId}`,
     });

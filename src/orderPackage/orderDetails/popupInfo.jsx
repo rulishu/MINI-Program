@@ -76,7 +76,7 @@ const Index = () => {
         },
       });
     }
-    Taro.navigateTo({ url: '/pages/afterSales/index' });
+    Taro.navigateTo({ url: '/orderPackage/afterSales/index' });
   };
 
   return (

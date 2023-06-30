@@ -138,7 +138,7 @@ const Index = () => {
         flag: true,
       },
     });
-    Taro.navigateTo({ url: '/pages/searchResult/index' });
+    Taro.navigateTo({ url: '/goodsPackage/searchResult/index' });
   };
   return (
     <View className="index">
@@ -185,7 +185,7 @@ const Index = () => {
                           flag: true,
                         },
                       });
-                      Taro.navigateTo({ url: '/pages/searchResult/index' });
+                      Taro.navigateTo({ url: '/goodsPackage/searchResult/index' });
                     }}
                   >
                     <Text>{item.keyword}</Text>

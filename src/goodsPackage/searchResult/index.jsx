@@ -79,7 +79,7 @@ const Index = () => {
 
   // 跳转商品详情
   const goGoodInfo = async (itm) => {
-    Taro.navigateTo({ url: `/pages/goodInfo/index?id=${itm?.id}` });
+    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${itm?.id}` });
   };
 
   // 最低价

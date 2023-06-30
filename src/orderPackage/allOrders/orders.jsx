@@ -45,7 +45,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
         id: Number(info.id),
       },
     });
-    Taro.navigateTo({ url: '/pages/orderDetails/index' });
+    Taro.navigateTo({ url: '/orderPackage/orderDetails/index' });
   };
   const orderStatusEnum = {
     [0]: '待定价',
@@ -130,7 +130,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
                     id: Number(item.id),
                   },
                 });
-                Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                Taro.navigateTo({ url: '/orderPackage/logisticsInfo/index' });
               }}
             >
               查看物流

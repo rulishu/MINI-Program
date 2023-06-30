@@ -28,7 +28,7 @@ const Index = () => {
     const curAddress = params.confirmAddress ? JSON.parse(params.confirmAddress) : {};
     const skuId = params.skuId;
     const count = params.count;
-    if (path === 'pages/confirmOrder/index') {
+    if (path === 'goodsPackage/confirmOrder/index') {
       if (addressList.length === 0) {
         dispatch({
           type: 'goodInfo/update',
@@ -73,7 +73,7 @@ const Index = () => {
   });
   // 添加
   const add = async () => {
-    Taro.navigateTo({ url: '/pages/addAddress/index' });
+    Taro.navigateTo({ url: '/userPackage/addAddress/index' });
     let isDefault;
     if (addressList.length === 0) {
       isDefault = 1;
@@ -92,7 +92,7 @@ const Index = () => {
 
   //编辑
   const edit = async (item) => {
-    Taro.navigateTo({ url: '/pages/editAddress/index' });
+    Taro.navigateTo({ url: '/userPackage/editAddress/index' });
     await dispatch({
       type: 'address/update',
       payload: {
@@ -129,7 +129,7 @@ const Index = () => {
     const params = Taro.getCurrentInstance().router.params;
     const skuId = params.skuId;
     const count = params.count;
-    if (path === 'pages/confirmOrder/index') {
+    if (path === 'goodsPackage/confirmOrder/index') {
       dispatch({
         type: 'goodInfo/newConfirm',
         payload: {

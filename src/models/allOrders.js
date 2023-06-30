@@ -62,7 +62,7 @@ export default {
             duration: 2000,
           });
           // payload.callBack();
-          Taro.navigateTo({ url: '/pages/allOrders/index' });
+          Taro.navigateTo({ url: '/orderPackage/allOrders/index' });
         }
       } catch (err) {}
     },

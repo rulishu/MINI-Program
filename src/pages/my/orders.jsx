@@ -54,9 +54,9 @@ const Index = () => {
 
   const goList = async (item) => {
     if (item.id === 5) {
-      Taro.navigateTo({ url: '/pages/afterSales/index' });
+      Taro.navigateTo({ url: '/orderPackage/afterSales/index' });
     } else {
-      Taro.navigateTo({ url: '/pages/allOrders/index' });
+      Taro.navigateTo({ url: '/orderPackage/allOrders/index' });
       await dispatch({
         type: 'allOrders/update',
         payload: {
@@ -68,7 +68,7 @@ const Index = () => {
 
   // 跳转物流信息
   // const goLogisticsInfo = () => {
-  //   Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+  //   Taro.navigateTo({ url: '/orderPackage/logisticsInfo/index' });
   // };
 
   return (
@@ -81,7 +81,7 @@ const Index = () => {
           <View
             className="my-orders-all"
             onTap={async () => {
-              Taro.navigateTo({ url: '/pages/allOrders/index' });
+              Taro.navigateTo({ url: '/orderPackage/allOrders/index' });
               await dispatch({
                 type: 'allOrders/update',
                 payload: {

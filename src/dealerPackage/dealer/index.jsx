@@ -35,7 +35,7 @@ const Index = () => {
 
   // 邀请海报
   const goPoster = () => {
-    Taro.navigateTo({ url: '/pages/poster/index' });
+    Taro.navigateTo({ url: '/userPackage/poster/index' });
   };
 
   return (

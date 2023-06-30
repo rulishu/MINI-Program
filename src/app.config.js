@@ -7,24 +7,18 @@ export default defineAppConfig({
     'pages/select/index',
     'pages/cart/index',
     'pages/my/index',
-    'pages/goodInfo/index',
-    'pages/editUser/index',
-    'pages/address/index',
-    'pages/addAddress/index',
-    'pages/editAddress/index',
-    'pages/confirmOrder/index',
-    'pages/search/index',
-    'pages/poster/index',
-    'pages/afterSales/index',
-    'pages/allOrders/index',
-    'pages/searchResult/index',
-    'pages/logisticsInfo/index',
-    'pages/orderDetails/index',
   ],
   subpackages: [
     {
       root: 'goodsPackage',
-      pages: ['myCoupons/index', 'flashSkill/index'],
+      pages: [
+        'myCoupons/index',
+        'flashSkill/index',
+        'goodInfo/index',
+        'confirmOrder/index',
+        'searchResult/index',
+        'search/index',
+      ],
     },
     {
       root: 'evaluatePackage',
@@ -37,6 +31,20 @@ export default defineAppConfig({
     {
       root: 'dealerPackage',
       pages: ['dealer/index', 'myFans/index', 'dividendDetails/index'],
+    },
+    {
+      root: 'userPackage',
+      pages: [
+        'editUser/index',
+        'address/index',
+        'addAddress/index',
+        'editAddress/index',
+        'poster/index',
+      ],
+    },
+    {
+      root: 'orderPackage',
+      pages: ['logisticsInfo/index', 'orderDetails/index', 'afterSales/index', 'allOrders/index'],
     },
   ],
   requiredPrivateInfos: ['getLocation'],
