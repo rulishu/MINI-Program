@@ -269,7 +269,7 @@ const Index = () => {
 
   // 评价
   const onEvaluate = () => {
-    Taro.navigateTo({ url: `/pagesB/evaluate/index?id=${Number(orderInfo.id)}` });
+    Taro.navigateTo({ url: `/evaluatePackage/evaluate/index?id=${Number(orderInfo.id)}` });
   };
 
   return (

@@ -55,7 +55,7 @@ const Index = () => {
   };
 
   const goDetails = () => {
-    Taro.navigateTo({ url: `/pagesB/proxyDividendDetails/index` });
+    Taro.navigateTo({ url: `/proxyPackage/proxyDividendDetails/index` });
   };
 
   // 点击组织结构

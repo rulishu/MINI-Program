@@ -61,7 +61,7 @@ const Index = () => {
                         },
                       });
                       Taro.navigateTo({
-                        url: `/pagesB/dealDone/index?id=${Number(infoDetail.id)}`,
+                        url: `/evaluatePackage/dealDone/index?id=${Number(infoDetail.id)}`,
                       });
                       dispatchFn({ isConfirm: false });
                     },

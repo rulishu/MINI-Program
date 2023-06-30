@@ -23,19 +23,20 @@ export default defineAppConfig({
   ],
   subpackages: [
     {
-      root: 'pagesB',
-      pages: [
-        'dealDone/index',
-        'evaluate/index',
-        'allEvaluate/index',
-        'myFans/index',
-        'myCoupons/index',
-        'dealer/index',
-        'flashSkill/index',
-        'dividendDetails/index',
-        'proxyDividendDetails/index',
-        'proxyManagement/index',
-      ],
+      root: 'goodsPackage',
+      pages: ['myCoupons/index', 'flashSkill/index'],
+    },
+    {
+      root: 'evaluatePackage',
+      pages: ['evaluate/index', 'allEvaluate/index', 'dealDone/index'],
+    },
+    {
+      root: 'proxyPackage',
+      pages: ['proxyDividendDetails/index', 'proxyManagement/index'],
+    },
+    {
+      root: 'dealerPackage',
+      pages: ['dealer/index', 'myFans/index', 'dividendDetails/index'],
     },
   ],
   requiredPrivateInfos: ['getLocation'],
