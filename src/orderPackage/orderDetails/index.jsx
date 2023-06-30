@@ -21,7 +21,7 @@ const Index = () => {
   const { predictEndTime } = orderInfo;
   const { payOrder } = usePay({
     success: () => {
-      Taro.navigateTo({ url: '/pages/allOrders/index' });
+      Taro.navigateTo({ url: '/orderPackage/allOrders/index' });
       dispatch({
         type: 'allOrders/getAllOrders',
         payload: {
@@ -128,9 +128,9 @@ const Index = () => {
         },
       });
     } else if (item.afterSaleStatus === 1) {
-      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后处理中';
+      return Taro.navigateTo({ url: '/orderPackage/afterSales/index' }); //'售后处理中';
     } else if (item.afterSaleStatus === 2) {
-      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后完成';
+      return Taro.navigateTo({ url: '/orderPackage/afterSales/index' }); //'售后完成';
     }
   };
 
@@ -146,11 +146,11 @@ const Index = () => {
         },
       });
     } else if (states === 1) {
-      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后处理中';
+      return Taro.navigateTo({ url: '/orderPackage/afterSales/index' }); //'售后处理中';
     } else if (states === 2) {
-      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后完成';
+      return Taro.navigateTo({ url: '/orderPackage/afterSales/index' }); //'售后完成';
     } else if (states === 3) {
-      return Taro.navigateTo({ url: '/pages/afterSales/index' }); //'售后关闭';
+      return Taro.navigateTo({ url: '/orderPackage/afterSales/index' }); //'售后关闭';
     }
   };
 
@@ -195,7 +195,7 @@ const Index = () => {
               },
             },
           });
-          Taro.navigateTo({ url: '/pages/allOrders/index' });
+          Taro.navigateTo({ url: '/orderPackage/allOrders/index' });
         } else if (res.cancel) {
           return;
         }
@@ -526,7 +526,7 @@ const Index = () => {
                           id: Number(orderInfo.id),
                         },
                       });
-                      Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                      Taro.navigateTo({ url: '/orderPackage/logisticsInfo/index' });
                     }}
                   >
                     <Text style={{ fontSize: 14 }}>查看物流</Text>
@@ -586,7 +586,7 @@ const Index = () => {
                           id: Number(orderInfo.id),
                         },
                       });
-                      Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                      Taro.navigateTo({ url: '/orderPackage/logisticsInfo/index' });
                     }}
                   >
                     <Text style={{ fontSize: 14 }}>查看物流</Text>
@@ -634,7 +634,7 @@ const Index = () => {
                           id: Number(orderInfo.id),
                         },
                       });
-                      Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                      Taro.navigateTo({ url: '/orderPackage/logisticsInfo/index' });
                     }}
                   >
                     <Text style={{ fontSize: 14 }}>查看物流</Text>
@@ -670,7 +670,7 @@ const Index = () => {
                           id: Number(orderInfo.id),
                         },
                       });
-                      Taro.navigateTo({ url: '/pages/logisticsInfo/index' });
+                      Taro.navigateTo({ url: '/orderPackage/logisticsInfo/index' });
                     }}
                   >
                     <Text style={{ fontSize: 14 }}>查看物流</Text>

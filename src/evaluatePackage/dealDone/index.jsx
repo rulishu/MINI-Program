@@ -32,7 +32,7 @@ const Index = () => {
   const { levelList } = useSelector((state) => state.dealDone);
   // 跳转商品详情
   const goGoodInfo = async (itm) => {
-    Taro.navigateTo({ url: `/pages/goodInfo/index?id=${itm?.id}` });
+    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${itm?.id}` });
   };
 
   // 返回首页
@@ -53,7 +53,7 @@ const Index = () => {
 
   // 返回订单列表
   const goOrderList = () => {
-    Taro.navigateTo({ url: '/pages/allOrders/index' });
+    Taro.navigateTo({ url: '/orderPackage/allOrders/index' });
     dispatch({
       type: 'allOrders/update',
       payload: {

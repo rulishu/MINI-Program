@@ -123,7 +123,7 @@ const Index = () => {
       });
     } else {
       updateFn({ visible: false });
-      return Taro.navigateTo({ url: `/pages/goodInfo/index?id=${queryInfo?.id}` });
+      return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
     }
   };
   const nowCart = () => {
