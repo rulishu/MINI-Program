@@ -53,8 +53,8 @@ const Navs = () => {
           activeIndex: 4,
         },
       });
-    } else if (url.indexOf('pages/goodInfo/index') !== -1) {
-      Taro.navigateTo({ url: `/pages/goodInfo/index?id=${getRequest(url)}` });
+    } else if (url.indexOf('goodsPackage/goodInfo/index') !== -1) {
+      Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${getRequest(url)}` });
     } else {
       Taro.navigateTo({ url: url });
     }

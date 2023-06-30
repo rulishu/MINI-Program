@@ -40,12 +40,12 @@ const Index = () => {
     {
       icon: my11,
       title: '专属海报',
-      url: '/pages/poster/index',
+      url: '/userPackage/poster/index',
     },
     {
       icon: my7,
       title: '地址管理',
-      url: '/pages/address/index',
+      url: '/userPackage/address/index',
     },
     {
       icon: my13,
@@ -54,7 +54,7 @@ const Index = () => {
     {
       icon: my12,
       title: '代理管理',
-      url: '/pages/proxyManagement/index',
+      url: '/proxyPackage/proxyManagement/index',
     },
     // {
     //   icon: my12,

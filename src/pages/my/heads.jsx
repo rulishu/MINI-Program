@@ -25,17 +25,17 @@ const Index = () => {
     {
       title: '我的粉丝',
       num: 0,
-      url: '/pages/myFans/index',
+      url: '/dealerPackage/myFans/index',
     },
     {
       title: '我的积分',
       num: 0,
-      url: '/pages/flashSkill/index',
+      url: '/goodsPackage/flashSkill/index',
     },
     {
       title: '我的卡劵',
       num: 0,
-      url: '/pages/myCoupons/index',
+      url: '/goodsPackage/myCoupons/index',
     },
     // {
     //   title: '今日涨粉',
@@ -62,7 +62,7 @@ const Index = () => {
       });
       return Taro.navigateTo({ url: '/pages/login/index' });
     }
-    Taro.navigateTo({ url: '/pages/editUser/index' });
+    Taro.navigateTo({ url: '/userPackage/editUser/index' });
   };
 
   const goPoster = () => {
@@ -75,7 +75,7 @@ const Index = () => {
       });
       return;
     }
-    Taro.navigateTo({ url: '/pages/poster/index' });
+    Taro.navigateTo({ url: '/userPackage/poster/index' });
   };
 
   const goUrl = (url) => {

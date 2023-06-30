@@ -167,7 +167,7 @@ export default {
             duration: 2000,
           });
           setTimeout(() => {
-            Taro.navigateTo({ url: `/pages/goodInfo/index?id=${params?.id}` });
+            Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${params?.id}` });
           }, 500);
         }
       } catch (err) {}
@@ -204,7 +204,7 @@ export default {
         const result = yield call(newConfirm, params);
         if (result.code === 200) {
           if (!params?.areaCode) {
-            Taro.navigateTo({ url: '/pages/confirmOrder/index' });
+            Taro.navigateTo({ url: '/goodsPackage/confirmOrder/index' });
             // 默认地址
             const defultAddress = result.result.addresses
               ?.filter((item) => {

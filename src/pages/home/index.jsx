@@ -131,8 +131,8 @@ const Index = () => {
           activeIndex: 4,
         },
       });
-    } else if (url.indexOf('pages/goodInfo/index') !== -1) {
-      Taro.navigateTo({ url: `/pages/goodInfo/index?id=${getRequest(url)}` });
+    } else if (url.indexOf('goodsPackage/goodInfo/index') !== -1) {
+      Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${getRequest(url)}` });
     } else {
       Taro.navigateTo({ url: url });
     }
@@ -245,7 +245,10 @@ const Index = () => {
                 </Text>
               </Skeleton>
             </View>
-            <View className="search" onTap={() => Taro.navigateTo({ url: '/pages/search/index' })}>
+            <View
+              className="search"
+              onTap={() => Taro.navigateTo({ url: '/goodsPackage/search/index' })}
+            >
               <Image src={homeSearch} style={{ width: 18, height: 18, marginLeft: 8 }} />
             </View>
           </View>

@@ -31,7 +31,7 @@ const GoodList = (props) => {
     //     duration: 2000,
     //   });
     // }
-    Taro.navigateTo({ url: `/pages/goodInfo/index?id=${itm?.id}` });
+    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${itm?.id}` });
   };
 
   return (

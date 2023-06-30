@@ -18,7 +18,7 @@ const Index = (props) => {
     setScrollIntoView(`a${id}`);
   };
   const onTap = (id) => {
-    Taro.navigateTo({ url: `/pages/goodInfo/index?id=${id}` });
+    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${id}` });
     dispatch({
       type: 'goodInfo/update',
       payload: {
