@@ -190,7 +190,7 @@ const Index = () => {
                       <ArrowDown />
                     </View>
                   </View>
-                  <View className="screen">
+                  <View>
                     <Popover
                       className="popover"
                       location="bottom-end"
@@ -205,8 +205,10 @@ const Index = () => {
                       list={itemList}
                     >
                       <View className="screen">
-                        <View>{activeName}</View>
-                        <FilterOutlined />
+                        <View className="screen-text">
+                          <View>{activeName}</View>
+                          <FilterOutlined />
+                        </View>
                       </View>
                     </Popover>
                   </View>

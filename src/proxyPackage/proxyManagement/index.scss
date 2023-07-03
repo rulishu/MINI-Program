@@ -9,8 +9,9 @@ page {
 
   .head {
     background-color: #ffffff;
-    border-radius: 5px;
-    padding: 20px 40px;
+    border-radius: 10px;
+    padding: 40px;
+    border: 1rpx solid #D7D7D7;
     width: 100%;
     height: 500px;
 
@@ -30,6 +31,7 @@ page {
     .head-sharing {
       background-color: #A05635;
       width: 100%;
+      border-radius: 10px;
       margin-top: 10px;
       font-size: 24px;
       padding: 10px 20px;
@@ -65,7 +67,9 @@ page {
   .organization {
     background-color: #ffffff;
     border-radius: 5px;
-    padding: 20px 40px;
+    padding: 40px;
+    border-radius: 10px;
+    border: 1rpx solid #D7D7D7;
     width: 100%;
     margin-top: 20px;
 
@@ -96,7 +100,7 @@ page {
       background-color: #ffffff;
       display: flex;
       justify-content: space-between;
-      margin: 20px 0;
+      margin-bottom: 20px;
       padding: 20px 40px;
       font-size: 24px;
 
@@ -116,6 +120,12 @@ page {
         align-items: center;
         justify-content: flex-end;
         width: 160px;
+        .screen-text{
+          margin: auto;
+          display: flex;
+          align-items: center;
+          line-height: 50px;
+        }
         .popover {
           .popover-menu-item-name {
             width: 120px;
@@ -136,6 +146,7 @@ page {
   .fansList-info {
     border: 1px solid #D7D7D7;
     background-color: #ffffff;
+    border-radius: 10px;
     padding: 40px;
 
     .fansList-info-top {
