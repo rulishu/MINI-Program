@@ -1,19 +1,19 @@
 .couponBorderBox-list{
-  height: 180px;
-  border: 1px solid #d7d7d7;
+  height: 170px;
   border-radius: 20px;
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
   position: relative;
-  background-color: #ff4835;
   color: #ffffff;
+  background-size: 100% 100%;
+  background-image: url("https://storage.360buyimg.com/jdcdkh/open/1.0.0/assets/bg-coupon-red.f6ae2e19.png");
   .couponBorderBox-list-left{
-    width: 30%;
+    width: 25%;
     height: 100%;
-    border-right: 1px solid #d7d7d7;
     border-radius: 20px;
     font-family: "Arial Normal", Arial, sans-serif;
+    margin-left: 10px;
     .couponBorderBox-list-left-box{
       height: 100%;
       display: flex;
@@ -23,14 +23,15 @@
     }
   }
   .couponBorderBox-list-right{
-    margin: 20px 30px;
-    width: 70%;
+    margin: 20px 0px 20px 10px;
+    width: 38%;
     .couponBorderBox-list-right-content{
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       .couponBorderBox-list-right-content-text{
-        color: #aaaaaa;
+        color: #ffffff;
+        font-size: 30px;
       }
     }
     .couponBorderBox-list-right-timeRange{
@@ -39,7 +40,17 @@
       font-size: 24px;
       color: #ffffff;
       margin-top: 5px;
+      white-space:nowrap;        // 强制一行显示
+      overflow:hidden;          // 超出隐藏
+      text-overflow:ellipsis;   // 省略号
     }
+  }
+  .couponBorderBox-list-renderButton{
+    margin-left: 20px;
+    width: 32%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .coupon-state{
     position: absolute;
