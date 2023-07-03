@@ -3,7 +3,7 @@ import { View } from '@tarojs/components';
 import './index.scss';
 
 const Index = (props) => {
-  const { key, couponData = {}, renderButton, state } = props;
+  const { key, couponData = {}, renderButton } = props;
   return (
     <View className="couponBorderBox-list" key={key}>
       <View className="couponBorderBox-list-left">
@@ -22,13 +22,6 @@ const Index = (props) => {
         </View>
       </View>
       <View className="couponBorderBox-list-renderButton">{renderButton}</View>
-      {state === 1 ? (
-        <View className="coupon-state">已使用</View>
-      ) : state === 2 ? (
-        <View className="coupon-state">已过期</View>
-      ) : (
-        ''
-      )}
     </View>
   );
 };

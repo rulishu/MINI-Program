@@ -43,7 +43,7 @@ const Index = () => {
         {list?.map((item) => {
           return (
             <Tabs.TabPane title={item?.title} key={item?.state}>
-              <MyCoupons activeTab={value} />
+              <MyCoupons activeTab={value} status={item?.state} />
             </Tabs.TabPane>
           );
         })}
