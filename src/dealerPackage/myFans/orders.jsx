@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { useSelector } from 'react-redux';
 import { useCountDown } from 'ahooks';
+import { Tag } from '@taroify/core';
 // import Taro from '@tarojs/taro';
 import './index.scss';
 import moment from 'moment';
@@ -53,11 +54,13 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
               </View>
             </View>
             <View className="fansList-info-top-mid">
-              <View>邀请人:李高峰</View>
+              <View className="mid-name">邀请人:李高峰</View>
               <View>邀请层级:1</View>
             </View>
             <View className="fansList-info-top-right">
-              <Text className="fansList-info-top-right-text">奋斗者</Text>
+              <Tag shape="rounded" color="primary">
+                奋斗者
+              </Tag>
             </View>
           </View>
           <View className="fansList-info-mid">
