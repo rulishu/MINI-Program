@@ -7,7 +7,8 @@ page {
   .fans-head{
     background-color: #A05635;
     color:#ffffff;
-    padding:20px;
+    padding:40px;
+    border-radius: 20px;
     .fans-head-top{
       display: flex;
       flex-direction: row;
@@ -22,6 +23,7 @@ page {
       display: flex;
       flex-direction: row;
       align-items: center;
+      margin: 20px 0;
       .fans-head-mid-left{
         font-weight: bold;
         font-size: 36px;
@@ -52,12 +54,15 @@ page {
       background-color: #ffffff;
       display:flex;
       justify-content: space-between;
-      margin:20px 0;
+      margin: 0 0 20px 0;
       padding:20px 40px;
       font-size: 24px;
+      border-radius: 20px;
       .joined{
+        width: 33%;
         display: flex;
         align-items: center;
+        justify-content: center;
         .joined-icon{
           display: flex;
           flex-direction: column;
@@ -67,7 +72,7 @@ page {
       .screen{
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: center;
         width: 160px;
         .popover{
           .popover-menu-item-name{
@@ -103,6 +108,7 @@ page {
     border:1px solid #D7D7D7;
     background-color: #ffffff;
     padding:40px;
+    border-radius: 20px;
     .fansList-info-top{
       font-size: 24px;
       font-weight: 300;
@@ -122,12 +128,16 @@ page {
           flex-direction: column;
           .name{
             font-weight: bold;
+            margin-bottom: 10px;
           }
         }
       }
       .fansList-info-top-mid{
         display: flex;
         flex-direction: column;
+        .mid-name{
+           margin-bottom: 10px;
+        }
       }
       .fansList-info-top-right{
         .fansList-info-top-right-text{
@@ -138,7 +148,7 @@ page {
       }
     }
     .fansList-info-mid{
-      margin:20px 0;
+      margin:40px 0;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -149,6 +159,7 @@ page {
         align-items: center;
         .fansList-info-mid-item-title{
           color:#838383;
+          margin-bottom: 10px;
         }
         .fansList-info-mid-item-num{
           .num{
