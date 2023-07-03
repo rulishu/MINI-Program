@@ -2,19 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { Tabs } from '@taroify/core';
 import { View } from '@tarojs/components';
 import MyCoupons from './coupon';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
+  const { couponUserAllList, couponUsedAllList, couponUsedStaleAllList } = useSelector(
+    (state) => state.myCoupons,
+  );
   const list = [
-    { state: 0, title: '待使用（3）' },
-    { state: 1, title: '已使用' },
-    { state: 2, title: '已过期' },
+    { state: 0, title: `待使用（${couponUserAllList?.length}）` },
+    { state: 1, title: `已使用(${couponUsedAllList?.length})` },
+    { state: 2, title: `已过期(${couponUsedStaleAllList?.length})` },
   ];
   useEffect(() => {
     dispatch({ type: 'myCoupons/couponUserAll' });
+    dispatch({ type: 'myCoupons/couponUsedAll' });
+    dispatch({ type: 'myCoupons/couponUsedStaleAll' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
