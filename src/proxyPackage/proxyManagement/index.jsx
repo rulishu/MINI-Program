@@ -190,7 +190,7 @@ const Index = () => {
                       <ArrowDown />
                     </View>
                   </View>
-                  <View>
+                  <View className="screen">
                     <Popover
                       className="popover"
                       location="bottom-end"
