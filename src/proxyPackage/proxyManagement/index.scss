@@ -114,7 +114,8 @@ page {
       .screen {
         display: flex;
         align-items: center;
-
+        justify-content: flex-end;
+        width: 160px;
         .popover {
           .popover-menu-item-name {
             width: 120px;
