@@ -18,7 +18,7 @@ const Index = (props) => {
     setScrollIntoView(`a${id}`);
   };
   const onTap = (id) => {
-    Taro.navigateTo({ url: `/pages/goodInfo/index?id=${id}` });
+    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${id}` });
     dispatch({
       type: 'goodInfo/update',
       payload: {
@@ -41,7 +41,6 @@ const Index = (props) => {
                 }}
                 className="right-title"
                 color={subList && index !== activeItem ? '#999999' : '#965A3C'}
-                // textColor="#999999"
               >
                 <Text onClick={() => onTagTap(item?.id)}>{item?.marketingName}</Text>
               </Tag>

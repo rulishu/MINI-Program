@@ -23,9 +23,11 @@ export default {
   namespace: 'goodInfo', // 这是模块名
   state: {
     // 初始化数据
-    visible: false,
+    visible: false, // 购买弹窗
     type: '',
-    shareVisible: false,
+    shareVisible: false, //分享弹窗
+    couponVisible: false, // 详情优惠卷
+    couponOrderVisible: false, // 确认订单优惠券
     queryInfo: {},
     productDetails: { ...productDetail },
     confirmList: [],
@@ -165,7 +167,7 @@ export default {
             duration: 2000,
           });
           setTimeout(() => {
-            Taro.navigateTo({ url: `/pages/goodInfo/index?id=${params?.id}` });
+            Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${params?.id}` });
           }, 500);
         }
       } catch (err) {}
@@ -201,21 +203,28 @@ export default {
         };
         const result = yield call(newConfirm, params);
         if (result.code === 200) {
-          Taro.navigateTo({ url: '/pages/confirmOrder/index' });
-          // 默认地址
-          const defultAddress = result.result.addresses
-            ?.filter((item) => {
-              return item.isDefault === 1;
-            })
-            ?.at(0);
-          const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
-          Taro.setStorageSync('defultAddress', lastAddress);
+          if (!params?.areaCode) {
+            Taro.navigateTo({ url: '/goodsPackage/confirmOrder/index' });
+            // 默认地址
+            const defultAddress = result.result.addresses
+              ?.filter((item) => {
+                return item.isDefault === 1;
+              })
+              ?.at(0);
+            const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
+            Taro.setStorageSync('defultAddress', lastAddress);
+            yield put({
+              type: 'update',
+              payload: {
+                currentAddress: {},
+              },
+            });
+          }
           yield put({
             type: 'update',
             payload: {
               shoppingCartVOList: result.result.shoppingCartVOList || {},
               orderToken: result.result.orderToken,
-              currentAddress: {},
               visible: false,
             },
           });

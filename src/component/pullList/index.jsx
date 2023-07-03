@@ -1,6 +1,6 @@
 import { ScrollView, Text, View } from '@tarojs/components';
-import React, { Fragment, useEffect, useImperativeHandle } from 'react';
-import { useSetState, useRequest } from 'ahooks';
+import React, { Fragment, useImperativeHandle } from 'react';
+import { useSetState, useRequest, useDeepCompareEffect } from 'ahooks';
 import { Empty } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 
@@ -62,7 +62,7 @@ export default React.forwardRef(
       },
     });
 
-    useEffect(() => {
+    useDeepCompareEffect(() => {
       callback?.({
         refresh: refresh,
       });

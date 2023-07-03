@@ -1,0 +1,17 @@
+// 领劵弹窗CSS
+.couponBorderBox{
+  margin: 40px 40px;
+  .coupon-state{
+    position: absolute;
+    top: 15%;
+    left: 78%;
+    height: 120px;
+    width: 120px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d7d7d7;
+  }
+}

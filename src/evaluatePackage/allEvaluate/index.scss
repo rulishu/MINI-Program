@@ -1,0 +1,104 @@
+page {
+  height: 100%;
+  background: #F2F2F2;
+}
+
+/* 顶部 */
+.navbar-head{
+  display: flex; 
+  flex-direction: row; 
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .navbar-head-left{
+    display: flex; 
+    width: 50%;
+  }
+  .navbar-head-right{
+    width: 100%;
+    font-size: 24px;
+  }
+}
+
+/* 界面 */ 
+.allEvaluate{
+  position: relative;
+  .empty{
+    position: absolute;
+	  top:50%;
+	  left:50%;
+	  transform:translate(-50%,-50%);
+  }
+  .allEvaluate-info{
+    margin-top:30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .allEvaluate-info-item{
+      padding:40px 20px 20px 20px;
+      width:100%;
+      margin:0 20px 30px 20px;
+      background-color: #ffffff;
+      .allEvaluate-info-item-title{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        .allEvaluate-info-item-title-left{
+          display: flex;
+          flex-direction: row;
+          .head-icon{
+            width:30px;
+            height:30px;
+            background-color: #D7D7D7;
+          }
+          .head-name{
+            margin:0 0 0 10px;
+            font-size: 24px;
+            font-weight: bold;
+          }
+        }
+        .allEvaluate-info-item-title-right{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .head-type{
+            font-size: 20px;
+            background-color: #A05635;
+            color:#ffffff;
+            padding: 2px 4px;
+            border-radius: 4px;
+          }
+          .head-size{
+            font-size: 18px;
+            color:#AFAFAF;
+            margin:0 0 0 10px;
+          }
+
+        }
+
+      }
+      .allEvaluate-info-item-mid{
+        margin-top:10px;
+        font-size: 24px;
+        color:#333333;
+      }
+      .allEvaluate-info-item-foot{
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        margin-left: 20px;
+        .image{
+          width: 200px !important;
+          height: 200px;
+          width: calc(33.33% - 15px);
+          background-color: #D7D7D7;
+          margin-right: 15px;
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+}

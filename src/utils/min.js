@@ -1,3 +1,4 @@
+import Taro from '@tarojs/taro';
 // 最低价
 export const min = (data) => {
   const datas = data?.filter((vel) => {
@@ -75,4 +76,37 @@ export const getCurTimes = () => {
   const mm = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
   const ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
   return date.year + '-' + newmonth + '-' + day + ' ' + hh + ':' + mm + ':' + ss;
+};
+
+// 时间格式转化
+export function changeStr(data) {
+  if (data < 10) {
+    return '0' + data;
+  } else {
+    return data;
+  }
+}
+
+export function changeDate(date) {
+  if (date) {
+    const d = new Date(date);
+    return changeStr(d.getMonth() + 1) + '月/' + d.getFullYear();
+  }
+}
+
+// 转base64
+export const fileToBase64 = (filePath) => {
+  return new Promise((resolve) => {
+    let fileManager = Taro.getFileSystemManager();
+    fileManager.readFile({
+      filePath,
+      encoding: 'base64',
+      success: (e) => {
+        resolve(`data:image/jpg;base64,${e.data}`);
+      },
+      fail: () => {
+        return;
+      },
+    });
+  });
 };

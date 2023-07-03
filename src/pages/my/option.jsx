@@ -32,17 +32,20 @@ const Index = () => {
     if (item.title === '专属海报') {
       Taro.navigateTo({ url: item.url });
     }
+    if (item.title === '代理管理') {
+      Taro.navigateTo({ url: item.url });
+    }
   };
   const list = [
     {
       icon: my11,
       title: '专属海报',
-      url: '/pages/poster/index',
+      url: '/userPackage/poster/index',
     },
     {
       icon: my7,
       title: '地址管理',
-      url: '/pages/address/index',
+      url: '/userPackage/address/index',
     },
     {
       icon: my13,
@@ -50,7 +53,8 @@ const Index = () => {
     },
     {
       icon: my12,
-      title: '优惠卷',
+      title: '代理管理',
+      url: '/proxyPackage/proxyManagement/index',
     },
     // {
     //   icon: my12,

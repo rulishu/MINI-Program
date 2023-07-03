@@ -8,6 +8,7 @@ import Heads from './heads';
 import Orders from './orders';
 // import Seals from './seals';
 import Option from './option';
+import Dealer from './dealer';
 
 const Index = () => {
   const { activeIndex } = useSelector((state) => state.global);
@@ -37,6 +38,7 @@ const Index = () => {
       <Heads />
       <Orders />
       {/* <Seals /> */}
+      <Dealer />
       <Option />
       {/* <View className="goOut">
         <Button type="primary" onTap={onLout}>

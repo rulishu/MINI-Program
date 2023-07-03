@@ -21,24 +21,35 @@ const Index = () => {
     const joinDay = Math.ceil(dateDiff / (24 * 3600 * 1000));
     return joinDay + 1;
   };
-  // const list = [
-  //   {
-  //     title: '我的粉丝',
-  //     num: 233,
-  //   },
-  //   {
-  //     title: '今日涨粉',
-  //     num: 12,
-  //   },
-  //   {
-  //     title: '今日分润',
-  //     num: 78.23,
-  //   },
-  //   {
-  //     title: '待提现金额',
-  //     num: 1278.23,
-  //   },
-  // ];
+  const list = [
+    {
+      title: '我的粉丝',
+      num: 0,
+      url: '/dealerPackage/myFans/index',
+    },
+    {
+      title: '我的积分',
+      num: 0,
+      url: '/goodsPackage/flashSkill/index',
+    },
+    {
+      title: '我的卡劵',
+      num: 0,
+      url: '/goodsPackage/myCoupons/index',
+    },
+    // {
+    //   title: '今日涨粉',
+    //   num: 12,
+    // },
+    // {
+    //   title: '今日分润',
+    //   num: 78.23,
+    // },
+    // {
+    //   title: '待提现金额',
+    //   num: 1278.23,
+    // },
+  ];
 
   //编辑信息
   const edit = () => {
@@ -51,7 +62,7 @@ const Index = () => {
       });
       return Taro.navigateTo({ url: '/pages/login/index' });
     }
-    Taro.navigateTo({ url: '/pages/editUser/index' });
+    Taro.navigateTo({ url: '/userPackage/editUser/index' });
   };
 
   const goPoster = () => {
@@ -64,14 +75,17 @@ const Index = () => {
       });
       return;
     }
-    Taro.navigateTo({ url: '/pages/poster/index' });
+    Taro.navigateTo({ url: '/userPackage/poster/index' });
   };
 
+  const goUrl = (url) => {
+    Taro.navigateTo({ url: url });
+  };
   return (
     <View>
       <View className="heads">
         <View className="my-title">
-          <Text>我的 1.0.0</Text>
+          <Text>我的 1.0.1</Text>
         </View>
         <View className="option-icon">
           <View>
@@ -116,8 +130,8 @@ const Index = () => {
         </View>
       </View>
       <View className="head-list">
-        {/* {list.map((item, index) => (
-          <View key={index} className="head-list-item">
+        {list.map((item, index) => (
+          <View key={index} className="head-list-item" onClick={() => goUrl(item.url)}>
             <View className="head-list-item-title">
               <Text>{item.num}</Text>
             </View>
@@ -125,7 +139,7 @@ const Index = () => {
               <Text>{item.title}</Text>
             </View>
           </View>
-        ))} */}
+        ))}
       </View>
     </View>
   );
