@@ -53,7 +53,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
               </View>
             </View>
             <View className="fansList-info-top-mid">
-              <View style={{ marginBottom: '10px' }}>邀请人:李高峰</View>
+              <View style={{ marginBottom: '10rpx' }}>邀请人:李高峰</View>
               <View>邀请层级:1</View>
             </View>
             <View className="fansList-info-top-right">
