@@ -12,6 +12,7 @@ const Index = () => {
   const dispatch = useDispatch();
   const [activeTag, setActiveTag] = useState(0);
   const [lightTheme, setLightTheme] = useState(false);
+  const [activeName, setActiveName] = useState('筛选');
   const itemList = [{ name: '全部' }, { name: '发起方分润' }, { name: '收件方分润' }];
 
   const list = [
@@ -92,10 +93,14 @@ const Index = () => {
                 onClick={() => {
                   lightTheme ? setLightTheme(false) : setLightTheme(true);
                 }}
+                onChoose={(it) => {
+                  let name = it.name === '全部' ? '筛选' : it.name;
+                  setActiveName(name);
+                }}
                 list={itemList}
               >
                 <View className="screen">
-                  <Text style={{ fontSize: 12, fontWeight: 300 }}>筛选</Text>
+                  <Text style={{ fontSize: 12, fontWeight: 300 }}>{activeName}</Text>
                   <FilterOutlined />
                 </View>
               </Popover>

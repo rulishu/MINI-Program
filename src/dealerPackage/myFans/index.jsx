@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
-import { Button } from '@taroify/core';
+import { Tag } from '@taroify/core';
 import Popup from './popup';
 import { getAllOrders } from '@/server/allOrders';
 import PullList from '@/component/pullList';
@@ -80,7 +80,9 @@ const Index = () => {
             <QuestionOutlined style={{ marginLeft: 4 }} onClick={() => onPrompt()} />
           </View>
           <View>
-            <Button size="mini">奋斗者</Button>
+            <Tag style={{ backgroundColor: '#ffffff', color: '#000000' }} shape="rounded">
+              奋斗者
+            </Tag>
           </View>
         </View>
         <View className="fans-head-mid">
@@ -130,7 +132,7 @@ const Index = () => {
                       <ArrowDown />
                     </View>
                   </View>
-                  <View className="screen">
+                  <View className="joined screen">
                     <Popover
                       className="popover"
                       location="bottom-end"

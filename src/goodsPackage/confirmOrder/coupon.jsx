@@ -29,7 +29,7 @@ const Index = () => {
     },
   ];
   // eslint-disable-next-line no-unused-vars
-  const render = (item) => {
+  const renderButton = (item) => {
     return (
       <View>
         <Checkbox className="custom-color" />
@@ -51,7 +51,7 @@ const Index = () => {
         {list?.map((item) => (
           <Coupons
             key={item?.id}
-            render={render(item)}
+            renderButton={renderButton(item)}
             couponData={{
               discount: item?.discount,
               reduction: item?.reduction,

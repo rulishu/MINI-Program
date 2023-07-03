@@ -16,7 +16,7 @@ const Index = () => {
       title: '满100减10元券',
       content: '酒类优惠卷',
       fistTime: '2023.6.5',
-      lastTime: '2023.6.10',
+      lastTime: '2023.6.10 12:12:12',
       state: 1,
     },
     {
@@ -60,7 +60,7 @@ const Index = () => {
       state: 1,
     },
   ];
-  const render = (item) => {
+  const renderButton = (item) => {
     return (
       <Button
         className={
@@ -96,7 +96,7 @@ const Index = () => {
               fistTime: item?.fistTime,
               lastTime: item?.lastTime,
             }}
-            render={render(item)}
+            renderButton={renderButton(item)}
           />
         ))}
       </View>
