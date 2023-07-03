@@ -544,14 +544,14 @@ page {
   }
   .couponBorderBox-list-right-content-buttoned{
     background-color: #ffffff;
-    color: #555555;
-    border: 1px solid #555555;
-    color: #555555;
+    color: #fa2c19;
+    border: 1px solid #fa2c19;
     border-radius: 20px;
     width: 120px;
     height: 50px;
     padding: 0;
     text-align: center;
+    opacity: var(--nutui-button-disabled-opacity, .68)
   }
 }
 
