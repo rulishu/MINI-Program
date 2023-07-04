@@ -248,11 +248,11 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
                   payload: {
                     id: item.id,
                     callBack: () => {
-                      refresh?.();
-                      setIsConfirm(false);
                       Taro.navigateTo({
                         url: `/evaluatePackage/dealDone/index?id=${Number(item.id)}`,
                       });
+                      refresh?.();
+                      setIsConfirm(false);
                     },
                   },
                 });
