@@ -228,8 +228,8 @@ const Index = () => {
           >
             <View className="couponDetailBox-layout">
               <View style={{ display: 'flex', alignItems: 'center' }}>
-                <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>优惠卷</Text>
-                <View className="couponDetailBox-content">满100减10</View>
+                <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>优惠券</Text>
+                <Tag className="couponDetailBox-content">满100减10</Tag>
               </View>
               <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
                 <Icon name="rect-right" size={20}></Icon>
@@ -296,11 +296,10 @@ const Index = () => {
                     <View className="commentDetailBox-content" key={item?.id}>
                       <View className="commentDetailBox-content-box">
                         <View className="commentDetailBox-content-box-left">
-                          <View style={{ width: 20, height: 20 }}>
+                          <View style={{ width: '20px', height: '20px' }}>
                             <Image
-                              mode="widthFix"
                               src={item?.headUrl}
-                              style={{ width: 20, height: 20, background: '#aaaaaa' }}
+                              style={{ width: '20px', height: '20px', background: '#D7D7D7' }}
                             ></Image>
                           </View>
                           <View style={{ paddingLeft: 5 }}>{item?.consumerName}</View>
