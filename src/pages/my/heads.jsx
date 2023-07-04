@@ -83,6 +83,7 @@ const Index = () => {
   };
   return (
     <View>
+      <View className="TopPadding"></View>
       <View className="my-title">
         <Text>我的 1.0.1</Text>
       </View>

@@ -26,12 +26,16 @@ page {
 
 }
 
+.TopPadding{
+  height: 180px;
+}
+
 .my-title {
   // margin:84.62rpx 38.46rpx 42.31rpx 38.46rpx;
+  margin-left: 20px;
   font-weight: 500;
   color: #B08B57;
   line-height: 38rpx;
-  margin: 180rpx 0 20rpx 40rpx;
 }
 
 .head-info {
