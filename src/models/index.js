@@ -19,6 +19,7 @@ import proxyDividendDetails from './proxyDividendDetails';
 import myCoupons from './myCoupons';
 import proxyManagement from './proxyManagement';
 import dealDone from './dealDone';
+import flashSkill from './flashSkill';
 
 export default [
   global,
@@ -42,4 +43,5 @@ export default [
   myCoupons,
   proxyManagement,
   dealDone,
+  flashSkill,
 ]; // 这里是数组, 数组中的每个项都是独立的模块
