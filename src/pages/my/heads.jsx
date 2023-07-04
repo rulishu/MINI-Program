@@ -83,16 +83,8 @@ const Index = () => {
   };
   return (
     <View>
-      <View className="heads">
-        <View className="my-title">
-          <Text>我的 1.0.1</Text>
-        </View>
-        <View className="option-icon">
-          <View>
-            <Icon name="comment" size="20" color="#B08B57" style={{ marginRight: 20 }}></Icon>
-            <Icon name="setting" size="20" color="#B08B57"></Icon>
-          </View>
-        </View>
+      <View className="my-title">
+        <Text>我的 1.0.1</Text>
       </View>
       <View className="head-info">
         <View className="my-headIcon" onTap={() => edit()}>
@@ -104,7 +96,7 @@ const Index = () => {
           />
         </View>
         <View className="head-infos">
-          <View className="head-info-name" onTap={() => edit()}>
+          <View className="head-infos-name" onTap={() => edit()}>
             <Text>{userInfos.consumerName || '游客'}</Text>
             {/* <Image
               mode="widthFix"
@@ -113,7 +105,7 @@ const Index = () => {
             ></Image>
             <Text className="head-info-name-xf">续费</Text> */}
           </View>
-          <View className="head-info-id">
+          <View className="head-infos-id">
             <Text>奋斗者 ID: {userInfos.id || '暂无信息'}</Text>
             <Image
               mode="widthFix"
@@ -123,10 +115,16 @@ const Index = () => {
             ></Image>
           </View>
           {userInfos.createTime && (
-            <View className="head-info-id">
-              <Text>加入融辉第 {time(userInfos.createTime) || 0} 天</Text>
+            <View className="head-infos-id">
+              <Text>邀请人: 李高锋</Text>
+              <Text style={{ marginLeft: 10 }}>
+                加入融辉第 {time(userInfos.createTime) || 0} 天
+              </Text>
             </View>
           )}
+        </View>
+        <View className="head-info-date">
+          <Icon name="date" size="20"></Icon>
         </View>
       </View>
       <View className="head-list">
