@@ -3,7 +3,6 @@ import { View, Image } from '@tarojs/components';
 import { useSelector, useDispatch } from 'react-redux';
 import { Skeleton } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
-import { getRequest } from '@/utils/min';
 import './index.scss';
 
 const Navs = () => {
@@ -53,8 +52,6 @@ const Navs = () => {
           activeIndex: 4,
         },
       });
-    } else if (url.indexOf('goodsPackage/goodInfo/index') !== -1) {
-      Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${getRequest(url)}` });
     } else {
       Taro.navigateTo({ url: url });
     }

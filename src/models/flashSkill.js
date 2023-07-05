@@ -6,6 +6,7 @@ export default {
   state: {
     productList: [], // 活动商品列表
     flashDetails: {}, // 活动信息详情
+    flashAvailability: false, // 活动有效性
   },
 
   effects: {
@@ -17,7 +18,8 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              flashDetails: data.result.records || {},
+              flashDetails: data.result || {},
+              flashAvailability: true,
             },
           });
           Taro.hideLoading();
