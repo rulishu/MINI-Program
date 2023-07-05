@@ -7,6 +7,7 @@ import {
   orderSubmit,
   newConfirm,
   miniprogramcode,
+  selectCoupons,
 } from '@/server/goodInfo';
 
 const productDetail = {
@@ -50,6 +51,7 @@ export default {
     duration: 500,
     posterCode: '',
     swiperList: [],
+    couponsList: [], // 所有优惠券
   },
 
   effects: {
@@ -253,6 +255,22 @@ export default {
       } catch (err) {
         Taro.hideLoading();
       }
+    },
+
+    // 查询所有优惠券
+    *selectCoupons({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(selectCoupons, params);
+        if (result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              couponsList: result.result,
+            },
+          });
+        }
+      } catch (err) {}
     },
   },
 

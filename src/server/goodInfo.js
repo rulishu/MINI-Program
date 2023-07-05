@@ -28,3 +28,8 @@ export const newConfirm = (params) => {
 export const miniprogramcode = (params) => {
   return request.get('/jcgl-user/wx/login/miniprogramcode', params);
 };
+
+// 查询所有优惠券
+export const selectCoupons = (params) => {
+  return request.get('/jcgl-mall/app/coupon/select/all', params);
+};

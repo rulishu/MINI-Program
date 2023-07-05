@@ -554,5 +554,10 @@ page {
     opacity: var(--nutui-button-disabled-opacity, .68)
   }
 }
+// 优惠券空状态
+.custom-empty__image {
+  width: 90px * 2;
+  height: 90px * 2;
+}
 
 
