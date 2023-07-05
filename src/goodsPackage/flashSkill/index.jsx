@@ -3,6 +3,7 @@ import { View, Image } from '@tarojs/components';
 import flashSkill from '@/assets/images/flashSkill.png';
 import PullList from '@/component/pullList';
 import Taro from '@tarojs/taro';
+import { useCountDown } from 'ahooks';
 import { Empty } from '@nutui/nutui-react-taro';
 import { Button } from '@taroify/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,8 +12,14 @@ import './index.scss';
 
 const Index = () => {
   const { flashAvailability, flashDetails } = useSelector((state) => state.flashSkill);
-  // const activityEndTime = new Date(flashDetails?.activityStartTime).getTime();
-
+  // eslint-disable-next-line no-unused-vars
+  const [countdown, formattedRes] = useCountDown({
+    targetDate: flashDetails.activityEndTime,
+  });
+  let { days, hours, minutes, seconds } = formattedRes;
+  if (seconds.toString().length === 1) {
+    seconds = `0${seconds}`;
+  }
   const params = Taro.getCurrentInstance().router.params;
   const { activityId } = params;
   const dispatch = useDispatch();
@@ -62,7 +69,7 @@ const Index = () => {
                             className="flashSkillBoxList-box-left-tag"
                             style={{ backgroundColor: '#02A7F0', fontSize: '20rpx' }}
                           >
-                            {flashDetails.activityEndTime}
+                            {days}天{hours}:{minutes}:{seconds}开抢
                           </View>
                         )}
                         <View className="flashSkillBoxList-box-left-image">
