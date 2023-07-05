@@ -310,19 +310,19 @@ const Index = () => {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
+              justifyContent: 'space-evenly',
               marginBottom: 20,
               marginLeft: 20,
               marginRight: 20,
               with: '100%',
             }}
           >
-            <Button style={{ borderRadius: '6px 0 0 6px', width: '40%' }} onClick={() => addCart()}>
+            <Button style={{ borderRadius: '6px', width: '40%' }} onClick={() => addCart()}>
               加入购物车
             </Button>
             <Button
               type="primary"
-              style={{ borderRadius: '0 6px 6px 0', width: '40%' }}
+              style={{ borderRadius: '6px', width: '40%' }}
               onClick={() => nowCart()}
             >
               立即购买

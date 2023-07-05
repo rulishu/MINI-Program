@@ -91,7 +91,7 @@ const Index = () => {
         <View className="head-sharing">
           <View className="sharing-title">
             <View>
-              <Text style={{ marginRight: '5px' }}>地盘分润(发起方)</Text>
+              <Text style={{ marginRight: '5px' }}>地盘分润 (发起方)</Text>
               <QuestionOutlined onClick={() => onPrompt(1)} />
             </View>
             <Arrow onClick={goDetails} />
@@ -114,7 +114,7 @@ const Index = () => {
         <View className="head-sharing">
           <View className="sharing-title">
             <View>
-              <Text style={{ marginRight: '5px' }}>地盘分润(收件方)</Text>
+              <Text style={{ marginRight: '5px' }}>地盘分润 (收件方)</Text>
               <QuestionOutlined onClick={() => onPrompt(1)} />
             </View>
             <Arrow onClick={goDetails} />
@@ -205,8 +205,10 @@ const Index = () => {
                       list={itemList}
                     >
                       <View className="screen">
-                        <View>{activeName}</View>
-                        <FilterOutlined />
+                        <View className="screen-text">
+                          <View>{activeName}</View>
+                          <FilterOutlined />
+                        </View>
                       </View>
                     </Popover>
                   </View>

@@ -15,32 +15,27 @@ page {
   padding-top: 20rpx;
 }
 
-.heads {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  // margin: 20rpx 40rpx;
-}
-
 .option-icon {
   // margin-left:80rpx;
   // width: 200rpx;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   margin: 180rpx 40rpx 0 0;
 
 
 }
 
+.TopPadding{
+  height: 180px;
+}
+
 .my-title {
   // margin:84.62rpx 38.46rpx 42.31rpx 38.46rpx;
+  margin-left: 20px;
   font-weight: 500;
   color: #B08B57;
   line-height: 38rpx;
-  margin: 180rpx 0 20rpx 40rpx;
 }
 
 .head-info {
@@ -58,7 +53,7 @@ page {
     margin-left: 36.54rpx;
     width: 50%;
 
-    .head-info-name {
+    .head-infos-name {
       font-size: 31rpx;
       font-family: PingFangSC-Medium, PingFang SC;
       font-weight: 500;
@@ -67,7 +62,7 @@ page {
       display: flex;
       align-items: center;
 
-      .head-info-name-xf {
+      .head-infos-name-xf {
         margin-left: 8rpx;
         font-size: 27rpx;
         font-family: PingFangSC-Regular, PingFang SC;
@@ -77,7 +72,7 @@ page {
       }
     }
 
-    .head-info-id {
+    .head-infos-id {
       color: #808183;
       font-size: 24rpx;
       font-family: PingFangSC-Regular, PingFang SC;
@@ -87,6 +82,12 @@ page {
       align-items: center;
       margin-bottom: 10px;
     }
+  }
+  .head-info-date{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 20%;
   }
 }
 
