@@ -410,11 +410,18 @@ page {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    .couponDetailBox-content{
-      padding: 0 10px;
-      font-size: 28px;
-      background-color: #A05635;
-      color: #f2f2f2;
+    .couponDetailBox-content-box{
+      display: flex;
+      flex-direction: row;
+      width: 70%;
+      white-space:nowrap;        // 强制一行显示
+      .couponDetailBox-content{
+        padding: 0 10px;
+        font-size: 28px;
+        background-color: #A05635;
+        color: #f2f2f2;
+        margin-right: 5px;
+      }
     }
   }
 }

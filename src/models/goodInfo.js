@@ -285,6 +285,12 @@ export default {
             duration: 2000,
           });
           payload?.callBack?.();
+          yield put({
+            type: 'update',
+            payload: {
+              couponVisible: false,
+            },
+          });
         } else {
           Taro.showToast({
             title: '优惠券已到用户可领取上限',

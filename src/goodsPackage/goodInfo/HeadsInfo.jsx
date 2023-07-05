@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Video } from '@tarojs/components';
+import { View, Text, Image, Video, ScrollView } from '@tarojs/components';
 import { Swiper, SwiperItem, Icon, Button, Skeleton, Tag } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
 import searchLeft from '@/assets/images/searchLeft.svg';
@@ -227,23 +227,25 @@ const Index = () => {
             onClick={() => dispatch({ type: 'goodInfo/update', payload: { couponVisible: true } })}
           >
             <View className="couponDetailBox-layout">
-              <View style={{ display: 'flex', alignItems: 'center' }}>
+              <View style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                 <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>优惠券</Text>
-                {couponsList?.length > 0 ? (
-                  couponsList?.map((item) => {
-                    return (
-                      item?.userReceiveCount > 0 && (
-                        <View style={{ display: 'flex', flexDirection: 'row' }} key={item?.id}>
-                          <Tag className="couponDetailBox-content">
-                            满{item?.minimumConsumption}减{item?.price}
-                          </Tag>
-                        </View>
-                      )
-                    );
-                  })
-                ) : (
-                  <Text style={{ fontSize: 15 }}>请选择优惠券</Text>
-                )}
+                <View className="couponDetailBox-content-box">
+                  <ScrollView scrollX>
+                    {couponsList?.length > 0 ? (
+                      couponsList?.map((item) => {
+                        if (item?.userReceiveCount > 0) {
+                          return (
+                            <Tag className="couponDetailBox-content" key={item?.id}>
+                              满{item?.minimumConsumption}减{item?.price}
+                            </Tag>
+                          );
+                        }
+                      })
+                    ) : (
+                      <Text style={{ fontSize: 15 }}>暂无优惠券</Text>
+                    )}
+                  </ScrollView>
+                </View>
               </View>
               <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
                 <Icon name="rect-right" size={20}></Icon>
