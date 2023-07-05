@@ -33,3 +33,8 @@ export const miniprogramcode = (params) => {
 export const selectCoupons = (params) => {
   return request.get('/jcgl-mall/app/coupon/select/all', params);
 };
+
+// 领取优惠券
+export const receiveCoupon = (params) => {
+  return request.post('/jcgl-mall/app/coupon/user/create', params);
+};

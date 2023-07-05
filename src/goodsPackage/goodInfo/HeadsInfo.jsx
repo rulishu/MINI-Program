@@ -15,7 +15,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { queryInfo, activeSku, swiperList } = useSelector((state) => state.goodInfo);
+  const { queryInfo, activeSku, swiperList, couponsList } = useSelector((state) => state.goodInfo);
   const { evaluationRating, evaluationList } = useSelector((state) => state.evaluate);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
@@ -229,7 +229,21 @@ const Index = () => {
             <View className="couponDetailBox-layout">
               <View style={{ display: 'flex', alignItems: 'center' }}>
                 <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>优惠券</Text>
-                <Tag className="couponDetailBox-content">满100减10</Tag>
+                {couponsList?.length > 0 ? (
+                  couponsList?.map((item) => {
+                    return (
+                      item?.userReceiveCount > 0 && (
+                        <View style={{ display: 'flex', flexDirection: 'row' }} key={item?.id}>
+                          <Tag className="couponDetailBox-content">
+                            满{item?.minimumConsumption}减{item?.price}
+                          </Tag>
+                        </View>
+                      )
+                    );
+                  })
+                ) : (
+                  <Text style={{ fontSize: 15 }}>请选择优惠券</Text>
+                )}
               </View>
               <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
                 <Icon name="rect-right" size={20}></Icon>

@@ -8,6 +8,7 @@ import {
   newConfirm,
   miniprogramcode,
   selectCoupons,
+  receiveCoupon,
 } from '@/server/goodInfo';
 
 const productDetail = {
@@ -52,6 +53,7 @@ export default {
     posterCode: '',
     swiperList: [],
     couponsList: [], // 所有优惠券
+    receivedCoupon: [], // 已选优惠券
   },
 
   effects: {
@@ -268,6 +270,26 @@ export default {
             payload: {
               couponsList: result.result,
             },
+          });
+        }
+      } catch (err) {}
+    },
+
+    *receiveCoupon({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(receiveCoupon, params);
+        if (result.code === 200) {
+          Taro.showToast({
+            title: '领取成功',
+            duration: 2000,
+          });
+          payload?.callBack?.();
+        } else {
+          Taro.showToast({
+            title: '优惠券已到用户可领取上限',
+            icon: 'none',
+            duration: 2000,
           });
         }
       } catch (err) {}

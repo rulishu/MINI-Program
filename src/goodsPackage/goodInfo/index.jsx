@@ -26,6 +26,12 @@ const Index = () => {
         pageSize: 20,
       },
     });
+    dispatch({
+      type: 'goodInfo/selectCoupons',
+      payload: {
+        id: params?.id,
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

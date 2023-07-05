@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Popup, Button, Empty } from '@taroify/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from '@tarojs/components';
@@ -11,27 +11,34 @@ const Index = () => {
   const { couponVisible, couponsList } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
   const params = Taro.getCurrentInstance().router.params;
-  useEffect(() => {
-    dispatch({
-      type: 'goodInfo/selectCoupons',
-      payload: {
-        id: params?.id,
-      },
-    });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const renderButton = (type) => {
+  const renderButton = (data) => {
     return (
       <Button
         className={
-          type === false
+          data?.userReceiveCount !== data?.limitCount
             ? 'couponBorderBox-list-right-content-button'
             : 'couponBorderBox-list-right-content-buttoned'
         }
+        disabled={data?.userReceiveCount === data?.limitCount ? true : false}
+        onClick={() => {
+          dispatch({
+            type: 'goodInfo/receiveCoupon',
+            payload: {
+              couponId: data?.id,
+              callBack: () => {
+                dispatch({
+                  type: 'goodInfo/selectCoupons',
+                  payload: {
+                    id: params?.id,
+                  },
+                });
+              },
+            },
+          });
+        }}
       >
-        {type === false ? '领取' : '已领取'}
+        {data?.userReceiveCount !== data?.limitCount ? '领取' : '已领取'}
       </Button>
     );
   };
@@ -60,7 +67,7 @@ const Index = () => {
                   fistTime: item?.useBeginDate,
                   lastTime: item?.useEndTime,
                 }}
-                renderButton={renderButton(item?.userType)}
+                renderButton={renderButton(item)}
               />
             );
           })
