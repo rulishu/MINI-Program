@@ -541,6 +541,8 @@ page {
     width: 120px;
     height: 50px;
     text-align: center;
+    padding: 0;
+    margin: 0;
   }
   .couponBorderBox-list-right-content-buttoned{
     background-color: #ffffff;
@@ -550,9 +552,15 @@ page {
     width: 120px;
     height: 50px;
     padding: 0;
+    margin: 0;
     text-align: center;
     opacity: var(--nutui-button-disabled-opacity, .68)
   }
+}
+// 优惠券空状态
+.custom-empty__image {
+  width: 90px * 2;
+  height: 90px * 2;
 }
 
 
