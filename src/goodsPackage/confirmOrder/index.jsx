@@ -22,6 +22,8 @@ const Index = () => {
     selectedCoupon,
     couponDtoList,
   } = useSelector((state) => state.goodInfo);
+  const idData = couponDtoList.find((item) => item.selected === 1);
+  const receiveCoupon = couponDtoList.filter((item) => item.available === 1);
 
   const { payOrder } = usePay({
     success: () => {
@@ -154,7 +156,8 @@ const Index = () => {
         remark: orderNotesInfo, //备注
         shoppingCartVOList: shoppingCartVOLists,
         id: queryInfo?.id,
-        userCouponId: selectedCoupon?.couponId,
+        userCouponId:
+          Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.couponId : idData?.couponId,
         callBack: () => {
           // 预订单
           let submitDetail = Taro.getStorageSync('submitInfo');
@@ -173,14 +176,13 @@ const Index = () => {
     });
   };
 
-  const idData = couponDtoList.find((item) => item.selected === 1);
   const total = () => {
     if (orderInfo?.totalPrice >= selectedCoupon?.minimumConsumption) {
       return selectedCoupon.type === 2
         ? orderInfo?.totalPrice - selectedCoupon?.price
         : electedCoupon.type === 3 && rderInfo?.totalPrice * selectedCoupon?.price;
     } else {
-      return orderInfo?.totalPrice - idData?.price || 0;
+      return orderInfo?.totalPrice - idData?.price || orderInfo?.totalPrice;
     }
   };
   return (
@@ -299,7 +301,15 @@ const Index = () => {
               </View>
               <View className="address-price-right">
                 <View>
-                  <Text style={{ color: '#D9001B' }}>新人20元无门槛优惠劵</Text>
+                  <Text style={{ color: '#D9001B' }}>
+                    {Object.keys(selectedCoupon).length > 0
+                      ? `${receiveCoupon?.length}张可用券`
+                      : `新人${
+                          Object.keys(selectedCoupon).length > 0
+                            ? selectedCoupon?.price || 0
+                            : idData?.price || 0
+                        }元无门槛优惠劵`}
+                  </Text>
                 </View>
                 <View className="address-price-right-icon">
                   <Icon name="rect-right" size="16" style={{ marginLeft: 8 }} color="#7F7F7F" />
