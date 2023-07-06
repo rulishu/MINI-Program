@@ -19,7 +19,10 @@ const Index = () => {
     orderToken,
     activeSku,
     queryInfo,
+    selectedCoupon,
+    couponDtoList,
   } = useSelector((state) => state.goodInfo);
+
   const { payOrder } = usePay({
     success: () => {
       dispatch({
@@ -151,6 +154,7 @@ const Index = () => {
         remark: orderNotesInfo, //备注
         shoppingCartVOList: shoppingCartVOLists,
         id: queryInfo?.id,
+        userCouponId: selectedCoupon?.couponId,
         callBack: () => {
           // 预订单
           let submitDetail = Taro.getStorageSync('submitInfo');
@@ -169,6 +173,16 @@ const Index = () => {
     });
   };
 
+  const idData = couponDtoList.find((item) => item.selected === 1);
+  const total = () => {
+    if (orderInfo?.totalPrice >= selectedCoupon?.minimumConsumption) {
+      return selectedCoupon.type === 2
+        ? orderInfo?.totalPrice - selectedCoupon?.price
+        : electedCoupon.type === 3 && rderInfo?.totalPrice * selectedCoupon?.price;
+    } else {
+      return orderInfo?.totalPrice - idData?.price || 0;
+    }
+  };
   return (
     <View className="confirm">
       <View className="confirm-order">
@@ -307,7 +321,7 @@ const Index = () => {
       <View className="footer">
         <View className="footer-content">
           <View>
-            <Text>合计：¥ {orderInfo?.totalPrice}</Text>
+            <Text>合计：¥ {total()}</Text>
           </View>
           <View>
             <Button
