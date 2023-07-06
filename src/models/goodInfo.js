@@ -55,6 +55,7 @@ export default {
     couponsList: [], // 所有优惠券
     receivedCoupon: [], // 已选优惠券
     couponDtoList: [], // 已领取未使用优惠券
+    selectedCoupon: {}, //选中的优惠券
   },
 
   effects: {

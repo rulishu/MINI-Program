@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Popup, Checkbox } from '@taroify/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from '@tarojs/components';
@@ -10,11 +10,29 @@ const Index = () => {
   const { couponOrderVisible, couponDtoList } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
 
+  const [checked, setChecked] = useState({});
+  useEffect(() => {
+    const idData = couponDtoList.find((item) => item.selected === 1);
+    setChecked(idData);
+  }, []);
   // eslint-disable-next-line no-unused-vars
+
   const renderButton = (data) => {
     return (
       <View>
-        <Checkbox className="custom-color" disabled={data?.available === 0 ? true : false} />
+        {data?.available === 0 ? (
+          <View className="checkDisableMargin">
+            <View className="checkDisablePadding"></View>
+          </View>
+        ) : (
+          <Checkbox
+            className="custom-color"
+            checked={checked?.id === data?.id ? true : false}
+            onChange={() => {
+              setChecked(data);
+            }}
+          />
+        )}
       </View>
     );
   };
@@ -49,7 +67,16 @@ const Index = () => {
         })}
         <View style={{ height: 50 }}></View>
         <View className="couponBorderBox-footer">
-          <Button type="primary" style={{ borderRadius: 5, width: '100%' }}>
+          <Button
+            type="primary"
+            style={{ borderRadius: 5, width: '100%' }}
+            onClick={() => {
+              dispatch({
+                type: 'goodInfo/update',
+                payload: { selectedCoupon: checked, couponOrderVisible: false },
+              });
+            }}
+          >
             确认
           </Button>
         </View>
