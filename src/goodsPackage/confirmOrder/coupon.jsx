@@ -1,38 +1,20 @@
 import React from 'react';
-import { Popup, Checkbox, Button } from '@taroify/core';
+import { Popup, Checkbox } from '@taroify/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from '@tarojs/components';
+import { Button } from '@nutui/nutui-react-taro';
 import Coupons from '@/component/coupons';
 import './index.scss';
 
 const Index = () => {
-  const { couponOrderVisible } = useSelector((state) => state.goodInfo);
+  const { couponOrderVisible, couponDtoList } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
-  const list = [
-    {
-      id: 1,
-      discount: '¥10',
-      reduction: '满100可用',
-      title: '满100减10元券',
-      content: '酒类优惠卷',
-      fistTime: '2023.6.5',
-      lastTime: '2023.6.10',
-    },
-    {
-      id: 2,
-      discount: '9折',
-      reduction: '满50可用',
-      title: '满50打9折券',
-      content: '白酒类优惠卷',
-      fistTime: '2023.6.5',
-      lastTime: '2023.6.10',
-    },
-  ];
+
   // eslint-disable-next-line no-unused-vars
-  const renderButton = (item) => {
+  const renderButton = (data) => {
     return (
       <View>
-        <Checkbox className="custom-color" />
+        <Checkbox className="custom-color" disabled={data?.available === 0 ? true : false} />
       </View>
     );
   };
@@ -48,23 +30,26 @@ const Index = () => {
       <Popup.Close />
       <View className="couponBorderBox">
         <View className="couponBorderBox-title">优惠卷</View>
-        {list?.map((item) => (
-          <Coupons
-            key={item?.id}
-            renderButton={renderButton(item)}
-            couponData={{
-              discount: item?.discount,
-              reduction: item?.reduction,
-              title: item?.title,
-              content: item?.content,
-              fistTime: item?.fistTime,
-              lastTime: item?.lastTime,
-            }}
-          />
-        ))}
+        {couponDtoList?.map((item) => {
+          return (
+            <Coupons
+              key={item?.id}
+              renderButton={renderButton(item)}
+              couponData={{
+                discount: `¥${item?.price}`,
+                reduction: `满${item?.minimumConsumption}可用`,
+                title: `满${item?.minimumConsumption}减${item?.price}元券`,
+                content: item?.name,
+                fistTime: item?.useBeginDate,
+                lastTime: item?.useEndTime,
+              }}
+              disabled={item?.available}
+            />
+          );
+        })}
+        <View style={{ height: 50 }}></View>
         <View className="couponBorderBox-footer">
-          <Button color="primary" block>
-            {' '}
+          <Button type="primary" style={{ borderRadius: 5, width: '100%' }}>
             确认
           </Button>
         </View>

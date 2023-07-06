@@ -59,7 +59,7 @@ const Index = (props) => {
         <View style={{ position: 'fixed', top: '35%', left: 0, width: '100%' }}>
           <Empty>
             <Empty.Image className="custom-empty__image" src={coupon} />
-            <Empty.Description>您还没有优惠券</Empty.Description>
+            <Empty.Description>暂无优惠券</Empty.Description>
           </Empty>
         </View>
       )}

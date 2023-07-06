@@ -364,7 +364,8 @@ const Index = () => {
                 >
                   <Image mode="widthFix" src={shareblack} style={{ width: 25, height: 25 }}></Image>
                 </View>
-                <View>
+
+                <View onTap={() => Taro.switchTab({ url: '/pages/cart/index' })}>
                   <Badge content={1}>
                     <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
                   </Badge>
