@@ -6,10 +6,18 @@ export const min = (data) => {
   });
   let str =
     datas?.reduce((prev, current) => {
-      if (current?.membershipPrice < prev) {
-        return current?.membershipPrice;
+      if (current?.membershipPrice) {
+        if (current?.membershipPrice < prev) {
+          return current?.membershipPrice;
+        } else {
+          return prev;
+        }
       } else {
-        return prev;
+        if (current?.activityStock < prev) {
+          return current?.activityStock;
+        } else {
+          return prev;
+        }
       }
     }, Infinity) || 0;
   if (str === Infinity) {
