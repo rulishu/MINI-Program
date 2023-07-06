@@ -23,6 +23,7 @@ const Index = (props) => {
       type: 'goodInfo/update',
       payload: {
         activeSku: [],
+        receivedCoupon: [],
       },
     });
   };

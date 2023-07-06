@@ -7,6 +7,8 @@ import {
   orderSubmit,
   newConfirm,
   miniprogramcode,
+  selectCoupons,
+  receiveCoupon,
 } from '@/server/goodInfo';
 
 const productDetail = {
@@ -50,6 +52,9 @@ export default {
     duration: 500,
     posterCode: '',
     swiperList: [],
+    couponsList: [], // 所有优惠券
+    receivedCoupon: [], // 已选优惠券
+    couponDtoList: [], // 已领取未使用优惠券
   },
 
   effects: {
@@ -224,6 +229,7 @@ export default {
             type: 'update',
             payload: {
               shoppingCartVOList: result.result.shoppingCartVOList || {},
+              couponDtoList: result.result.couponDtoList || [],
               orderToken: result.result.orderToken,
               visible: false,
             },
@@ -253,6 +259,48 @@ export default {
       } catch (err) {
         Taro.hideLoading();
       }
+    },
+
+    // 查询所有优惠券
+    *selectCoupons({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(selectCoupons, params);
+        if (result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              couponsList: result.result,
+            },
+          });
+        }
+      } catch (err) {}
+    },
+
+    *receiveCoupon({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(receiveCoupon, params);
+        if (result.code === 200) {
+          Taro.showToast({
+            title: '领取成功',
+            duration: 2000,
+          });
+          payload?.callBack?.();
+          yield put({
+            type: 'update',
+            payload: {
+              couponVisible: false,
+            },
+          });
+        } else {
+          Taro.showToast({
+            title: '优惠券已到用户可领取上限',
+            icon: 'none',
+            duration: 2000,
+          });
+        }
+      } catch (err) {}
     },
   },
 
