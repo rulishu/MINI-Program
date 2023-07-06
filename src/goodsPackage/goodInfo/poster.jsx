@@ -54,20 +54,36 @@ const Index = () => {
   };
 
   // 最低价
-  const min =
-    queryInfo?.itemSkuDtos?.reduce((prev, current) => {
-      if (current?.membershipPrice < prev) {
-        return current?.membershipPrice;
-      } else {
-        return prev;
-      }
-    }, Infinity) || 0;
-
+  let min;
   // 最高价
-  const max =
-    queryInfo?.itemSkuDtos?.reduce((prev, curr) => {
-      return prev?.membershipPrice > curr?.membershipPrice ? prev : curr;
-    })?.membershipPrice || 0;
+  let max;
+  if (!queryInfo?.isActivityItem) {
+    min =
+      queryInfo?.itemSkuDtos?.reduce((prev, current) => {
+        if (current?.membershipPrice < prev) {
+          return current?.membershipPrice;
+        } else {
+          return prev;
+        }
+      }, Infinity) || 0;
+    max =
+      queryInfo?.itemSkuDtos?.reduce((prev, curr) => {
+        return prev?.membershipPrice > curr?.membershipPrice ? prev : curr;
+      })?.membershipPrice || 0;
+  } else {
+    min =
+      queryInfo?.activityItemSkuDtoList?.reduce((prev, current) => {
+        if (current?.activityPrice < prev) {
+          return current?.activityPrice;
+        } else {
+          return prev;
+        }
+      }, Infinity) || 0;
+    max =
+      queryInfo?.activityItemSkuDtoList?.reduce((prev, curr) => {
+        return prev?.activityPrice > curr?.activityPrice ? prev : curr;
+      })?.activityPrice || 0;
+  }
 
   // 保存图片
   const onPicture = (img) => {

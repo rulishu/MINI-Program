@@ -50,15 +50,24 @@ const Index = () => {
   const onChange3 = (e) => {
     setCurrent(e + 1);
   };
+
   const title = () => {
+    if (!queryInfo?.isActivityItem) {
+      if (queryInfo?.stock === 0) {
+        return '商品已售空';
+      }
+    } else {
+      if (Number(queryInfo?.activityDto?.activityItemList[0]?.stockTotal) === 0) {
+        return '商品已售空';
+      }
+    }
     if (queryInfo?.onShelf === 0) {
       return '商品已下架';
-    } else if (queryInfo?.stock === 0) {
-      return '商品已售空';
     } else if (queryInfo?.isDelete === 1) {
       return '商品已删除';
     }
   };
+
   const onClickCart = (type) => {
     const token = Taro.getStorageSync('token');
     if (token === '') {
@@ -69,7 +78,16 @@ const Index = () => {
         icon: 'none',
         duration: 2000,
       });
-    } else if (queryInfo?.stock === 0) {
+    } else if (queryInfo?.stock === 0 && !queryInfo?.isActivityItem) {
+      Taro.showToast({
+        title: '商品已售空',
+        icon: 'none',
+        duration: 2000,
+      });
+    } else if (
+      queryInfo?.isActivityItem &&
+      Number(queryInfo?.activityDto?.activityItemList[0]?.stockTotal) === 0
+    ) {
       Taro.showToast({
         title: '商品已售空',
         icon: 'none',
@@ -101,7 +119,6 @@ const Index = () => {
       }
     }
   };
-
   return (
     <Skeleton animated loading={queryInfo?.mainGraphs ? true : false}>
       <View>
@@ -178,37 +195,62 @@ const Index = () => {
             </View>
           </View>
           {/* 限时抢购 */}
-          <View className="flashSale">
-            <View className="flashSaleBox">
-              <View className="flashSaleBox-left">
-                <View className="flashSaleBox-left-title">限时抢购</View>
-                <View className="flashSaleBox-left-number">已抢0件</View>
-              </View>
-              <View className="flashSaleBox-right">
-                <View className="flashSaleBox-right-title">距离开枪仅剩16天</View>
-                <Countdown value={30 * 60 * 60 * 1000}>
-                  {(curr) => (
-                    <>
-                      <View className="block">{curr.hours}</View>
-                      <View className="colon">:</View>
-                      <View className="block">{curr.minutes}</View>
-                      <View className="colon">:</View>
-                      <View className="block">{curr.seconds}</View>
-                    </>
-                  )}
-                </Countdown>
+          {queryInfo?.isActivityItem && (
+            <View className="flashSale">
+              <View className="flashSaleBox">
+                <View className="flashSaleBox-left">
+                  <View className="flashSaleBox-left-title">限时抢购</View>
+                  <View className="flashSaleBox-left-number">已抢{queryInfo?.volume}件</View>
+                </View>
+                <View className="flashSaleBox-right">
+                  <Countdown
+                    value={
+                      queryInfo?.activityDto?.status === 0
+                        ? Date.parse(queryInfo?.activityDto.activityStartTime) - Date.now()
+                        : Date.parse(queryInfo?.activityDto.activityEndTime) - Date.now()
+                    }
+                  >
+                    {(curr) => (
+                      <>
+                        {queryInfo?.activityDto?.status === 0 ? (
+                          <View className="flashSaleBox-right-title">
+                            距离开抢仅剩{curr.days}天
+                          </View>
+                        ) : (
+                          <View className="flashSaleBox-right-title">
+                            距离结束仅剩{curr.days}天
+                          </View>
+                        )}
+                        <View className="block">
+                          {curr.hours.toString().length === 1 ? `0${curr.hours}` : curr.hours}
+                        </View>
+                        <View className="colon">:</View>
+                        <View className="block">
+                          {curr.minutes.toString().length === 1 ? `0${curr.minutes}` : curr.minutes}
+                        </View>
+                        <View className="colon">:</View>
+                        <View className="block">
+                          {curr.seconds.toString().length === 1 ? `0${curr.seconds}` : curr.seconds}
+                        </View>
+                      </>
+                    )}
+                  </Countdown>
+                </View>
               </View>
             </View>
-          </View>
+          )}
           {/* 详情文本 */}
           <View className="detailTextBox">
             <View className="detailTextBox-price">
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
                 {queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
+                {queryInfo?.activityItemSkuDtoList && min(queryInfo?.activityItemSkuDtoList)}
               </Text>
               <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
                 {queryInfo?.itemSkuDtos &&
                   aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
+                {queryInfo?.activityItemSkuDtoList &&
+                  aPrice(min(queryInfo?.activityItemSkuDtoList), queryInfo?.activityItemSkuDtoList)}
               </Text>
             </View>
             <View className="detailTextBox-state">
@@ -222,36 +264,42 @@ const Index = () => {
             <View style={{ color: '#818181', fontSize: 12 }}>{queryInfo?.details}</View>
           </View>
           {/* 优惠卷 */}
-          <View
-            className="couponDetailBox"
-            onClick={() => dispatch({ type: 'goodInfo/update', payload: { couponVisible: true } })}
-          >
-            <View className="couponDetailBox-layout">
-              <View style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>优惠券</Text>
-                <View className="couponDetailBox-content-box">
-                  <ScrollView scrollX>
-                    {couponsList?.length > 0 ? (
-                      couponsList?.map((item) => {
-                        if (item?.userReceiveCount > 0) {
-                          return (
-                            <Tag className="couponDetailBox-content" key={item?.id}>
-                              满{item?.minimumConsumption}减{item?.price}
-                            </Tag>
-                          );
-                        }
-                      })
-                    ) : (
-                      <Text style={{ fontSize: 15 }}>暂无优惠券</Text>
-                    )}
-                  </ScrollView>
+          {!queryInfo?.isActivityItem && (
+            <View
+              className="couponDetailBox"
+              onClick={() =>
+                dispatch({ type: 'goodInfo/update', payload: { couponVisible: true } })
+              }
+            >
+              <View className="couponDetailBox-layout">
+                <View style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                  <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>
+                    优惠券
+                  </Text>
+                  <View className="couponDetailBox-content-box">
+                    <ScrollView scrollX>
+                      {couponsList?.length > 0 ? (
+                        couponsList?.map((item) => {
+                          if (item?.userReceiveCount > 0) {
+                            return (
+                              <Tag className="couponDetailBox-content" key={item?.id}>
+                                满{item?.minimumConsumption}减{item?.price}
+                              </Tag>
+                            );
+                          }
+                        })
+                      ) : (
+                        <Text style={{ fontSize: 15 }}>暂无优惠券</Text>
+                      )}
+                    </ScrollView>
+                  </View>
+                </View>
+                <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
+                  <Icon name="rect-right" size={20}></Icon>
                 </View>
               </View>
-              <View style={{ marginRight: 15, display: 'flex', alignItems: 'center' }}>
-                <Icon name="rect-right" size={20}></Icon>
-              </View>
             </View>
-          </View>
+          )}
           {/* 规格值 */}
           <View style={{ margin: '10px 10px', backgroundColor: '#ffffff', height: 100 }}>
             <View
@@ -351,7 +399,11 @@ const Index = () => {
           </View>
           {/* 页脚按钮 */}
           <View className="footButtonsBox">
-            {(queryInfo?.onShelf === 0 || queryInfo?.stock === 0 || queryInfo?.isDelete === 1) && (
+            {(queryInfo?.onShelf === 0 ||
+              (queryInfo?.stock === 0 && !queryInfo?.isActivityItem) ||
+              queryInfo?.isDelete === 1 ||
+              (queryInfo?.isActivityItem &&
+                Number(queryInfo?.activityDto?.activityItemList[0]?.stockTotal))) && (
               <View className="footButtonsBox-title">{title()}</View>
             )}
             <View className="footButtonsBox-buttons">
@@ -383,15 +435,24 @@ const Index = () => {
                   </Button>
                 </View>
                 <View style={{ width: '45%' }}>
-                  <Button
-                    type="primary"
-                    style={{ borderRadius: 0, width: '100%' }}
-                    onClick={() => {
-                      onClickCart('nowCart');
-                    }}
-                  >
-                    立即购买
-                  </Button>
+                  {queryInfo?.activityDto?.status === 0 && queryInfo?.isActivityItem ? (
+                    <Button
+                      color="#02A7F0"
+                      style={{ borderRadius: 0, width: '100%', lineHeight: '26rpx' }}
+                    >
+                      {queryInfo?.activityDto?.activityStartTime}抢
+                    </Button>
+                  ) : (
+                    <Button
+                      type="primary"
+                      style={{ borderRadius: 0, width: '100%' }}
+                      onClick={() => {
+                        onClickCart('nowCart');
+                      }}
+                    >
+                      立即购买
+                    </Button>
+                  )}
                 </View>
               </View>
             </View>

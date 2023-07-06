@@ -18,7 +18,7 @@ const Index = () => {
   const [stock, setStock] = useState();
 
   // 选中的规格值[查找会员价和相对应的图片]
-  let newArr = skuList.map((item) => {
+  let newArr = skuList?.map((item) => {
     let obj = { ...item };
     let arr = [];
     item.attributes.forEach((i) => {
@@ -35,11 +35,18 @@ const Index = () => {
   let skuInfo = newArr.find((arrItem) => arrItem?.isThisSku === true);
 
   useEffect(() => {
+    if (queryInfo.isActivityItem) {
+      setMemberPrice(skuInfo?.activityPrice);
+      setReferencePrice(skuInfo?.price);
+      setStock(Number(skuInfo?.availableStock));
+    }
+    {
+      setMemberPrice(skuInfo?.membershipPrice);
+      setReferencePrice(skuInfo?.referencePrice);
+      setStock(skuInfo?.stock);
+    }
     setImageUrl(skuInfo?.imageUrl);
-    setMemberPrice(skuInfo?.membershipPrice);
-    setReferencePrice(skuInfo?.referencePrice);
-    setStock(skuInfo?.stock);
-  }, [skuInfo, imageUrl, memberPrice, referencePrice, stock]);
+  }, [skuInfo, imageUrl, memberPrice, referencePrice, stock, queryInfo]);
 
   const updateFn = (params) => {
     dispatch({
@@ -201,6 +208,8 @@ const Index = () => {
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
                 {memberPrice
                   ? `¥${memberPrice}`
+                  : queryInfo?.isActivityItem
+                  ? queryInfo?.activityItemDtoList && min(queryInfo?.activityItemDtoList)
                   : queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
               <Text
@@ -208,6 +217,9 @@ const Index = () => {
               >
                 {referencePrice
                   ? `¥${referencePrice}`
+                  : queryInfo?.isActivityItem
+                  ? queryInfo?.activityItemDtoList &&
+                    aPrice(min(queryInfo?.activityItemDtoList), queryInfo?.activityItemDtoList)
                   : queryInfo?.itemSkuDtos &&
                     aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
