@@ -185,10 +185,10 @@ const Index = () => {
                 <View className="flashSaleBox-left-number">已抢0件</View>
               </View>
               <View className="flashSaleBox-right">
-                <View className="flashSaleBox-right-title">距离开枪仅剩16天</View>
-                <Countdown value={30 * 60 * 60 * 1000}>
+                <Countdown value={30 * 120 * 60 * 1000}>
                   {(curr) => (
                     <>
+                      <View className="flashSaleBox-right-title">距离开抢仅剩{curr.days}天</View>
                       <View className="block">{curr.hours}</View>
                       <View className="colon">:</View>
                       <View className="block">{curr.minutes}</View>
@@ -366,15 +366,27 @@ const Index = () => {
                   </Button>
                 </View>
                 <View style={{ width: '45%' }}>
-                  <Button
-                    type="primary"
-                    style={{ borderRadius: 0, width: '100%' }}
-                    onClick={() => {
-                      onClickCart('nowCart');
-                    }}
-                  >
-                    立即购买
-                  </Button>
+                  {queryInfo?.isSales ? (
+                    <Button
+                      type="primary"
+                      style={{ borderRadius: 0, width: '100%' }}
+                      onClick={() => {
+                        onClickCart('nowCart');
+                      }}
+                    >
+                      立即购买
+                    </Button>
+                  ) : (
+                    <Button
+                      color="#02A7F0"
+                      style={{ borderRadius: 0, width: '100%', lineHeight: '26rpx' }}
+                      onClick={() => {
+                        onClickCart('nowCart');
+                      }}
+                    >
+                      {queryInfo?.openTime}抢
+                    </Button>
+                  )}
                 </View>
               </View>
             </View>

@@ -14,7 +14,7 @@ const Index = () => {
   const { flashAvailability, flashDetails } = useSelector((state) => state.flashSkill);
   // eslint-disable-next-line no-unused-vars
   const [countdown, formattedRes] = useCountDown({
-    targetDate: flashDetails.activityEndTime,
+    targetDate: flashDetails.activityStartTime,
   });
   let { days, hours, minutes, seconds } = formattedRes;
   if (seconds.toString().length === 1) {
@@ -99,7 +99,7 @@ const Index = () => {
                             className="flashSkillBoxList-box-right-footer-button"
                             onClick={() => {
                               Taro.navigateTo({
-                                url: `/goodsPackage/goodInfo/index?id=${item?.id}`,
+                                url: `/goodsPackage/goodInfo/index?id=${item?.activityItemId}`,
                               });
                             }}
                           >
