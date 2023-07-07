@@ -159,7 +159,7 @@ const Index = () => {
         shoppingCartVOList: shoppingCartVOLists,
         id: queryInfo?.id,
         userCouponId:
-          Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0).id,
+          Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
         callBack: () => {
           // 预订单
           let submitDetail = Taro.getStorageSync('submitInfo');
@@ -184,7 +184,7 @@ const Index = () => {
         ? orderInfo?.totalPrice - selectedCoupon?.price
         : electedCoupon.type === 3 && rderInfo?.totalPrice * selectedCoupon?.price;
     } else {
-      return orderInfo?.totalPrice - idData?.at(0).price || orderInfo?.totalPrice;
+      return orderInfo?.totalPrice - idData?.at(0)?.price || orderInfo?.totalPrice;
     }
   };
   return (
