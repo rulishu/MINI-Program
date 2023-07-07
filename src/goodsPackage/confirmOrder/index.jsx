@@ -22,8 +22,8 @@ const Index = () => {
     selectedCoupon,
     couponDtoList,
   } = useSelector((state) => state.goodInfo);
-  const idData = couponDtoList.find((item) => item.selected === 1);
-  const receiveCoupon = couponDtoList.filter((item) => item.available === 1);
+  const receiveCoupon = couponDtoList?.filter((item) => item.available === 1);
+  const idData = couponDtoList?.filter((item) => item.selected === 1);
 
   const { payOrder } = usePay({
     success: () => {
@@ -89,6 +89,8 @@ const Index = () => {
           totalPrice: item?.totalPrice,
           unitPrice: item?.unitPrice,
           whetherSpecialItem: item?.whetherSpecialItem,
+          spuId: item?.spuId,
+          itemType: item?.itemType,
         },
       ],
     };
@@ -157,7 +159,7 @@ const Index = () => {
         shoppingCartVOList: shoppingCartVOLists,
         id: queryInfo?.id,
         userCouponId:
-          Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.couponId : idData?.couponId,
+          Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
         callBack: () => {
           // 预订单
           let submitDetail = Taro.getStorageSync('submitInfo');
@@ -182,7 +184,7 @@ const Index = () => {
         ? orderInfo?.totalPrice - selectedCoupon?.price
         : electedCoupon.type === 3 && rderInfo?.totalPrice * selectedCoupon?.price;
     } else {
-      return orderInfo?.totalPrice - idData?.price || orderInfo?.totalPrice;
+      return orderInfo?.totalPrice - idData?.at(0)?.price || orderInfo?.totalPrice;
     }
   };
   return (
@@ -302,13 +304,9 @@ const Index = () => {
               <View className="address-price-right">
                 <View>
                   <Text style={{ color: '#D9001B' }}>
-                    {Object.keys(selectedCoupon).length > 0
-                      ? `${receiveCoupon?.length}张可用券`
-                      : `新人${
-                          Object.keys(selectedCoupon).length > 0
-                            ? selectedCoupon?.price || 0
-                            : idData?.price || 0
-                        }元无门槛优惠劵`}
+                    {receiveCoupon?.length > 0 && idData?.length > 0
+                      ? `新人${idData?.at(0).price}元无门槛优惠券`
+                      : `${receiveCoupon?.length}张可用券`}
                   </Text>
                 </View>
                 <View className="address-price-right-icon">
