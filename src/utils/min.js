@@ -13,8 +13,8 @@ export const min = (data) => {
           return prev;
         }
       } else {
-        if (current?.activityStock < prev) {
-          return current?.activityStock;
+        if (current?.activityPrice < prev) {
+          return current?.activityPrice;
         } else {
           return prev;
         }
