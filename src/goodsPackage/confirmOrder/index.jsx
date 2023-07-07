@@ -121,7 +121,7 @@ const Index = () => {
     Taro.navigateTo({
       url: `/userPackage/address/index?confirmAddress=${JSON.stringify(curAddress)}&count=${
         shoppingCartVOList[0]?.cartVOList[0]?.count
-      }&skuId=${shoppingCartVOList[0]?.skuId}`,
+      }&skuId=${shoppingCartVOList[0]?.skuId}&activityId=${queryInfo?.activityDto?.id}`,
     });
   };
 
