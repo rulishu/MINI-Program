@@ -179,12 +179,20 @@ const Index = () => {
   };
 
   const total = () => {
-    if (orderInfo?.totalPrice >= selectedCoupon?.minimumConsumption) {
-      return selectedCoupon.type === 2
-        ? orderInfo?.totalPrice - selectedCoupon?.price
-        : electedCoupon.type === 3 && rderInfo?.totalPrice * selectedCoupon?.price;
+    if (queryInfo?.isActivityItem === false) {
+      if (orderInfo?.totalPrice >= selectedCoupon?.minimumConsumption) {
+        return selectedCoupon.type === 2
+          ? Number(orderInfo?.totalPrice - selectedCoupon?.price).toFixed(2)
+          : electedCoupon.type === 3 &&
+              Number(orderInfo?.totalPrice * selectedCoupon?.price).toFixed(2);
+      } else {
+        return (
+          Number(orderInfo?.totalPrice).toFixed(2) - Number(idData?.at(0)?.price).toFixed(2) ||
+          Number(orderInfo?.totalPrice).toFixed(2)
+        );
+      }
     } else {
-      return orderInfo?.totalPrice - idData?.at(0)?.price || orderInfo?.totalPrice;
+      return orderInfo?.totalPrice;
     }
   };
   return (
@@ -292,28 +300,32 @@ const Index = () => {
                 <Text>免邮</Text>
               </View>
             </View>
-            <View
-              className="address-price"
-              onClick={() => {
-                dispatch({ type: 'goodInfo/update', payload: { couponOrderVisible: true } });
-              }}
-            >
-              <View>
-                <Text>优惠劵</Text>
-              </View>
-              <View className="address-price-right">
+            {queryInfo?.isActivityItem === false ? (
+              <View
+                className="address-price"
+                onClick={() => {
+                  dispatch({ type: 'goodInfo/update', payload: { couponOrderVisible: true } });
+                }}
+              >
                 <View>
-                  <Text style={{ color: '#D9001B' }}>
-                    {receiveCoupon?.length > 0 && idData?.length > 0
-                      ? `新人${idData?.at(0).price}元无门槛优惠券`
-                      : `${receiveCoupon?.length}张可用券`}
-                  </Text>
+                  <Text>优惠劵</Text>
                 </View>
-                <View className="address-price-right-icon">
-                  <Icon name="rect-right" size="16" style={{ marginLeft: 8 }} color="#7F7F7F" />
+                <View className="address-price-right">
+                  <View>
+                    <Text style={{ color: '#D9001B' }}>
+                      {receiveCoupon?.length > 0 && idData?.length > 0
+                        ? `新人${idData?.at(0).price}元无门槛优惠券`
+                        : `${receiveCoupon?.length}张可用券`}
+                    </Text>
+                  </View>
+                  <View className="address-price-right-icon">
+                    <Icon name="rect-right" size="16" style={{ marginLeft: 8 }} color="#7F7F7F" />
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : (
+              ''
+            )}
           </View>
         </View>
         <View className="pay">
