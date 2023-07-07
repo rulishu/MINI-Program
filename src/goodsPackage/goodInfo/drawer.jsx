@@ -39,8 +39,7 @@ const Index = () => {
       setMemberPrice(skuInfo?.activityPrice);
       setReferencePrice(skuInfo?.price);
       setStock(Number(skuInfo?.availableStock));
-    }
-    {
+    } else {
       setMemberPrice(skuInfo?.membershipPrice);
       setReferencePrice(skuInfo?.referencePrice);
       setStock(skuInfo?.stock);
@@ -209,7 +208,7 @@ const Index = () => {
                 {memberPrice
                   ? `¥${memberPrice}`
                   : queryInfo?.isActivityItem
-                  ? queryInfo?.activityItemDtoList && min(queryInfo?.activityItemDtoList)
+                  ? queryInfo?.activityItemSkuDtoList && min(queryInfo?.activityItemSkuDtoList)
                   : queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
               <Text
@@ -218,8 +217,11 @@ const Index = () => {
                 {referencePrice
                   ? `¥${referencePrice}`
                   : queryInfo?.isActivityItem
-                  ? queryInfo?.activityItemDtoList &&
-                    aPrice(min(queryInfo?.activityItemDtoList), queryInfo?.activityItemDtoList)
+                  ? queryInfo?.activityItemSkuDtoList &&
+                    aPrice(
+                      min(queryInfo?.activityItemSkuDtoList),
+                      queryInfo?.activityItemSkuDtoList,
+                    )
                   : queryInfo?.itemSkuDtos &&
                     aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
