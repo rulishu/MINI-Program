@@ -181,10 +181,14 @@ const Index = () => {
   const total = () => {
     if (orderInfo?.totalPrice >= selectedCoupon?.minimumConsumption) {
       return selectedCoupon.type === 2
-        ? orderInfo?.totalPrice - selectedCoupon?.price
-        : electedCoupon.type === 3 && rderInfo?.totalPrice * selectedCoupon?.price;
+        ? Number(orderInfo?.totalPrice - selectedCoupon?.price).toFixed(2)
+        : electedCoupon.type === 3 &&
+            Number(orderInfo?.totalPrice * selectedCoupon?.price).toFixed(2);
     } else {
-      return orderInfo?.totalPrice - idData?.at(0)?.price || orderInfo?.totalPrice;
+      return (
+        Number(orderInfo?.totalPrice).toFixed(2) - Number(idData?.at(0)?.price).toFixed(2) ||
+        Number(orderInfo?.totalPrice).toFixed(2)
+      );
     }
   };
   return (

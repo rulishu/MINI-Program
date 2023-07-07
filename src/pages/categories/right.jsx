@@ -24,6 +24,7 @@ const Index = (props) => {
       payload: {
         activeSku: [],
         receivedCoupon: [],
+        selectedCoupon: [],
       },
     });
   };
