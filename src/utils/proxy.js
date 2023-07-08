@@ -1,7 +1,7 @@
 const config = {
   development: {
     // '/': 'https://rh-api.nihaosi.com',
-    '/': 'http://192.168.10.53:8888',
+    '/': 'http://192.168.10.184:8888',
     // '/': 'http://192.168.188.189:8888',
     // '/': 'https://wx.expiims.com',
     // '/cs-basic-file-api/file': 'http://192.168.188.51:8881',
@@ -12,7 +12,7 @@ const config = {
   },
   production: {
     // '/': 'https://rh-api.nihaosi.com',
-    '/': 'http://192.168.10.53:8888',
+    '/': 'http://192.168.10.184:8888',
     // '/': 'https://wx.phleky.com',
     // '/': 'https://wx.expiims.com',
   },
