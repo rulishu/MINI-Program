@@ -403,7 +403,7 @@ const Index = () => {
               (queryInfo?.stock === 0 && !queryInfo?.isActivityItem) ||
               queryInfo?.isDelete === 1 ||
               (queryInfo?.isActivityItem &&
-                Number(queryInfo?.activityDto?.activityItemList[0]?.stockTotal))) && (
+                Number(queryInfo?.activityDto?.activityItemList[0]?.stockTotal) === 0)) && (
               <View className="footButtonsBox-title">{title()}</View>
             )}
             <View className="footButtonsBox-buttons">
@@ -423,37 +423,61 @@ const Index = () => {
                   </Badge>
                 </View>
               </View>
-              <View style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
-                <View style={{ marginRight: 10, width: '45%' }}>
-                  <Button
-                    style={{ borderRadius: 6, width: '100%' }}
-                    onClick={() => {
-                      onClickCart('addCart');
-                    }}
-                  >
-                    加入购物车
-                  </Button>
-                </View>
-                <View style={{ width: '45%' }}>
-                  {queryInfo?.activityDto?.status === 0 && queryInfo?.isActivityItem ? (
-                    <Button
-                      color="#02A7F0"
-                      style={{ borderRadius: 0, width: '100%', lineHeight: '26rpx' }}
-                    >
-                      {queryInfo?.activityDto?.activityStartTime}抢
-                    </Button>
-                  ) : (
-                    <Button
-                      type="primary"
-                      style={{ borderRadius: 6, width: '100%' }}
-                      onClick={() => {
-                        onClickCart('nowCart');
-                      }}
-                    >
-                      立即购买
-                    </Button>
-                  )}
-                </View>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  width: '80%',
+                  justifyContent: 'center',
+                }}
+              >
+                {!queryInfo?.isActivityItem ? (
+                  <>
+                    <View style={{ marginRight: 10, width: '45%' }}>
+                      <Button
+                        style={{ borderRadius: 0, width: '100%' }}
+                        onClick={() => {
+                          onClickCart('addCart');
+                        }}
+                      >
+                        加入购物车
+                      </Button>
+                    </View>
+                    <View style={{ width: '45%' }}>
+                      <Button
+                        type="primary"
+                        style={{ borderRadius: 0, width: '100%' }}
+                        onClick={() => {
+                          onClickCart('nowCart');
+                        }}
+                      >
+                        立即购买
+                      </Button>
+                    </View>
+                  </>
+                ) : (
+                  <View style={{ width: '85%' }}>
+                    {queryInfo?.activityDto?.status === 0 ? (
+                      <Button
+                        color="#02A7F0"
+                        disabled
+                        style={{ borderRadius: '6px', width: '100%', lineHeight: '26rpx' }}
+                      >
+                        {queryInfo?.activityDto?.activityStartTime}抢
+                      </Button>
+                    ) : (
+                      <Button
+                        type="primary"
+                        style={{ borderRadius: '6px', width: '100%' }}
+                        onClick={() => {
+                          onClickCart('nowCart');
+                        }}
+                      >
+                        立即购买
+                      </Button>
+                    )}
+                  </View>
+                )}
               </View>
             </View>
           </View>
