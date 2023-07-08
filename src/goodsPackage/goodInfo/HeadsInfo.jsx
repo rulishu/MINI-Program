@@ -426,7 +426,7 @@ const Index = () => {
               <View style={{ display: 'flex', flexDirection: 'row', width: '80%' }}>
                 <View style={{ marginRight: 10, width: '45%' }}>
                   <Button
-                    style={{ borderRadius: 0, width: '100%' }}
+                    style={{ borderRadius: 6, width: '100%' }}
                     onClick={() => {
                       onClickCart('addCart');
                     }}
@@ -445,7 +445,7 @@ const Index = () => {
                   ) : (
                     <Button
                       type="primary"
-                      style={{ borderRadius: 0, width: '100%' }}
+                      style={{ borderRadius: 6, width: '100%' }}
                       onClick={() => {
                         onClickCart('nowCart');
                       }}
