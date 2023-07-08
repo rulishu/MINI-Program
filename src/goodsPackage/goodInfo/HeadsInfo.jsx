@@ -403,7 +403,7 @@ const Index = () => {
               (queryInfo?.stock === 0 && !queryInfo?.isActivityItem) ||
               queryInfo?.isDelete === 1 ||
               (queryInfo?.isActivityItem &&
-                Number(queryInfo?.activityDto?.activityItemList[0]?.stockTotal))) && (
+                Number(queryInfo?.activityDto?.activityItemList[0]?.stockTotal) === 0)) && (
               <View className="footButtonsBox-title">{title()}</View>
             )}
             <View className="footButtonsBox-buttons">
