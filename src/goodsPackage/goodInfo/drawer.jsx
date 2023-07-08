@@ -68,6 +68,13 @@ const Index = () => {
       duration: 2000,
     });
   };
+  const maxLimit = () => {
+    return Taro.showToast({
+      title: '已达最大限购数',
+      icon: 'none',
+      duration: 2000,
+    });
+  };
 
   // 商品金额明细
   const onChangeFuc = (e) => {
@@ -145,6 +152,69 @@ const Index = () => {
             ],
           },
         });
+      }
+    }
+  };
+
+  const limite = () => {
+    if (amount <= 1) {
+      return overlimit;
+    } else if (amount === queryInfo.userBuyCount) {
+      return maxLimit;
+    } else {
+      return morelimit;
+    }
+  };
+
+  const stockCalc = () => {
+    if (stock === 0) {
+      return (
+        <View style={{ marginRight: 7 }}>
+          <InputNumber modelValue={0} min="0" disabled />
+        </View>
+      );
+    } else {
+      if (
+        Object.keys(active).length > 0 &&
+        Object.keys(active).length === Object.keys(attributeVos).length
+      ) {
+        if (queryInfo.userBuyCount === 0) {
+          return (
+            <View style={{ marginRight: 7 }}>
+              <InputNumber modelValue={0} min="0" disabled />
+            </View>
+          );
+        } else {
+          return (
+            <View style={{ marginRight: 7, display: 'flex', flexDirection: 'row' }}>
+              {queryInfo.userBuyCount && (
+                <View style={{ marginRight: 15, color: '#ec7f8c' }}>
+                  限购{queryInfo.userBuyCount}件
+                </View>
+              )}
+              <InputNumber
+                modelValue={amount}
+                min="1"
+                max={queryInfo.userBuyCount ? queryInfo.userBuyCount : stock}
+                onOverlimit={limite()} //amount <= 1 ? overlimit : morelimit
+                onChangeFuc={(e) => {
+                  onChangeFuc(e);
+                }}
+              />
+            </View>
+          );
+        }
+      } else {
+        return (
+          <View style={{ marginRight: 7, display: 'flex', flexDirection: 'row' }}>
+            {queryInfo.userBuyCount && (
+              <View View style={{ marginRight: 15, color: '#ec7f8c' }}>
+                限购{queryInfo.userBuyCount}件
+              </View>
+            )}
+            <InputNumber modelValue={amount} min="1" disabled />
+          </View>
+        );
       }
     }
   };
@@ -248,7 +318,8 @@ const Index = () => {
           <View>
             <Text>购买数量</Text>
           </View>
-          {stock === 0 ? (
+          {stockCalc()}
+          {/* {stock === 0 ? (
             <View style={{ marginRight: 7 }}>
               <InputNumber modelValue={0} min="0" disabled />
             </View>
@@ -269,7 +340,7 @@ const Index = () => {
             <View style={{ marginRight: 7 }}>
               <InputNumber modelValue={amount} min="1" disabled />
             </View>
-          )}
+          )} */}
         </View>
         {type === 'nowCart' || type === 'addCart' ? (
           <Button
