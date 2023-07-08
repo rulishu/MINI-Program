@@ -186,13 +186,17 @@ const Index = () => {
           : electedCoupon.type === 3 &&
               Number(orderInfo?.totalPrice * selectedCoupon?.price).toFixed(2);
       } else {
-        return (
-          Number(orderInfo?.totalPrice).toFixed(2) - Number(idData?.at(0)?.price).toFixed(2) ||
-          Number(orderInfo?.totalPrice).toFixed(2)
-        );
+        if (idData?.at(0)?.price === undefined) {
+          return Number(orderInfo?.totalPrice).toFixed(2);
+        } else {
+          return (
+            Number(orderInfo?.totalPrice - idData?.at(0)?.price).toFixed(2) ||
+            Number(orderInfo?.totalPrice).toFixed(2)
+          );
+        }
       }
     } else {
-      return orderInfo?.totalPrice;
+      return Number(orderInfo?.totalPrice).toFixed(2);
     }
   };
   return (
