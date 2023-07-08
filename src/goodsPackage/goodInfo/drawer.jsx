@@ -93,7 +93,7 @@ const Index = () => {
       },
     });
   };
-  const addCart = () => {
+  const onClickCart = (state) => {
     const token = Taro.getStorageSync('token');
     if (token === '') {
       Taro.navigateTo({ url: '/pages/login/index' });
@@ -128,59 +128,24 @@ const Index = () => {
         duration: 2000,
       });
     } else {
-      updateFn({ visible: false });
-      return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
-    }
-  };
-  const nowCart = () => {
-    const token = Taro.getStorageSync('token');
-    setAmount(1);
-    if (token === '') {
-      Taro.navigateTo({ url: '/pages/login/index' });
-    } else if (queryInfo?.onShelf === 0) {
-      Taro.showToast({
-        title: '商品已下架',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (queryInfo?.stock === 0) {
-      Taro.showToast({
-        title: '商品已售空',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (queryInfo?.isDelete === 1) {
-      Taro.showToast({
-        title: '商品已删除',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (amount > stock) {
-      Taro.showToast({
-        title: `库存数量为${stock}`,
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (Object.keys(active).length !== Object.keys(attributeVos).length) {
-      Taro.showToast({
-        title: '请选择规格',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else {
-      dispatch({
-        type: 'goodInfo/newConfirm',
-        payload: {
-          activityId: queryInfo?.activityDto?.id,
-          skuLockVoList: [
-            {
-              count: amount,
-              skuId: skuInfo?.skuId,
-              activityId: queryInfo?.activityDto?.id,
-            },
-          ],
-        },
-      });
+      if (state === 'addCart') {
+        updateFn({ visible: false });
+        return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
+      }
+      if (state === 'nowCart') {
+        setAmount(1);
+        dispatch({
+          type: 'goodInfo/newConfirm',
+          payload: {
+            skuLockVoList: [
+              {
+                count: amount,
+                skuId: skuInfo?.skuId,
+              },
+            ],
+          },
+        });
+      }
     }
   };
   return (
@@ -316,7 +281,7 @@ const Index = () => {
               borderRadius: 6,
             }}
             onClick={() => {
-              type === 'nowCart' ? nowCart() : type === 'addCart' && addCart();
+              onClickCart(type === 'nowCart' ? 'nowCart' : type === 'addCart' && 'addCart');
             }}
           >
             {type === 'nowCart' ? '立即购买' : type === 'addCart' && '加入购物车'}
@@ -333,13 +298,16 @@ const Index = () => {
               with: '100%',
             }}
           >
-            <Button style={{ borderRadius: '6px', width: '40%' }} onClick={() => addCart()}>
+            <Button
+              style={{ borderRadius: '6px', width: '40%' }}
+              onClick={() => onClickCart('addCart')}
+            >
               加入购物车
             </Button>
             <Button
               type="primary"
               style={{ borderRadius: '6px', width: '40%' }}
-              onClick={() => nowCart()}
+              onClick={() => onClickCart('nowCart')}
             >
               立即购买
             </Button>
