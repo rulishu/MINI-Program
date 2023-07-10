@@ -11,7 +11,7 @@ const Index = () => {
   const token = Taro.getStorageSync('token');
   // 分享
   const onClickChat = () => {
-    const userInfo = Taro.getStorageSync('userInfo');
+    // const userInfo = Taro.getStorageSync('userInfo');
     if (token !== '') {
       wx.updateShareMenu({
         withShareTicket: true,
@@ -20,12 +20,7 @@ const Index = () => {
             type: 'goodInfo/update',
             payload: { shareVisible: false },
           });
-          if (userInfo?.id) {
-            Taro.clearStorage('inviterId', userInfo?.id);
-            Taro.setStorageSync('inviterId', userInfo?.id);
-          } else {
-            Taro.setStorageSync('inviterId', userInfo?.id);
-          }
+          // Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${params?.id}&inviterId=${userInfo?.id}` });
         },
         error: () => {},
       });
