@@ -12,6 +12,15 @@ const Index = () => {
   const dispatch = useDispatch();
   const params = Taro.getCurrentInstance().router.params;
   useEffect(() => {
+    if (params?.inviterId) {
+      Taro.setStorageSync('inviterId', params?.inviterId);
+    } else {
+      Taro.showToast({
+        title: '请先添加个人信息',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
     dispatch({
       type: 'goodInfo/infoDetails',
       payload: {
