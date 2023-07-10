@@ -12,7 +12,7 @@ const Index = () => {
 
   const [checked, setChecked] = useState({});
   useEffect(() => {
-    const idData = couponDtoList.find((item) => item.selected === 1);
+    const idData = couponDtoList.filter((item) => item.selected === 1);
     setChecked(idData);
   }, []);
   // eslint-disable-next-line no-unused-vars
@@ -27,7 +27,7 @@ const Index = () => {
         ) : (
           <Checkbox
             className="custom-color"
-            checked={checked?.id === data?.id ? true : false}
+            checked={checked?.[0]?.id === data?.id ? true : false}
             onChange={() => {
               setChecked(data);
             }}
