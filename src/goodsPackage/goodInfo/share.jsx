@@ -8,23 +8,34 @@ import './index.scss';
 const Index = () => {
   const { shareVisible } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
-
+  const token = Taro.getStorageSync('token');
   // 分享
   const onClickChat = () => {
-    wx.updateShareMenu({
-      withShareTicket: true,
-      success: function () {
-        dispatch({
-          type: 'goodInfo/update',
-          payload: { shareVisible: false },
-        });
-      },
-    });
+    const userInfo = Taro.getStorageSync('userInfo');
+    if (token !== '') {
+      wx.updateShareMenu({
+        withShareTicket: true,
+        success: function () {
+          dispatch({
+            type: 'goodInfo/update',
+            payload: { shareVisible: false },
+          });
+          if (userInfo?.id) {
+            Taro.clearStorage('inviterId', userInfo?.id);
+            Taro.setStorageSync('inviterId', userInfo?.id);
+          } else {
+            Taro.setStorageSync('inviterId', userInfo?.id);
+          }
+        },
+        error: () => {},
+      });
+    } else {
+      Taro.navigateTo({ url: '/pages/login/index' });
+    }
   };
 
   // 保存海报
   const onPoster = () => {
-    const token = Taro.getStorageSync('token');
     const userInfo = Taro.getStorageSync('userInfo');
     if (token !== '') {
       dispatch({
@@ -78,7 +89,7 @@ const Index = () => {
                 shape="square"
                 color="#D7D7D7"
                 className="share-image-item1 share-box-share-botton"
-                open-type="share"
+                open-type={token !== '' ? 'share' : ''}
               />
             </View>
             <View className="share-image-item1-info text">
