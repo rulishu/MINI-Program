@@ -12,6 +12,15 @@ const Index = () => {
   const dispatch = useDispatch();
   const params = Taro.getCurrentInstance().router.params;
   useEffect(() => {
+    if (params?.inviterId) {
+      Taro.setStorageSync('inviterId', params?.inviterId);
+    } else {
+      Taro.showToast({
+        title: '请先添加个人信息',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
     dispatch({
       type: 'goodInfo/infoDetails',
       payload: {
@@ -24,6 +33,12 @@ const Index = () => {
         productId: Number(params?.id),
         pageNum: 1,
         pageSize: 20,
+      },
+    });
+    dispatch({
+      type: 'goodInfo/selectCoupons',
+      payload: {
+        id: params?.id,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

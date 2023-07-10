@@ -19,7 +19,12 @@ const Index = () => {
     orderToken,
     activeSku,
     queryInfo,
+    selectedCoupon,
+    couponDtoList,
   } = useSelector((state) => state.goodInfo);
+  const receiveCoupon = couponDtoList?.filter((item) => item.available === 1);
+  const idData = couponDtoList?.filter((item) => item.selected === 1);
+
   const { payOrder } = usePay({
     success: () => {
       dispatch({
@@ -74,18 +79,24 @@ const Index = () => {
   const orderInfo = shoppingCartVOList?.at(0)?.cartVOList.at(0);
 
   const shoppingCartVOLists = shoppingCartVOList?.at(0)?.cartVOList?.map((item) => {
+    let list = [
+      {
+        skuId: Number(item?.skuId),
+        count: item?.count,
+        defaultImage: item?.defaultImage,
+        store: item?.store,
+        totalPrice: item?.totalPrice,
+        unitPrice: item?.unitPrice,
+        whetherSpecialItem: item?.whetherSpecialItem,
+        spuId: item?.spuId,
+        itemType: item?.itemType,
+      },
+    ];
+    if (queryInfo?.isActivityItem) {
+      list[0] = { ...list[0], activityId: queryInfo?.activityDto?.id };
+    }
     return {
-      cartVOList: [
-        {
-          skuId: Number(item?.skuId),
-          count: item?.count,
-          defaultImage: item?.defaultImage,
-          store: item?.store,
-          totalPrice: item?.totalPrice,
-          unitPrice: item?.unitPrice,
-          whetherSpecialItem: item?.whetherSpecialItem,
-        },
-      ],
+      cartVOList: list,
     };
   });
 
@@ -114,7 +125,7 @@ const Index = () => {
     Taro.navigateTo({
       url: `/userPackage/address/index?confirmAddress=${JSON.stringify(curAddress)}&count=${
         shoppingCartVOList[0]?.cartVOList[0]?.count
-      }&skuId=${shoppingCartVOList[0]?.skuId}`,
+      }&skuId=${shoppingCartVOList[0]?.skuId}&activityId=${queryInfo?.activityDto?.id}`,
     });
   };
 
@@ -138,35 +149,63 @@ const Index = () => {
       });
     }
     Taro.showLoading({ title: '加载中', mask: true });
-    await dispatch({
-      type: 'goodInfo/orderSubmit',
-      payload: {
-        orderToken: orderToken,
-        receivingAddressId: curAddress?.id,
-        skuId: Number(orderInfo?.skuId),
-        totalPrice: orderInfo?.totalPrice,
-        realName: curAddress?.consignee,
-        status: 0,
-        count: orderInfo?.count,
-        remark: orderNotesInfo, //备注
-        shoppingCartVOList: shoppingCartVOLists,
-        id: queryInfo?.id,
-        callBack: () => {
-          // 预订单
-          let submitDetail = Taro.getStorageSync('submitInfo');
-          // 支付
-          payOrder({
-            orderNo: submitDetail.orderNos?.at(0),
-            orderId: submitDetail.orderIds?.at(0),
-            gatewayId: 2,
-            gatewayCode: 'WX_PAY',
-            gatewayTerminal: 2,
-            paymentAmount: orderInfo?.totalPrice,
-            tradeType: 0,
-          });
-        },
+    let params = {
+      orderToken: orderToken,
+      receivingAddressId: curAddress?.id,
+      skuId: Number(orderInfo?.skuId),
+      totalPrice: orderInfo?.totalPrice,
+      realName: curAddress?.consignee,
+      status: 0,
+      count: orderInfo?.count,
+      remark: orderNotesInfo, //备注
+      shoppingCartVOList: shoppingCartVOLists,
+      id: queryInfo?.id,
+      userCouponId: Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
+      callBack: () => {
+        // 预订单
+        let submitDetail = Taro.getStorageSync('submitInfo');
+        // 支付
+        payOrder({
+          orderNo: submitDetail.orderNos?.at(0),
+          orderId: submitDetail.orderIds?.at(0),
+          gatewayId: 2,
+          gatewayCode: 'WX_PAY',
+          gatewayTerminal: 2,
+          paymentAmount: orderInfo?.totalPrice,
+          tradeType: 0,
+        });
       },
+    };
+    if (queryInfo?.isActivityItem) {
+      delete params.userCouponId;
+      params = { ...params, activityId: queryInfo?.activityDto?.id };
+    }
+    dispatch({
+      type: 'goodInfo/orderSubmit',
+      payload: params,
     });
+  };
+
+  const total = () => {
+    if (queryInfo?.isActivityItem === false) {
+      if (orderInfo?.totalPrice >= selectedCoupon?.minimumConsumption) {
+        return selectedCoupon.type === 2
+          ? Number(orderInfo?.totalPrice - selectedCoupon?.price).toFixed(2)
+          : electedCoupon.type === 3 &&
+              Number(orderInfo?.totalPrice * selectedCoupon?.price).toFixed(2);
+      } else {
+        if (idData?.at(0)?.price === undefined) {
+          return Number(orderInfo?.totalPrice).toFixed(2);
+        } else {
+          return (
+            Number(orderInfo?.totalPrice - idData?.at(0)?.price).toFixed(2) ||
+            Number(orderInfo?.totalPrice).toFixed(2)
+          );
+        }
+      }
+    } else {
+      return Number(orderInfo?.totalPrice).toFixed(2);
+    }
   };
 
   return (
@@ -274,24 +313,32 @@ const Index = () => {
                 <Text>免邮</Text>
               </View>
             </View>
-            <View
-              className="address-price"
-              onClick={() => {
-                dispatch({ type: 'goodInfo/update', payload: { couponOrderVisible: true } });
-              }}
-            >
-              <View>
-                <Text>优惠劵</Text>
-              </View>
-              <View className="address-price-right">
+            {queryInfo?.isActivityItem === false ? (
+              <View
+                className="address-price"
+                onClick={() => {
+                  dispatch({ type: 'goodInfo/update', payload: { couponOrderVisible: true } });
+                }}
+              >
                 <View>
-                  <Text style={{ color: '#D9001B' }}>新人20元无门槛优惠劵</Text>
+                  <Text>优惠劵</Text>
                 </View>
-                <View className="address-price-right-icon">
-                  <Icon name="rect-right" size="16" style={{ marginLeft: 8 }} color="#7F7F7F" />
+                <View className="address-price-right">
+                  <View>
+                    <Text style={{ color: '#D9001B' }}>
+                      {receiveCoupon?.length > 0 && idData?.length > 0
+                        ? `新人${idData?.at(0).price}元无门槛优惠券`
+                        : `${receiveCoupon?.length}张可用券`}
+                    </Text>
+                  </View>
+                  <View className="address-price-right-icon">
+                    <Icon name="rect-right" size="16" style={{ marginLeft: 8 }} color="#7F7F7F" />
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : (
+              ''
+            )}
           </View>
         </View>
         <View className="pay">
@@ -307,7 +354,7 @@ const Index = () => {
       <View className="footer">
         <View className="footer-content">
           <View>
-            <Text>合计：¥ {orderInfo?.totalPrice}</Text>
+            <Text>合计：¥ {total()}</Text>
           </View>
           <View>
             <Button

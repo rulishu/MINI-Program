@@ -7,6 +7,8 @@ import {
   orderSubmit,
   newConfirm,
   miniprogramcode,
+  selectCoupons,
+  receiveCoupon,
 } from '@/server/goodInfo';
 
 const productDetail = {
@@ -50,6 +52,10 @@ export default {
     duration: 500,
     posterCode: '',
     swiperList: [],
+    couponsList: [], // 所有优惠券
+    receivedCoupon: [], // 已选优惠券
+    couponDtoList: [], // 已领取未使用优惠券
+    selectedCoupon: {}, //选中的优惠券
   },
 
   effects: {
@@ -58,49 +64,95 @@ export default {
       try {
         const result = yield call(infoDetails, { id });
         if (result) {
-          let skuList = result?.result?.itemSkuDtos;
+          let skuList;
           let attrLists = [];
-          skuList.forEach((item) => {
-            if (item?.attributes) {
-              let arr = item?.attributes.concat([]);
-              arr[0]['imageUrl'] = item?.imageUrl;
-              attrLists = attrLists.concat(arr);
-            }
-          });
-          //
-          let arr = [];
-          attrLists.forEach((item, index) => {
-            const idx = arr.findIndex((i) => i?.attribute_value === item?.attributeId);
-            if (idx > -1) {
-              if (
-                arr[idx].valueList.findIndex((attrdata) => attrdata?.value === item?.value) === -1
-              ) {
-                arr[idx].valueList = arr[idx].valueList.concat([
-                  {
-                    id: index,
-                    value: item?.value,
-                    imageUrl: item?.imageUrl,
-                  },
-                ]);
+          let attributesList = [];
+          if (!result.result.isActivityItem) {
+            skuList = result?.result?.itemSkuDtos;
+            skuList.forEach((item) => {
+              if (item?.attributes) {
+                let arr = item?.attributes.concat([]);
+                arr[0]['imageUrl'] = item?.imageUrl;
+                attrLists = attrLists.concat(arr);
               }
-            } else {
-              arr.push({
-                attribute_value: item?.attributeId,
-                attribute_name: item?.attributeName,
-                // attrOptions.find((obj) => obj?.id === String(item?.attributeId))
-                // ?.item?.attributeName,
-                valueList: [
-                  {
-                    id: index,
-                    value: item?.value,
-                    imageUrl: item?.imageUrl,
-                  },
-                ],
-              });
-            }
-          });
-          const attributeVos = arr;
-
+            });
+            //
+            attrLists.forEach((item, index) => {
+              const idx = attributesList.findIndex((i) => i?.attribute_value === item?.attributeId);
+              if (idx > -1) {
+                if (
+                  attributesList[idx].valueList.findIndex(
+                    (attrdata) => attrdata?.value === item?.value,
+                  ) === -1
+                ) {
+                  attributesList[idx].valueList = attributesList[idx].valueList.concat([
+                    {
+                      id: index,
+                      value: item?.value,
+                      imageUrl: item?.imageUrl,
+                    },
+                  ]);
+                }
+              } else {
+                attributesList.push({
+                  attribute_value: item?.attributeId,
+                  attribute_name: item?.attributeName,
+                  // attrOptions.find((obj) => obj?.id === String(item?.attributeId))
+                  // ?.item?.attributeName,
+                  valueList: [
+                    {
+                      id: index,
+                      value: item?.value,
+                      imageUrl: item?.imageUrl,
+                    },
+                  ],
+                });
+              }
+            });
+          } else {
+            skuList = result?.result?.activityItemSkuDtoList;
+            skuList.forEach((item) => {
+              if (item?.attributes) {
+                let arr = item?.attributes.concat([]);
+                arr[0]['imageUrl'] = item?.imageUrl;
+                attrLists = attrLists.concat(arr);
+              }
+            });
+            //
+            attrLists.forEach((item, index) => {
+              const idx = attributesList.findIndex((i) => i?.attribute_value === item?.attributeId);
+              if (idx > -1) {
+                if (
+                  attributesList[idx].valueList.findIndex(
+                    (attrdata) => attrdata?.value === item?.value,
+                  ) === -1
+                ) {
+                  attributesList[idx].valueList = attributesList[idx].valueList.concat([
+                    {
+                      id: index,
+                      value: item?.value,
+                      imageUrl: item?.imageUrl,
+                    },
+                  ]);
+                }
+              } else {
+                attributesList.push({
+                  attribute_value: item?.attributeId,
+                  attribute_name: item?.attributeName,
+                  // attrOptions.find((obj) => obj?.id === String(item?.attributeId))
+                  // ?.item?.attributeName,
+                  valueList: [
+                    {
+                      id: index,
+                      value: item?.value,
+                      imageUrl: item?.imageUrl,
+                    },
+                  ],
+                });
+              }
+            });
+          }
+          const attributeVos = attributesList;
           // 轮播视频&&轮播图处理
           const swiperList = [];
           if (result?.result?.itemVideo) {
@@ -224,6 +276,7 @@ export default {
             type: 'update',
             payload: {
               shoppingCartVOList: result.result.shoppingCartVOList || {},
+              couponDtoList: result.result.couponDtoList || [],
               orderToken: result.result.orderToken,
               visible: false,
             },
@@ -253,6 +306,48 @@ export default {
       } catch (err) {
         Taro.hideLoading();
       }
+    },
+
+    // 查询所有优惠券
+    *selectCoupons({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(selectCoupons, params);
+        if (result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              couponsList: result.result,
+            },
+          });
+        }
+      } catch (err) {}
+    },
+
+    *receiveCoupon({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(receiveCoupon, params);
+        if (result.code === 200) {
+          Taro.showToast({
+            title: '领取成功',
+            duration: 2000,
+          });
+          payload?.callBack?.();
+          yield put({
+            type: 'update',
+            payload: {
+              couponVisible: false,
+            },
+          });
+        } else {
+          Taro.showToast({
+            title: '优惠券已到用户可领取上限',
+            icon: 'none',
+            duration: 2000,
+          });
+        }
+      } catch (err) {}
     },
   },
 

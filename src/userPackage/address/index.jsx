@@ -28,6 +28,7 @@ const Index = () => {
     const curAddress = params.confirmAddress ? JSON.parse(params.confirmAddress) : {};
     const skuId = params.skuId;
     const count = params.count;
+    const activityId = params.activityId;
     if (path === 'goodsPackage/confirmOrder/index') {
       if (addressList.length === 0) {
         dispatch({
@@ -39,9 +40,11 @@ const Index = () => {
         dispatch({
           type: 'goodInfo/newConfirm',
           payload: {
+            activityId: activityId,
             skuLockVoList: {
               count: count,
               skuId: skuId,
+              activityId: activityId,
             },
           },
         });
@@ -61,8 +64,10 @@ const Index = () => {
               areaCode: addressList[0]?.areaCode,
               cityCode: addressList[0]?.cityCode,
               provinceCode: addressList[0]?.provinceCode,
+              activityId: activityId,
               skuLockVoList: {
                 count: count,
+                activityId: activityId,
                 skuId: skuId,
               },
             },
@@ -128,6 +133,7 @@ const Index = () => {
     let path = prevpage?.route; // 上一个页面路由地址
     const params = Taro.getCurrentInstance().router.params;
     const skuId = params.skuId;
+    const activityId = params.activityId;
     const count = params.count;
     if (path === 'goodsPackage/confirmOrder/index') {
       dispatch({
@@ -136,8 +142,10 @@ const Index = () => {
           areaCode: item.areaCode,
           cityCode: item.cityCode,
           provinceCode: item.provinceCode,
+          activityId: activityId,
           skuLockVoList: {
             count: count,
+            activityId: activityId,
             skuId: skuId,
           },
         },

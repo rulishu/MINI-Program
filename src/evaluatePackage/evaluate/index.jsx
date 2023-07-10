@@ -117,7 +117,7 @@ const Index = () => {
             comment: textareaValue,
             image: '',
             mainImage: '',
-            orderId: orderInfo?.orderNumber,
+            orderId: orderInfo?.id,
             rating: 1,
             sku: orderInfo.items?.at(0)?.attributes.length >= 2 ? skus?.replace(',', '*') : skus,
             skuId: Number(skuIds),

@@ -19,7 +19,7 @@ export default {
         // const accountInfo = Taro.getAccountInfoSync();
         const params = {
           ...payload,
-          appId: 'jcgl-mall-admin',
+          appId: 'jcgl-app',
           // appId: accountInfo.miniProgram.appId,
         };
         const result = yield call(getPhone, params);
@@ -76,7 +76,7 @@ export default {
         // const accountInfo = Taro.getAccountInfoSync();
         const params = {
           ...payload,
-          appId: 'jcgl-mall-admin',
+          appId: 'jcgl-app',
           // appId: accountInfo.miniProgram.appId,
         };
         const result = yield call(newLogin, params);

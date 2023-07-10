@@ -18,7 +18,7 @@ const Index = () => {
   const [stock, setStock] = useState();
 
   // 选中的规格值[查找会员价和相对应的图片]
-  let newArr = skuList.map((item) => {
+  let newArr = skuList?.map((item) => {
     let obj = { ...item };
     let arr = [];
     item.attributes.forEach((i) => {
@@ -35,11 +35,17 @@ const Index = () => {
   let skuInfo = newArr.find((arrItem) => arrItem?.isThisSku === true);
 
   useEffect(() => {
+    if (queryInfo.isActivityItem) {
+      setMemberPrice(skuInfo?.activityPrice);
+      setReferencePrice(skuInfo?.price);
+      setStock(Number(skuInfo?.availableStock));
+    } else {
+      setMemberPrice(skuInfo?.membershipPrice);
+      setReferencePrice(skuInfo?.referencePrice);
+      setStock(skuInfo?.stock);
+    }
     setImageUrl(skuInfo?.imageUrl);
-    setMemberPrice(skuInfo?.membershipPrice);
-    setReferencePrice(skuInfo?.referencePrice);
-    setStock(skuInfo?.stock);
-  }, [skuInfo, imageUrl, memberPrice, referencePrice, stock]);
+  }, [skuInfo, imageUrl, memberPrice, referencePrice, stock, queryInfo]);
 
   const updateFn = (params) => {
     dispatch({
@@ -58,6 +64,13 @@ const Index = () => {
   const morelimit = () => {
     return Taro.showToast({
       title: '超过最大库存',
+      icon: 'none',
+      duration: 2000,
+    });
+  };
+  const maxLimit = () => {
+    return Taro.showToast({
+      title: '已达最大限购数',
       icon: 'none',
       duration: 2000,
     });
@@ -87,7 +100,7 @@ const Index = () => {
       },
     });
   };
-  const addCart = () => {
+  const onClickCart = (state) => {
     const token = Taro.getStorageSync('token');
     if (token === '') {
       Taro.navigateTo({ url: '/pages/login/index' });
@@ -122,57 +135,87 @@ const Index = () => {
         duration: 2000,
       });
     } else {
-      updateFn({ visible: false });
-      return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
+      if (state === 'addCart') {
+        updateFn({ visible: false });
+        return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
+      }
+      if (state === 'nowCart') {
+        setAmount(1);
+        dispatch({
+          type: 'goodInfo/newConfirm',
+          payload: {
+            skuLockVoList: [
+              {
+                count: amount,
+                skuId: skuInfo?.skuId,
+              },
+            ],
+          },
+        });
+      }
     }
   };
-  const nowCart = () => {
-    const token = Taro.getStorageSync('token');
-    setAmount(1);
-    if (token === '') {
-      Taro.navigateTo({ url: '/pages/login/index' });
-    } else if (queryInfo?.onShelf === 0) {
-      Taro.showToast({
-        title: '商品已下架',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (queryInfo?.stock === 0) {
-      Taro.showToast({
-        title: '商品已售空',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (queryInfo?.isDelete === 1) {
-      Taro.showToast({
-        title: '商品已删除',
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (amount > stock) {
-      Taro.showToast({
-        title: `库存数量为${stock}`,
-        icon: 'none',
-        duration: 2000,
-      });
-    } else if (Object.keys(active).length !== Object.keys(attributeVos).length) {
-      Taro.showToast({
-        title: '请选择规格',
-        icon: 'none',
-        duration: 2000,
-      });
+
+  const limite = () => {
+    if (amount <= 1) {
+      return overlimit;
+    } else if (amount === queryInfo.userBuyCount) {
+      return maxLimit;
     } else {
-      dispatch({
-        type: 'goodInfo/newConfirm',
-        payload: {
-          skuLockVoList: [
-            {
-              count: amount,
-              skuId: skuInfo?.skuId,
-            },
-          ],
-        },
-      });
+      return morelimit;
+    }
+  };
+
+  const stockCalc = () => {
+    if (stock === 0) {
+      return (
+        <View style={{ marginRight: 7 }}>
+          <InputNumber modelValue={0} min="0" disabled />
+        </View>
+      );
+    } else {
+      if (
+        Object.keys(active).length > 0 &&
+        Object.keys(active).length === Object.keys(attributeVos).length
+      ) {
+        if (queryInfo.userBuyCount === 0) {
+          return (
+            <View style={{ marginRight: 7 }}>
+              <InputNumber modelValue={0} min="0" disabled />
+            </View>
+          );
+        } else {
+          return (
+            <View style={{ marginRight: 7, display: 'flex', flexDirection: 'row' }}>
+              {queryInfo.userBuyCount && (
+                <View style={{ marginRight: 15, color: '#ec7f8c' }}>
+                  限购{queryInfo.userBuyCount}件
+                </View>
+              )}
+              <InputNumber
+                modelValue={amount}
+                min="1"
+                max={queryInfo.userBuyCount ? queryInfo.userBuyCount : stock}
+                onOverlimit={limite()} //amount <= 1 ? overlimit : morelimit
+                onChangeFuc={(e) => {
+                  onChangeFuc(e);
+                }}
+              />
+            </View>
+          );
+        }
+      } else {
+        return (
+          <View style={{ marginRight: 7, display: 'flex', flexDirection: 'row' }}>
+            {queryInfo.userBuyCount && (
+              <View View style={{ marginRight: 15, color: '#ec7f8c' }}>
+                限购{queryInfo.userBuyCount}件
+              </View>
+            )}
+            <InputNumber modelValue={amount} min="1" disabled />
+          </View>
+        );
+      }
     }
   };
   return (
@@ -201,6 +244,8 @@ const Index = () => {
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
                 {memberPrice
                   ? `¥${memberPrice}`
+                  : queryInfo?.isActivityItem
+                  ? queryInfo?.activityItemSkuDtoList && min(queryInfo?.activityItemSkuDtoList)
                   : queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
               <Text
@@ -208,6 +253,12 @@ const Index = () => {
               >
                 {referencePrice
                   ? `¥${referencePrice}`
+                  : queryInfo?.isActivityItem
+                  ? queryInfo?.activityItemSkuDtoList &&
+                    aPrice(
+                      min(queryInfo?.activityItemSkuDtoList),
+                      queryInfo?.activityItemSkuDtoList,
+                    )
                   : queryInfo?.itemSkuDtos &&
                     aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
@@ -267,7 +318,8 @@ const Index = () => {
           <View>
             <Text>购买数量</Text>
           </View>
-          {stock === 0 ? (
+          {stockCalc()}
+          {/* {stock === 0 ? (
             <View style={{ marginRight: 7 }}>
               <InputNumber modelValue={0} min="0" disabled />
             </View>
@@ -288,7 +340,7 @@ const Index = () => {
             <View style={{ marginRight: 7 }}>
               <InputNumber modelValue={amount} min="1" disabled />
             </View>
-          )}
+          )} */}
         </View>
         {type === 'nowCart' || type === 'addCart' ? (
           <Button
@@ -300,7 +352,7 @@ const Index = () => {
               borderRadius: 6,
             }}
             onClick={() => {
-              type === 'nowCart' ? nowCart() : type === 'addCart' && addCart();
+              onClickCart(type === 'nowCart' ? 'nowCart' : type === 'addCart' && 'addCart');
             }}
           >
             {type === 'nowCart' ? '立即购买' : type === 'addCart' && '加入购物车'}
@@ -310,20 +362,23 @@ const Index = () => {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'center',
+              justifyContent: 'space-evenly',
               marginBottom: 20,
               marginLeft: 20,
               marginRight: 20,
               with: '100%',
             }}
           >
-            <Button style={{ borderRadius: '6px 0 0 6px', width: '40%' }} onClick={() => addCart()}>
+            <Button
+              style={{ borderRadius: '6px', width: '40%' }}
+              onClick={() => onClickCart('addCart')}
+            >
               加入购物车
             </Button>
             <Button
               type="primary"
-              style={{ borderRadius: '0 6px 6px 0', width: '40%' }}
-              onClick={() => nowCart()}
+              style={{ borderRadius: '6px', width: '40%' }}
+              onClick={() => onClickCart('nowCart')}
             >
               立即购买
             </Button>

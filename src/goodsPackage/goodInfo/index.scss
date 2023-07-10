@@ -333,7 +333,7 @@ page {
   .flashSaleBox{
     display: flex;
     flex-direction: row;
-    padding: 20px 30px;
+    padding: 10px 20px;
     width: 100%;
     justify-content: space-between;
     align-items: center;
@@ -342,6 +342,7 @@ page {
         font-size: 36px;
         font-weight: bold;
         font-style: italic;
+        margin-bottom: 5rpx;
       }
       .flashSaleBox-left-number{
         font-size: 24px;
@@ -356,7 +357,7 @@ page {
       .flashSaleBox-right-title{
         font-size: 24px;
         color: #ffffff;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         // border-color: #555555;
         // background-color: #bababa;
       }
@@ -410,11 +411,18 @@ page {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    .couponDetailBox-content{
-      padding: 0 20px;
-      font-size: 30px;
-      border-radius: 100px;
-      border: 1px solid red;
+    .couponDetailBox-content-box{
+      display: flex;
+      flex-direction: row;
+      width: 70%;
+      white-space:nowrap;        // 强制一行显示
+      .couponDetailBox-content{
+        padding: 0 10px;
+        font-size: 28px;
+        background-color: #A05635;
+        color: #f2f2f2;
+        margin-right: 5px;
+      }
     }
   }
 }
@@ -541,18 +549,26 @@ page {
     width: 120px;
     height: 50px;
     text-align: center;
+    padding: 0;
+    margin: 0;
   }
   .couponBorderBox-list-right-content-buttoned{
     background-color: #ffffff;
-    color: #555555;
-    border: 1px solid #555555;
-    color: #555555;
+    color: #fa2c19;
+    border: 1px solid #fa2c19;
     border-radius: 20px;
     width: 120px;
     height: 50px;
     padding: 0;
+    margin: 0;
     text-align: center;
+    opacity: var(--nutui-button-disabled-opacity, .68)
   }
+}
+// 优惠券空状态
+.custom-empty__image {
+  width: 90px * 2;
+  height: 90px * 2;
 }
 
 

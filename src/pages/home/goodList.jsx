@@ -9,6 +9,7 @@ import './index.scss';
 
 const GoodList = (props) => {
   const { dataList } = props;
+  const userInfo = Taro.getStorageSync('userInfo');
 
   // 跳转商品详情
   const goGoodInfo = async (itm) => {
@@ -31,7 +32,9 @@ const GoodList = (props) => {
     //     duration: 2000,
     //   });
     // }
-    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${itm?.id}` });
+    Taro.navigateTo({
+      url: `/goodsPackage/goodInfo/index?id=${itm?.id}&inviterId=${userInfo?.id}`,
+    });
   };
 
   return (

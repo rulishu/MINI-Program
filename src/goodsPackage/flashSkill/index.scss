@@ -1,15 +1,18 @@
-.flashSkillBox{
+.flashSkillBox {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  .flashSkillBoxHeader{
+
+  .flashSkillBoxHeader {
     display: flex;
     flex-direction: column;
-    .flashSkillBoxHeader-image{
+
+    .flashSkillBoxHeader-image {
       width: 100%;
       height: 60vh !important;
     }
-    .flashSkillBoxText{
+
+    .flashSkillBoxText {
       width: 100%;
       background-color: #f4e8d6;
       padding: 15px 20px;
@@ -17,65 +20,87 @@
       justify-content: center;
     }
   }
-  .flashSkillBoxList{
+
+  .flashSkillBoxList {
     background-color: #f2f2f2;
-    height: 60vh;
-    .flashSkillBoxList-box{
+    padding-top: 30px;
+
+    .flashSkillBoxList-box {
       height: 200px;
       background-color: #ffffff;
-      margin: 30px 30px;
-      .flashSkillBoxList-box-padding{
+      margin: 0 30px 30px 30px;
+
+      .flashSkillBoxList-box-padding {
         width: 100%;
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 20px 30px;
-        .flashSkillBoxList-box-left{
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          .flashSkillBoxList-box-left-image{
+
+        .flashSkillBoxList-box-left {
+          position: relative;
+
+          .flashSkillBoxList-box-left-tag {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            font-size: 24rpx;
+            text-align: center;
+            color: #fff;
+          }
+
+          .flashSkillBoxList-box-left-image {
             height: 160px;
             width: 160px;
             background-color: #f2f2f2;
           }
         }
-        .flashSkillBoxList-box-right{   
+
+        .flashSkillBoxList-box-right {
           height: 160px;
           display: flex;
           flex-direction: column;
-         justify-content: space-between;
           margin-left: 30px;
           width: 70%;
-          .flashSkillBoxList-box-right-title{
+
+          .flashSkillBoxList-box-right-title {
             width: 100%;
-            white-space:nowrap;        // 强制一行显示
-            overflow:hidden;          // 超出隐藏
-            text-overflow:ellipsis;   // 省略号
+            white-space: nowrap; // 强制一行显示
+            overflow: hidden; // 超出隐藏
+            text-overflow: ellipsis; // 省略号
           }
-          .flashSkillBoxList-box-right-stock{
-            font-size: 28px;
+
+          .flashSkillBoxList-box-right-stock {
+            font-size: 24px;
+            margin-top: 5rpx;
             color: #aaaaaa;
           }
-          .flashSkillBoxList-box-right-footer{
+
+          .flashSkillBoxList-box-right-footer {
+            margin-top: 30rpx;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            .flashSkillBoxList-box-right-footer-title{
+
+            .flashSkillBoxList-box-right-footer-title {
               display: flex;
               flex-direction: row;
               align-items: flex-end;
-              .flashSkillBoxList-box-right-footer-price{
+
+              .flashSkillBoxList-box-right-footer-price {
                 font-size: 40px;
                 color: #d9001c;
               }
-              .flashSkillBoxList-box-right-footer-memberPrice{
+
+              .flashSkillBoxList-box-right-footer-memberPrice {
                 color: #7f7f7f;
+                margin-left: 10px;
+                font-size: 24px;
                 text-decoration: line-through;
               }
             }
-            .flashSkillBoxList-box-right-footer-button{
-              width: 100px;
+
+            .flashSkillBoxList-box-right-footer-button {
               height: 50px;
             }
           }

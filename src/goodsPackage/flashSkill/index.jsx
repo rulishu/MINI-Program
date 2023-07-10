@@ -1,36 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image } from '@tarojs/components';
 import flashSkill from '@/assets/images/flashSkill.png';
+import PullList from '@/component/pullList';
+import Taro from '@tarojs/taro';
+import { useCountDown } from 'ahooks';
+import { Empty } from '@nutui/nutui-react-taro';
 import { Button } from '@taroify/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFlashList } from '@/server/flashSkill';
 import './index.scss';
 
 const Index = () => {
-  const list = [
-    {
-      image:
-        'https://fendouzhilu.oss-cn-hangzhou.aliyuncs.com/FDZL/mall/20230610/ea3a2177183847e994bf2c954a32ab2a.jpg',
-      title: '【秒杀】秋然大米 5kg/袋,秋然大米 5kg/袋,秋然大米 5kg/袋,秋然大米 5kg/袋',
-      stock: 100,
-      price: '¥98',
-      memberPrice: '¥218',
-    },
-    {
-      image:
-        'https://fendouzhilu.oss-cn-hangzhou.aliyuncs.com/FDZL/mall/20230610/ea3a2177183847e994bf2c954a32ab2a.jpg',
-      title: '【秒杀】秋然大米 5kg/袋,秋然大米 5kg/袋,秋然大米 5kg/袋',
-      stock: 100,
-      price: '¥98',
-      memberPrice: '¥218',
-    },
-    {
-      image:
-        'https://fendouzhilu.oss-cn-hangzhou.aliyuncs.com/FDZL/mall/20230610/ea3a2177183847e994bf2c954a32ab2a.jpg',
-      title: '【秒杀】秋然大米 5kg/袋...',
-      stock: 100,
-      price: '¥98',
-      memberPrice: '¥218',
-    },
-  ];
+  const { flashAvailability, flashDetails } = useSelector((state) => state.flashSkill);
+  // eslint-disable-next-line no-unused-vars
+  const [countdown, formattedRes] = useCountDown({
+    targetDate: flashDetails.activityStartTime,
+  });
+  let { days, hours, minutes, seconds } = formattedRes;
+  if (seconds.toString().length === 1) {
+    seconds = `0${seconds}`;
+  }
+  const params = Taro.getCurrentInstance().router.params;
+  const { activityId } = params;
+  const dispatch = useDispatch();
+  // const updateFn = (payload) => {
+  //   dispatch({
+  //     type: 'flashSkill/update',
+  //     payload: payload,
+  //   });
+  // };
+  useEffect(() => {
+    dispatch({
+      type: 'flashSkill/getFlashDetails',
+      payload: activityId,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <View className="flashSkillBox">
       <View className="flashSkillBoxHeader">
@@ -39,45 +44,84 @@ const Index = () => {
         </View>
         <View className="flashSkillBoxText">秒杀商品数量有限，先到先得~</View>
       </View>
-
       <View className="flashSkillBoxList">
-        {list?.map((item, index) => {
-          return (
-            <View className="flashSkillBoxList-box" key={index}>
-              <View className="flashSkillBoxList-box-padding">
-                <View className="flashSkillBoxList-box-left">
-                  <View className="flashSkillBoxList-box-left-image">
-                    <Image className="flashSkillBoxList-box-left-image" src={item?.image} />
-                  </View>
-                </View>
-                <View className="flashSkillBoxList-box-right">
-                  <View className="flashSkillBoxList-box-right-title">{item?.title}</View>
-                  <View className="flashSkillBoxList-box-right-stock">
-                    活动库存： {item?.stock}
-                  </View>
-                  <View className="flashSkillBoxList-box-right-footer">
-                    <View className="flashSkillBoxList-box-right-footer-title">
-                      <View className="flashSkillBoxList-box-right-footer-price">
-                        {item?.price}
+        {flashAvailability ? (
+          <PullList
+            request={getFlashList}
+            params={{ activityId: activityId }}
+            style={{ height: '60vh' }}
+            renderList={(dataSource) => {
+              return dataSource?.map((item) => {
+                return (
+                  <View className="flashSkillBoxList-box" key={item.id}>
+                    <View className="flashSkillBoxList-box-padding">
+                      <View className="flashSkillBoxList-box-left">
+                        {item.stockTotal === '0' && (
+                          <View
+                            className="flashSkillBoxList-box-left-tag"
+                            style={{ backgroundColor: '#808080' }}
+                          >
+                            已抢完
+                          </View>
+                        )}
+                        {item.status === 1 && (
+                          <View
+                            className="flashSkillBoxList-box-left-tag"
+                            style={{ backgroundColor: '#02A7F0', fontSize: '20rpx' }}
+                          >
+                            {days}天{hours}:{minutes}:{seconds}开抢
+                          </View>
+                        )}
+                        <View className="flashSkillBoxList-box-left-image">
+                          <Image
+                            className="flashSkillBoxList-box-left-image"
+                            src={item?.mainGraph}
+                          />
+                        </View>
                       </View>
-                      <View className="flashSkillBoxList-box-right-footer-memberPrice">
-                        {item?.memberPrice}
+                      <View className="flashSkillBoxList-box-right">
+                        <View className="flashSkillBoxList-box-right-title">{item?.itemName}</View>
+                        <View className="flashSkillBoxList-box-right-stock">
+                          活动库存： {item?.stockTotal}
+                        </View>
+                        <View className="flashSkillBoxList-box-right-footer">
+                          <View className="flashSkillBoxList-box-right-footer-title">
+                            <View className="flashSkillBoxList-box-right-footer-price">
+                              ￥{item?.activityItemPrice}
+                            </View>
+                            <View className="flashSkillBoxList-box-right-footer-memberPrice">
+                              ￥{item?.price}
+                            </View>
+                          </View>
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            className="flashSkillBoxList-box-right-footer-button"
+                            onClick={() => {
+                              Taro.navigateTo({
+                                url: `/goodsPackage/goodInfo/index?id=${item?.activityItemId}`,
+                              });
+                            }}
+                          >
+                            开抢
+                          </Button>
+                        </View>
                       </View>
                     </View>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                      className="flashSkillBoxList-box-right-footer-button"
-                    >
-                      开抢
-                    </Button>
                   </View>
-                </View>
-              </View>
-            </View>
-          );
-        })}
+                );
+              });
+            }}
+            callback={({ refresh }) => {
+              refresh?.();
+            }}
+            emptyStyle={{ background: '#f2f2f2' }}
+            defaultPageSize={10}
+            scrollViewProps={{ lowerThreshold: 10 }}
+          />
+        ) : (
+          <Empty description="已失效" />
+        )}
       </View>
     </View>
   );
