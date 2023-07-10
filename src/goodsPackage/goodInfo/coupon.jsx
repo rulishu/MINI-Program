@@ -10,7 +10,7 @@ import './index.scss';
 const Index = () => {
   const { couponVisible, couponsList } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
-  const params = Taro.getCurrentInstance().router.params;
+  const params = Taro.getCurrentInstance()?.router?.params;
 
   const renderButton = (data) => {
     return (
