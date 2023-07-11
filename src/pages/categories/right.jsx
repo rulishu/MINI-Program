@@ -10,6 +10,7 @@ import './index.scss';
 const Index = (props) => {
   // eslint-disable-next-line no-unused-vars
   const { onScrollToLower, onScrollToUpper, activeItem, setActiveItem } = props;
+  const userInfo = Taro.getStorageSync('userInfo');
   const { subList } = useSelector((state) => state.categories);
   const [scrollIntoView, setScrollIntoView] = useState(0);
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const Index = (props) => {
     setScrollIntoView(`a${id}`);
   };
   const onTap = (id) => {
-    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${id}` });
+    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${id}&inviterId=${userInfo?.id}` });
     dispatch({
       type: 'goodInfo/update',
       payload: {

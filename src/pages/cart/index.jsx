@@ -8,7 +8,7 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { shoppingList } = useSelector((state) => state.cart);
+  const { cartList } = useSelector((state) => state.cart);
   const [checked, setChecked] = useState(false);
   const [inputValue, setInputValue] = useState(1);
   const { activeIndex } = useSelector((state) => state.global);
@@ -16,45 +16,12 @@ const Index = () => {
   useEffect(() => {
     if (activeIndex === 3) {
       dispatch({
-        type: 'cart/goodsAll',
+        type: 'cart/cartGoodsAll',
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
-  const list = [
-    {
-      id: 0,
-      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,  5kg/袋标题',
-      sku: '规格值1,规格值2',
-      price: 70,
-      state: 0,
-    },
-    {
-      id: 1,
-      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米 5kg/袋标题',
-      sku: '规格值1,规格值2',
-      price: 70,
-      state: 0,
-    },
-    {
-      id: 2,
-      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,秋然长粒香大米 5kg/袋标题',
-      sku: '规格值1,规格值2',
-      price: 70,
-      state: 0,
-    },
-    {
-      id: 3,
-      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米 5kg/袋标题',
-      sku: '规格值1,规格值2',
-      price: 70,
-      state: 1,
-    },
-  ];
+
   const handleChange = (check) => {
     if (check === true) {
       setChecked(true);
@@ -65,13 +32,21 @@ const Index = () => {
   };
   const onClear = () => {
     Taro.showModal({
-      // title: "提示",
-      content: '确认要删除所选商品',
+      content: '确认要清空所有商品',
       cancelText: '取消',
       confirmText: '确认',
       success: (res) => {
         if (res.confirm) {
-          // dispatch({})
+          dispatch({
+            type: 'cart/cartGoodsClear',
+            payload: {
+              callBack: () => {
+                dispatch({
+                  type: 'cart/cartGoodsAll',
+                });
+              },
+            },
+          });
         } else if (res.cancel) {
           return;
         }
@@ -100,7 +75,31 @@ const Index = () => {
       duration: 2000,
     });
   };
-  const onDelete = () => {};
+
+  const onDelete = (ids) => {
+    Taro.showModal({
+      content: '确认要删除所选商品',
+      cancelText: '取消',
+      confirmText: '确认',
+      success: (res) => {
+        if (res.confirm) {
+          dispatch({
+            type: 'cart/cartGoodsDelete',
+            payload: {
+              ids: ids,
+              callBack: () => {
+                dispatch({
+                  type: 'cart/cartGoodsAll',
+                });
+              },
+            },
+          });
+        } else if (res.cancel) {
+          return;
+        }
+      },
+    });
+  };
 
   return (
     <View>
@@ -116,7 +115,7 @@ const Index = () => {
           <Text style={{ marginLeft: 5, color: '#7f7f7f' }}>清空</Text>
         </View>
         {/* 购车车列表 */}
-        {list.map((item) => {
+        {cartList?.map((item) => {
           return (
             <Swipe
               key={item?.id}
@@ -125,7 +124,7 @@ const Index = () => {
                   type="primary"
                   shape="square"
                   style={{ width: 50 }}
-                  onClick={() => onDelete()}
+                  onClick={() => onDelete(item?.id)}
                 >
                   删除
                 </Button>
@@ -156,33 +155,34 @@ const Index = () => {
                       <Image
                         mode="widthFix"
                         // eslint-disable-next-line global-require
-                        src={require('@/assets/images/home8.png')}
+                        src={item?.mainGraph}
                         style={{ width: 100, height: 100 }}
                       ></Image>
                     </View>
                     <View className="cartBoxListBox-right">
                       <View className="cartBoxListBox-right-title">
-                        <Text style={{ color: '#333333', fontSize: 15 }}> {item?.title}</Text>
+                        <Text style={{ color: '#333333', fontSize: 15 }}> {item?.goodsName}</Text>
                       </View>
                       <View>
-                        <Text style={{ color: '#adadad', fontSize: 13 }}>{item?.sku}</Text>
+                        <Text style={{ color: '#adadad', fontSize: 13 }}>
+                          {item?.goodsSpecification}
+                        </Text>
                       </View>
                       <View>
-                        {item?.state !== 1 && (
-                          <Tag color="#E9E9E9" textColor="#999999">
-                            标签
-                          </Tag>
-                        )}
+                        <Tag color="#E9E9E9" textColor="#999999">
+                          {item?.itemDto?.suppliersId === 1 ? '自营' : '严选'}
+                        </Tag>
                       </View>
                       {item?.state !== 1 && (
                         <View className="cartBoxListBox-right-state">
-                          <Price price={item?.price} size="normal" needSymbol thousands />
+                          <Price price={item?.goodsUnitPrice} size="normal" needSymbol thousands />
+                          {/* <View>¥{item?.goodsUnitPrice}</View> */}
                           <InputNumber
                             className="inputNumberStyle"
                             min="1"
-                            modelValue={inputValue}
+                            modelValue={item?.goodsAmount}
                             max={10}
-                            onOverlimit={inputValue <= 1 ? overlimit : morelimit}
+                            onOverlimit={item?.goodsAmount < 1 ? overlimit : morelimit}
                           />
                         </View>
                       )}

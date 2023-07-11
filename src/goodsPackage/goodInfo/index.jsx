@@ -12,6 +12,9 @@ const Index = () => {
   const dispatch = useDispatch();
   const params = Taro.getCurrentInstance().router.params;
   useEffect(() => {
+    if (params?.inviterId) {
+      Taro.setStorageSync('inviterId', params?.inviterId);
+    }
     dispatch({
       type: 'goodInfo/infoDetails',
       payload: {
