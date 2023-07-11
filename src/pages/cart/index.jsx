@@ -116,6 +116,10 @@ const Index = () => {
         </View>
         {/* 购车车列表 */}
         {cartList?.map((item) => {
+          const verification =
+            item?.itemDto?.stock === 0 ||
+            item?.itemDto?.onShelf === 0 ||
+            item?.itemDto?.isDelete === 1;
           return (
             <Swipe
               key={item?.id}
@@ -129,26 +133,32 @@ const Index = () => {
                   删除
                 </Button>
               }
-              disabled={item?.state === 1 ? true : false}
+              disabled={verification ? true : false}
             >
               <View style={{ backgroundColor: '#ffffff', width: '100%' }}>
                 <View
                   style={{
-                    zIndex: item?.state === 1 ? 1000 : 0,
-                    backgroundColor: item?.state === 1 ? '#c7c7c7' : '',
+                    zIndex: verification ? 1000 : 0,
+                    backgroundColor: verification ? '#DCDCDC' : '',
                   }}
                 >
                   <View className="cartBoxListBox">
-                    {item?.state === 1 && (
+                    {verification && (
                       <View className="cartBoxListBox-state">
-                        <Text>异常状态</Text>
+                        <Text>
+                          {item?.itemDto?.stock === 0
+                            ? '商品已售空'
+                            : item?.itemDto?.onShelf === 0
+                            ? '商品已下架'
+                            : item?.itemDto?.isDelete === 1 && '商品已删除'}
+                        </Text>
                       </View>
                     )}
                     <View>
                       <Checkbox
-                        checked={item?.state === 1 ? false : checked}
+                        checked={verification ? false : checked}
                         onChange={() => handleChange(item)}
-                        disabled={item?.state === 1 ? true : false}
+                        disabled={verification ? true : false}
                       />
                     </View>
                     <View style={{ width: 100, height: 100 }}>
@@ -173,10 +183,10 @@ const Index = () => {
                           {item?.itemDto?.suppliersId === 1 ? '自营' : '严选'}
                         </Tag>
                       </View>
-                      {item?.state !== 1 && (
-                        <View className="cartBoxListBox-right-state">
-                          <Price price={item?.goodsUnitPrice} size="normal" needSymbol thousands />
-                          {/* <View>¥{item?.goodsUnitPrice}</View> */}
+                      <View className="cartBoxListBox-right-state">
+                        <Price price={item?.goodsUnitPrice} size="normal" needSymbol thousands />
+                        {/* <View>¥{item?.goodsUnitPrice}</View> */}
+                        {item?.isDelete === 1 && (
                           <InputNumber
                             className="inputNumberStyle"
                             min="1"
@@ -184,8 +194,8 @@ const Index = () => {
                             max={10}
                             onOverlimit={item?.goodsAmount < 1 ? overlimit : morelimit}
                           />
-                        </View>
-                      )}
+                        )}
+                      </View>
                     </View>
                   </View>
                 </View>
