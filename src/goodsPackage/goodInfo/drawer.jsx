@@ -369,15 +369,17 @@ const Index = () => {
               with: '100%',
             }}
           >
-            <Button
-              style={{ borderRadius: '6px', width: '40%' }}
-              onClick={() => onClickCart('addCart')}
-            >
-              加入购物车
-            </Button>
+            {!queryInfo?.isActivityItem && (
+              <Button
+                style={{ borderRadius: '6px', width: '40%' }}
+                onClick={() => onClickCart('addCart')}
+              >
+                加入购物车
+              </Button>
+            )}
             <Button
               type="primary"
-              style={{ borderRadius: '6px', width: '40%' }}
+              style={{ borderRadius: '6px', width: queryInfo?.isActivityItem ? '100%' : '40%' }}
               onClick={() => onClickCart('nowCart')}
             >
               立即购买
