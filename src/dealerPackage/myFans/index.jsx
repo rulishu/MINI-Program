@@ -19,6 +19,8 @@ const Index = () => {
   const { userInfos } = useSelector((state) => state.my);
   const [activeName, setActiveName] = useState('筛选');
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
+  const [addTime, setAddTime] = useState(true);
+  const [fansNum, setFansNum] = useState(true);
   useEffect(() => {
     //获取顶部导航栏位置
     let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
@@ -155,16 +157,39 @@ const Index = () => {
                 <View className="fansList-crown">
                   <View className="joined">
                     <Text>加入时间</Text>
-                    <View className="joined-icon">
-                      <ArrowUp />
-                      <ArrowDown />
+                    <View className="joined-icon" onClick={() => setAddTime(!addTime)}>
+                      {addTime ? (
+                        <>
+                          <ArrowUp />
+                          <ArrowDown style={{ color: '#A05635' }} />
+                        </>
+                      ) : (
+                        <>
+                          <ArrowUp style={{ color: '#A05635' }} />
+                          <ArrowDown />
+                        </>
+                      )}
                     </View>
                   </View>
                   <View className="joined">
                     <Text>粉丝数量</Text>
-                    <View className="joined-icon">
-                      <ArrowUp />
-                      <ArrowDown />
+                    <View
+                      className="joined-icon"
+                      onClick={() => {
+                        setFansNum(!fansNum);
+                      }}
+                    >
+                      {fansNum ? (
+                        <>
+                          <ArrowUp />
+                          <ArrowDown style={{ color: '#A05635' }} />
+                        </>
+                      ) : (
+                        <>
+                          <ArrowUp style={{ color: '#A05635' }} />
+                          <ArrowDown />
+                        </>
+                      )}
                     </View>
                   </View>
                   <View className="joined screen">
@@ -191,11 +216,19 @@ const Index = () => {
                 <PullList
                   request={selectPage}
                   params={{
-                    fansLevel: userInfos.level,
                     pageNum: 1,
                     pageSize: 20,
-                    sortByFans: 0,
                     fansLevel: orderActive * 1 + 1,
+                    sortByTime: addTime ? 0 : 1,
+                    sortByFans: fansNum ? 0 : 1,
+                    userLevel:
+                      activeName === '一级经销商'
+                        ? 1
+                        : activeName === '二级经销商'
+                        ? 2
+                        : activeName === '奋斗者'
+                        ? 3
+                        : undefined,
                   }}
                   style={{ height: '70vh' }}
                   renderList={(dataSource, refresh) => {
