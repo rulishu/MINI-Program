@@ -2,21 +2,25 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import { Tag } from '@taroify/core';
 import Popup from './popup';
-import { getAllOrders } from '@/server/allOrders';
+import { selectPage } from '@/server/myFans';
 import PullList from '@/component/pullList';
 import { useDispatch, useSelector } from 'react-redux';
 import Orders from './orders';
-import { tabList } from './eumn';
+// import { tabList } from './eumn';
 import Tabs from '@/component/aTabs';
 import { FilterOutlined, ArrowUp, ArrowDown, QuestionOutlined } from '@taroify/icons';
 import { Popover } from '@nutui/nutui-react-taro';
 import './index.scss';
+import Taro from '@tarojs/taro';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { orderActive } = useSelector((state) => state.myFans);
+  const { orderActive, myFansCountList } = useSelector((state) => state.myFans);
+  const { userInfos } = useSelector((state) => state.my);
   const [activeName, setActiveName] = useState('筛选');
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
+  const [addTime, setAddTime] = useState(true);
+  const [fansNum, setFansNum] = useState(true);
   useEffect(() => {
     //获取顶部导航栏位置
     let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
@@ -28,6 +32,16 @@ const Index = () => {
         const navHeight = height + statusBarHeight + margin * 2;
         setHomeTopNavHeight(navHeight);
       },
+    });
+    const userInfo = Taro.getStorageSync('userInfo');
+    dispatch({
+      type: 'my/getUserInfos',
+      payload: {
+        id: userInfo.id,
+      },
+    });
+    dispatch({
+      type: 'myFans/myFansCount',
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderActive]);
@@ -42,15 +56,30 @@ const Index = () => {
   const list = [
     {
       title: '直属粉丝',
-      num: 1,
+      num: myFansCountList.directFans || 0,
     },
     {
       title: '跨级粉丝',
-      num: 3,
+      num: myFansCountList.crossFans || 0,
     },
     {
       title: '普通粉丝',
-      num: 6,
+      num: myFansCountList.generalFans || 0,
+    },
+  ];
+
+  const tabList = [
+    {
+      id: 0,
+      title: `直属粉丝（${myFansCountList.directFans || 0}）`,
+    },
+    {
+      id: 1,
+      title: `跨级粉丝（${myFansCountList.crossFans || 0}）`,
+    },
+    {
+      id: 2,
+      title: `普通粉丝（${myFansCountList.generalFans || 0}） `,
     },
   ];
 
@@ -81,15 +110,21 @@ const Index = () => {
           </View>
           <View>
             <Tag style={{ backgroundColor: '#ffffff', color: '#000000' }} shape="rounded">
-              奋斗者
+              {userInfos.level === '1'
+                ? '一级经销商'
+                : userInfos.level === '2'
+                ? '二级经销商'
+                : userInfos.level === '3'
+                ? '奋斗者'
+                : ''}
             </Tag>
           </View>
         </View>
         <View className="fans-head-mid">
-          <View className="fans-head-mid-left">10</View>
+          <View className="fans-head-mid-left">{myFansCountList.allFans || 0}</View>
           <View className="fans-head-mid-right">
-            <View>昨日新增 0</View>
-            <View>今日新增 0</View>
+            <View>昨日新增 {myFansCountList.monthFans || 0}</View>
+            <View>今日新增 {myFansCountList.yesterdayFans || 0}</View>
           </View>
         </View>
         <View className="fans-head-bottom">
@@ -111,7 +146,9 @@ const Index = () => {
           background="#F2F2F2"
           value={orderActive}
           onChange={(paneKey) => {
-            updateFn({ orderActive: paneKey });
+            updateFn({
+              orderActive: paneKey,
+            });
           }}
           tabList={tabList.map((item) => ({
             ...item,
@@ -120,16 +157,39 @@ const Index = () => {
                 <View className="fansList-crown">
                   <View className="joined">
                     <Text>加入时间</Text>
-                    <View className="joined-icon">
-                      <ArrowUp />
-                      <ArrowDown />
+                    <View className="joined-icon" onClick={() => setAddTime(!addTime)}>
+                      {addTime ? (
+                        <>
+                          <ArrowUp />
+                          <ArrowDown style={{ color: '#A05635' }} />
+                        </>
+                      ) : (
+                        <>
+                          <ArrowUp style={{ color: '#A05635' }} />
+                          <ArrowDown />
+                        </>
+                      )}
                     </View>
                   </View>
                   <View className="joined">
                     <Text>粉丝数量</Text>
-                    <View className="joined-icon">
-                      <ArrowUp />
-                      <ArrowDown />
+                    <View
+                      className="joined-icon"
+                      onClick={() => {
+                        setFansNum(!fansNum);
+                      }}
+                    >
+                      {fansNum ? (
+                        <>
+                          <ArrowUp />
+                          <ArrowDown style={{ color: '#A05635' }} />
+                        </>
+                      ) : (
+                        <>
+                          <ArrowUp style={{ color: '#A05635' }} />
+                          <ArrowDown />
+                        </>
+                      )}
                     </View>
                   </View>
                   <View className="joined screen">
@@ -154,8 +214,22 @@ const Index = () => {
                   </View>
                 </View>
                 <PullList
-                  request={getAllOrders}
-                  params={{ orderStatus: orderActive }}
+                  request={selectPage}
+                  params={{
+                    pageNum: 1,
+                    pageSize: 20,
+                    fansLevel: orderActive * 1 + 1,
+                    sortByTime: addTime ? 0 : 1,
+                    sortByFans: fansNum ? 0 : 1,
+                    userLevel:
+                      activeName === '一级经销商'
+                        ? 1
+                        : activeName === '二级经销商'
+                        ? 2
+                        : activeName === '奋斗者'
+                        ? 3
+                        : undefined,
+                  }}
                   style={{ height: '70vh' }}
                   renderList={(dataSource, refresh) => {
                     return (
