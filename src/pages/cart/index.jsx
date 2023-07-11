@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import { Price, InputNumber, Swipe, Button, Checkbox, Tag } from '@nutui/nutui-react-taro';
+import { Price, InputNumber, Swipe, Button, Checkbox, Tag, Empty } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -12,6 +12,7 @@ const Index = () => {
   const [checked, setChecked] = useState(false);
   const [inputValue, setInputValue] = useState(1);
   const { activeIndex } = useSelector((state) => state.global);
+  const closeRef = useRef(null);
 
   useEffect(() => {
     if (activeIndex === 3) {
@@ -95,7 +96,7 @@ const Index = () => {
             },
           });
         } else if (res.cancel) {
-          return;
+          closeRef.current?.close();
         }
       },
     });
@@ -115,94 +116,106 @@ const Index = () => {
           <Text style={{ marginLeft: 5, color: '#7f7f7f' }}>清空</Text>
         </View>
         {/* 购车车列表 */}
-        {cartList?.map((item) => {
-          const verification =
-            item?.itemDto?.stock === 0 ||
-            item?.itemDto?.onShelf === 0 ||
-            item?.itemDto?.isDelete === 1;
-          return (
-            <Swipe
-              key={item?.id}
-              rightAction={
-                <Button
-                  type="primary"
-                  shape="square"
-                  style={{ width: 50 }}
-                  onClick={() => onDelete(item?.id)}
-                >
-                  删除
-                </Button>
-              }
-              disabled={verification ? true : false}
-            >
-              <View style={{ backgroundColor: '#ffffff', width: '100%' }}>
-                <View
-                  style={{
-                    zIndex: verification ? 1000 : 0,
-                    backgroundColor: verification ? '#DCDCDC' : '',
-                  }}
-                >
-                  <View className="cartBoxListBox">
-                    {verification && (
-                      <View className="cartBoxListBox-state">
-                        <Text>
-                          {item?.itemDto?.stock === 0
-                            ? '商品已售空'
-                            : item?.itemDto?.onShelf === 0
-                            ? '商品已下架'
-                            : item?.itemDto?.isDelete === 1 && '商品已删除'}
-                        </Text>
-                      </View>
-                    )}
-                    <View>
-                      <Checkbox
-                        checked={verification ? false : checked}
-                        onChange={() => handleChange(item)}
-                        disabled={verification ? true : false}
-                      />
-                    </View>
-                    <View style={{ width: 100, height: 100 }}>
-                      <Image
-                        mode="widthFix"
-                        // eslint-disable-next-line global-require
-                        src={item?.mainGraph}
-                        style={{ width: 100, height: 100 }}
-                      ></Image>
-                    </View>
-                    <View className="cartBoxListBox-right">
-                      <View className="cartBoxListBox-right-title">
-                        <Text style={{ color: '#333333', fontSize: 15 }}> {item?.goodsName}</Text>
-                      </View>
+        {cartList.length > 0 ? (
+          cartList?.map((item) => {
+            const verification =
+              item?.itemDto?.stock === 0 ||
+              item?.itemDto?.onShelf === 0 ||
+              item?.itemDto?.isDelete === 1;
+            return (
+              <Swipe
+                key={item?.id}
+                ref={closeRef}
+                rightAction={
+                  <Button
+                    type="primary"
+                    shape="square"
+                    style={{ width: 50 }}
+                    onClick={() => onDelete(item?.id)}
+                  >
+                    删除
+                  </Button>
+                }
+                disabled={verification ? true : false}
+              >
+                <View style={{ backgroundColor: '#ffffff', width: '100%', marginBottom: 8 }}>
+                  <View
+                    style={{
+                      zIndex: verification ? 1000 : 0,
+                      backgroundColor: verification ? '#DCDCDC' : '',
+                    }}
+                  >
+                    <View className="cartBoxListBox">
+                      {verification && (
+                        <View className="cartBoxListBox-state">
+                          <Text>
+                            {item?.itemDto?.stock === 0
+                              ? '商品已售空'
+                              : item?.itemDto?.onShelf === 0
+                              ? '商品已下架'
+                              : item?.itemDto?.isDelete === 1 && '商品已删除'}
+                          </Text>
+                        </View>
+                      )}
                       <View>
-                        <Text style={{ color: '#adadad', fontSize: 13 }}>
-                          {item?.goodsSpecification}
-                        </Text>
+                        <Checkbox
+                          checked={verification ? false : checked}
+                          onChange={() => handleChange(item)}
+                          disabled={verification ? true : false}
+                        />
                       </View>
-                      <View>
-                        <Tag color="#E9E9E9" textColor="#999999">
-                          {item?.itemDto?.suppliersId === 1 ? '自营' : '严选'}
-                        </Tag>
+                      <View style={{ width: 100, height: 100 }}>
+                        <Image
+                          mode="widthFix"
+                          // eslint-disable-next-line global-require
+                          src={item?.mainGraph}
+                          style={{ width: 100, height: 100 }}
+                        ></Image>
                       </View>
-                      <View className="cartBoxListBox-right-state">
-                        <Price price={item?.goodsUnitPrice} size="normal" needSymbol thousands />
-                        {/* <View>¥{item?.goodsUnitPrice}</View> */}
-                        {item?.isDelete === 1 && (
-                          <InputNumber
-                            className="inputNumberStyle"
-                            min="1"
-                            modelValue={item?.goodsAmount}
-                            max={10}
-                            onOverlimit={item?.goodsAmount < 1 ? overlimit : morelimit}
-                          />
-                        )}
+                      <View className="cartBoxListBox-right">
+                        <View className="cartBoxListBox-right-title">
+                          <Text style={{ color: '#333333', fontSize: 15 }}> {item?.goodsName}</Text>
+                        </View>
+                        <View>
+                          <Text style={{ color: '#adadad', fontSize: 13 }}>
+                            {item?.goodsSpecification}
+                          </Text>
+                        </View>
+                        <View>
+                          <Tag color="#E9E9E9" textColor="#999999">
+                            {item?.itemDto?.suppliersId === 1 ? '自营' : '严选'}
+                          </Tag>
+                        </View>
+                        <View>
+                          <View className="cartBoxListBox-right-state">
+                            <Price
+                              price={item?.goodsUnitPrice}
+                              size="normal"
+                              needSymbol
+                              thousands
+                            />
+                            {/* <View>¥{item?.goodsUnitPrice}</View> */}
+                            {item?.isDelete === 1 && (
+                              <InputNumber
+                                className="inputNumberStyle"
+                                min="1"
+                                modelValue={item?.goodsAmount}
+                                max={10}
+                                onOverlimit={item?.goodsAmount < 1 ? overlimit : morelimit}
+                              />
+                            )}
+                          </View>
+                        </View>
                       </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </Swipe>
-          );
-        })}
+              </Swipe>
+            );
+          })
+        ) : (
+          <Empty description="购物车空空如也～" style={{ background: '#f5f5f5' }} />
+        )}
       </View>
       {/* 页脚结算 */}
       <View style={{ position: 'fixed', bottom: 0, width: '100%' }}>
