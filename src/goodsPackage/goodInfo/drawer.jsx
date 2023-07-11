@@ -355,6 +355,7 @@ const Index = () => {
             onClick={() => {
               onClickCart(type === 'nowCart' ? 'nowCart' : type === 'addCart' && 'addCart');
             }}
+            disabled={queryInfo.userBuyCount === 0 ? true : false}
           >
             {type === 'nowCart' ? '立即购买' : type === 'addCart' && '加入购物车'}
           </Button>
@@ -382,6 +383,7 @@ const Index = () => {
               type="primary"
               style={{ borderRadius: '6px', width: queryInfo?.isActivityItem ? '100%' : '40%' }}
               onClick={() => onClickCart('nowCart')}
+              disabled={queryInfo.userBuyCount === 0 ? true : false}
             >
               立即购买
             </Button>
