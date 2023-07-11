@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { cartGoodsAll, cartGoodsClear, cartGoodsDelete } from '@/server/cart';
+import { cartGoodsAll, cartGoodsClear, cartGoodsDelete, cartGoodsCreate } from '@/server/cart';
 
 export default {
   namespace: 'cart', // 这是模块名
@@ -23,7 +23,6 @@ export default {
         }
       } catch (err) {}
     },
-
     // 清空购物车商品
     *cartGoodsClear({ payload }, { call, put }) {
       try {
@@ -39,7 +38,6 @@ export default {
         }
       } catch (err) {}
     },
-
     // 删除单个商品
     *cartGoodsDelete({ payload }, { call, put }) {
       try {
@@ -53,6 +51,21 @@ export default {
           });
           payload?.callBack?.();
         }
+      } catch (err) {}
+    },
+    // 新增购物车
+    *cartGoodsCreate({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(cartGoodsCreate, params);
+        // console.log('result', result);
+        // if (result && result.code === 200) {
+        //   Taro.showToast({
+        //     title: '新增成功',
+        //     icon: 'success',
+        //     duration: 2000,
+        //   });
+        // }
       } catch (err) {}
     },
   },

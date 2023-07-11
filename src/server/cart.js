@@ -14,3 +14,8 @@ export const cartGoodsClear = (params) => {
 export const cartGoodsDelete = (params) => {
   return request.delete(`/jcgl-mall/app/shopping/cart/goods/delete`, params);
 };
+
+// 新增购物车
+export const cartGoodsCreate = (params) => {
+  return request.post(`/jcgl-mall/app/shopping/cart/goods/create`, params);
+};
