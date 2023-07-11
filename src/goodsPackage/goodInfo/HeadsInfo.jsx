@@ -417,7 +417,17 @@ const Index = () => {
                   <Image mode="widthFix" src={shareblack} style={{ width: 25, height: 25 }}></Image>
                 </View>
 
-                <View onTap={() => Taro.switchTab({ url: '/pages/cart/index' })}>
+                <View
+                  onTap={() => {
+                    Taro.switchTab({ url: '/pages/cart/index' });
+                    dispatch({
+                      type: 'global/update',
+                      payload: {
+                        activeIndex: 3,
+                      },
+                    });
+                  }}
+                >
                   <Badge content={1}>
                     <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
                   </Badge>

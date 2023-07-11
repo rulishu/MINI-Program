@@ -144,10 +144,12 @@ const Index = () => {
         dispatch({
           type: 'goodInfo/newConfirm',
           payload: {
+            activityId: queryInfo?.activityDto?.id,
             skuLockVoList: [
               {
                 count: amount,
                 skuId: skuInfo?.skuId,
+                activityId: queryInfo?.activityDto?.id,
               },
             ],
           },
@@ -167,9 +169,14 @@ const Index = () => {
   };
 
   const stockCalc = () => {
-    if (stock === 0) {
+    if (stock === 0 || queryInfo.userBuyCount === 0) {
       return (
-        <View style={{ marginRight: 7 }}>
+        <View style={{ marginRight: 7, display: 'flex', flexDirection: 'row' }}>
+          {queryInfo.userBuyCount === 0 && (
+            <View style={{ marginRight: 15, color: '#ec7f8c' }}>
+              限购{queryInfo.userBuyCount}件
+            </View>
+          )}
           <InputNumber modelValue={0} min="0" disabled />
         </View>
       );
@@ -178,13 +185,7 @@ const Index = () => {
         Object.keys(active).length > 0 &&
         Object.keys(active).length === Object.keys(attributeVos).length
       ) {
-        if (queryInfo.userBuyCount === 0) {
-          return (
-            <View style={{ marginRight: 7 }}>
-              <InputNumber modelValue={0} min="0" disabled />
-            </View>
-          );
-        } else {
+        if (queryInfo.userBuyCount !== 0) {
           return (
             <View style={{ marginRight: 7, display: 'flex', flexDirection: 'row' }}>
               {queryInfo.userBuyCount && (
