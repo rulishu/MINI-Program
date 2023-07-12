@@ -12,10 +12,18 @@ export const cartGoodsClear = (params) => {
 
 // 删除单个商品
 export const cartGoodsDelete = (params) => {
-  return request.delete(`/jcgl-mall/app/shopping/cart/goods/delete`, params);
+  return request.delete(`/jcgl-mall/app/shopping/cart/goods/delete?ids=${params.ids}`);
 };
 
 // 新增购物车
 export const cartGoodsCreate = (params) => {
   return request.post(`/jcgl-mall/app/shopping/cart/goods/create`, params);
 };
+
+// 购物车商品数量
+export const cartGoodsCount = (params) => {
+  return request.post(`/jcgl-mall/app/shopping/cart/goods/count`, params);
+};
+
+// 加减
+// 结算

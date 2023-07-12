@@ -1,11 +1,18 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { cartGoodsAll, cartGoodsClear, cartGoodsDelete, cartGoodsCreate } from '@/server/cart';
+import {
+  cartGoodsAll,
+  cartGoodsClear,
+  cartGoodsDelete,
+  cartGoodsCreate,
+  cartGoodsCount,
+} from '@/server/cart';
 
 export default {
   namespace: 'cart', // 这是模块名
   state: {
     cartList: [], // 初始化数据
+    cartCount: 0, // 购物车数量
   },
 
   effects: {
@@ -53,19 +60,34 @@ export default {
         }
       } catch (err) {}
     },
+    // 购物车商品数量
+    *cartGoodsCount({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(cartGoodsCount, params);
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              cartCount: result?.result,
+            },
+          });
+        }
+      } catch (err) {}
+    },
     // 新增购物车
     *cartGoodsCreate({ payload }, { call, put }) {
       try {
         const params = { ...payload };
         const result = yield call(cartGoodsCreate, params);
-        // console.log('result', result);
-        // if (result && result.code === 200) {
-        //   Taro.showToast({
-        //     title: '新增成功',
-        //     icon: 'success',
-        //     duration: 2000,
-        //   });
-        // }
+        if (result && result.code === 200) {
+          Taro.showToast({
+            title: '添加成功',
+            icon: 'success',
+            duration: 2000,
+          });
+          payload?.callBack?.();
+        }
       } catch (err) {}
     },
   },

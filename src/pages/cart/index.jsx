@@ -10,7 +10,6 @@ const Index = () => {
   const dispatch = useDispatch();
   const { cartList } = useSelector((state) => state.cart);
   const [checked, setChecked] = useState(false);
-  const [inputValue, setInputValue] = useState(1);
   const { activeIndex } = useSelector((state) => state.global);
   const closeRef = useRef(null);
 
@@ -166,7 +165,6 @@ const Index = () => {
                       </View>
                       <View style={{ width: 100, height: 100 }}>
                         <Image
-                          mode="widthFix"
                           // eslint-disable-next-line global-require
                           src={item?.mainGraph}
                           style={{ width: 100, height: 100 }}
