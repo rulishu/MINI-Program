@@ -105,7 +105,23 @@ const Index = () => {
       return acc + itemTotalPrice;
     }, 0)
     .toFixed(2);
-
+  // 加减
+  const onClick = (item, type) => {
+    if (amount >= 1) {
+      dispatch({
+        type: 'cart/additionSubtraction',
+        payload: {
+          shoppingCartGoodsId: item?.id,
+          amount: amount,
+          callBack: () => {
+            dispatch({
+              type: 'cart/cartGoodsAll',
+            });
+          },
+        },
+      });
+    }
+  };
   return (
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
@@ -210,12 +226,14 @@ const Index = () => {
                               <InputNumber
                                 className="inputNumberStyle"
                                 min="1"
-                                max={5}
+                                max={item?.stock}
                                 modelValue={item?.goodsAmount}
                                 onOverlimit={amount <= 1 ? overlimit : morelimit}
                                 onChangeFuc={(e) => {
                                   onChangeFuc(e);
                                 }}
+                                onAdd={() => amount < item?.stock && onClick(item, 'add')}
+                                onReduce={() => amount > 1 && onClick(item, 'reduce')}
                               />
                             )}
                           </View>
@@ -251,7 +269,7 @@ const Index = () => {
               <Text style={{ fontSize: 12 }}> 不含运费</Text>
             </View>
             <Button
-              style={{ borderRadius: 5, width: 80 }}
+              style={{ borderRadius: 5 }}
               type="primary"
               onClick={() => {
                 dispatch({
@@ -267,7 +285,7 @@ const Index = () => {
                 });
               }}
             >
-              结算
+              结算({cartList.length})
             </Button>
           </View>
         </View>
