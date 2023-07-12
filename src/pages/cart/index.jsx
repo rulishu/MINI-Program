@@ -9,32 +9,37 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const { cartList } = useSelector((state) => state.cart);
-  const [checked, setChecked] = useState(false);
   const { activeIndex } = useSelector((state) => state.global);
   const [amount, setAmount] = useState(1);
+  const [checkData, setCheckData] = useState([]);
   const closeRef = useRef(null);
 
   useEffect(() => {
-    // if (activeIndex === 3) {
-    //   dispatch({
-    //     type: 'cart/cartGoodsAll',
-    //   });
-    // } else {
     dispatch({
       type: 'cart/cartGoodsAll',
     });
-    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
 
-  const handleChange = (check) => {
-    if (check === true) {
-      setChecked(true);
-    }
-    if (check === false) {
-      setChecked(false);
+  // 购物车选择和反选处理
+  const handleChange = (val, data, all) => {
+    if (all) {
+      if (val === true) {
+        setCheckData(data);
+      }
+      if (val === false) {
+        setCheckData([]);
+      }
+    } else {
+      if (val === true) {
+        setCheckData(checkData.concat([data]));
+      }
+      if (val === false) {
+        setCheckData(checkData.filter((item) => item.id !== data?.id));
+      }
     }
   };
+
   const onClear = () => {
     Taro.showModal({
       content: '确认要清空所有商品',
@@ -93,6 +98,14 @@ const Index = () => {
   const onChangeFuc = (e) => {
     setAmount(Number(e));
   };
+  // 购物车商品总价
+  let totalPrice = checkData
+    .reduce((acc, cur) => {
+      const itemTotalPrice = cur.goodsUnitPrice * cur.goodsAmount;
+      return acc + itemTotalPrice;
+    }, 0)
+    .toFixed(2);
+
   return (
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
@@ -150,8 +163,12 @@ const Index = () => {
                       )}
                       <View>
                         <Checkbox
-                          checked={verification ? false : checked}
-                          onChange={() => handleChange(item)}
+                          checked={
+                            verification
+                              ? false
+                              : checkData.findIndex((i) => i?.id === item?.id) > -1
+                          }
+                          onChange={(val) => handleChange(val, item)}
                           disabled={verification ? true : false}
                         />
                       </View>
@@ -218,12 +235,19 @@ const Index = () => {
       <View style={{ position: 'fixed', bottom: 0, width: '100%' }}>
         <View className="cartFooterBox">
           <View>
-            <Checkbox textPosition="right" label="全选" checked={false} onChange={handleChange} />
+            <Checkbox
+              textPosition="right"
+              label="全选"
+              checked={checkData.length === cartList.length ? true : false}
+              onChange={(val) => handleChange(val, cartList, 'all')}
+            />
           </View>
 
           <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <View className="cartFooterBox-total">
-              <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ 111</Text>
+              <View style={{ width: 110 }}>
+                <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ {totalPrice}</Text>
+              </View>
               <Text style={{ fontSize: 12 }}> 不含运费</Text>
             </View>
             <Button

@@ -25,5 +25,9 @@ export const cartGoodsCount = (params) => {
   return request.post(`/jcgl-mall/app/shopping/cart/goods/count`, params);
 };
 
-// 加减
+// 购物车加减
+export const additionSubtraction = (params) => {
+  return request.post(`/jcgl-mall/app/shopping/cart/goods/addition/and/subtraction`, params);
+};
+
 // 结算

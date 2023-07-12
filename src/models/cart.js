@@ -6,6 +6,7 @@ import {
   cartGoodsDelete,
   cartGoodsCreate,
   cartGoodsCount,
+  additionSubtraction,
 } from '@/server/cart';
 
 export default {
@@ -87,6 +88,21 @@ export default {
             duration: 2000,
           });
           payload?.callBack?.();
+        }
+      } catch (err) {}
+    },
+    // 购物车加减
+    *additionSubtraction({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(additionSubtraction, params);
+        if (result && result.code === 200) {
+          // yield put({
+          //   type: 'update',
+          //   payload: {
+          //     cartCount: result?.result,
+          //   },
+          // });
         }
       } catch (err) {}
     },
