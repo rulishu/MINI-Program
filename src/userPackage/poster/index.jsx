@@ -1,11 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Button, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import wechat from '../../assets/images/wechat.svg';
+import { useRequest } from 'ahooks';
 import save from '../../assets/images/save.svg';
+import { miniprogramcode } from '@/server/goodInfo';
 import './index.scss';
 
 const Poster = () => {
+  const [imgUrl, setImgUrl] = useState('');
+  const { run } = useRequest(miniprogramcode, {
+    manual: true,
+    onSuccess: ({ code, result }) => {
+      if (code && code === 200) {
+        setImgUrl(result);
+        Taro.hideLoading();
+      } else {
+        Taro.hideLoading();
+      }
+    },
+  });
+  useEffect(() => {
+    Taro.showLoading({ title: '加载中...', mask: true });
+    run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const share = () => {
     wx.updateShareMenu({
       withShareTicket: true,
@@ -23,7 +42,7 @@ const Poster = () => {
       scope: 'scope.writePhotosAlbum',
       success() {
         wx.getImageInfo({
-          src: '../../assets/images/logo.png',
+          src: imgUrl,
           success(imgres) {
             wx.saveImageToPhotosAlbum({
               filePath: imgres.path,
@@ -64,7 +83,7 @@ const Poster = () => {
   return (
     <View>
       <View className="big_img_view">
-        <Image className="big_img"></Image>
+        <Image className="big_img" src={imgUrl}></Image>
       </View>
 
       <View className="button_group">
