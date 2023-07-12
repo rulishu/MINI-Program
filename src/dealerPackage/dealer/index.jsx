@@ -57,7 +57,7 @@ const Index = () => {
           style={{ color: '#D7D7D7', borderColor: '#D7D7D7', padding: '0 4px', margin: '10px 0' }}
         />
         <View className="dealer-mid-body">
-          <View>任务1：</View>
+          <View className="title">任务1：</View>
           <View className="dealer-mid-body-info">
             <View className="dealer-mid-body-info-left">
               <Progress percent={0} />
@@ -82,7 +82,7 @@ const Index = () => {
           </View>
         </View>
         <View className="dealer-mid-body">
-          <View>任务2：</View>
+          <View className="title">任务2：</View>
           <View className="dealer-mid-body-info">
             <View className="dealer-mid-body-info-left">
               <Progress percent={0} />

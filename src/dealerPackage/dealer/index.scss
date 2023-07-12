@@ -17,11 +17,11 @@ page {
       flex-direction: column;
       justify-content: space-around;
       .name{
-        font-size: 26px;
+        font-size: 30px;
         font-weight: bold;
       }
       .type{
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 300;
       }
 
@@ -36,6 +36,7 @@ page {
     border-radius: 10px;
     .title{
       font-size: 26px;
+      font-weight: bold;
     }
     .doc{
       margin-top:10px;
@@ -44,6 +45,9 @@ page {
     }
     .dealer-mid-body{
       font-size: 20px;
+      .title {
+        font-weight: bold;
+      }
       .dealer-mid-body-info{
         width:100%;
         display: flex;
@@ -86,20 +90,20 @@ page {
     border:1px solid #D7D7D7;
     background-color: #ffffff;
     padding:20px;
+    font-size: 27px;
     border-radius: 10px;
     .title{
-      font-size: 26px;
+      font-weight: bold;
     }
     .dealer-bot-info{
       background-color: #F2F2F2;
       padding:40px;
       margin-top: 20px;
-      font-size: 26px;
     }
   }
   .dealer-foot{
     color:#B1B1B1;
-    font-size: 20px;
+    font-size: 22px;
 
   }
 }
