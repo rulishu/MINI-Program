@@ -146,14 +146,13 @@ const Index = () => {
         dispatch({
           type: 'cart/cartGoodsCreate',
           payload: {
-            mainGraph: imageUrl,
+            mainGraph: imageUrl ? imageUrl : queryInfo?.mainGraph,
             goodsName: queryInfo?.itemName,
             goodsId: queryInfo?.id,
             goodsDetails: queryInfo?.details,
             goodsAmount: amount,
             goodsSpecification: goodsSpecification,
-            goodsUnitPrice: queryInfo.price,
-            goodsPrice: memberPrice,
+            goodsUnitPrice: memberPrice ? memberPrice : queryInfo.price,
             callBack: () => {
               dispatch({ type: 'cart/cartGoodsCount' });
             },

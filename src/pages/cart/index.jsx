@@ -11,14 +11,19 @@ const Index = () => {
   const { cartList } = useSelector((state) => state.cart);
   const [checked, setChecked] = useState(false);
   const { activeIndex } = useSelector((state) => state.global);
+  const [amount, setAmount] = useState(1);
   const closeRef = useRef(null);
 
   useEffect(() => {
-    if (activeIndex === 3) {
-      dispatch({
-        type: 'cart/cartGoodsAll',
-      });
-    }
+    // if (activeIndex === 3) {
+    //   dispatch({
+    //     type: 'cart/cartGoodsAll',
+    //   });
+    // } else {
+    dispatch({
+      type: 'cart/cartGoodsAll',
+    });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
 
@@ -53,19 +58,12 @@ const Index = () => {
       },
     });
   };
+  // 减少/增加提示
   const overlimit = () => {
-    Taro.showModal({
-      // title: "提示",
-      content: '确定要删除吗',
-      cancelText: '取消',
-      confirmText: '确认',
-      success: (res) => {
-        if (res.confirm) {
-          // dispatch({})
-        } else if (res.cancel) {
-          return;
-        }
-      },
+    return Taro.showToast({
+      title: '不能再少了',
+      icon: 'none',
+      duration: 2000,
     });
   };
   const morelimit = () => {
@@ -77,30 +75,24 @@ const Index = () => {
   };
 
   const onDelete = (ids) => {
-    Taro.showModal({
-      content: '确认要删除所选商品',
-      cancelText: '取消',
-      confirmText: '确认',
-      success: (res) => {
-        if (res.confirm) {
+    dispatch({
+      type: 'cart/cartGoodsDelete',
+      payload: {
+        ids: ids,
+        callBack: () => {
           dispatch({
-            type: 'cart/cartGoodsDelete',
-            payload: {
-              ids: ids,
-              callBack: () => {
-                dispatch({
-                  type: 'cart/cartGoodsAll',
-                });
-              },
-            },
+            type: 'cart/cartGoodsAll',
           });
-        } else if (res.cancel) {
-          closeRef.current?.close();
-        }
+        },
       },
     });
   };
-
+  const onTap = (goodsId) => {
+    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${goodsId}` });
+  };
+  const onChangeFuc = (e) => {
+    setAmount(Number(e));
+  };
   return (
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
@@ -163,7 +155,7 @@ const Index = () => {
                           disabled={verification ? true : false}
                         />
                       </View>
-                      <View style={{ width: 100, height: 100 }}>
+                      <View style={{ width: 100, height: 100 }} onTap={() => onTap(item?.goodsId)}>
                         <Image
                           // eslint-disable-next-line global-require
                           src={item?.mainGraph}
@@ -171,18 +163,23 @@ const Index = () => {
                         ></Image>
                       </View>
                       <View className="cartBoxListBox-right">
-                        <View className="cartBoxListBox-right-title">
-                          <Text style={{ color: '#333333', fontSize: 15 }}> {item?.goodsName}</Text>
-                        </View>
-                        <View>
-                          <Text style={{ color: '#adadad', fontSize: 13 }}>
-                            {item?.goodsSpecification}
-                          </Text>
-                        </View>
-                        <View>
-                          <Tag color="#E9E9E9" textColor="#999999">
-                            {item?.itemDto?.suppliersId === 1 ? '自营' : '严选'}
-                          </Tag>
+                        <View onTap={() => onTap(item?.goodsId)}>
+                          <View className="cartBoxListBox-right-title">
+                            <Text style={{ color: '#333333', fontSize: 15 }}>
+                              {' '}
+                              {item?.goodsName}
+                            </Text>
+                          </View>
+                          <View>
+                            <Text style={{ color: '#adadad', fontSize: 13 }}>
+                              {item?.goodsSpecification}
+                            </Text>
+                          </View>
+                          <View>
+                            <Tag color="#E9E9E9" textColor="#999999">
+                              {item?.itemDto?.suppliersId === 1 ? '自营' : '严选'}
+                            </Tag>
+                          </View>
                         </View>
                         <View>
                           <View className="cartBoxListBox-right-state">
@@ -192,14 +189,16 @@ const Index = () => {
                               needSymbol
                               thousands
                             />
-                            {/* <View>¥{item?.goodsUnitPrice}</View> */}
-                            {item?.isDelete === 1 && (
+                            {!verification && (
                               <InputNumber
                                 className="inputNumberStyle"
                                 min="1"
+                                max={5}
                                 modelValue={item?.goodsAmount}
-                                max={10}
-                                onOverlimit={item?.goodsAmount < 1 ? overlimit : morelimit}
+                                onOverlimit={amount <= 1 ? overlimit : morelimit}
+                                onChangeFuc={(e) => {
+                                  onChangeFuc(e);
+                                }}
                               />
                             )}
                           </View>
