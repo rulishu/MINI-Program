@@ -17,6 +17,7 @@ const Index = () => {
   const dispatch = useDispatch();
   const { queryInfo, activeSku, swiperList, couponsList } = useSelector((state) => state.goodInfo);
   const { evaluationRating, evaluationList } = useSelector((state) => state.evaluate);
+  const { cartCount } = useSelector((state) => state.cart);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
   const [current, setCurrent] = useState(1);
@@ -45,6 +46,8 @@ const Index = () => {
     const len = queryInfo?.mainGraphs ? queryInfo?.mainGraphs?.map((item) => item?.path) : [];
     const newLen = queryInfo?.itemVideo ? len.concat(queryInfo?.itemVideo) : len;
     setTotal(newLen?.length);
+    dispatch({ type: 'cart/cartGoodsCount' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryInfo]);
 
   const onChange3 = (e) => {
@@ -428,7 +431,7 @@ const Index = () => {
                     });
                   }}
                 >
-                  <Badge content={1}>
+                  <Badge content={cartCount}>
                     <Image mode="widthFix" src={cart} style={{ width: 25, height: 25 }}></Image>
                   </Badge>
                 </View>

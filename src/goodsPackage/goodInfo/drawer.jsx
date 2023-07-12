@@ -100,6 +100,7 @@ const Index = () => {
       },
     });
   };
+
   const onClickCart = (state) => {
     const token = Taro.getStorageSync('token');
     if (token === '') {
@@ -135,7 +136,28 @@ const Index = () => {
         duration: 2000,
       });
     } else {
+      let goodsSpecification = '';
+      for (var key in active) {
+        if (active.hasOwnProperty(key)) {
+          goodsSpecification += active[key].value + ' ';
+        }
+      }
       if (state === 'addCart') {
+        dispatch({
+          type: 'cart/cartGoodsCreate',
+          payload: {
+            mainGraph: imageUrl ? imageUrl : queryInfo?.mainGraph,
+            goodsName: queryInfo?.itemName,
+            goodsId: queryInfo?.id,
+            goodsDetails: queryInfo?.details,
+            goodsAmount: amount,
+            goodsSpecification: goodsSpecification,
+            goodsUnitPrice: memberPrice ? memberPrice : queryInfo.price,
+            callBack: () => {
+              dispatch({ type: 'cart/cartGoodsCount' });
+            },
+          },
+        });
         updateFn({ visible: false });
         return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
       }
