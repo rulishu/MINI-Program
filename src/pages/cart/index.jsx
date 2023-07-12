@@ -1,96 +1,74 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import { Price, InputNumber, Swipe, Button, Checkbox, Tag } from '@nutui/nutui-react-taro';
+import { Price, InputNumber, Swipe, Button, Checkbox, Tag, Empty } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const { shoppingList } = useSelector((state) => state.cart);
-  const [checked, setChecked] = useState(false);
-  const [inputValue, setInputValue] = useState(1);
+  const { cartList } = useSelector((state) => state.cart);
   const { activeIndex } = useSelector((state) => state.global);
+  const [amount, setAmount] = useState(1);
+  const [checkData, setCheckData] = useState([]);
+  const closeRef = useRef(null);
 
   useEffect(() => {
-    if (activeIndex === 3) {
-      dispatch({
-        type: 'cart/goodsAll',
-      });
-    }
+    dispatch({
+      type: 'cart/cartGoodsAll',
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
-  const list = [
-    {
-      id: 0,
-      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,  5kg/袋标题',
-      sku: '规格值1,规格值2',
-      price: 70,
-      state: 0,
-    },
-    {
-      id: 1,
-      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米 5kg/袋标题',
-      sku: '规格值1,规格值2',
-      price: 70,
-      state: 0,
-    },
-    {
-      id: 2,
-      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米,秋然长粒香大米,秋然长粒香大米,秋然长粒香大米 5kg/袋标题',
-      sku: '规格值1,规格值2',
-      price: 70,
-      state: 0,
-    },
-    {
-      id: 3,
-      imageUrl: 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-      title: '秋然长粒香大米 5kg/袋标题',
-      sku: '规格值1,规格值2',
-      price: 70,
-      state: 1,
-    },
-  ];
-  const handleChange = (check) => {
-    if (check === true) {
-      setChecked(true);
-    }
-    if (check === false) {
-      setChecked(false);
+
+  // 购物车选择和反选处理
+  const handleChange = (val, data, all) => {
+    if (all) {
+      if (val === true) {
+        setCheckData(data);
+      }
+      if (val === false) {
+        setCheckData([]);
+      }
+    } else {
+      if (val === true) {
+        setCheckData(checkData.concat([data]));
+      }
+      if (val === false) {
+        setCheckData(checkData.filter((item) => item.id !== data?.id));
+      }
     }
   };
+
   const onClear = () => {
     Taro.showModal({
-      // title: "提示",
-      content: '确认要删除所选商品',
+      content: '确认要清空所有商品',
       cancelText: '取消',
       confirmText: '确认',
       success: (res) => {
         if (res.confirm) {
-          // dispatch({})
+          dispatch({
+            type: 'cart/cartGoodsClear',
+            payload: {
+              callBack: () => {
+                dispatch({
+                  type: 'cart/cartGoodsAll',
+                });
+              },
+            },
+          });
         } else if (res.cancel) {
           return;
         }
       },
     });
   };
+  // 减少/增加提示
   const overlimit = () => {
-    Taro.showModal({
-      // title: "提示",
-      content: '确定要删除吗',
-      cancelText: '取消',
-      confirmText: '确认',
-      success: (res) => {
-        if (res.confirm) {
-          // dispatch({})
-        } else if (res.cancel) {
-          return;
-        }
-      },
+    return Taro.showToast({
+      title: '不能再少了',
+      icon: 'none',
+      duration: 2000,
     });
   };
   const morelimit = () => {
@@ -100,8 +78,50 @@ const Index = () => {
       duration: 2000,
     });
   };
-  const onDelete = () => {};
 
+  const onDelete = (ids) => {
+    dispatch({
+      type: 'cart/cartGoodsDelete',
+      payload: {
+        ids: ids,
+        callBack: () => {
+          dispatch({
+            type: 'cart/cartGoodsAll',
+          });
+        },
+      },
+    });
+  };
+  const onTap = (goodsId) => {
+    Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${goodsId}` });
+  };
+  const onChangeFuc = (e) => {
+    setAmount(Number(e));
+  };
+  // 购物车商品总价
+  let totalPrice = checkData
+    .reduce((acc, cur) => {
+      const itemTotalPrice = cur.goodsUnitPrice * cur.goodsAmount;
+      return acc + itemTotalPrice;
+    }, 0)
+    .toFixed(2);
+  // 加减
+  const onClick = (item, type) => {
+    if (amount >= 1) {
+      dispatch({
+        type: 'cart/additionSubtraction',
+        payload: {
+          shoppingCartGoodsId: item?.id,
+          amount: amount,
+          callBack: () => {
+            dispatch({
+              type: 'cart/cartGoodsAll',
+            });
+          },
+        },
+      });
+    }
+  };
   return (
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
@@ -116,98 +136,140 @@ const Index = () => {
           <Text style={{ marginLeft: 5, color: '#7f7f7f' }}>清空</Text>
         </View>
         {/* 购车车列表 */}
-        {list.map((item) => {
-          return (
-            <Swipe
-              key={item?.id}
-              rightAction={
-                <Button
-                  type="primary"
-                  shape="square"
-                  style={{ width: 50 }}
-                  onClick={() => onDelete()}
-                >
-                  删除
-                </Button>
-              }
-              disabled={item?.state === 1 ? true : false}
-            >
-              <View style={{ backgroundColor: '#ffffff', width: '100%' }}>
-                <View
-                  style={{
-                    zIndex: item?.state === 1 ? 1000 : 0,
-                    backgroundColor: item?.state === 1 ? '#c7c7c7' : '',
-                  }}
-                >
-                  <View className="cartBoxListBox">
-                    {item?.state === 1 && (
-                      <View className="cartBoxListBox-state">
-                        <Text>异常状态</Text>
-                      </View>
-                    )}
-                    <View>
-                      <Checkbox
-                        checked={item?.state === 1 ? false : checked}
-                        onChange={() => handleChange(item)}
-                        disabled={item?.state === 1 ? true : false}
-                      />
-                    </View>
-                    <View style={{ width: 100, height: 100 }}>
-                      <Image
-                        mode="widthFix"
-                        // eslint-disable-next-line global-require
-                        src={require('@/assets/images/home8.png')}
-                        style={{ width: 100, height: 100 }}
-                      ></Image>
-                    </View>
-                    <View className="cartBoxListBox-right">
-                      <View className="cartBoxListBox-right-title">
-                        <Text style={{ color: '#333333', fontSize: 15 }}> {item?.title}</Text>
-                      </View>
-                      <View>
-                        <Text style={{ color: '#adadad', fontSize: 13 }}>{item?.sku}</Text>
-                      </View>
-                      <View>
-                        {item?.state !== 1 && (
-                          <Tag color="#E9E9E9" textColor="#999999">
-                            标签
-                          </Tag>
-                        )}
-                      </View>
-                      {item?.state !== 1 && (
-                        <View className="cartBoxListBox-right-state">
-                          <Price price={item?.price} size="normal" needSymbol thousands />
-                          <InputNumber
-                            className="inputNumberStyle"
-                            min="1"
-                            modelValue={inputValue}
-                            max={10}
-                            onOverlimit={inputValue <= 1 ? overlimit : morelimit}
-                          />
+        {cartList.length > 0 ? (
+          cartList?.map((item) => {
+            const verification =
+              item?.itemDto?.stock === 0 ||
+              item?.itemDto?.onShelf === 0 ||
+              item?.itemDto?.isDelete === 1;
+            return (
+              <Swipe
+                key={item?.id}
+                ref={closeRef}
+                rightAction={
+                  <Button
+                    type="primary"
+                    shape="square"
+                    style={{ width: 50 }}
+                    onClick={() => onDelete(item?.id)}
+                  >
+                    删除
+                  </Button>
+                }
+                disabled={verification ? true : false}
+              >
+                <View style={{ backgroundColor: '#ffffff', width: '100%', marginBottom: 8 }}>
+                  <View
+                    style={{
+                      zIndex: verification ? 1000 : 0,
+                      backgroundColor: verification ? '#DCDCDC' : '',
+                    }}
+                  >
+                    <View className="cartBoxListBox">
+                      {verification && (
+                        <View className="cartBoxListBox-state">
+                          <Text>
+                            {item?.itemDto?.stock === 0
+                              ? '商品已售空'
+                              : item?.itemDto?.onShelf === 0
+                              ? '商品已下架'
+                              : item?.itemDto?.isDelete === 1 && '商品已删除'}
+                          </Text>
                         </View>
                       )}
+                      <View>
+                        <Checkbox
+                          checked={
+                            verification
+                              ? false
+                              : checkData.findIndex((i) => i?.id === item?.id) > -1
+                          }
+                          onChange={(val) => handleChange(val, item)}
+                          disabled={verification ? true : false}
+                        />
+                      </View>
+                      <View style={{ width: 100, height: 100 }} onTap={() => onTap(item?.goodsId)}>
+                        <Image
+                          // eslint-disable-next-line global-require
+                          src={item?.mainGraph}
+                          style={{ width: 100, height: 100 }}
+                        ></Image>
+                      </View>
+                      <View className="cartBoxListBox-right">
+                        <View onTap={() => onTap(item?.goodsId)}>
+                          <View className="cartBoxListBox-right-title">
+                            <Text style={{ color: '#333333', fontSize: 15 }}>
+                              {' '}
+                              {item?.goodsName}
+                            </Text>
+                          </View>
+                          <View>
+                            <Text style={{ color: '#adadad', fontSize: 13 }}>
+                              {item?.goodsSpecification}
+                            </Text>
+                          </View>
+                          <View>
+                            <Tag color="#E9E9E9" textColor="#999999">
+                              {item?.itemDto?.suppliersId === 1 ? '自营' : '严选'}
+                            </Tag>
+                          </View>
+                        </View>
+                        <View>
+                          <View className="cartBoxListBox-right-state">
+                            <Price
+                              price={item?.goodsUnitPrice}
+                              size="normal"
+                              needSymbol
+                              thousands
+                            />
+                            {!verification && (
+                              <InputNumber
+                                className="inputNumberStyle"
+                                min="1"
+                                max={item?.stock}
+                                modelValue={item?.goodsAmount}
+                                onOverlimit={amount <= 1 ? overlimit : morelimit}
+                                onChangeFuc={(e) => {
+                                  onChangeFuc(e);
+                                }}
+                                onAdd={() => amount < item?.stock && onClick(item, 'add')}
+                                onReduce={() => amount > 1 && onClick(item, 'reduce')}
+                              />
+                            )}
+                          </View>
+                        </View>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
-            </Swipe>
-          );
-        })}
+              </Swipe>
+            );
+          })
+        ) : (
+          <Empty description="购物车空空如也～" style={{ background: '#f5f5f5' }} />
+        )}
       </View>
       {/* 页脚结算 */}
       <View style={{ position: 'fixed', bottom: 0, width: '100%' }}>
         <View className="cartFooterBox">
           <View>
-            <Checkbox textPosition="right" label="全选" checked={false} onChange={handleChange} />
+            <Checkbox
+              textPosition="right"
+              label="全选"
+              checked={checkData.length === cartList.length ? true : false}
+              onChange={(val) => handleChange(val, cartList, 'all')}
+            />
           </View>
 
           <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <View className="cartFooterBox-total">
-              <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ 111</Text>
+              <View style={{ width: 110 }}>
+                <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ {totalPrice}</Text>
+              </View>
               <Text style={{ fontSize: 12 }}> 不含运费</Text>
             </View>
             <Button
-              style={{ borderRadius: 5, width: 80 }}
+              style={{ borderRadius: 5 }}
               type="primary"
               onClick={() => {
                 dispatch({
@@ -223,7 +285,7 @@ const Index = () => {
                 });
               }}
             >
-              结算
+              结算({cartList.length})
             </Button>
           </View>
         </View>

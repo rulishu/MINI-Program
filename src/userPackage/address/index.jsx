@@ -28,7 +28,15 @@ const Index = () => {
     const curAddress = params.confirmAddress ? JSON.parse(params.confirmAddress) : {};
     const skuId = params.skuId;
     const count = params.count;
-    const activityId = params.activityId;
+    // const activityId = params.activityId;
+    let activityId = params.activityId;
+    let newActivityId;
+
+    if (activityId === 'undefined') {
+      newActivityId = undefined;
+    } else {
+      newActivityId = activityId;
+    }
     if (path === 'goodsPackage/confirmOrder/index') {
       if (addressList.length === 0) {
         dispatch({
@@ -64,10 +72,10 @@ const Index = () => {
               areaCode: addressList[0]?.areaCode,
               cityCode: addressList[0]?.cityCode,
               provinceCode: addressList[0]?.provinceCode,
-              activityId: activityId,
+              activityId: newActivityId,
               skuLockVoList: {
                 count: count,
-                activityId: activityId,
+                activityId: newActivityId,
                 skuId: skuId,
               },
             },
@@ -133,8 +141,16 @@ const Index = () => {
     let path = prevpage?.route; // 上一个页面路由地址
     const params = Taro.getCurrentInstance().router.params;
     const skuId = params.skuId;
-    const activityId = params.activityId;
+    // const activityId = params.activityId;
     const count = params.count;
+    let activityId = params.activityId;
+    let newActivityId;
+
+    if (activityId === 'undefined') {
+      newActivityId = undefined;
+    } else {
+      newActivityId = activityId;
+    }
     if (path === 'goodsPackage/confirmOrder/index') {
       dispatch({
         type: 'goodInfo/newConfirm',
@@ -142,10 +158,10 @@ const Index = () => {
           areaCode: item.areaCode,
           cityCode: item.cityCode,
           provinceCode: item.provinceCode,
-          activityId: activityId,
+          activityId: newActivityId,
           skuLockVoList: {
             count: count,
-            activityId: activityId,
+            activityId: newActivityId,
             skuId: skuId,
           },
         },

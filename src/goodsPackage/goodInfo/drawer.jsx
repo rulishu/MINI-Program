@@ -100,6 +100,7 @@ const Index = () => {
       },
     });
   };
+
   const onClickCart = (state) => {
     const token = Taro.getStorageSync('token');
     if (token === '') {
@@ -135,7 +136,28 @@ const Index = () => {
         duration: 2000,
       });
     } else {
+      let goodsSpecification = '';
+      for (var key in active) {
+        if (active.hasOwnProperty(key)) {
+          goodsSpecification += active[key].value + ' ';
+        }
+      }
       if (state === 'addCart') {
+        dispatch({
+          type: 'cart/cartGoodsCreate',
+          payload: {
+            mainGraph: imageUrl ? imageUrl : queryInfo?.mainGraph,
+            goodsName: queryInfo?.itemName,
+            goodsId: queryInfo?.id,
+            goodsDetails: queryInfo?.details,
+            goodsAmount: amount,
+            goodsSpecification: goodsSpecification,
+            goodsUnitPrice: memberPrice ? memberPrice : queryInfo.price,
+            callBack: () => {
+              dispatch({ type: 'cart/cartGoodsCount' });
+            },
+          },
+        });
         updateFn({ visible: false });
         return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
       }
@@ -144,10 +166,12 @@ const Index = () => {
         dispatch({
           type: 'goodInfo/newConfirm',
           payload: {
+            activityId: queryInfo?.activityDto?.id,
             skuLockVoList: [
               {
                 count: amount,
                 skuId: skuInfo?.skuId,
+                activityId: queryInfo?.activityDto?.id,
               },
             ],
           },
@@ -167,9 +191,14 @@ const Index = () => {
   };
 
   const stockCalc = () => {
-    if (stock === 0) {
+    if (stock === 0 || queryInfo.userBuyCount === 0) {
       return (
-        <View style={{ marginRight: 7 }}>
+        <View style={{ marginRight: 7, display: 'flex', flexDirection: 'row' }}>
+          {queryInfo.userBuyCount === 0 && (
+            <View style={{ marginRight: 15, color: '#ec7f8c' }}>
+              限购{queryInfo.userBuyCount}件
+            </View>
+          )}
           <InputNumber modelValue={0} min="0" disabled />
         </View>
       );
@@ -178,13 +207,7 @@ const Index = () => {
         Object.keys(active).length > 0 &&
         Object.keys(active).length === Object.keys(attributeVos).length
       ) {
-        if (queryInfo.userBuyCount === 0) {
-          return (
-            <View style={{ marginRight: 7 }}>
-              <InputNumber modelValue={0} min="0" disabled />
-            </View>
-          );
-        } else {
+        if (queryInfo.userBuyCount !== 0) {
           return (
             <View style={{ marginRight: 7, display: 'flex', flexDirection: 'row' }}>
               {queryInfo.userBuyCount && (
@@ -354,6 +377,7 @@ const Index = () => {
             onClick={() => {
               onClickCart(type === 'nowCart' ? 'nowCart' : type === 'addCart' && 'addCart');
             }}
+            disabled={queryInfo.userBuyCount === 0 ? true : false}
           >
             {type === 'nowCart' ? '立即购买' : type === 'addCart' && '加入购物车'}
           </Button>
@@ -369,16 +393,19 @@ const Index = () => {
               with: '100%',
             }}
           >
-            <Button
-              style={{ borderRadius: '6px', width: '40%' }}
-              onClick={() => onClickCart('addCart')}
-            >
-              加入购物车
-            </Button>
+            {!queryInfo?.isActivityItem && (
+              <Button
+                style={{ borderRadius: '6px', width: '40%' }}
+                onClick={() => onClickCart('addCart')}
+              >
+                加入购物车
+              </Button>
+            )}
             <Button
               type="primary"
-              style={{ borderRadius: '6px', width: '40%' }}
+              style={{ borderRadius: '6px', width: queryInfo?.isActivityItem ? '100%' : '40%' }}
               onClick={() => onClickCart('nowCart')}
+              disabled={queryInfo.userBuyCount === 0 ? true : false}
             >
               立即购买
             </Button>

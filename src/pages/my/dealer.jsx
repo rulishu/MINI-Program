@@ -57,7 +57,7 @@ const Index = () => {
             className="my-orders-all"
             style={{ color: '#ffffff' }}
             onTap={async () => {
-              Taro.navigateTo({ url: '/dealerPackage/dealer/index' });
+              Taro.navigateTo({ url: `/dealerPackage/dealer/index?id=${userInfos.id}` });
               await dispatch({
                 type: 'allOrders/update',
                 payload: {
