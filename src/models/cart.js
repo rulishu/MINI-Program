@@ -19,6 +19,7 @@ export default {
   effects: {
     // 查询所有购物车商品
     *cartGoodsAll(_, { call, put }) {
+      Taro.showLoading({ title: '加载中...', mask: true });
       try {
         const result = yield call(cartGoodsAll);
         if (result?.code === 200) {
@@ -28,8 +29,11 @@ export default {
               cartList: result?.result || [],
             },
           });
+          Taro.hideLoading();
         }
-      } catch (err) {}
+      } catch (err) {
+        Taro.hideLoading();
+      }
     },
     // 清空购物车商品
     *cartGoodsClear({ payload }, { call, put }) {
@@ -103,6 +107,7 @@ export default {
           //     cartCount: result?.result,
           //   },
           // });
+          payload?.callBack?.();
         }
       } catch (err) {}
     },
