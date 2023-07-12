@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { Divider, Progress, Button } from '@taroify/core';
 import { QuestionOutlined } from '@taroify/icons';
 import Popup from './popup';
 import Taro from '@tarojs/taro';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
+  const { userInfos, fansCount, consumptionAmount, fansPercent, amountPercent } = useSelector(
+    (state) => state.dealer,
+  );
   const dispatch = useDispatch();
-  const doc = '直属粉丝>=20人';
-  const doc2 = '团队消费额>=3000';
+  const params = Taro.getCurrentInstance().router.params;
+  useEffect(() => {
+    dispatch({
+      // 获取用户信息
+      type: 'dealer/getUserInfos',
+      payload: {
+        id: params?.id,
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 提示
   const onPrompt = () => {
@@ -41,17 +53,22 @@ const Index = () => {
   return (
     <View className="dealer">
       <View className="dealer-crown">
-        <Image
-          className="dealer-crown-img"
-          src="https://fendouzhilu.oss-cn-hangzhou.aliyuncs.com/FDZL/mall/20230616/000a889ada584c4f8b57a10610217134.png"
-        />
+        <Image className="dealer-crown-img" src={userInfos?.headUrl} />
         <View className="dealer-crown-info">
-          <View className="name">Miracle-</View>
-          <View className="type">奋斗者</View>
+          <View className="name">{userInfos?.consumerName}</View>
+          <View className="type">
+            {userInfos?.level === '3'
+              ? '奋斗者'
+              : userInfos?.level === '1'
+              ? '一级经销商'
+              : '二级经销商'}
+          </View>
         </View>
       </View>
       <View className="dealer-mid">
-        <View className="title">二级经销商 升级中</View>
+        <View className="title">
+          {userInfos?.level === '3' ? '二级经销商 升级中' : '一级经销商 升级中'}
+        </View>
         <View className="doc">满足以下条件后自动完成升级</View>
         <Divider
           style={{ color: '#D7D7D7', borderColor: '#D7D7D7', padding: '0 4px', margin: '10px 0' }}
@@ -60,7 +77,7 @@ const Index = () => {
           <View className="title">任务1：</View>
           <View className="dealer-mid-body-info">
             <View className="dealer-mid-body-info-left">
-              <Progress percent={0} />
+              <Progress percent={fansPercent} />
             </View>
             <View className="dealer-mid-body-info-right">
               <Button size="mini" className="btn" onClick={() => goPoster()}>
@@ -70,14 +87,14 @@ const Index = () => {
           </View>
           <View className="dealer-mid-body-info-left-bot">
             <View className="doc">
-              {doc}
+              {userInfos?.level === '3' ? '直属粉丝>=10人' : '直属粉丝>=20人'}
               <QuestionOutlined
                 style={{ marginLeft: 4, color: '#333333' }}
                 onClick={() => onPrompt()}
               />
             </View>
             <View className="text">
-              <Text className="text-active">0</Text>/10
+              <Text className="text-active">{fansCount}</Text>/{userInfos?.level === '3' ? 10 : 20}
             </View>
           </View>
         </View>
@@ -85,7 +102,7 @@ const Index = () => {
           <View className="title">任务2：</View>
           <View className="dealer-mid-body-info">
             <View className="dealer-mid-body-info-left">
-              <Progress percent={0} />
+              <Progress percent={amountPercent} />
             </View>
             <View className="dealer-mid-body-info-right">
               <Button size="mini" className="btn" onClick={() => goHome()}>
@@ -95,22 +112,29 @@ const Index = () => {
           </View>
           <View className="dealer-mid-body-info-left-bot">
             <View className="doc">
-              {doc2}
+              {userInfos?.level === '3' ? '团队消费额>=3000' : '团队消费额>=20000'}
               <QuestionOutlined
                 style={{ marginLeft: 4, color: '#333333' }}
                 onClick={() => onPrompt()}
               />
             </View>
             <View className="text">
-              <Text className="text-active">0</Text>/2000
+              <Text className="text-active">{consumptionAmount}</Text>/
+              {userInfos?.level === '3' ? 3000 : 20000}
             </View>
           </View>
         </View>
       </View>
       <View className="dealer-bot">
-        <View className="title">二级经销商 权益</View>
-        <View className="dealer-bot-info">享30%自购返佣</View>
-        <View className="dealer-bot-info">享10%粉丝消费分润</View>
+        <View className="title">
+          {userInfos?.level === '3' ? '二级经销商 权益' : '一级经销商 权益'}
+        </View>
+        <View className="dealer-bot-info">
+          {userInfos?.level === '3' ? '享30%自购返佣' : '享40%自购返佣'}
+        </View>
+        <View className="dealer-bot-info">
+          {userInfos?.level === '3' ? '享30%粉丝消费分润' : '享40%粉丝消费分润'}
+        </View>
       </View>
       <View className="dealer-foot">分润基数为订单毛利，具体金额见收益明细</View>
       <Popup />
