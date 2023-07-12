@@ -95,9 +95,6 @@ const Index = () => {
   const onTap = (goodsId) => {
     Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${goodsId}` });
   };
-  const onChangeFuc = (e) => {
-    setAmount(Number(e));
-  };
   // 购物车商品总价
   let totalPrice = checkData
     .reduce((acc, cur) => {
@@ -106,21 +103,19 @@ const Index = () => {
     }, 0)
     .toFixed(2);
   // 加减
-  const onClick = (item, type) => {
-    if (amount >= 1) {
-      dispatch({
-        type: 'cart/additionSubtraction',
-        payload: {
-          shoppingCartGoodsId: item?.id,
-          amount: amount,
-          callBack: () => {
-            dispatch({
-              type: 'cart/cartGoodsAll',
-            });
-          },
+  const onClick = (item, type, num) => {
+    dispatch({
+      type: 'cart/additionSubtraction',
+      payload: {
+        shoppingCartGoodsId: item?.id,
+        amount: num,
+        callBack: () => {
+          dispatch({
+            type: 'cart/cartGoodsAll',
+          });
         },
-      });
-    }
+      },
+    });
   };
   return (
     <View>
@@ -230,10 +225,23 @@ const Index = () => {
                                 modelValue={item?.goodsAmount}
                                 onOverlimit={amount <= 1 ? overlimit : morelimit}
                                 onChangeFuc={(e) => {
-                                  onChangeFuc(e);
+                                  if (e > amount) {
+                                    if (amount <= item?.stock) {
+                                      onClick(item, 'add', Number(e));
+                                      setAmount(Number(e));
+                                    } else {
+                                      setAmount(item?.stock);
+                                    }
+                                  }
+                                  if (e < amount) {
+                                    if (amount > 1) {
+                                      onClick(item, 'reduce', Number(e));
+                                      setAmount(Number(e));
+                                    } else {
+                                      setAmount(1);
+                                    }
+                                  }
                                 }}
-                                onAdd={() => amount < item?.stock && onClick(item, 'add')}
-                                onReduce={() => amount > 1 && onClick(item, 'reduce')}
                               />
                             )}
                           </View>
