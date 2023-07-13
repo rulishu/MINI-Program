@@ -76,7 +76,9 @@ const Index = () => {
   const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
 
   // 处理确认订单展示数据
-  const orderInfo = shoppingCartVOList?.at(0)?.cartVOList.at(0);
+  // console.log('shoppingCartVOList', shoppingCartVOList.map((item) => item?.cartVOList).flat());
+  const orderInfo = shoppingCartVOList.map((item) => item?.cartVOList).flat();
+  // shoppingCartVOList?.at(0)?.cartVOList.at(0);
 
   const shoppingCartVOLists = shoppingCartVOList?.at(0)?.cartVOList?.map((item) => {
     let list = [
@@ -185,26 +187,31 @@ const Index = () => {
       payload: params,
     });
   };
-
+  // 商品总价
+  const orderTotalPrice = orderInfo
+    ?.reduce((acc, item) => {
+      return acc + item?.totalPrice;
+    }, 0)
+    .toFixed(2);
+  // 合计
   const total = () => {
-    if (queryInfo?.isActivityItem === false) {
-      if (orderInfo?.totalPrice >= selectedCoupon?.minimumConsumption) {
+    if (!queryInfo?.isActivityItem) {
+      if (orderTotalPrice >= selectedCoupon?.minimumConsumption) {
         return selectedCoupon.type === 2
-          ? Number(orderInfo?.totalPrice - selectedCoupon?.price).toFixed(2)
-          : electedCoupon.type === 3 &&
-              Number(orderInfo?.totalPrice * selectedCoupon?.price).toFixed(2);
+          ? Number(orderTotalPrice - selectedCoupon?.price).toFixed(2)
+          : electedCoupon.type === 3 && Number(orderTotalPrice * selectedCoupon?.price).toFixed(2);
       } else {
         if (idData?.at(0)?.price === undefined) {
-          return Number(orderInfo?.totalPrice).toFixed(2);
+          return Number(orderTotalPrice).toFixed(2);
         } else {
           return (
-            Number(orderInfo?.totalPrice - idData?.at(0)?.price).toFixed(2) ||
-            Number(orderInfo?.totalPrice).toFixed(2)
+            Number(orderTotalPrice - idData?.at(0)?.price).toFixed(2) ||
+            Number(orderTotalPrice).toFixed(2)
           );
         }
       }
     } else {
-      return Number(orderInfo?.totalPrice).toFixed(2);
+      return Number(orderTotalPrice).toFixed(2);
     }
   };
 
@@ -239,40 +246,39 @@ const Index = () => {
           </View>
         </View>
         <View className="goods-info">
-          <View className="goods-info-head">
-            <View className="goods-info-head-left">
-              <View className="goods-info-head-img">
-                {/* eslint-disable-next-line global-require */}
-                <Image
-                  mode="widthFix"
-                  src={orderInfo?.defaultImage}
-                  style={{ width: 128, height: 128 }}
-                ></Image>
-              </View>
-              <View className="goods-info-head-info">
-                <View className="goods-info-head-info-title">
-                  <Text>{goodsName}</Text>
+          {orderInfo?.map((data) => {
+            return (
+              <View className="goods-info-head" key={data?.id}>
+                <View className="goods-info-head-left">
+                  <View className="goods-info-head-img" style={{ width: 80, height: 80 }}>
+                    <Image src={data?.defaultImage} style={{ width: 80, height: 80 }}></Image>
+                  </View>
+                  <View className="goods-info-head-info">
+                    <View className="goods-info-head-info-title">
+                      <Text>{goodsName}</Text>
+                    </View>
+                    <View className="goods-info-head-info-doc">
+                      {Object.keys(activeSku).map((item) => {
+                        return (
+                          <Text key={item.id} className="doc">
+                            {`${item}:${activeSku[item]?.value}`},
+                          </Text>
+                        );
+                      })}
+                    </View>
+                  </View>
                 </View>
-                <View className="goods-info-head-info-doc">
-                  {Object.keys(activeSku).map((item) => {
-                    return (
-                      <Text key={item.id} className="doc">
-                        {`${item}:${activeSku[item]?.value}`},
-                      </Text>
-                    );
-                  })}
+                <View className="goods-info-head-right">
+                  <View className="goods-info-head-right-num">
+                    <Text>x{data?.count}</Text>
+                  </View>
+                  <View className="goods-info-head-right-price">
+                    <Text>￥{data?.unitPrice}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <View className="goods-info-head-right">
-              <View className="goods-info-head-right-num">
-                <Text>x{orderInfo?.count}</Text>
-              </View>
-              <View className="goods-info-head-right-price">
-                <Text>￥{orderInfo?.unitPrice}</Text>
-              </View>
-            </View>
-          </View>
+            );
+          })}
           <Divider style={{ color: '#D7D7D7' }} />
           <View className="address-price">
             <View>
@@ -302,7 +308,7 @@ const Index = () => {
                 <Text>商品总价</Text>
               </View>
               <View>
-                <Text>{orderInfo?.totalPrice}</Text>
+                <Text>{orderTotalPrice}</Text>
               </View>
             </View>
             <View className="address-price">
@@ -313,7 +319,7 @@ const Index = () => {
                 <Text>免邮</Text>
               </View>
             </View>
-            {queryInfo?.isActivityItem === false ? (
+            {!queryInfo?.isActivityItem ? (
               <View
                 className="address-price"
                 onClick={() => {
