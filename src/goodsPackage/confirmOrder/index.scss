@@ -50,12 +50,11 @@ page {
       display: flex;
       flex-direction: row;
       justify-content:space-between;
+      margin-bottom: 10px;
       .goods-info-head-left{
         display: flex;
         flex-direction: row;
         .goods-info-head-img{
-          width: 128px;
-          height: 128px;
           display: flex;
           align-items: center;
           justify-content: center;

@@ -10,6 +10,7 @@ const Index = () => {
   const closeRef = useRef(null);
   const dispatch = useDispatch();
   const { addressList } = useSelector((state) => state.address);
+  const { checkCartData } = useSelector((state) => state.cart);
   const userInfo = Taro.getStorageSync('userInfo');
   useEffect(() => {
     dispatch({
@@ -37,6 +38,13 @@ const Index = () => {
     } else {
       newActivityId = activityId;
     }
+    let skuLockVoList = checkCartData.map((itm) => {
+      return {
+        count: itm?.goodsAmount,
+        skuId: itm?.goodsSpecification,
+        activityId: newActivityId,
+      };
+    });
     if (path === 'goodsPackage/confirmOrder/index') {
       if (addressList.length === 0) {
         dispatch({
@@ -49,11 +57,14 @@ const Index = () => {
           type: 'goodInfo/newConfirm',
           payload: {
             activityId: activityId,
-            skuLockVoList: {
-              count: count,
-              skuId: skuId,
-              activityId: activityId,
-            },
+            skuLockVoList:
+              checkCartData.length > 0
+                ? skuLockVoList
+                : {
+                    count: count,
+                    skuId: skuId,
+                    activityId: activityId,
+                  },
           },
         });
       } else {
@@ -73,11 +84,14 @@ const Index = () => {
               cityCode: addressList[0]?.cityCode,
               provinceCode: addressList[0]?.provinceCode,
               activityId: newActivityId,
-              skuLockVoList: {
-                count: count,
-                activityId: newActivityId,
-                skuId: skuId,
-              },
+              skuLockVoList:
+                checkCartData.length > 0
+                  ? skuLockVoList
+                  : {
+                      count: count,
+                      skuId: skuId,
+                      activityId: activityId,
+                    },
             },
           });
         }
@@ -151,6 +165,13 @@ const Index = () => {
     } else {
       newActivityId = activityId;
     }
+    let skuLockVoList = checkCartData.map((itm) => {
+      return {
+        count: itm?.goodsAmount,
+        skuId: itm?.goodsSpecification,
+        activityId: newActivityId,
+      };
+    });
     if (path === 'goodsPackage/confirmOrder/index') {
       dispatch({
         type: 'goodInfo/newConfirm',
@@ -159,11 +180,14 @@ const Index = () => {
           cityCode: item.cityCode,
           provinceCode: item.provinceCode,
           activityId: newActivityId,
-          skuLockVoList: {
-            count: count,
-            activityId: newActivityId,
-            skuId: skuId,
-          },
+          skuLockVoList:
+            checkCartData.length > 0
+              ? skuLockVoList
+              : {
+                  count: count,
+                  skuId: skuId,
+                  activityId: activityId,
+                },
         },
       });
       dispatch({

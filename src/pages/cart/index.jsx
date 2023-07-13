@@ -120,7 +120,7 @@ const Index = () => {
   let skuLockVoList = checkData.map((item) => {
     return {
       count: item?.goodsAmount,
-      skuId: item?.id,
+      skuId: item?.goodsSpecification,
     };
   });
   return (
@@ -288,12 +288,26 @@ const Index = () => {
               style={{ borderRadius: 5 }}
               type="primary"
               onClick={() => {
-                dispatch({
-                  type: 'goodInfo/newConfirm',
-                  payload: {
-                    skuLockVoList: skuLockVoList,
-                  },
-                });
+                if (checkData.length > 0) {
+                  dispatch({
+                    type: 'goodInfo/newConfirm',
+                    payload: {
+                      skuLockVoList: skuLockVoList,
+                    },
+                  });
+                  dispatch({
+                    type: 'cart/update',
+                    payload: {
+                      checkCartData: checkData,
+                    },
+                  });
+                } else {
+                  Taro.showToast({
+                    title: '请选择商品',
+                    icon: 'none',
+                    duration: 2000,
+                  });
+                }
               }}
             >
               结算({cartList.length})
