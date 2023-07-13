@@ -14,6 +14,7 @@ export default {
   state: {
     cartList: [], // 初始化数据
     cartCount: 0, // 购物车数量
+    checkCartData: [], // 选中的购物车数据
   },
 
   effects: {
