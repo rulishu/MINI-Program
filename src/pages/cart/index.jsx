@@ -117,6 +117,12 @@ const Index = () => {
       },
     });
   };
+  let skuLockVoList = checkData.map((item) => {
+    return {
+      count: item?.goodsAmount,
+      skuId: item?.id,
+    };
+  });
   return (
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
@@ -200,7 +206,7 @@ const Index = () => {
                           </View>
                           <View>
                             <Text style={{ color: '#adadad', fontSize: 13 }}>
-                              {item?.goodsSpecification}
+                              {item?.goodsSpecificationDetail}
                             </Text>
                           </View>
                           <View>
@@ -224,8 +230,9 @@ const Index = () => {
                                 max={item?.stock}
                                 modelValue={item?.goodsAmount}
                                 onOverlimit={amount <= 1 ? overlimit : morelimit}
+                                readonly
                                 onChangeFuc={(e) => {
-                                  if (e > amount) {
+                                  if (e >= amount) {
                                     if (amount <= item?.stock) {
                                       onClick(item, 'add', Number(e));
                                       setAmount(Number(e));
@@ -256,6 +263,7 @@ const Index = () => {
         ) : (
           <Empty description="购物车空空如也～" style={{ background: '#f5f5f5' }} />
         )}
+        <View style={{ height: 130 }}></View>
       </View>
       {/* 页脚结算 */}
       <View style={{ position: 'fixed', bottom: 0, width: '100%' }}>
@@ -283,12 +291,7 @@ const Index = () => {
                 dispatch({
                   type: 'goodInfo/newConfirm',
                   payload: {
-                    skuLockVoList: [
-                      {
-                        count: 1,
-                        skuId: 1363,
-                      },
-                    ],
+                    skuLockVoList: skuLockVoList,
                   },
                 });
               }}
