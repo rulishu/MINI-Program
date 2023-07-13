@@ -21,19 +21,19 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
   const list = [
     {
       title: '粉丝人数',
-      num: 1,
+      num: item?.fansNum || 0,
     },
     {
       title: '上月营业额',
-      num: '21.11',
+      num: item?.preMonthPrice || 0,
     },
     {
       title: '本月营业额',
-      num: '12.30',
+      num: item?.monthPrice || 0,
     },
     {
       title: '本月个人消费',
-      num: '1232.31',
+      num: item?.personalPrice || 0,
     },
   ];
 
@@ -48,16 +48,24 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
                 src="https://fendouzhilu.oss-cn-hangzhou.aliyuncs.com/FDZL/mall/20230616/000a889ada584c4f8b57a10610217134.png"
               />
               <View className="fansList-info-top-left-info">
-                <View className="name">Miracle-</View>
-                <View>会员编号:HZ_XZ8797</View>
+                <View className="name">{item?.realName || '-'}</View>
+                <View>会员编号:{item?.memberNo}</View>
               </View>
             </View>
             <View className="fansList-info-top-mid">
-              <View style={{ marginBottom: '10rpx' }}>邀请人:李高峰</View>
-              <View>邀请层级:1</View>
+              <View style={{ marginBottom: '10rpx' }}>邀请人:{item?.invitationName}</View>
+              <View>邀请层级:{item?.fansLevel}</View>
             </View>
             <View className="fansList-info-top-right">
-              <Text className="fansList-info-top-right-text">奋斗者</Text>
+              <Text className="fansList-info-top-right-text">
+                {item?.level === 1
+                  ? '一级经销商'
+                  : item?.level === 2
+                  ? '二级经销商'
+                  : item?.level === 3
+                  ? '奋斗者'
+                  : ''}
+              </Text>
             </View>
           </View>
           <View className="fansList-info-mid">
@@ -76,7 +84,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
             ))}
           </View>
           <View className="fansList-info-bottom">
-            <Text>注册来源: {item.consignee}</Text>
+            <Text>注册来源: 邀请码注册</Text>
             <Text>{item.createTime}</Text>
           </View>
         </View>

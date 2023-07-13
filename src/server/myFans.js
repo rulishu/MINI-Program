@@ -12,3 +12,8 @@ export const selectPage = (params) => {
     params,
   );
 };
+
+// 获取地盘分润信息
+export const getAgent = (params) => {
+  return request.get(`/jcgl-mall/app/agent/select/one`, params);
+};
