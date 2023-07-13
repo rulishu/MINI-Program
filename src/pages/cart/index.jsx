@@ -4,6 +4,8 @@ import { View, Image, Text } from '@tarojs/components';
 import { Price, InputNumber, Swipe, Button, Checkbox, Tag, Empty } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import Taro from '@tarojs/taro';
+import { useRequest } from 'ahooks';
+import { cartGoodsSettlement } from '@/server/cart';
 import './index.scss';
 
 const Index = () => {
@@ -122,6 +124,34 @@ const Index = () => {
       count: item?.goodsAmount,
       skuId: item?.goodsSpecification,
     };
+  });
+  let shoppingSettlementVos = checkData.map((itm) => {
+    return {
+      goodsAmount: itm?.goodsAmount,
+      goodsId: Number(itm?.goodsId),
+      goodsSpecification: itm?.goodsSpecification,
+      goodsUnitPrice: itm?.goodsUnitPrice,
+      shoppingCartGoodsId: Number(itm?.id),
+    };
+  });
+  const { run, loading } = useRequest(cartGoodsSettlement, {
+    manual: true,
+    onSuccess: ({ code, result }) => {
+      if (code && code === 200) {
+        dispatch({
+          type: 'goodInfo/newConfirm',
+          payload: {
+            skuLockVoList: skuLockVoList,
+          },
+        });
+        dispatch({
+          type: 'cart/update',
+          payload: {
+            checkCartData: checkData,
+          },
+        });
+      }
+    },
   });
   return (
     <View>
@@ -289,18 +319,7 @@ const Index = () => {
               type="primary"
               onClick={() => {
                 if (checkData.length > 0) {
-                  dispatch({
-                    type: 'goodInfo/newConfirm',
-                    payload: {
-                      skuLockVoList: skuLockVoList,
-                    },
-                  });
-                  dispatch({
-                    type: 'cart/update',
-                    payload: {
-                      checkCartData: checkData,
-                    },
-                  });
+                  run(shoppingSettlementVos);
                 } else {
                   Taro.showToast({
                     title: '请选择商品',
