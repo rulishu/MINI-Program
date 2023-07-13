@@ -95,9 +95,6 @@ const Index = () => {
   const onTap = (goodsId) => {
     Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${goodsId}` });
   };
-  const onChangeFuc = (e) => {
-    setAmount(Number(e));
-  };
   // 购物车商品总价
   let totalPrice = checkData
     .reduce((acc, cur) => {
@@ -106,22 +103,26 @@ const Index = () => {
     }, 0)
     .toFixed(2);
   // 加减
-  const onClick = (item, type) => {
-    if (amount >= 1) {
-      dispatch({
-        type: 'cart/additionSubtraction',
-        payload: {
-          shoppingCartGoodsId: item?.id,
-          amount: amount,
-          callBack: () => {
-            dispatch({
-              type: 'cart/cartGoodsAll',
-            });
-          },
+  const onClick = (item, type, num) => {
+    dispatch({
+      type: 'cart/additionSubtraction',
+      payload: {
+        shoppingCartGoodsId: item?.id,
+        amount: num,
+        callBack: () => {
+          dispatch({
+            type: 'cart/cartGoodsAll',
+          });
         },
-      });
-    }
+      },
+    });
   };
+  let skuLockVoList = checkData.map((item) => {
+    return {
+      count: item?.goodsAmount,
+      skuId: item?.id,
+    };
+  });
   return (
     <View>
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
@@ -205,7 +206,7 @@ const Index = () => {
                           </View>
                           <View>
                             <Text style={{ color: '#adadad', fontSize: 13 }}>
-                              {item?.goodsSpecification}
+                              {item?.goodsSpecificationDetail}
                             </Text>
                           </View>
                           <View>
@@ -229,11 +230,25 @@ const Index = () => {
                                 max={item?.stock}
                                 modelValue={item?.goodsAmount}
                                 onOverlimit={amount <= 1 ? overlimit : morelimit}
+                                readonly
                                 onChangeFuc={(e) => {
-                                  onChangeFuc(e);
+                                  if (e >= amount) {
+                                    if (amount <= item?.stock) {
+                                      onClick(item, 'add', Number(e));
+                                      setAmount(Number(e));
+                                    } else {
+                                      setAmount(item?.stock);
+                                    }
+                                  }
+                                  if (e < amount) {
+                                    if (amount > 1) {
+                                      onClick(item, 'reduce', Number(e));
+                                      setAmount(Number(e));
+                                    } else {
+                                      setAmount(1);
+                                    }
+                                  }
                                 }}
-                                onAdd={() => amount < item?.stock && onClick(item, 'add')}
-                                onReduce={() => amount > 1 && onClick(item, 'reduce')}
                               />
                             )}
                           </View>
@@ -248,6 +263,7 @@ const Index = () => {
         ) : (
           <Empty description="购物车空空如也～" style={{ background: '#f5f5f5' }} />
         )}
+        <View style={{ height: 130 }}></View>
       </View>
       {/* 页脚结算 */}
       <View style={{ position: 'fixed', bottom: 0, width: '100%' }}>
@@ -275,12 +291,7 @@ const Index = () => {
                 dispatch({
                   type: 'goodInfo/newConfirm',
                   payload: {
-                    skuLockVoList: [
-                      {
-                        count: 1,
-                        skuId: 1363,
-                      },
-                    ],
+                    skuLockVoList: skuLockVoList,
                   },
                 });
               }}
