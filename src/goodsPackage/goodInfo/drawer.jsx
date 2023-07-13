@@ -136,12 +136,12 @@ const Index = () => {
         duration: 2000,
       });
     } else {
-      let goodsSpecification = '';
-      for (var key in active) {
-        if (active.hasOwnProperty(key)) {
-          goodsSpecification += active[key].value + ' ';
-        }
-      }
+      // let goodsSpecification = '';
+      // for (var key in active) {
+      //   if (active.hasOwnProperty(key)) {
+      //     goodsSpecification += active[key].value + ' ';
+      //   }
+      // }
       if (state === 'addCart') {
         dispatch({
           type: 'cart/cartGoodsCreate',
@@ -151,7 +151,7 @@ const Index = () => {
             goodsId: queryInfo?.id,
             goodsDetails: queryInfo?.details,
             goodsAmount: amount,
-            goodsSpecification: goodsSpecification,
+            goodsSpecification: skuInfo?.skuId,
             goodsUnitPrice: memberPrice ? memberPrice : queryInfo.price,
             callBack: () => {
               dispatch({ type: 'cart/cartGoodsCount' });
