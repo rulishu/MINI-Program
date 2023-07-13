@@ -14,3 +14,8 @@ export const statis = () => {
 export const editUserInfo = (params) => {
   return request.post(`/jcgl-user/wx/login/update`, params);
 };
+
+// 确认当前用户是否是经销商
+export const checkUser = () => {
+  return request.get(`/jcgl-user/wx/login/agent/check`);
+};
