@@ -295,6 +295,12 @@ const Index = () => {
                       skuLockVoList: skuLockVoList,
                     },
                   });
+                  dispatch({
+                    type: 'cart/update',
+                    payload: {
+                      checkCartData: checkData,
+                    },
+                  });
                 } else {
                   Taro.showToast({
                     title: '请选择商品',

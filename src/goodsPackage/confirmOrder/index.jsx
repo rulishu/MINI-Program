@@ -12,16 +12,15 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch(); //queryInfo,
   const {
-    goodsName,
     currentAddress,
     orderNotesInfo,
     shoppingCartVOList,
     orderToken,
-    activeSku,
     queryInfo,
     selectedCoupon,
     couponDtoList,
   } = useSelector((state) => state.goodInfo);
+  const { checkCartData } = useSelector((state) => state.cart);
   const receiveCoupon = couponDtoList?.filter((item) => item.available === 1);
   const idData = couponDtoList?.filter((item) => item.selected === 1);
 
@@ -76,11 +75,10 @@ const Index = () => {
   const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
 
   // 处理确认订单展示数据
-  // console.log('shoppingCartVOList', shoppingCartVOList.map((item) => item?.cartVOList).flat());
   const orderInfo = shoppingCartVOList.map((item) => item?.cartVOList).flat();
   // shoppingCartVOList?.at(0)?.cartVOList.at(0);
 
-  const shoppingCartVOLists = shoppingCartVOList?.at(0)?.cartVOList?.map((item) => {
+  const shoppingCartVOLists = orderInfo?.map((item) => {
     let list = [
       {
         skuId: Number(item?.skuId),
@@ -140,7 +138,12 @@ const Index = () => {
       },
     });
   };
-
+  // 商品总价
+  const orderTotalPrice = orderInfo
+    ?.reduce((acc, item) => {
+      return acc + item?.totalPrice;
+    }, 0)
+    .toFixed(2);
   // 支付
   const onPay = async () => {
     if (curAddress?.id === undefined) {
@@ -154,14 +157,15 @@ const Index = () => {
     let params = {
       orderToken: orderToken,
       receivingAddressId: curAddress?.id,
-      skuId: Number(orderInfo?.skuId),
-      totalPrice: orderInfo?.totalPrice,
+      skuId: orderInfo.map((item) => item?.skuId),
+      totalPrice: orderTotalPrice,
       realName: curAddress?.consignee,
       status: 0,
       count: orderInfo?.count,
       remark: orderNotesInfo, //备注
       shoppingCartVOList: shoppingCartVOLists,
       id: queryInfo?.id,
+      cartIds: checkCartData.map((item) => item?.id),
       userCouponId: Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
       callBack: () => {
         // 预订单
@@ -173,7 +177,7 @@ const Index = () => {
           gatewayId: 2,
           gatewayCode: 'WX_PAY',
           gatewayTerminal: 2,
-          paymentAmount: orderInfo?.totalPrice,
+          paymentAmount: orderTotalPrice,
           tradeType: 0,
         });
       },
@@ -187,12 +191,6 @@ const Index = () => {
       payload: params,
     });
   };
-  // 商品总价
-  const orderTotalPrice = orderInfo
-    ?.reduce((acc, item) => {
-      return acc + item?.totalPrice;
-    }, 0)
-    .toFixed(2);
   // 合计
   const total = () => {
     if (!queryInfo?.isActivityItem) {
@@ -247,6 +245,7 @@ const Index = () => {
         </View>
         <View className="goods-info">
           {orderInfo?.map((data) => {
+            const valuesString = data?.attributeDtos?.map((item) => item.value).join(', ');
             return (
               <View className="goods-info-head" key={data?.id}>
                 <View className="goods-info-head-left">
@@ -255,16 +254,10 @@ const Index = () => {
                   </View>
                   <View className="goods-info-head-info">
                     <View className="goods-info-head-info-title">
-                      <Text>{goodsName}</Text>
+                      <Text>{data?.title}</Text>
                     </View>
                     <View className="goods-info-head-info-doc">
-                      {Object.keys(activeSku).map((item) => {
-                        return (
-                          <Text key={item.id} className="doc">
-                            {`${item}:${activeSku[item]?.value}`},
-                          </Text>
-                        );
-                      })}
+                      <Text className="doc">{valuesString}</Text>
                     </View>
                   </View>
                 </View>
