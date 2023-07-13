@@ -69,6 +69,7 @@ export default {
                 title: '该用户不是代理商',
                 icon: 'error',
                 duration: 2000,
+                mask: true,
               });
         }
       } catch (err) {}
