@@ -68,18 +68,23 @@ const Index = () => {
   };
 
   const onChange = (typeId) => {
+    let params = {
+      dividendType: [3, 4],
+      accountType: 2,
+      startTime: '',
+      endTime: '',
+      isDelete: typeId === 3 ? 1 : 0,
+      flowStatus: typeId === 2 ? 1 : 0,
+      pageNum: pageNum,
+      pageSize: pageSize,
+    };
+    if (typeId === 0) {
+      delete params.flowStatus;
+      delete params.isDelete;
+    }
     dispatch({
       type: 'proxyDividendDetails/agentSelectList',
-      payload: {
-        dividendType: [3, 4],
-        accountType: 2,
-        startTime: '',
-        endTime: '',
-        isDelete: typeId === 3 ? 1 : 0,
-        flowStatus: typeId === 2 ? 1 : 0,
-        pageNum: pageNum,
-        pageSize: pageSize,
-      },
+      payload: params,
     });
   };
   return (

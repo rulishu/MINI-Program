@@ -33,6 +33,7 @@ export default {
     },
     // 代理管理分润列表查询
     *agentSelectList({ payload }, { call, put }) {
+      Taro.showLoading({ title: '加载中...', mask: true });
       try {
         const params = { ...payload };
         const result = yield call(agentSelectList, params);
@@ -44,8 +45,11 @@ export default {
               total: result?.result?.total,
             },
           });
+          Taro.hideLoading();
         }
-      } catch (err) {}
+      } catch (err) {
+        Taro.hideLoading();
+      }
     },
   },
   reducers: {
