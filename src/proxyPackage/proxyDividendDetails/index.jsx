@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from '@tarojs/components';
 import Popup from './popup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Orders from './orders';
 import { tabList } from './eumn';
 import { QuestionOutlined, FilterOutlined } from '@taroify/icons';
 import { Tag, Popover } from '@nutui/nutui-react-taro';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
@@ -13,24 +14,35 @@ const Index = () => {
   const [activeTag, setActiveTag] = useState(0);
   const [lightTheme, setLightTheme] = useState(false);
   const [activeName, setActiveName] = useState('筛选');
+  const userInfo = Taro.getStorageSync('userInfo');
+  const { detailData } = useSelector((state) => state.proxyDividendDetails);
+
+  useEffect(() => {
+    dispatch({
+      type: 'proxyDividendDetails/agentSelectDetail',
+      payload: {
+        id: parseInt(userInfo.id),
+      },
+    });
+  }, []);
   const itemList = [{ name: '全部' }, { name: '发起方分润' }, { name: '收件方分润' }];
 
   const list = [
     {
       title: '今日地盘分润',
-      num: '12.00',
+      num: detailData?.today,
     },
     {
       title: '本月地盘分润',
-      num: '59.00',
+      num: detailData?.month,
     },
     {
       title: '累积地盘分润',
-      num: '1299.00',
+      num: detailData?.total,
     },
     {
       title: '未结算地盘分润',
-      num: '100.00',
+      num: detailData?.unsettled,
     },
   ];
 
