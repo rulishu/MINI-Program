@@ -30,4 +30,7 @@ export const additionSubtraction = (params) => {
   return request.post(`/jcgl-mall/app/shopping/cart/goods/addition/and/subtraction`, params);
 };
 
-// 结算
+// 结算校验接口
+export const cartGoodsSettlement = (params) => {
+  return request.post(`/jcgl-mall/app/shopping/cart/goods/settlement`, params);
+};
