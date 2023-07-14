@@ -10,11 +10,14 @@ import my11 from '@/assets/images/my11.svg';
 // import my17 from '@/assets/images/my17.svg';
 // import my15 from '@/assets/images/my15.svg';
 // import my2 from '@/assets/images/my2.svg';
+import { useSelector, useDispatch } from 'react-redux';
 import Taro from '@tarojs/taro';
 
 import './index.scss';
 
 const Index = () => {
+  const dispatch = useDispatch();
+  const { userInfos } = useSelector((state) => state.my);
   // 跳转
   const go = (item) => {
     const token = Taro.getStorageSync('token');
@@ -33,7 +36,12 @@ const Index = () => {
       Taro.navigateTo({ url: item.url });
     }
     if (item.title === '代理管理') {
-      Taro.navigateTo({ url: item.url });
+      dispatch({
+        type: 'my/checkUser',
+        callBack: () => {
+          Taro.navigateTo({ url: item.url });
+        },
+      });
     }
   };
   const list = [
@@ -54,7 +62,7 @@ const Index = () => {
     {
       icon: my12,
       title: '代理管理',
-      url: '/proxyPackage/proxyManagement/index',
+      url: `/proxyPackage/proxyManagement/index?id=${userInfos.id}`,
     },
     // {
     //   icon: my12,

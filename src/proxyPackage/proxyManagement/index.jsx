@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import Popup from './popup';
-import { getAllOrders } from '@/server/allOrders';
+import { selectPage } from '@/server/myFans';
 import PullList from '@/component/pullList';
 import { useDispatch, useSelector } from 'react-redux';
 import Orders from './orders';
@@ -13,12 +13,28 @@ import './index.scss';
 import Taro from '@tarojs/taro';
 
 const Index = () => {
+  const params = Taro.getCurrentInstance().router.params;
+  const { id: userId } = params;
   const dispatch = useDispatch();
-  const { orderActive } = useSelector((state) => state.proxyManagement);
+  const updateFn = (payload) => {
+    dispatch({
+      type: 'proxyManagement/update',
+      payload: payload,
+    });
+  };
+  const { orderActive, agentInfo } = useSelector((state) => state.proxyManagement);
+  const { userAgent, subordinateAgent } = agentInfo;
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   const [activeName, setActiveName] = useState('筛选');
   const [lightTheme, setLightTheme] = useState(false);
+  const [addTime, setAddTime] = useState(true);
+  const [fansNum, setFansNum] = useState(true);
   useEffect(() => {
+    Taro.showLoading({ title: '加载中...', mask: true });
+    dispatch({
+      type: 'proxyManagement/getAgent',
+      payload: { userId: userId },
+    });
     //获取顶部导航栏位置
     let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
     const { top, height } = menuButtonInfo;
@@ -32,20 +48,6 @@ const Index = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderActive]);
-
-  const updateFn = (payload) => {
-    dispatch({
-      type: 'proxyManagement/update',
-      payload: payload,
-    });
-  };
-
-  const proxyUserInfo = {
-    text: '杭州省代',
-    type: '省级',
-    city: '浙江省',
-    numer: '18019118235',
-  };
 
   // 提示
   const onPrompt = (type) => {
@@ -61,30 +63,30 @@ const Index = () => {
 
   // 点击组织结构
   const onClickOrganization = (cellInfo) => {
-    window.console.log(cellInfo);
+    Taro.showLoading({ title: '加载中...', mask: true });
+    dispatch({
+      type: 'proxyManagement/getAgent',
+      payload: { userId: cellInfo?.legalPersonId },
+      // payload: {userId:userId},
+    });
   };
 
   const itemList = [
+    // 筛选弹窗数组
     { name: '全部' },
     { name: '奋斗者' },
     { name: '二级经销商' },
     { name: '一级经销商' },
   ];
 
-  const organizationList = [
-    { name: '杭州市代', type: '市代' },
-    { name: '宁波市代', type: '市代' },
-    { name: '绍兴市代', type: '市代' },
-    { name: '萧山区代', type: '区/县级' },
-  ];
-
   return (
     <View className="content">
       <View className="head">
         <View>
-          <View className="head-name">{proxyUserInfo.text}</View>
+          <View className="head-name">{userAgent?.areaName + '代'}</View>
           <View className="head-info">
-            {proxyUserInfo.type} | {proxyUserInfo.city} | {proxyUserInfo.numer}
+            {userAgent?.level === 1 ? '省级' : userAgent?.level === 2 ? '市代' : '区代'} |{' '}
+            {userAgent?.areaName} | {userAgent?.consumerPhone}
           </View>
         </View>
         <Divider styles={{ color: '#B3B3B3', marginTop: '10px', marginBottom: '0' }} />
@@ -99,15 +101,15 @@ const Index = () => {
           <View className="sharing-info">
             <View className="info-item">
               <Text>今日预估分润</Text>
-              <Text>12.00</Text>
+              <Text>{agentInfo?.initiatorToday}</Text>
             </View>
             <View className="info-item">
               <Text>本月预估分润</Text>
-              <Text>12.00</Text>
+              <Text>{agentInfo?.initiatorMonth}</Text>
             </View>
             <View className="info-item">
               <Text>累计分润</Text>
-              <Text>12.00</Text>
+              <Text>{agentInfo?.initiatorTotal}</Text>
             </View>
           </View>
         </View>
@@ -122,48 +124,50 @@ const Index = () => {
           <View className="sharing-info">
             <View className="info-item">
               <Text>今日预估分润</Text>
-              <Text>12.00</Text>
+              <Text>{agentInfo?.recipientToday}</Text>
             </View>
             <View className="info-item">
               <Text>本月预估分润</Text>
-              <Text>12.00</Text>
+              <Text>{agentInfo?.recipientMonth}</Text>
             </View>
             <View className="info-item">
               <Text>累计分润</Text>
-              <Text>12.00</Text>
+              <Text>{agentInfo?.recipientTotal}</Text>
             </View>
           </View>
         </View>
       </View>
-      <View className="organization">
-        <View className="organization-title">
-          <Text style={{ marginRight: '5px' }}>组织结构</Text>
-          <QuestionOutlined onClick={() => onPrompt(2)} />
+      {subordinateAgent && (
+        <View className="organization">
+          <View className="organization-title">
+            <Text style={{ marginRight: '5px' }}>组织结构</Text>
+            <QuestionOutlined onClick={() => onPrompt(2)} />
+          </View>
+          <View className="cellgroup">
+            <CellGroup>
+              {subordinateAgent?.map((item, index) => {
+                return (
+                  <Cell
+                    key={index}
+                    onClick={() => {
+                      onClickOrganization(item);
+                    }}
+                    title={
+                      <View style={{ display: 'flex' }}>
+                        <Tag color="#E9E9E9" textColor="#999999">
+                          {item?.level === 2 ? '市级' : '区/县级'}
+                        </Tag>
+                        <View className="cell-title">{item?.areaName + '代'}</View>
+                      </View>
+                    }
+                    isLink
+                  />
+                );
+              })}
+            </CellGroup>
+          </View>
         </View>
-        <View className="cellgroup">
-          <CellGroup>
-            {organizationList?.map((item, index) => {
-              return (
-                <Cell
-                  key={index}
-                  onClick={() => {
-                    onClickOrganization(item);
-                  }}
-                  title={
-                    <View style={{ display: 'flex' }}>
-                      <Tag color="#E9E9E9" textColor="#999999">
-                        {item.type}
-                      </Tag>
-                      <View className="cell-title">{item.name}</View>
-                    </View>
-                  }
-                  isLink
-                />
-              );
-            })}
-          </CellGroup>
-        </View>
-      </View>
+      )}
       <View className="fans-body">
         <Tabs
           background="#F2F2F2"
@@ -178,16 +182,39 @@ const Index = () => {
                 <View className="fansList-crown">
                   <View className="joined">
                     <Text>加入时间</Text>
-                    <View className="joined-icon">
-                      <ArrowUp />
-                      <ArrowDown />
+                    <View className="joined-icon" onClick={() => setAddTime(!addTime)}>
+                      {addTime ? (
+                        <>
+                          <ArrowUp />
+                          <ArrowDown style={{ color: '#A05635' }} />
+                        </>
+                      ) : (
+                        <>
+                          <ArrowUp style={{ color: '#A05635' }} />
+                          <ArrowDown />
+                        </>
+                      )}
                     </View>
                   </View>
                   <View className="joined">
                     <Text>粉丝数量</Text>
-                    <View className="joined-icon">
-                      <ArrowUp />
-                      <ArrowDown />
+                    <View
+                      className="joined-icon"
+                      onClick={() => {
+                        setFansNum(!fansNum);
+                      }}
+                    >
+                      {fansNum ? (
+                        <>
+                          <ArrowUp />
+                          <ArrowDown style={{ color: '#A05635' }} />
+                        </>
+                      ) : (
+                        <>
+                          <ArrowUp style={{ color: '#A05635' }} />
+                          <ArrowDown />
+                        </>
+                      )}
                     </View>
                   </View>
                   <View className="screen">
@@ -214,8 +241,22 @@ const Index = () => {
                   </View>
                 </View>
                 <PullList
-                  request={getAllOrders}
-                  params={{ orderStatus: orderActive }}
+                  request={selectPage}
+                  params={{
+                    pageNum: 1,
+                    pageSize: 20,
+                    fansLevel: orderActive * 1 + 1,
+                    sortByTime: addTime ? 0 : 1,
+                    sortByFans: fansNum ? 0 : 1,
+                    userLevel:
+                      activeName === '一级经销商'
+                        ? 1
+                        : activeName === '二级经销商'
+                        ? 2
+                        : activeName === '奋斗者'
+                        ? 3
+                        : undefined,
+                  }}
                   style={{ height: '70vh' }}
                   renderList={(dataSource, refresh) => {
                     return <Orders refresh={refresh} keys={item.id} dataSource={dataSource} />;
