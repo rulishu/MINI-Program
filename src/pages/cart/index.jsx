@@ -134,6 +134,7 @@ const Index = () => {
       shoppingCartGoodsId: Number(itm?.id),
     };
   });
+  // 结算校验接口
   const { run, loading } = useRequest(cartGoodsSettlement, {
     manual: true,
     onSuccess: ({ code, result }) => {
@@ -329,7 +330,7 @@ const Index = () => {
                 }
               }}
             >
-              结算({cartList.length})
+              结算({checkData.length})
             </Button>
           </View>
         </View>

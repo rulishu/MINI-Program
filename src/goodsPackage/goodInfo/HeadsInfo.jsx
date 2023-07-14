@@ -119,12 +119,6 @@ const Index = () => {
             type: 'nowCart',
           },
         });
-        dispatch({
-          type: 'cart/update',
-          payload: {
-            checkCartData: checkData || [],
-          },
-        });
       }
     }
   };
