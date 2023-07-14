@@ -15,7 +15,7 @@ const Index = () => {
   const [lightTheme, setLightTheme] = useState(false);
   const [activeName, setActiveName] = useState('筛选');
   const userInfo = Taro.getStorageSync('userInfo');
-  const { detailData } = useSelector((state) => state.proxyDividendDetails);
+  const { detailData, pageNum, pageSize } = useSelector((state) => state.proxyDividendDetails);
 
   useEffect(() => {
     dispatch({
@@ -27,14 +27,12 @@ const Index = () => {
     dispatch({
       type: 'proxyDividendDetails/agentSelectList',
       payload: {
-        dsDividendFlowQueryVo: [
-          {
-            dividendType: [3, 4],
-            accountType: 2,
-            startTime: '',
-            endTime: '',
-          },
-        ],
+        pageNum: pageNum,
+        pageSize: pageSize,
+        dividendType: [3, 4],
+        accountType: 2,
+        startTime: '',
+        endTime: '',
       },
     });
   }, []);
@@ -73,16 +71,14 @@ const Index = () => {
     dispatch({
       type: 'proxyDividendDetails/agentSelectList',
       payload: {
-        dsDividendFlowQueryVo: [
-          {
-            dividendType: [3, 4],
-            accountType: 2,
-            startTime: '',
-            endTime: '',
-            isDelete: typeId === 3 ? 1 : 0,
-            flowStatus: typeId === 2 ? 1 : 0,
-          },
-        ],
+        dividendType: [3, 4],
+        accountType: 2,
+        startTime: '',
+        endTime: '',
+        isDelete: typeId === 3 ? 1 : 0,
+        flowStatus: typeId === 2 ? 1 : 0,
+        pageNum: pageNum,
+        pageSize: pageSize,
       },
     });
   };

@@ -9,6 +9,10 @@ export default {
     popupOpen: false,
     orderActive: 0,
     detailData: {}, // 分润明细查询数据
+    agentDataList: [], // 代理管理分润列表
+    pageNum: 1,
+    pageSize: 20,
+    total: 0,
   },
 
   effects: {
@@ -32,6 +36,15 @@ export default {
       try {
         const params = { ...payload };
         const result = yield call(agentSelectList, params);
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              agentDataList: result?.result?.records || [],
+              total: result?.result?.total,
+            },
+          });
+        }
       } catch (err) {}
     },
   },
