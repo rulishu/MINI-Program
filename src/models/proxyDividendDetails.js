@@ -27,6 +27,13 @@ export default {
         }
       } catch (err) {}
     },
+    // 代理管理分润列表查询
+    *agentSelectList({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(agentSelectList, params);
+      } catch (err) {}
+    },
   },
   reducers: {
     update(state, { payload }) {
