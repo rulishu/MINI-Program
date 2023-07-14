@@ -122,10 +122,20 @@ const Index = () => {
 
   // 选择地址
   const onSelectAddress = () => {
+    const skuInfo = shoppingCartVOList.map((item) => {
+      let info = {
+        count: item.cartVOList[0].count,
+        skuId: item.cartVOList[0].skuId,
+      };
+      if (queryInfo?.activityDto?.id) {
+        info = { ...info, activityId: queryInfo?.activityDto?.id };
+      }
+      return info;
+    });
     Taro.navigateTo({
-      url: `/userPackage/address/index?confirmAddress=${JSON.stringify(curAddress)}&count=${
-        shoppingCartVOList[0]?.cartVOList[0]?.count
-      }&skuId=${shoppingCartVOList[0]?.skuId}&activityId=${queryInfo?.activityDto?.id}`,
+      url: `/userPackage/address/index?confirmAddress=${JSON.stringify(
+        curAddress,
+      )}&skuInfo=${JSON.stringify(skuInfo)}&activityId=${queryInfo?.activityDto?.id}`,
     });
   };
 

@@ -24,7 +24,6 @@ const Index = () => {
   };
   const { orderActive, agentInfo } = useSelector((state) => state.proxyManagement);
   const { userAgent, subordinateAgent } = agentInfo;
-  window.console.log(agentInfo);
   const [homeTopNavHeight, setHomeTopNavHeight] = useState(0);
   const [activeName, setActiveName] = useState('筛选');
   const [lightTheme, setLightTheme] = useState(false);
