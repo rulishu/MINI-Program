@@ -9,6 +9,10 @@ export default {
     popupOpen: false,
     orderActive: 0,
     detailData: {}, // 分润明细查询数据
+    agentDataList: [], // 代理管理分润列表
+    pageNum: 1,
+    pageSize: 20,
+    total: 0,
   },
 
   effects: {
@@ -29,10 +33,23 @@ export default {
     },
     // 代理管理分润列表查询
     *agentSelectList({ payload }, { call, put }) {
+      Taro.showLoading({ title: '加载中...', mask: true });
       try {
         const params = { ...payload };
         const result = yield call(agentSelectList, params);
-      } catch (err) {}
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              agentDataList: result?.result?.records || [],
+              total: result?.result?.total,
+            },
+          });
+          Taro.hideLoading();
+        }
+      } catch (err) {
+        Taro.hideLoading();
+      }
     },
   },
   reducers: {

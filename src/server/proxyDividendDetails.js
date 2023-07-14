@@ -7,5 +7,8 @@ export const agentSelectDetail = (params) => {
 
 // 代理管理分润列表查询
 export const agentSelectList = (params) => {
-  return request.post('/jcgl-mall/app/dividend/flow/select/page/list', params);
+  return request.post(
+    `/jcgl-mall/app/dividend/flow/select/page/list?pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
+    params,
+  );
 };
