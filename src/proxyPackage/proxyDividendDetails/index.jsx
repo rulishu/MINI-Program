@@ -24,6 +24,19 @@ const Index = () => {
         id: parseInt(userInfo.id),
       },
     });
+    dispatch({
+      type: 'proxyDividendDetails/agentSelectList',
+      payload: {
+        dsDividendFlowQueryVo: [
+          {
+            dividendType: [3, 4],
+            accountType: 2,
+            startTime: '',
+            endTime: '',
+          },
+        ],
+      },
+    });
   }, []);
   const itemList = [{ name: '全部' }, { name: '发起方分润' }, { name: '收件方分润' }];
 
@@ -56,6 +69,23 @@ const Index = () => {
     });
   };
 
+  const onChange = (typeId) => {
+    dispatch({
+      type: 'proxyDividendDetails/agentSelectList',
+      payload: {
+        dsDividendFlowQueryVo: [
+          {
+            dividendType: [3, 4],
+            accountType: 2,
+            startTime: '',
+            endTime: '',
+            isDelete: typeId === 3 ? 1 : 0,
+            flowStatus: typeId === 2 ? 1 : 0,
+          },
+        ],
+      },
+    });
+  };
   return (
     <View className="fans">
       <View className="fans-head">
@@ -87,6 +117,7 @@ const Index = () => {
                     plain
                     onClick={() => {
                       setActiveTag(index);
+                      onChange(a?.id);
                     }}
                     color={index !== activeTag ? '#999999' : '#965A3C'}
                     key={index}
