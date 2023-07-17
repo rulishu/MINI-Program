@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 // import Taro from '@tarojs/taro';
-import { getUserInfo, editUserInfo, statis } from '@/server/my';
+import { getUserInfo, editUserInfo, statis, checkUser } from '@/server/my';
+import Taro from '@tarojs/taro';
 
 export default {
   namespace: 'my', // 这是模块名
@@ -53,6 +54,23 @@ export default {
           //   payload: {
           //   },
           // });
+        }
+      } catch (err) {}
+    },
+
+    //验证是否为代理
+    *checkUser({ callBack }, { call, put }) {
+      try {
+        const result = yield call(checkUser);
+        if (result && result.code === 200) {
+          result.result
+            ? callBack()
+            : Taro.showToast({
+                title: '该用户不是代理商',
+                icon: 'error',
+                duration: 2000,
+                mask: true,
+              });
         }
       } catch (err) {}
     },

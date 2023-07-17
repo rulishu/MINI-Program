@@ -12,16 +12,15 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch(); //queryInfo,
   const {
-    goodsName,
     currentAddress,
     orderNotesInfo,
     shoppingCartVOList,
     orderToken,
-    activeSku,
     queryInfo,
     selectedCoupon,
     couponDtoList,
   } = useSelector((state) => state.goodInfo);
+  const { checkCartData } = useSelector((state) => state.cart);
   const receiveCoupon = couponDtoList?.filter((item) => item.available === 1);
   const idData = couponDtoList?.filter((item) => item.selected === 1);
 
@@ -76,9 +75,10 @@ const Index = () => {
   const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
 
   // 处理确认订单展示数据
-  const orderInfo = shoppingCartVOList?.at(0)?.cartVOList.at(0);
+  const orderInfo = shoppingCartVOList.map((item) => item?.cartVOList).flat();
+  // shoppingCartVOList?.at(0)?.cartVOList.at(0);
 
-  const shoppingCartVOLists = shoppingCartVOList?.at(0)?.cartVOList?.map((item) => {
+  const shoppingCartVOLists = orderInfo?.map((item) => {
     let list = [
       {
         skuId: Number(item?.skuId),
@@ -122,10 +122,20 @@ const Index = () => {
 
   // 选择地址
   const onSelectAddress = () => {
+    const skuInfo = shoppingCartVOList.map((item) => {
+      let info = {
+        count: item.cartVOList[0].count,
+        skuId: item.cartVOList[0].skuId,
+      };
+      if (queryInfo?.activityDto?.id) {
+        info = { ...info, activityId: queryInfo?.activityDto?.id };
+      }
+      return info;
+    });
     Taro.navigateTo({
-      url: `/userPackage/address/index?confirmAddress=${JSON.stringify(curAddress)}&count=${
-        shoppingCartVOList[0]?.cartVOList[0]?.count
-      }&skuId=${shoppingCartVOList[0]?.skuId}&activityId=${queryInfo?.activityDto?.id}`,
+      url: `/userPackage/address/index?confirmAddress=${JSON.stringify(
+        curAddress,
+      )}&skuInfo=${JSON.stringify(skuInfo)}&activityId=${queryInfo?.activityDto?.id}`,
     });
   };
 
@@ -138,7 +148,12 @@ const Index = () => {
       },
     });
   };
-
+  // 商品总价
+  const orderTotalPrice = orderInfo
+    ?.reduce((acc, item) => {
+      return acc + item?.totalPrice;
+    }, 0)
+    .toFixed(2);
   // 支付
   const onPay = async () => {
     if (curAddress?.id === undefined) {
@@ -152,14 +167,15 @@ const Index = () => {
     let params = {
       orderToken: orderToken,
       receivingAddressId: curAddress?.id,
-      skuId: Number(orderInfo?.skuId),
-      totalPrice: orderInfo?.totalPrice,
+      skuId: orderInfo.map((item) => item?.skuId),
+      totalPrice: orderTotalPrice,
       realName: curAddress?.consignee,
       status: 0,
       count: orderInfo?.count,
       remark: orderNotesInfo, //备注
       shoppingCartVOList: shoppingCartVOLists,
       id: queryInfo?.id,
+      cartIds: checkCartData.map((item) => item?.id),
       userCouponId: Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
       callBack: () => {
         // 预订单
@@ -171,7 +187,7 @@ const Index = () => {
           gatewayId: 2,
           gatewayCode: 'WX_PAY',
           gatewayTerminal: 2,
-          paymentAmount: orderInfo?.totalPrice,
+          paymentAmount: orderTotalPrice,
           tradeType: 0,
         });
       },
@@ -185,26 +201,25 @@ const Index = () => {
       payload: params,
     });
   };
-
+  // 合计
   const total = () => {
-    if (queryInfo?.isActivityItem === false) {
-      if (orderInfo?.totalPrice >= selectedCoupon?.minimumConsumption) {
+    if (!queryInfo?.isActivityItem) {
+      if (orderTotalPrice >= selectedCoupon?.minimumConsumption) {
         return selectedCoupon.type === 2
-          ? Number(orderInfo?.totalPrice - selectedCoupon?.price).toFixed(2)
-          : electedCoupon.type === 3 &&
-              Number(orderInfo?.totalPrice * selectedCoupon?.price).toFixed(2);
+          ? Number(orderTotalPrice - selectedCoupon?.price).toFixed(2)
+          : electedCoupon.type === 3 && Number(orderTotalPrice * selectedCoupon?.price).toFixed(2);
       } else {
         if (idData?.at(0)?.price === undefined) {
-          return Number(orderInfo?.totalPrice).toFixed(2);
+          return Number(orderTotalPrice).toFixed(2);
         } else {
           return (
-            Number(orderInfo?.totalPrice - idData?.at(0)?.price).toFixed(2) ||
-            Number(orderInfo?.totalPrice).toFixed(2)
+            Number(orderTotalPrice - idData?.at(0)?.price).toFixed(2) ||
+            Number(orderTotalPrice).toFixed(2)
           );
         }
       }
     } else {
-      return Number(orderInfo?.totalPrice).toFixed(2);
+      return Number(orderTotalPrice).toFixed(2);
     }
   };
 
@@ -239,40 +254,34 @@ const Index = () => {
           </View>
         </View>
         <View className="goods-info">
-          <View className="goods-info-head">
-            <View className="goods-info-head-left">
-              <View className="goods-info-head-img">
-                {/* eslint-disable-next-line global-require */}
-                <Image
-                  mode="widthFix"
-                  src={orderInfo?.defaultImage}
-                  style={{ width: 128, height: 128 }}
-                ></Image>
-              </View>
-              <View className="goods-info-head-info">
-                <View className="goods-info-head-info-title">
-                  <Text>{goodsName}</Text>
+          {orderInfo?.map((data) => {
+            const valuesString = data?.attributeDtos?.map((item) => item.value).join(', ');
+            return (
+              <View className="goods-info-head" key={data?.id}>
+                <View className="goods-info-head-left">
+                  <View className="goods-info-head-img" style={{ width: 80, height: 80 }}>
+                    <Image src={data?.defaultImage} style={{ width: 80, height: 80 }}></Image>
+                  </View>
+                  <View className="goods-info-head-info">
+                    <View className="goods-info-head-info-title">
+                      <Text>{data?.title}</Text>
+                    </View>
+                    <View className="goods-info-head-info-doc">
+                      <Text className="doc">{valuesString}</Text>
+                    </View>
+                  </View>
                 </View>
-                <View className="goods-info-head-info-doc">
-                  {Object.keys(activeSku).map((item) => {
-                    return (
-                      <Text key={item.id} className="doc">
-                        {`${item}:${activeSku[item]?.value}`},
-                      </Text>
-                    );
-                  })}
+                <View className="goods-info-head-right">
+                  <View className="goods-info-head-right-num">
+                    <Text>x{data?.count}</Text>
+                  </View>
+                  <View className="goods-info-head-right-price">
+                    <Text>￥{data?.unitPrice}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <View className="goods-info-head-right">
-              <View className="goods-info-head-right-num">
-                <Text>x{orderInfo?.count}</Text>
-              </View>
-              <View className="goods-info-head-right-price">
-                <Text>￥{orderInfo?.unitPrice}</Text>
-              </View>
-            </View>
-          </View>
+            );
+          })}
           <Divider style={{ color: '#D7D7D7' }} />
           <View className="address-price">
             <View>
@@ -302,7 +311,7 @@ const Index = () => {
                 <Text>商品总价</Text>
               </View>
               <View>
-                <Text>{orderInfo?.totalPrice}</Text>
+                <Text>{orderTotalPrice}</Text>
               </View>
             </View>
             <View className="address-price">
@@ -313,7 +322,7 @@ const Index = () => {
                 <Text>免邮</Text>
               </View>
             </View>
-            {queryInfo?.isActivityItem === false ? (
+            {!queryInfo?.isActivityItem ? (
               <View
                 className="address-price"
                 onClick={() => {

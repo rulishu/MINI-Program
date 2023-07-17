@@ -7,8 +7,5 @@ export const selectAllLevelTwo = () => {
 
 // 获取二级类目下商品接口
 export const getList = (params) => {
-  return request.post(
-    `/jcgl-mall/app/marketing/relation/selectItemOne?pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
-    params,
-  );
+  return request.post(`/jcgl-mall/app/marketing/relation/selectItemOne`, params);
 };

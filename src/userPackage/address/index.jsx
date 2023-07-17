@@ -26,8 +26,7 @@ const Index = () => {
     let path = prevpage?.route; // 上一个页面路由地址
     const params = Taro.getCurrentInstance().router.params;
     const curAddress = params.confirmAddress ? JSON.parse(params.confirmAddress) : {};
-    const skuId = params.skuId;
-    const count = params.count;
+    const skuInfo = params.skuInfo ? JSON.parse(params.skuInfo) : {};
     // const activityId = params.activityId;
     let activityId = params.activityId;
     let newActivityId;
@@ -48,12 +47,8 @@ const Index = () => {
         dispatch({
           type: 'goodInfo/newConfirm',
           payload: {
-            activityId: activityId,
-            skuLockVoList: {
-              count: count,
-              skuId: skuId,
-              activityId: activityId,
-            },
+            activityId: newActivityId,
+            skuLockVoList: skuInfo,
           },
         });
       } else {
@@ -73,11 +68,7 @@ const Index = () => {
               cityCode: addressList[0]?.cityCode,
               provinceCode: addressList[0]?.provinceCode,
               activityId: newActivityId,
-              skuLockVoList: {
-                count: count,
-                activityId: newActivityId,
-                skuId: skuId,
-              },
+              skuLockVoList: skuInfo,
             },
           });
         }
@@ -140,9 +131,7 @@ const Index = () => {
     let prevpage = pages[pages.length - 2]; // 上一个页面对象
     let path = prevpage?.route; // 上一个页面路由地址
     const params = Taro.getCurrentInstance().router.params;
-    const skuId = params.skuId;
-    // const activityId = params.activityId;
-    const count = params.count;
+    const skuInfo = params.skuInfo ? JSON.parse(params.skuInfo) : {};
     let activityId = params.activityId;
     let newActivityId;
 
@@ -159,11 +148,7 @@ const Index = () => {
           cityCode: item.cityCode,
           provinceCode: item.provinceCode,
           activityId: newActivityId,
-          skuLockVoList: {
-            count: count,
-            activityId: newActivityId,
-            skuId: skuId,
-          },
+          skuLockVoList: skuInfo,
         },
       });
       dispatch({
