@@ -13,11 +13,13 @@ const Index = () => {
   const dispatch = useDispatch();
   const [activeTag, setActiveTag] = useState(0);
   const userInfo = Taro.getStorageSync('userInfo');
-  const { detailData, pageNum, pageSize } = useSelector((state) => state.proxyDividendDetails);
+  const { dividendDetailData, pageNum, pageSize } = useSelector(
+    (state) => state.proxyDividendDetails,
+  );
 
   useEffect(() => {
     dispatch({
-      type: 'proxyDividendDetails/agentSelectDetail',
+      type: 'proxyDividendDetails/dividendSelectDetail',
       payload: {
         id: parseInt(userInfo.id),
       },
@@ -38,19 +40,19 @@ const Index = () => {
   const list = [
     {
       title: '今日预估分润',
-      num: detailData?.today,
+      num: dividendDetailData?.today,
     },
     {
       title: '未结算分润',
-      num: detailData?.unsettled,
+      num: dividendDetailData?.unsettled,
     },
     {
       title: '累积分润',
-      num: detailData?.total,
+      num: dividendDetailData?.total,
     },
     {
       title: '已提现',
-      num: '100.00',
+      num: dividendDetailData?.withdrawn,
     },
   ];
 
@@ -87,7 +89,7 @@ const Index = () => {
     <View className="fans">
       <View className="fans-head">
         <View className="fans-head-top">
-          <View>可提现 0.01</View>
+          <View>可提现 {dividendDetailData?.withdrawable}</View>
           <View className="fans-head-top-right">
             <View>立即提现</View>
             <Arrow />

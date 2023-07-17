@@ -90,7 +90,7 @@ const Index = () => {
             </View>
             <View className="dividendDetails-info-bot">
               <View> {moment(item.createTime).format('MM-HH hh:mm')}</View>
-              <View> 预计代缴个税:{item.price}</View>
+              {/* <View> 预计代缴个税:{item.price}</View> */}
             </View>
           </View>
         ))}

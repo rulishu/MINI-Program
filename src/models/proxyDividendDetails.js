@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { agentSelectDetail, agentSelectList } from '@/server/proxyDividendDetails';
+import {
+  agentSelectDetail,
+  agentSelectList,
+  dividendSelectDetail,
+} from '@/server/proxyDividendDetails';
 
 export default {
   namespace: 'proxyDividendDetails',
@@ -8,8 +12,9 @@ export default {
     // 初始化数据
     popupOpen: false,
     orderActive: 0,
-    detailData: {}, // 分润明细查询数据
-    agentDataList: [], // 代理管理分润列表
+    detailData: {}, // 代理分润数据
+    agentDataList: [], // 代理和经销分润列表
+    dividendDetailData: [], // 经销分润数据
     pageNum: 1,
     pageSize: 20,
     total: 0,
@@ -50,6 +55,20 @@ export default {
       } catch (err) {
         Taro.hideLoading();
       }
+    },
+    *dividendSelectDetail({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(dividendSelectDetail, params);
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              dividendDetailData: result?.result,
+            },
+          });
+        }
+      } catch (err) {}
     },
   },
   reducers: {
