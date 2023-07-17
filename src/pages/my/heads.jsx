@@ -107,7 +107,14 @@ const Index = () => {
             <Text className="head-info-name-xf">续费</Text> */}
           </View>
           <View className="head-infos-id">
-            <Text>奋斗者 ID: {userInfos.id || '暂无信息'}</Text>
+            <Text>
+              {userInfos?.level === '3'
+                ? '奋斗者'
+                : userInfos?.level === '1'
+                ? '一级经销商'
+                : '二级经销商'}{' '}
+              ID: {userInfos.id || '暂无信息'}
+            </Text>
             <Image
               mode="widthFix"
               src={ewm}

@@ -11,9 +11,9 @@ import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
-  const [activeTag, setActiveTag] = useState(0);
+  const [activeTag, setActiveTag] = useState(0); // 选中Tag
   const [lightTheme, setLightTheme] = useState(false);
-  const [activeName, setActiveName] = useState('筛选');
+  const [activeDividend, setActiveDividend] = useState(0); // 选中分润类型
   const userInfo = Taro.getStorageSync('userInfo');
   const { detailData, pageNum, pageSize } = useSelector((state) => state.proxyDividendDetails);
 
@@ -36,7 +36,11 @@ const Index = () => {
       },
     });
   }, []);
-  const itemList = [{ name: '全部' }, { name: '发起方分润' }, { name: '收件方分润' }];
+  const itemList = [
+    { id: [3, 4], name: '全部' },
+    { id: 3, name: '发起方分润' },
+    { id: 4, name: '收件方分润' },
+  ];
 
   const list = [
     {
@@ -138,13 +142,28 @@ const Index = () => {
                   lightTheme ? setLightTheme(false) : setLightTheme(true);
                 }}
                 onChoose={(it) => {
-                  let name = it.name === '全部' ? '筛选' : it.name;
-                  setActiveName(name);
+                  setActiveDividend(it?.id);
+                  dispatch({
+                    type: 'proxyDividendDetails/agentSelectList',
+                    payload: {
+                      pageNum: 1,
+                      pageSize: 20,
+                      dividendType: it?.id,
+                      accountType: 2,
+                      startTime: '',
+                      endTime: '',
+                    },
+                  });
                 }}
                 list={itemList}
               >
                 <View className="screen">
-                  <Text style={{ fontSize: 12, fontWeight: 300 }}>{activeName}</Text>
+                  <Text style={{ fontSize: 12, fontWeight: 300 }}>
+                    {activeDividend === 0 && '筛选'}
+                    {activeDividend === 3 && '发起方分润'}
+                    {activeDividend === 4 && '收件方分润'}
+                    {JSON.stringify(activeDividend) === '[3,4]' && '全部'}
+                  </Text>
                   <FilterOutlined />
                 </View>
               </Popover>
