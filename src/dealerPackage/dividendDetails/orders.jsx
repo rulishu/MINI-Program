@@ -1,18 +1,20 @@
 import React, { Fragment, useState } from 'react';
 import { View } from '@tarojs/components';
-import { dataSource } from './eumn';
+// import { dataSource } from './eumn';
 import { Tag } from '@nutui/nutui-react-taro';
 import { ArrowDown } from '@taroify/icons';
 import { DatetimePicker, Popup } from '@taroify/core';
 import './index.scss';
 import moment from 'moment';
 import { changeDate } from '@/utils/min';
+import { useSelector } from 'react-redux';
 
 const Index = () => {
   const [maxDate] = useState(new Date(moment().format('YYYY,MM')));
   const [defaultValue] = useState(new Date(moment().format('YYYY,MM')));
   const [openTime, setOpenTime] = useState(false);
   const [time, setTime] = useState(moment().format('MM月/YYYY'));
+  const { agentDataList } = useSelector((state) => state.proxyDividendDetails);
 
   // 取消
   const onCancel = () => {
@@ -23,6 +25,15 @@ const Index = () => {
   const onConfirm = (value) => {
     setTime(changeDate(value));
     setOpenTime(false);
+  };
+  const dividendTypeStatus = {
+    1: '经销商分润',
+    2: '自购分润',
+    3: '发起地分润',
+    4: '收货地分润',
+    5: '总部分润',
+    6: '会员权益分润',
+    7: '推荐人分润',
   };
   return (
     <Fragment>
@@ -55,13 +66,13 @@ const Index = () => {
             </DatetimePicker.Toolbar>
           </DatetimePicker>
         </Popup>
-        {dataSource.map((item, index) => (
+        {agentDataList.map((item, index) => (
           <View className="dividendDetails-info" key={index}>
             <View className="dividendDetails-info-top">
               <View className="dividendDetails-info-top-left">
-                <View>{item.title}</View>
-                <View className="name">邀请人：{item.name}</View>
-                {item.state === 1 ? (
+                <View>{item.consumerName}</View>
+                <View className="name">邀请人：{item.beneficiary}</View>
+                {item.flowStatus === 1 ? (
                   <Tag plain color="#999999" style={{ fontSize: 10 }}>
                     已结算
                   </Tag>
@@ -72,11 +83,13 @@ const Index = () => {
                   </Tag>
                 )}
               </View>
-              <View className="dividendDetails-info-top-right">+{item.money}</View>
+              <View className="dividendDetails-info-top-right">+{item.paidInAmount}</View>
             </View>
-            <View className="dividendDetails-info-mid">{item.type}</View>
+            <View className="dividendDetails-info-mid">
+              {dividendTypeStatus[item.dividendType]}
+            </View>
             <View className="dividendDetails-info-bot">
-              <View> {item.time}</View>
+              <View> {moment(item.createTime).format('MM-HH hh:mm')}</View>
               <View> 预计代缴个税:{item.price}</View>
             </View>
           </View>

@@ -1,29 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import Popup from './popup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Orders from './orders';
 import { tabList } from './eumn';
 import { QuestionOutlined, Arrow } from '@taroify/icons';
 import { Tag } from '@nutui/nutui-react-taro';
+import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const [activeTag, setActiveTag] = useState(0);
+  const userInfo = Taro.getStorageSync('userInfo');
+  const { detailData, pageNum, pageSize } = useSelector((state) => state.proxyDividendDetails);
+
+  useEffect(() => {
+    dispatch({
+      type: 'proxyDividendDetails/agentSelectDetail',
+      payload: {
+        id: parseInt(userInfo.id),
+      },
+    });
+    dispatch({
+      type: 'proxyDividendDetails/agentSelectList',
+      payload: {
+        pageNum: pageNum,
+        pageSize: pageSize,
+        dividendType: [3, 4],
+        accountType: 2,
+        startTime: '',
+        endTime: '',
+      },
+    });
+  }, []);
 
   const list = [
     {
       title: '今日预估分润',
-      num: '12.00',
+      num: detailData?.today,
     },
     {
       title: '未结算分润',
-      num: '59.00',
+      num: detailData?.unsettled,
     },
     {
       title: '累积分润',
-      num: '1299.00',
+      num: detailData?.total,
     },
     {
       title: '已提现',
@@ -40,7 +63,26 @@ const Index = () => {
       },
     });
   };
-
+  const onChange = (typeId) => {
+    let params = {
+      dividendType: [3, 4],
+      accountType: 2,
+      startTime: '',
+      endTime: '',
+      isDelete: typeId === 3 ? 1 : 0,
+      flowStatus: typeId === 2 ? 1 : 0,
+      pageNum: pageNum,
+      pageSize: pageSize,
+    };
+    if (typeId === 0) {
+      delete params.flowStatus;
+      delete params.isDelete;
+    }
+    dispatch({
+      type: 'proxyDividendDetails/agentSelectList',
+      payload: params,
+    });
+  };
   return (
     <View className="fans">
       <View className="fans-head">
@@ -74,6 +116,7 @@ const Index = () => {
                 plain
                 onClick={() => {
                   setActiveTag(index);
+                  onChange(a?.id);
                 }}
                 color={index !== activeTag ? '#999999' : '#965A3C'}
                 key={index}
