@@ -47,7 +47,7 @@ const Index = () => {
         dispatch({
           type: 'goodInfo/newConfirm',
           payload: {
-            activityId: activityId,
+            activityId: newActivityId,
             skuLockVoList: skuInfo,
           },
         });
