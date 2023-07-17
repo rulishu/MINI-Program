@@ -119,6 +119,8 @@ const Index = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  // 限售地区校验,0配送 1不配送,
+  const isDelivery = orderInfo.filter((itm) => itm?.isDelivery === 1); //0没限售地区，!==0是有限售地址
 
   // 选择地址
   const onSelectAddress = () => {
@@ -159,6 +161,13 @@ const Index = () => {
     if (curAddress?.id === undefined) {
       return Taro.showToast({
         title: '请添加收货地址',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
+    if (isDelivery.length !== 0) {
+      return Taro.showToast({
+        title: '非常抱歉，部分商品该收件地区限售',
         icon: 'none',
         duration: 2000,
       });
@@ -273,10 +282,13 @@ const Index = () => {
                 </View>
                 <View className="goods-info-head-right">
                   <View className="goods-info-head-right-num">
-                    <Text>x{data?.count}</Text>
+                    {data.isDelivery !== 1 && <Text>x{data?.count}</Text>}
+                  </View>
+                  <View>
+                    {data.isDelivery === 1 && <Text style={{ color: '#d9001c' }}>地区限售</Text>}
                   </View>
                   <View className="goods-info-head-right-price">
-                    <Text>￥{data?.unitPrice}</Text>
+                    {data.isDelivery !== 1 && <Text>￥{data?.unitPrice}</Text>}
                   </View>
                 </View>
               </View>
