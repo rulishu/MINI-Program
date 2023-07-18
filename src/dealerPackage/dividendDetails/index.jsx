@@ -7,17 +7,21 @@ import { tabList } from './eumn';
 import { QuestionOutlined, Arrow } from '@taroify/icons';
 import { Tag } from '@nutui/nutui-react-taro';
 import Taro from '@tarojs/taro';
+import moment from 'moment';
 import './index.scss';
 
 const Index = () => {
   const dispatch = useDispatch();
   const [activeTag, setActiveTag] = useState(0);
+  const [fort, setFort] = useState(new Date());
   const userInfo = Taro.getStorageSync('userInfo');
-  const { detailData, pageNum, pageSize } = useSelector((state) => state.proxyDividendDetails);
+  const { dividendDetailData, pageNum, pageSize } = useSelector(
+    (state) => state.proxyDividendDetails,
+  );
 
   useEffect(() => {
     dispatch({
-      type: 'proxyDividendDetails/agentSelectDetail',
+      type: 'proxyDividendDetails/dividendSelectDetail',
       payload: {
         id: parseInt(userInfo.id),
       },
@@ -29,8 +33,8 @@ const Index = () => {
         pageSize: pageSize,
         dividendType: [3, 4],
         accountType: 2,
-        startTime: '',
-        endTime: '',
+        startTime: moment().startOf('month').format('YYYY-MM-DD'),
+        endTime: moment().endOf('month').format('YYYY-MM-DD'),
       },
     });
   }, []);
@@ -38,19 +42,19 @@ const Index = () => {
   const list = [
     {
       title: '今日预估分润',
-      num: detailData?.today,
+      num: dividendDetailData?.today,
     },
     {
       title: '未结算分润',
-      num: detailData?.unsettled,
+      num: dividendDetailData?.unsettled,
     },
     {
       title: '累积分润',
-      num: detailData?.total,
+      num: dividendDetailData?.total,
     },
     {
       title: '已提现',
-      num: '100.00',
+      num: dividendDetailData?.withdrawn,
     },
   ];
 
@@ -63,18 +67,18 @@ const Index = () => {
       },
     });
   };
-  const onChange = (typeId) => {
+  const onChange = (type) => {
     let params = {
       dividendType: [3, 4],
       accountType: 2,
-      startTime: '',
-      endTime: '',
-      isDelete: typeId === 3 ? 1 : 0,
-      flowStatus: typeId === 2 ? 1 : 0,
+      startTime: moment(fort).startOf('month').format('YYYY-MM-DD'),
+      endTime: moment(fort).endOf('month').format('YYYY-MM-DD'),
+      isDelete: type === 3 ? 1 : 0,
+      flowStatus: type === 2 ? 1 : 0,
       pageNum: pageNum,
       pageSize: pageSize,
     };
-    if (typeId === 0) {
+    if (type === 0) {
       delete params.flowStatus;
       delete params.isDelete;
     }
@@ -87,7 +91,7 @@ const Index = () => {
     <View className="fans">
       <View className="fans-head">
         <View className="fans-head-top">
-          <View>可提现 0.01</View>
+          <View>可提现 {dividendDetailData?.withdrawable}</View>
           <View className="fans-head-top-right">
             <View>立即提现</View>
             <Arrow />
@@ -117,6 +121,12 @@ const Index = () => {
                 onClick={() => {
                   setActiveTag(index);
                   onChange(a?.id);
+                  dispatch({
+                    type: 'proxyDividendDetails/update',
+                    payload: {
+                      typeId: a?.id,
+                    },
+                  });
                 }}
                 color={index !== activeTag ? '#999999' : '#965A3C'}
                 key={index}
@@ -127,7 +137,7 @@ const Index = () => {
             );
           })}
         </View>
-        <Orders />
+        <Orders setFort={setFort} />
       </View>
       <Popup />
     </View>
