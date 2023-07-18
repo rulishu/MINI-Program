@@ -5,7 +5,6 @@ import { selectPage } from '@/server/myFans';
 import PullList from '@/component/pullList';
 import { useDispatch, useSelector } from 'react-redux';
 import Orders from './orders';
-import { tabList } from './eumn';
 import Tabs from '@/component/aTabs';
 import { FilterOutlined, ArrowUp, ArrowDown, QuestionOutlined, Arrow } from '@taroify/icons';
 import { Tag, Popover, Divider, Cell, CellGroup } from '@nutui/nutui-react-taro';
@@ -14,6 +13,7 @@ import Taro from '@tarojs/taro';
 
 const Index = () => {
   const params = Taro.getCurrentInstance().router.params;
+  const { myFansCountList } = useSelector((state) => state.myFans);
   const { id: userId } = params;
   const dispatch = useDispatch();
   const updateFn = (payload) => {
@@ -46,6 +46,9 @@ const Index = () => {
         setHomeTopNavHeight(navHeight);
       },
     });
+    dispatch({
+      type: 'myFans/myFansCount',
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderActive]);
 
@@ -77,6 +80,21 @@ const Index = () => {
     { name: '奋斗者' },
     { name: '二级经销商' },
     { name: '一级经销商' },
+  ];
+
+  const tabList = [
+    {
+      id: 0,
+      title: `直属粉丝（${myFansCountList.directFans || 0}）`,
+    },
+    {
+      id: 1,
+      title: `跨级粉丝（${myFansCountList.crossFans || 0}）`,
+    },
+    {
+      id: 2,
+      title: `普通粉丝（${myFansCountList.generalFans || 0}） `,
+    },
   ];
 
   return (
