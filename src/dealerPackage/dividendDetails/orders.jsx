@@ -10,7 +10,7 @@ import { changeDate } from '@/utils/min';
 import { useSelector, useDispatch } from 'react-redux';
 
 const Index = (props) => {
-  const { setFormat } = props;
+  const { setFort } = props;
   const dispatch = useDispatch();
   const [maxDate] = useState(new Date(moment().format('YYYY,MM')));
   const [defaultValue] = useState(new Date(moment().format('YYYY,MM')));
@@ -28,7 +28,7 @@ const Index = (props) => {
   // 确定
   const onConfirm = (value) => {
     setTime(changeDate(value));
-    setFormat(value);
+    setFort(value);
     setOpenTime(false);
     const params = {
       dividendType: [3, 4],
