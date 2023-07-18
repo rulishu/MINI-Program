@@ -46,6 +46,8 @@ export default {
             },
           });
           Taro.hideLoading();
+        } else {
+          Taro.hideLoading();
         }
       } catch (err) {
         Taro.hideLoading();
