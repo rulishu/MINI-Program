@@ -15,6 +15,7 @@ export default {
     detailData: {}, // 代理分润数据
     agentDataList: [], // 代理和经销分润列表
     dividendDetailData: [], // 经销分润数据
+    typeId: 0,
     pageNum: 1,
     pageSize: 20,
     total: 0,
