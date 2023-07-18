@@ -35,6 +35,12 @@ const Index = () => {
     6: '会员权益分润',
     7: '推荐人分润',
   };
+  const levelStatus = {
+    1: '一级经销商',
+    2: '二级经销商',
+    3: '奋斗者',
+  };
+
   return (
     <Fragment>
       <View className="dividendDetails">
@@ -86,7 +92,7 @@ const Index = () => {
               <View className="dividendDetails-info-top-right">+{item.paidInAmount}</View>
             </View>
             <View className="dividendDetails-info-mid">
-              {dividendTypeStatus[item.dividendType]}
+              {`${levelStatus[item?.consumerLevel]}-${dividendTypeStatus[item.dividendType]}`}
             </View>
             <View className="dividendDetails-info-bot">
               <View> {moment(item.createTime).format('MM-HH hh:mm')}</View>

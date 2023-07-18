@@ -21,7 +21,7 @@ export default {
   },
 
   effects: {
-    // 代理管理分润明细查询
+    // 代理分润数据
     *agentSelectDetail({ payload }, { call, put }) {
       try {
         const params = { ...payload };
@@ -36,7 +36,7 @@ export default {
         }
       } catch (err) {}
     },
-    // 代理管理分润列表查询
+    // 代理和经销分润列表
     *agentSelectList({ payload }, { call, put }) {
       Taro.showLoading({ title: '加载中...', mask: true });
       try {
@@ -56,6 +56,7 @@ export default {
         Taro.hideLoading();
       }
     },
+    // 经销分润数据
     *dividendSelectDetail({ payload }, { call, put }) {
       try {
         const params = { ...payload };
