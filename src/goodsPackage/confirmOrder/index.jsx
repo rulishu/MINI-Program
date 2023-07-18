@@ -19,6 +19,7 @@ const Index = () => {
     queryInfo,
     selectedCoupon,
     couponDtoList,
+    confirmData,
   } = useSelector((state) => state.goodInfo);
   const { checkCartData } = useSelector((state) => state.cart);
   const receiveCoupon = couponDtoList?.filter((item) => item.available === 1);
@@ -215,20 +216,26 @@ const Index = () => {
     if (!queryInfo?.isActivityItem) {
       if (orderTotalPrice >= selectedCoupon?.minimumConsumption) {
         return selectedCoupon.type === 2
-          ? Number(orderTotalPrice - selectedCoupon?.price).toFixed(2)
-          : electedCoupon.type === 3 && Number(orderTotalPrice * selectedCoupon?.price).toFixed(2);
+          ? (
+              Number(orderTotalPrice - selectedCoupon?.price) + Number(confirmData?.freight)
+            ).toFixed(2)
+          : electedCoupon.type === 3 &&
+              (
+                Number(orderTotalPrice * selectedCoupon?.price) + Number(confirmData?.freight)
+              ).toFixed(2);
       } else {
         if (idData?.at(0)?.price === undefined) {
-          return Number(orderTotalPrice).toFixed(2);
+          return (Number(orderTotalPrice) + Number(confirmData?.freight)).toFixed(2);
         } else {
           return (
-            Number(orderTotalPrice - idData?.at(0)?.price).toFixed(2) ||
-            Number(orderTotalPrice).toFixed(2)
+            (Number(orderTotalPrice - idData?.at(0)?.price) + Number(confirmData?.freight)).toFixed(
+              2,
+            ) || (Number(orderTotalPrice) + Number(confirmData?.freight)).toFixed(2)
           );
         }
       }
     } else {
-      return Number(orderTotalPrice).toFixed(2);
+      return (Number(orderTotalPrice) + Number(confirmData?.freight)).toFixed(2);
     }
   };
 
@@ -300,7 +307,7 @@ const Index = () => {
               <Text>运费</Text>
             </View>
             <View>
-              <Text>免邮</Text>
+              <Text>{confirmData?.freight || 0}</Text>
             </View>
           </View>
           <View className="address-price">
@@ -323,7 +330,7 @@ const Index = () => {
                 <Text>商品总价</Text>
               </View>
               <View>
-                <Text>{orderTotalPrice}</Text>
+                <Text>¥{orderTotalPrice}</Text>
               </View>
             </View>
             <View className="address-price">
@@ -331,7 +338,7 @@ const Index = () => {
                 <Text>运费</Text>
               </View>
               <View>
-                <Text>免邮</Text>
+                <Text>{confirmData?.freight || 0}</Text>
               </View>
             </View>
             {!queryInfo?.isActivityItem ? (
