@@ -24,7 +24,11 @@ export default {
         };
         const result = yield call(getPhone, params);
         if (result && result.code === 200) {
-          Taro.hideLoading();
+          Taro.showToast({
+            title: '登录成功！',
+            icon: 'success',
+            duration: 2000,
+          });
           const { userDto, access_token, refresh_token } = result.result || {};
           Taro.setStorage({
             key: 'userInfo',
@@ -81,7 +85,11 @@ export default {
         };
         const result = yield call(newLogin, params);
         if (result && result.code === 200) {
-          Taro.hideLoading();
+          Taro.showToast({
+            title: '登录成功！',
+            icon: 'success',
+            duration: 2000,
+          });
           const { userDto, access_token, refresh_token } = result.result || {};
           Taro.setStorage({
             key: 'userInfo',
@@ -122,7 +130,6 @@ export default {
             icon: 'none',
             duration: 2000,
           });
-          Taro.hideLoading();
           yield put({
             type: 'update',
             payload: {

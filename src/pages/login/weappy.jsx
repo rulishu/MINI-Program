@@ -69,11 +69,6 @@ const WeAppy = () => {
               // Taro.reLaunch({
               //   url: '',
               //   success() {
-              Taro.showToast({
-                title: '登录成功！',
-                icon: 'success',
-                duration: 2000,
-              });
               //   },
               // });
             } else {
