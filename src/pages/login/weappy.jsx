@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const WeAppy = () => {
+  const invitationCode = Taro.getStorageSync('invitationCode'); //邀请码
   const dispatch = useDispatch();
   const { isGetPhone } = useSelector((state) => state.global);
 
@@ -47,24 +48,31 @@ const WeAppy = () => {
         Taro.login({
           success: async (res) => {
             if (res.code) {
+              let params = {
+                jsCode: res.code,
+                encryptedData: detail.encryptedData,
+                iv: detail.iv,
+                callBack: (id) => {
+                  dispatch({
+                    type: 'my/getUserInfos',
+                    payload: {
+                      id: id,
+                    },
+                  });
+                  dispatch({
+                    type: 'my/getOrderNum',
+                  });
+                },
+              };
+              if (invitationCode !== '') {
+                params = {
+                  ...params,
+                  invitationCode: invitationCode,
+                };
+              }
               dispatch({
                 type: 'global/getPhone',
-                payload: {
-                  jsCode: res.code,
-                  encryptedData: detail.encryptedData,
-                  iv: detail.iv,
-                  callBack: (id) => {
-                    dispatch({
-                      type: 'my/getUserInfos',
-                      payload: {
-                        id: id,
-                      },
-                    });
-                    dispatch({
-                      type: 'my/getOrderNum',
-                    });
-                  },
-                },
+                payload: params,
               });
               // Taro.reLaunch({
               //   url: '',
