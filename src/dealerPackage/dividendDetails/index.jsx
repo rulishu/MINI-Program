@@ -13,7 +13,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const [activeTag, setActiveTag] = useState(0);
-  const [fort, setFormat] = useState(new Date());
+  const [fort, setFort] = useState(new Date());
   const userInfo = Taro.getStorageSync('userInfo');
   const { dividendDetailData, pageNum, pageSize } = useSelector(
     (state) => state.proxyDividendDetails,
@@ -137,7 +137,7 @@ const Index = () => {
             );
           })}
         </View>
-        <Orders setFormat={setFormat} />
+        <Orders setFort={setFort} />
       </View>
       <Popup />
     </View>
