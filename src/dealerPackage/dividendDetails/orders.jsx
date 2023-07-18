@@ -7,14 +7,18 @@ import { DatetimePicker, Popup } from '@taroify/core';
 import './index.scss';
 import moment from 'moment';
 import { changeDate } from '@/utils/min';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-const Index = () => {
+const Index = (props) => {
+  const { setFormat } = props;
+  const dispatch = useDispatch();
   const [maxDate] = useState(new Date(moment().format('YYYY,MM')));
   const [defaultValue] = useState(new Date(moment().format('YYYY,MM')));
   const [openTime, setOpenTime] = useState(false);
   const [time, setTime] = useState(moment().format('MM月/YYYY'));
-  const { agentDataList } = useSelector((state) => state.proxyDividendDetails);
+  const { agentDataList, pageNum, pageSize, typeId } = useSelector(
+    (state) => state.proxyDividendDetails,
+  );
 
   // 取消
   const onCancel = () => {
@@ -24,7 +28,26 @@ const Index = () => {
   // 确定
   const onConfirm = (value) => {
     setTime(changeDate(value));
+    setFormat(value);
     setOpenTime(false);
+    const params = {
+      dividendType: [3, 4],
+      accountType: 2,
+      startTime: moment(value).startOf('month').format('YYYY-MM-DD'),
+      endTime: moment(value).endOf('month').format('YYYY-MM-DD'),
+      pageNum: pageNum,
+      pageSize: pageSize,
+      isDelete: typeId === 3 ? 1 : 0,
+      flowStatus: typeId === 2 ? 1 : 0,
+    };
+    if (typeId === 0) {
+      delete params?.isDelete;
+      delete params?.flowStatus;
+    }
+    dispatch({
+      type: 'proxyDividendDetails/agentSelectList',
+      payload: params,
+    });
   };
   const dividendTypeStatus = {
     1: '经销商分润',
@@ -35,6 +58,12 @@ const Index = () => {
     6: '会员权益分润',
     7: '推荐人分润',
   };
+  const levelStatus = {
+    1: '一级经销商',
+    2: '二级经销商',
+    3: '奋斗者',
+  };
+
   return (
     <Fragment>
       <View className="dividendDetails">
@@ -86,11 +115,11 @@ const Index = () => {
               <View className="dividendDetails-info-top-right">+{item.paidInAmount}</View>
             </View>
             <View className="dividendDetails-info-mid">
-              {dividendTypeStatus[item.dividendType]}
+              {`${levelStatus[item?.consumerLevel]}-${dividendTypeStatus[item.dividendType]}`}
             </View>
             <View className="dividendDetails-info-bot">
               <View> {moment(item.createTime).format('MM-HH hh:mm')}</View>
-              <View> 预计代缴个税:{item.price}</View>
+              {/* <View> 预计代缴个税:{item.price}</View> */}
             </View>
           </View>
         ))}
