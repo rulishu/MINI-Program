@@ -20,7 +20,7 @@ const Index = () => {
             type: 'goodInfo/update',
             payload: { shareVisible: false },
           });
-          // Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${params?.id}&inviterId=${userInfo?.id}` });
+          // Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${params?.id}&invitationCode=${userInfo?.consumerCode}` });
         },
         error: () => {},
       });

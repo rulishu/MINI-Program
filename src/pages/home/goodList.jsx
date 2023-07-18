@@ -33,7 +33,7 @@ const GoodList = (props) => {
     //   });
     // }
     Taro.navigateTo({
-      url: `/goodsPackage/goodInfo/index?id=${itm?.id}&inviterId=${userInfo?.id}`,
+      url: `/goodsPackage/goodInfo/index?id=${itm?.id}&invitationCode=${userInfo?.consumerCode}`,
     });
   };
 
