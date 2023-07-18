@@ -6,14 +6,18 @@ import { DatetimePicker, Popup } from '@taroify/core';
 import './index.scss';
 import moment from 'moment';
 import { changeDate } from '@/utils/min';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-const Index = () => {
+const Index = (props) => {
+  const { setFort } = props;
+  const dispatch = useDispatch();
   const [maxDate] = useState(new Date(moment().format('YYYY,MM')));
   const [defaultValue] = useState(new Date(moment().format('YYYY,MM')));
   const [openTime, setOpenTime] = useState(false);
   const [time, setTime] = useState(moment().format('MM月/YYYY'));
-  const { agentDataList } = useSelector((state) => state.proxyDividendDetails);
+  const { agentDataList, pageNum, pageSize, typeId } = useSelector(
+    (state) => state.proxyDividendDetails,
+  );
   // 取消
   const onCancel = () => {
     setOpenTime(false);
@@ -23,6 +27,25 @@ const Index = () => {
   const onConfirm = (value) => {
     setTime(changeDate(value));
     setOpenTime(false);
+    setFort(value);
+    const params = {
+      dividendType: [3, 4],
+      accountType: 2,
+      startTime: moment(value).startOf('month').format('YYYY-MM-DD'),
+      endTime: moment(value).endOf('month').format('YYYY-MM-DD'),
+      pageNum: pageNum,
+      pageSize: pageSize,
+      isDelete: typeId === 3 ? 1 : 0,
+      flowStatus: typeId === 2 ? 1 : 0,
+    };
+    if (typeId === 0) {
+      delete params?.isDelete;
+      delete params?.flowStatus;
+    }
+    dispatch({
+      type: 'proxyDividendDetails/agentSelectList',
+      payload: params,
+    });
   };
   const dividendTypeStatus = {
     1: '经销商分润',

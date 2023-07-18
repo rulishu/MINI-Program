@@ -1,6 +1,10 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
-import { agentSelectDetail, agentSelectList } from '@/server/proxyDividendDetails';
+import {
+  agentSelectDetail,
+  agentSelectList,
+  dividendSelectDetail,
+} from '@/server/proxyDividendDetails';
 
 export default {
   namespace: 'proxyDividendDetails',
@@ -8,15 +12,17 @@ export default {
     // 初始化数据
     popupOpen: false,
     orderActive: 0,
-    detailData: {}, // 分润明细查询数据
-    agentDataList: [], // 代理管理分润列表
+    detailData: {}, // 代理分润数据
+    agentDataList: [], // 代理和经销分润列表
+    dividendDetailData: [], // 经销分润数据
+    typeId: 0,
     pageNum: 1,
     pageSize: 20,
     total: 0,
   },
 
   effects: {
-    // 代理管理分润明细查询
+    // 代理分润数据
     *agentSelectDetail({ payload }, { call, put }) {
       try {
         const params = { ...payload };
@@ -31,7 +37,7 @@ export default {
         }
       } catch (err) {}
     },
-    // 代理管理分润列表查询
+    // 代理和经销分润列表
     *agentSelectList({ payload }, { call, put }) {
       Taro.showLoading({ title: '加载中...', mask: true });
       try {
@@ -50,6 +56,21 @@ export default {
       } catch (err) {
         Taro.hideLoading();
       }
+    },
+    // 经销分润数据
+    *dividendSelectDetail({ payload }, { call, put }) {
+      try {
+        const params = { ...payload };
+        const result = yield call(dividendSelectDetail, params);
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              dividendDetailData: result?.result,
+            },
+          });
+        }
+      } catch (err) {}
     },
   },
   reducers: {
