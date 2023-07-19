@@ -151,6 +151,9 @@ const Index = () => {
             checkCartData: checkData,
           },
         });
+        dispatch({
+          type: 'cart/cartGoodsAll',
+        });
       }
     },
   });
