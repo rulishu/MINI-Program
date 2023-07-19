@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Taro from '@tarojs/taro';
-import { View, Text } from '@tarojs/components';
+import { View, Text, RichText } from '@tarojs/components';
 import { Popup } from '@taroify/core';
 import { Button, Checkbox } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
@@ -163,14 +163,13 @@ const WeAppy = () => {
       </View>
       <Popup
         open={isOpen}
+        style={{ height: '90%', width: '80%', background: '#FFFFFF' }}
         onClose={() => {
           setIsOpen(false);
         }}
       >
         <Popup.Close />
-        <View style={{ height: '90%', width: '60%', background: '#FFFFFF' }}>
-          <View className="taro_html k_html" dangerouslySetInnerHTML={{ __html: htmlInfo }}></View>
-        </View>
+        <RichText nodes={htmlInfo} />
       </Popup>
     </View>
   );
