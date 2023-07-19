@@ -1,45 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import { Button } from '@nutui/nutui-react-taro';
+import { Button, Checkbox } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
 
 const WeAppy = () => {
   const invitationCode = Taro.getStorageSync('invitationCode'); //邀请码
   const dispatch = useDispatch();
+  const [isAgree, setIsAgree] = useState(false);
   const { isGetPhone } = useSelector((state) => state.global);
 
   const login = () => {
-    Taro.login({
-      success: async (res) => {
-        if (res.code) {
-          dispatch({
-            type: 'global/newLogin',
-            payload: {
-              jsCode: res.code,
-              callBack: (id) => {
-                dispatch({
-                  type: 'my/getUserInfos',
-                  payload: {
-                    id: id,
-                  },
-                });
-                dispatch({
-                  type: 'my/getOrderNum',
-                });
+    if (isAgree) {
+      Taro.login({
+        success: async (res) => {
+          if (res.code) {
+            dispatch({
+              type: 'global/newLogin',
+              payload: {
+                jsCode: res.code,
+                callBack: (id) => {
+                  dispatch({
+                    type: 'my/getUserInfos',
+                    payload: {
+                      id: id,
+                    },
+                  });
+                  dispatch({
+                    type: 'my/getOrderNum',
+                  });
+                },
               },
-            },
-          });
-        } else {
-          Taro.showToast({
-            title: '获取微信信息失败',
-            icon: 'none',
-            duration: 2000,
-          });
-        }
-      },
-    });
+            });
+          } else {
+            Taro.showToast({
+              title: '获取微信信息失败',
+              icon: 'none',
+              duration: 2000,
+            });
+          }
+        },
+      });
+    } else {
+      Taro.showToast({
+        title: '请先同意服务条款及隐私协议',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
   const onGetphonenumber = (event) => {
     try {
@@ -101,24 +110,53 @@ const WeAppy = () => {
     }
   };
 
+  const getHTML = (type) => {
+    dispatch({
+      type: 'global/getAgreement',
+      payload: type,
+    });
+    Taro.showLoading({ title: '加载中...', mask: true });
+    Taro.navigateTo({ url: `/pages/webView/index` });
+  };
   return (
     <View className="btn-container">
       {isGetPhone ? (
         <Button type="primary" block open-type="getPhoneNumber" onGetphonenumber={onGetphonenumber}>
-          手机号授权
+          手机号快捷登录
         </Button>
       ) : (
         <Button color="#09bb07" block onClick={login}>
-          微信登录
+          一键登录
         </Button>
       )}
       <View className="onload-footer">
+        <Checkbox
+          checked={isAgree}
+          onChange={(state) => {
+            setIsAgree(state);
+          }}
+        />
         <View>
           登录即代表您同意
-          <Text style={{ color: '#A05635' }}>《服务条款》</Text>和
+          <Text
+            onClick={() => {
+              getHTML(1);
+            }}
+            style={{ color: '#A05635' }}
+          >
+            《服务条款》
+          </Text>
+          和
         </View>
         <View>
-          <Text style={{ color: '#A05635' }}>《流隐私政策》</Text>
+          <Text
+            onClick={() => {
+              getHTML(2);
+            }}
+            style={{ color: '#A05635' }}
+          >
+            《流隐私政策》
+          </Text>
         </View>
       </View>
     </View>
