@@ -25,10 +25,18 @@
   .couponBorderBox-list-right{
     margin: 20px 0px 20px 10px;
     width: 38%;
+    .couponBorderBox-list-right-title{
+      white-space:nowrap;        // 强制一行显示
+      overflow:hidden;          // 超出隐藏
+      text-overflow:ellipsis;   // 省略号
+    }
     .couponBorderBox-list-right-content{
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      white-space:nowrap;        // 强制一行显示
+      overflow:hidden;          // 超出隐藏
+      text-overflow:ellipsis;   // 省略号
       .couponBorderBox-list-right-content-text{
         color: #ffffff;
         font-size: 24px;
