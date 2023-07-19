@@ -12,7 +12,6 @@ const WeAppy = () => {
   const [isAgree, setIsAgree] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { isGetPhone, htmlInfo } = useSelector((state) => state.global);
-
   const login = () => {
     if (isAgree) {
       Taro.login({

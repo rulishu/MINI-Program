@@ -126,7 +126,7 @@ const Index = () => {
             <View className="head-infos-id">
               <Text>邀请人: {userInfos?.parentName}</Text>
               <Text style={{ marginLeft: 10 }}>
-                加入融辉第 {time(userInfos.createTime) || 0} 天
+                加入奋斗之露第 {time(userInfos.createTime) || 0} 天
               </Text>
             </View>
           )}
