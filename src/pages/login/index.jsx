@@ -9,8 +9,8 @@ import './index.scss';
 const Login = () => {
   const weappySys = Taro.getEnv() === 'WEAPP';
   const params = Taro.getCurrentInstance().router.params;
-  if (params?.invitationCode) {
-    Taro.setStorageSync('invitationCode', params?.invitationCode);
+  if (params?.scene?.split('%')[1]) {
+    Taro.setStorageSync('invitationCode', params.scene.split('%')[1]);
   }
   return (
     <View class="onLand-container">
