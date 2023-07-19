@@ -8,7 +8,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const [value2, updateValue2] = useState('');
-  const { orderRefund, refundType, orderInfo, orderStatus } = useSelector(
+  const { orderRefund, refundType, orderStatus, orderInfoItem } = useSelector(
     (state) => state.orderDetails,
   );
 
@@ -37,8 +37,8 @@ const Index = () => {
           reason: value2,
           id: item.id,
           orderNumber: item.orderNumber,
-          orderId: item.id,
-          itemIds: item?.items?.map((a) => Number(a.id)),
+          orderId: item.orderId,
+          itemIds: item?.itemId,
           callBack: () => {
             dispatch({
               type: 'allOrders/getAllOrders',
@@ -59,8 +59,8 @@ const Index = () => {
           reason: value2,
           orderNumber: item.orderNumber,
           id: item.id,
-          orderId: item.id,
-          itemIds: item?.items?.map((a) => Number(a.id)),
+          orderId: item.orderId,
+          itemIds: item?.itemId,
         },
       });
     } else if (refundType === 'returnsRefunds') {
@@ -71,8 +71,8 @@ const Index = () => {
           reason: value2,
           orderNumber: item.orderNumber,
           id: item.id,
-          orderId: item.id,
-          itemIds: item?.items?.map((a) => Number(a.id)),
+          orderId: item.orderId,
+          itemIds: item?.itemId,
         },
       });
     }
@@ -97,7 +97,7 @@ const Index = () => {
           <View className="popupInfo-pay-num">
             <Text>
               <Text style={{ fontSize: 12 }}>¥</Text>
-              {orderInfo?.orderPrice}
+              {orderInfoItem?.totalPrice}
             </Text>
           </View>
         </View>
@@ -123,7 +123,7 @@ const Index = () => {
             shape="square"
             color="#A05635"
             style={{ width: '80%', borderRadius: 8, border: 'none' }}
-            onClick={() => onClick(orderInfo)}
+            onClick={() => onClick(orderInfoItem)}
           >
             申请退款
           </Button>
