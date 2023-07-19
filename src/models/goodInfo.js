@@ -56,6 +56,7 @@ export default {
     receivedCoupon: [], // 已选优惠券
     couponDtoList: [], // 已领取未使用优惠券
     selectedCoupon: {}, //选中的优惠券
+    confirmData: {}, // 确认订单返回的数据
   },
 
   effects: {
@@ -279,6 +280,7 @@ export default {
               couponDtoList: result.result.couponDtoList || [],
               orderToken: result.result.orderToken,
               visible: false,
+              confirmData: result.result,
             },
           });
         }
