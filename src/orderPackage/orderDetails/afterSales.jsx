@@ -82,53 +82,50 @@ const Index = () => {
           </View>
         </View>
         <View className="popupInfo-textArea">
-          {/* {Object.keys(orderInfoItem).map((item) => {
-            console.log('item', item);
-            return ( */}
-          <View className="popupInfo-textArea-box">
-            <View className="popupInfo-textArea-box-content">
-              <View>
-                <Image
-                  mode="widthFix"
-                  src={orderInfoItem?.mainGraph}
-                  style={{ width: 100, height: 100 }}
-                ></Image>
-              </View>
-              <View className="popupInfo-textArea-box-content-left">
-                <View>
-                  <View className="popupInfo-textArea-box-content-left-title">
-                    <Text>{orderInfoItem.itemName}</Text>
+          {orderInfoItem?.map((item) => {
+            return (
+              <View className="popupInfo-textArea-box" key={item?.id}>
+                <View className="popupInfo-textArea-box-content">
+                  <View>
+                    <Image
+                      mode="widthFix"
+                      src={item?.mainGraph}
+                      style={{ width: 100, height: 100 }}
+                    ></Image>
                   </View>
-                  <View className="popupInfo-textArea-box-content-left-doc">
-                    <Text className="doc">
-                      {orderInfoItem?.attributes?.map((attributeItem) => {
-                        let str = `${attributeItem.attributeName}:${attributeItem.value} `;
-                        return str;
-                      })}
+                  <View className="popupInfo-textArea-box-content-left">
+                    <View>
+                      <View className="popupInfo-textArea-box-content-left-title">
+                        <Text>{item.itemName}</Text>
+                      </View>
+                      <View className="popupInfo-textArea-box-content-left-doc">
+                        <Text className="doc">
+                          {item?.attributes?.map((attributeItem) => {
+                            let str = `${attributeItem.attributeName}:${attributeItem.value} `;
+                            return str;
+                          })}
+                        </Text>
+                      </View>
+                    </View>
+                    <View className="popupInfo-textArea-box-content-left-doc ">
+                      <Text className="doc-bg">{item?.suppliersId === 1 ? '自营' : '严选'}</Text>
+                    </View>
+                  </View>
+                </View>
+                <View className="popupInfo-textArea-box-content-right">
+                  <View className="popupInfo-textArea-box-content-right-num">
+                    <Text>x{item?.amount}</Text>
+                  </View>
+                  <View className="popupInfo-textArea-box-content-right-price">
+                    <Text>
+                      <Text style={{ fontSize: 12 }}>¥</Text>
+                      {item?.unitPrice}
                     </Text>
                   </View>
                 </View>
-                <View className="popupInfo-textArea-box-content-left-doc ">
-                  <Text className="doc-bg">
-                    {orderInfoItem?.suppliersId === 1 ? '自营' : '严选'}
-                  </Text>
-                </View>
               </View>
-            </View>
-            <View className="popupInfo-textArea-box-content-right">
-              <View className="popupInfo-textArea-box-content-right-num">
-                <Text>x{orderInfoItem?.amount}</Text>
-              </View>
-              <View className="popupInfo-textArea-box-content-right-price">
-                <Text>
-                  <Text style={{ fontSize: 12 }}>¥</Text>
-                  {orderInfoItem?.unitPrice}
-                </Text>
-              </View>
-            </View>
-          </View>
-          {/* );
-          })} */}
+            );
+          })}
         </View>
         <View className="popupInfo-button">
           <Button

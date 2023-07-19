@@ -125,6 +125,7 @@ const Index = () => {
         payload: {
           orderRefund: true,
           refundType: 'pendingRefund',
+          orderInfoItem: item?.items,
         },
       });
     } else if (item.afterSaleStatus === 1) {
@@ -143,7 +144,7 @@ const Index = () => {
         type: 'orderDetails/update',
         payload: {
           orderAfterSales: true,
-          orderInfoItem: item,
+          orderInfoItem: [item],
         },
       });
     } else if (states === 1) {

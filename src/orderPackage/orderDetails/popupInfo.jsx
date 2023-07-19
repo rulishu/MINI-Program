@@ -8,7 +8,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const [value2, updateValue2] = useState('');
-  const { orderRefund, refundType, orderStatus, orderInfoItem } = useSelector(
+  const { orderRefund, refundType, orderStatus, orderInfoItem, orderInfo } = useSelector(
     (state) => state.orderDetails,
   );
 
@@ -36,9 +36,9 @@ const Index = () => {
           afterServiceType: 1,
           reason: value2,
           id: item.id,
-          orderNumber: item.orderNumber,
-          orderId: item.orderId,
-          itemIds: item?.itemId,
+          orderNumber: orderInfo.orderNumber,
+          orderId: item?.at(0)?.orderId,
+          itemIds: item?.map((a) => Number(a.id)),
           callBack: () => {
             dispatch({
               type: 'allOrders/getAllOrders',
@@ -57,10 +57,10 @@ const Index = () => {
         payload: {
           afterServiceType: 3,
           reason: value2,
-          orderNumber: item.orderNumber,
           id: item.id,
-          orderId: item.orderId,
-          itemIds: item?.itemId,
+          orderNumber: orderInfo.orderNumber,
+          orderId: item?.at(0)?.orderId,
+          itemIds: item?.map((a) => Number(a.id)),
         },
       });
     } else if (refundType === 'returnsRefunds') {
@@ -69,16 +69,21 @@ const Index = () => {
         payload: {
           afterServiceType: 2,
           reason: value2,
-          orderNumber: item.orderNumber,
           id: item.id,
-          orderId: item.orderId,
-          itemIds: item?.itemId,
+          orderNumber: orderInfo.orderNumber,
+          orderId: item?.at(0)?.orderId,
+          itemIds: item?.map((a) => Number(a.id)),
         },
       });
     }
     Taro.navigateTo({ url: '/orderPackage/afterSales/index' });
   };
-
+  // 售后价格
+  const orderTotalPrice = orderInfoItem
+    ?.reduce((acc, item) => {
+      return acc + item?.totalPrice;
+    }, 0)
+    .toFixed(2);
   return (
     <Popup
       visible={orderRefund}
@@ -97,7 +102,7 @@ const Index = () => {
           <View className="popupInfo-pay-num">
             <Text>
               <Text style={{ fontSize: 12 }}>¥</Text>
-              {orderInfoItem?.totalPrice}
+              {orderTotalPrice}
             </Text>
           </View>
         </View>
