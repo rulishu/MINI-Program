@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { getPhone, newLogin } from '@/server/global';
+import { getPhone, newLogin, getAgreement } from '@/server/global';
 
 export default {
   namespace: 'global', // 这是模块名
@@ -9,6 +9,7 @@ export default {
     vipTypeList: [],
     activeIndex: 0,
     isGetPhone: false,
+    htmlInfo: '', // 用户协议和隐私协议
   },
 
   effects: {
@@ -24,7 +25,11 @@ export default {
         };
         const result = yield call(getPhone, params);
         if (result && result.code === 200) {
-          Taro.hideLoading();
+          Taro.showToast({
+            title: '登录成功！',
+            icon: 'success',
+            duration: 2000,
+          });
           const { userDto, access_token, refresh_token } = result.result || {};
           Taro.setStorage({
             key: 'userInfo',
@@ -81,7 +86,11 @@ export default {
         };
         const result = yield call(newLogin, params);
         if (result && result.code === 200) {
-          Taro.hideLoading();
+          Taro.showToast({
+            title: '登录成功！',
+            icon: 'success',
+            duration: 2000,
+          });
           const { userDto, access_token, refresh_token } = result.result || {};
           Taro.setStorage({
             key: 'userInfo',
@@ -122,7 +131,6 @@ export default {
             icon: 'none',
             duration: 2000,
           });
-          Taro.hideLoading();
           yield put({
             type: 'update',
             payload: {
@@ -147,6 +155,22 @@ export default {
     //     }
     //   } catch (err) { }
     // },
+    *getAgreement({ payload }, { call, put }) {
+      // 获取隐私协议
+      try {
+        const result = yield call(getAgreement, payload);
+        if (result) {
+          Taro.hideLoading();
+          window.console.log(result?.result?.content);
+          yield put({
+            type: 'update',
+            payload: {
+              htmlInfo: result?.result?.content || '',
+            },
+          });
+        }
+      } catch (err) {}
+    },
   },
 
   reducers: {

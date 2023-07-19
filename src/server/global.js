@@ -9,3 +9,7 @@ export const newLogin = (params) => {
   // 查询是否有账号，如果有就登录
   return request.post('/jcgl-user/wx/login/newLogin', params);
 };
+
+export const getAgreement = (params) => {
+  return request.get(`/jcgl-user/app/agreement/query/agreement/${params}`);
+};
