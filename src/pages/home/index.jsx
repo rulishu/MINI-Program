@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperItem, Skeleton } from '@nutui/nutui-react-taro';
 import homeSearch from '@/assets/images/homeSearch.svg';
-import homeAddress from '@/assets/images/homeAddress.svg';
+// import homeAddress from '@/assets/images/homeAddress.svg';
 import Navs from './navs';
 import { getRequest } from '@/utils/min';
 import TabList from './tabList';
@@ -15,7 +15,7 @@ const Index = () => {
   const dispatch = useDispatch();
   const { bannerList } = useSelector((state) => state.home);
   // const [initPage1, setInitPage1] = useState(0)
-  const [addressInfo, setAddressInfo] = useState('');
+  // const [addressInfo, setAddressInfo] = useState('');
   const [homeTopMarginLeft, setHomeTopMarginLeft] = useState(0);
   const [homeTopMarginTop, setHomeTopMarginTop] = useState(0);
   const [homeTopWidth, setHomeTopWidth] = useState(0);
@@ -35,31 +35,31 @@ const Index = () => {
   }, [activeIndex]);
   useEffect(() => {
     // 获取当前定位
-    Taro.getLocation({
-      type: 'wgs84',
-      success: function (res) {
-        // 纬度
-        const latitude = res.latitude;
-        // 经度
-        const longitude = res.longitude;
-        // 请求腾讯地图逆地址解析接口
-        wx.request({
-          url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
-          success(val) {
-            const role = val.data.result.address;
-            setAddressInfo(role);
-          },
-        });
-      },
-      fail: function () {
-        setAddressInfo('点击获取地址位置');
-        Taro.showToast({
-          title: '获取用户位置信息失败！',
-          icon: 'none',
-          duration: 2000,
-        });
-      },
-    });
+    // Taro.getLocation({
+    //   type: 'wgs84',
+    //   success: function (res) {
+    //     // 纬度
+    //     const latitude = res.latitude;
+    //     // 经度
+    //     const longitude = res.longitude;
+    //     // 请求腾讯地图逆地址解析接口
+    //     wx.request({
+    //       url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
+    //       success(val) {
+    //         const role = val.data.result.address;
+    //         setAddressInfo(role);
+    //       },
+    //     });
+    //   },
+    //   fail: function () {
+    //     setAddressInfo('点击获取地址位置');
+    //     Taro.showToast({
+    //       title: '获取用户位置信息失败！',
+    //       icon: 'none',
+    //       duration: 2000,
+    //     });
+    //   },
+    // });
 
     //获取顶部导航栏位置
     let menuButtonInfo = wx.getMenuButtonBoundingClientRect();
@@ -139,78 +139,78 @@ const Index = () => {
   };
 
   // 再次获取定位
-  const getReAddress = () => {
-    // 先判断用户是否已经授权，如果没有授权，则调用 wx.authorize 请求授权
-    wx.getSetting({
-      success(res) {
-        if (!res.authSetting['scope.userLocation']) {
-          wx.authorize({
-            scope: 'scope.userLocation',
-            success() {
-              // 用户同意授权，可以使用 wx.getLocation 获取定位信息
-              wx.getLocation({
-                type: 'wgs84',
-                success(ress) {
-                  const latitude = ress.latitude;
-                  const longitude = ress.longitude;
-                  // 请求腾讯地图逆地址解析接口
-                  wx.request({
-                    url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
-                    success(val) {
-                      const role = val.data.result.address;
-                      setAddressInfo(role);
-                    },
-                  });
-                },
-              });
-            },
-            fail() {
-              // 用户拒绝授权，可以提示用户进入授权设置页面进行授权
-              wx.showModal({
-                title: '提示',
-                content: '请在小程序的设置页面中打开定位权限',
-                showCancel: false,
-                success(re) {
-                  if (re.confirm) {
-                    wx.openSetting({
-                      success() {
-                        // 获取当前定位
-                        Taro.getLocation({
-                          type: 'wgs84',
-                          success: function (ress) {
-                            // 纬度
-                            const latitude = ress.latitude;
-                            // 经度
-                            const longitude = ress.longitude;
-                            // 请求腾讯地图逆地址解析接口
-                            wx.request({
-                              url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
-                              success(val) {
-                                const role = val.data.result.address;
-                                setAddressInfo(role);
-                              },
-                            });
-                          },
-                          fail: function () {
-                            setAddressInfo('点击获取地址位置');
-                            Taro.showToast({
-                              title: '获取用户位置信息失败！',
-                              icon: 'none',
-                              duration: 2000,
-                            });
-                          },
-                        });
-                      },
-                    });
-                  }
-                },
-              });
-            },
-          });
-        }
-      },
-    });
-  };
+  // const getReAddress = () => {
+  //   // 先判断用户是否已经授权，如果没有授权，则调用 wx.authorize 请求授权
+  //   wx.getSetting({
+  //     success(res) {
+  //       if (!res.authSetting['scope.userLocation']) {
+  //         wx.authorize({
+  //           scope: 'scope.userLocation',
+  //           success() {
+  //             // 用户同意授权，可以使用 wx.getLocation 获取定位信息
+  //             wx.getLocation({
+  //               type: 'wgs84',
+  //               success(ress) {
+  //                 const latitude = ress.latitude;
+  //                 const longitude = ress.longitude;
+  //                 // 请求腾讯地图逆地址解析接口
+  //                 wx.request({
+  //                   url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
+  //                   success(val) {
+  //                     const role = val.data.result.address;
+  //                     setAddressInfo(role);
+  //                   },
+  //                 });
+  //               },
+  //             });
+  //           },
+  //           fail() {
+  //             // 用户拒绝授权，可以提示用户进入授权设置页面进行授权
+  //             wx.showModal({
+  //               title: '提示',
+  //               content: '请在小程序的设置页面中打开定位权限',
+  //               showCancel: false,
+  //               success(re) {
+  //                 if (re.confirm) {
+  //                   wx.openSetting({
+  //                     success() {
+  //                       // 获取当前定位
+  //                       Taro.getLocation({
+  //                         type: 'wgs84',
+  //                         success: function (ress) {
+  //                           // 纬度
+  //                           const latitude = ress.latitude;
+  //                           // 经度
+  //                           const longitude = ress.longitude;
+  //                           // 请求腾讯地图逆地址解析接口
+  //                           wx.request({
+  //                             url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=ZMJBZ-P6N3G-ICBQ7-QRBK6-UKYBS-IMBB3`,
+  //                             success(val) {
+  //                               const role = val.data.result.address;
+  //                               setAddressInfo(role);
+  //                             },
+  //                           });
+  //                         },
+  //                         fail: function () {
+  //                           setAddressInfo('点击获取地址位置');
+  //                           Taro.showToast({
+  //                             title: '获取用户位置信息失败！',
+  //                             icon: 'none',
+  //                             duration: 2000,
+  //                           });
+  //                         },
+  //                       });
+  //                     },
+  //                   });
+  //                 }
+  //               },
+  //             });
+  //           },
+  //         });
+  //       }
+  //     },
+  //   });
+  // };
 
   return (
     <View className="index">
@@ -226,7 +226,7 @@ const Index = () => {
               width: '100%',
             }}
           >
-            <View className="address" onTap={() => getReAddress()}>
+            {/* <View className="address" onTap={() => getReAddress()}>
               <Skeleton
                 width="200px"
                 height="10px"
@@ -244,7 +244,7 @@ const Index = () => {
                   {addressInfo ? addressInfo : '点击获取地址位置'}
                 </Text>
               </Skeleton>
-            </View>
+            </View> */}
             <View
               className="search"
               onTap={() => Taro.navigateTo({ url: '/goodsPackage/search/index' })}
