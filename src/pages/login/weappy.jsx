@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
+import { Popup } from '@taroify/core';
 import { Button, Checkbox } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.scss';
@@ -9,7 +10,8 @@ const WeAppy = () => {
   const invitationCode = Taro.getStorageSync('invitationCode'); //邀请码
   const dispatch = useDispatch();
   const [isAgree, setIsAgree] = useState(false);
-  const { isGetPhone } = useSelector((state) => state.global);
+  const [isOpen, setIsOpen] = useState(false);
+  const { isGetPhone, htmlInfo } = useSelector((state) => state.global);
 
   const login = () => {
     if (isAgree) {
@@ -115,8 +117,8 @@ const WeAppy = () => {
       type: 'global/getAgreement',
       payload: type,
     });
+    setIsOpen(true);
     Taro.showLoading({ title: '加载中...', mask: true });
-    Taro.navigateTo({ url: `/pages/webView/index` });
   };
   return (
     <View className="btn-container">
@@ -159,6 +161,17 @@ const WeAppy = () => {
           </Text>
         </View>
       </View>
+      <Popup
+        open={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+      >
+        <Popup.Close />
+        <View style={{ height: '90%', width: '60%', background: '#FFFFFF' }}>
+          <View className="taro_html k_html" dangerouslySetInnerHTML={{ __html: htmlInfo }}></View>
+        </View>
+      </Popup>
     </View>
   );
 };

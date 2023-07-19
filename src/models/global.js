@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import { getPhone, newLogin } from '@/server/global';
+import { getPhone, newLogin, getAgreement } from '@/server/global';
 
 export default {
   namespace: 'global', // 这是模块名
@@ -9,6 +9,7 @@ export default {
     vipTypeList: [],
     activeIndex: 0,
     isGetPhone: false,
+    htmlInfo: '', // 用户协议和隐私协议
   },
 
   effects: {
@@ -154,6 +155,22 @@ export default {
     //     }
     //   } catch (err) { }
     // },
+    *getAgreement({ payload }, { call, put }) {
+      // 获取隐私协议
+      try {
+        const result = yield call(getAgreement, payload);
+        if (result) {
+          Taro.hideLoading();
+          window.console.log(result?.result?.content);
+          yield put({
+            type: 'update',
+            payload: {
+              htmlInfo: result?.result?.content || '',
+            },
+          });
+        }
+      } catch (err) {}
+    },
   },
 
   reducers: {
