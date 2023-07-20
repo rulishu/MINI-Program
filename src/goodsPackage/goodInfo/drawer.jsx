@@ -159,7 +159,7 @@ const Index = () => {
           },
         });
         updateFn({ visible: false });
-        return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
+        // return Taro.navigateTo({ url: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}` });
       }
       if (state === 'nowCart') {
         setAmount(1);

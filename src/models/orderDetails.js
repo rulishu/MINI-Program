@@ -14,6 +14,7 @@ export default {
     isConfirm: false,
     orderAmount: 0,
     infoDetail: {},
+    orderInfoItem: null, //待收货单个商品信息
   },
 
   effects: {

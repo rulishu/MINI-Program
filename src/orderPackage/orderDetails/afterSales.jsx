@@ -9,7 +9,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const [avtive, setActive] = useState();
-  const { orderAfterSales, orderInfo } = useSelector((state) => state.orderDetails);
+  const { orderAfterSales, orderInfoItem } = useSelector((state) => state.orderDetails);
   const onClose = () => {
     dispatch({
       type: 'orderDetails/update',
@@ -82,9 +82,9 @@ const Index = () => {
           </View>
         </View>
         <View className="popupInfo-textArea">
-          {orderInfo?.items?.map((item) => {
+          {orderInfoItem?.map((item) => {
             return (
-              <View className="popupInfo-textArea-box" key={item.id}>
+              <View className="popupInfo-textArea-box" key={item?.id}>
                 <View className="popupInfo-textArea-box-content">
                   <View>
                     <Image
@@ -100,7 +100,7 @@ const Index = () => {
                       </View>
                       <View className="popupInfo-textArea-box-content-left-doc">
                         <Text className="doc">
-                          {item.attributes.map((attributeItem) => {
+                          {item?.attributes?.map((attributeItem) => {
                             let str = `${attributeItem.attributeName}:${attributeItem.value} `;
                             return str;
                           })}

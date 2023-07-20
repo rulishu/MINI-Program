@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from '@tarojs/components';
+import moment from 'moment';
 import './index.scss';
 
 const Index = (props) => {
@@ -13,12 +14,14 @@ const Index = (props) => {
         </View>
       </View>
       <View className="couponBorderBox-list-right">
-        <View>{couponData?.title}</View>
+        <View className="couponBorderBox-list-right-title">{couponData?.title}</View>
         <View className="couponBorderBox-list-right-content">
           <View className="couponBorderBox-list-right-content-text">{couponData?.content}</View>
         </View>
         <View className="couponBorderBox-list-right-timeRange">
-          {`${couponData?.fistTime} 至 ${couponData?.lastTime}`}
+          {`${moment(couponData?.fistTime).format('YYYY-MM-DD HH:MM:SS')} 至 ${moment(
+            couponData?.lastTime,
+          ).format('YYYY-MM-DD HH:MM:SS')}`}
         </View>
       </View>
       <View className="couponBorderBox-list-renderButton">{renderButton}</View>
