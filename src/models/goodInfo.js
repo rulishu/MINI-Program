@@ -264,12 +264,15 @@ export default {
                 return item.isDefault === 1;
               })
               ?.at(0);
-            const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
+            // const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
+            // 如果没有默认地址，就选择第一个
+            const lastAddress =
+              defultAddress === undefined ? result.result.addresses[0] : defultAddress;
             Taro.setStorageSync('defultAddress', lastAddress);
             yield put({
               type: 'update',
               payload: {
-                currentAddress: {},
+                currentAddress: lastAddress,
               },
             });
           }
