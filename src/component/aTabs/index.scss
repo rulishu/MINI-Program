@@ -54,12 +54,13 @@
       flex-direction: column;
       align-items: center;
       flex: 1;
-      font-size: 24px;
-      min-width: 100px; /* 设置最小宽度 */
+      font-size: 28px;
+      min-width: 130px; /* 设置最小宽度 */
       overflow: hidden;
       position: relative;
       text-overflow: ellipsis;
       white-space: nowrap;
+      margin-right: 25px;
       .tabsLine {
         background: $primary-color;
         width: 48px;
