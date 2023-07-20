@@ -186,6 +186,7 @@ const Index = () => {
       shoppingCartVOList: shoppingCartVOLists,
       id: queryInfo?.id,
       cartIds: checkCartData.map((item) => item?.id),
+      freight: confirmData?.freight,
       userCouponId: Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
       callBack: () => {
         // 预订单
