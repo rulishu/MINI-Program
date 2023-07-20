@@ -33,7 +33,7 @@ const Index = () => {
             <PullList
               request={fetchData}
               params={{ id: tab4value }}
-              style={{ height: '50vh' }}
+              // style={{ height: '50vh' }}
               renderList={(dataSource) => <GoodList dataList={dataSource} />}
               callback={({ refresh }) => {
                 refresh?.();
