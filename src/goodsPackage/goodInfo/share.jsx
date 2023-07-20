@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
-  const { shareVisible } = useSelector((state) => state.goodInfo);
+  const { shareVisible, queryInfo } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
   const token = Taro.getStorageSync('token');
   // 分享
@@ -52,9 +52,12 @@ const Index = () => {
         mask: true,
       });
       dispatch({
-        type: 'goodInfo/miniprogramcode',
+        type: 'goodInfo/getMiniprogramByItemCode',
+        payload: {
+          itemId: queryInfo?.id,
+        },
       });
-      // 这里实际上应该向后台发请求后去小程序码
+      // 这里实际上应该向后台发请求后去小程序码 a
       setTimeout(() => {
         async () => {
           Taro.hideLoading();
