@@ -12,19 +12,23 @@ const Index = () => {
   const dispatch = useDispatch();
   const params = Taro.getCurrentInstance().router.params;
   useEffect(() => {
-    if (params?.invitationCode) {
-      Taro.setStorageSync('invitationCode', params?.invitationCode);
+    let goodsId;
+    if (params?.scene?.split('%2C')[1]) {
+      goodsId = params?.scene?.split('%2C')[1];
+      Taro.setStorageSync('invitationCode', params?.scene?.split('%2C')[3]);
+    } else {
+      goodsId = params?.id;
     }
     dispatch({
       type: 'goodInfo/infoDetails',
       payload: {
-        id: params?.id,
+        id: Number(goodsId),
       },
     });
     dispatch({
       type: 'evaluate/evaluationList',
       payload: {
-        productId: Number(params?.id),
+        productId: Number(goodsId),
         pageNum: 1,
         pageSize: 20,
       },
@@ -32,7 +36,7 @@ const Index = () => {
     dispatch({
       type: 'goodInfo/selectCoupons',
       payload: {
-        id: params?.id,
+        id: Number(goodsId),
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

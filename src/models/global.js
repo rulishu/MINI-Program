@@ -60,6 +60,15 @@ export default {
             });
             payload.callBack(userDto.id);
           }
+          if (pageHistory[0].route === 'pages/login/index') {
+            yield put({
+              type: 'update',
+              payload: {
+                activeIndex: 0,
+              },
+            });
+            Taro.switchTab({ url: '/pages/home/index' });
+          }
           Taro.navigateBack({
             delta: 1,
           });
@@ -120,6 +129,15 @@ export default {
               },
             });
             payload.callBack(userDto.id);
+          }
+          if (pageHistory[0].route === 'pages/login/index') {
+            yield put({
+              type: 'update',
+              payload: {
+                activeIndex: 0,
+              },
+            });
+            Taro.switchTab({ url: '/pages/home/index' });
           }
           Taro.navigateBack({
             delta: 1,

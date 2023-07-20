@@ -6,7 +6,7 @@ import {
   wxpay,
   orderSubmit,
   newConfirm,
-  miniprogramcode,
+  getMiniprogramByItemCode,
   selectCoupons,
   receiveCoupon,
 } from '@/server/goodInfo';
@@ -212,7 +212,7 @@ export default {
             },
           });
           Taro.setStorageSync('submitInfo', result.result);
-          callBack();
+          callBack(result.result);
         } else {
           Taro.showToast({
             title: result.message,
@@ -264,12 +264,15 @@ export default {
                 return item.isDefault === 1;
               })
               ?.at(0);
-            const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
+            // const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
+            // 如果没有默认地址，就选择第一个
+            const lastAddress =
+              defultAddress === undefined ? result.result.addresses[0] : defultAddress;
             Taro.setStorageSync('defultAddress', lastAddress);
             yield put({
               type: 'update',
               payload: {
-                currentAddress: {},
+                currentAddress: lastAddress,
               },
             });
           }
@@ -288,12 +291,12 @@ export default {
     },
 
     // 小程序码
-    *miniprogramcode({ payload }, { call, put }) {
+    *getMiniprogramByItemCode({ payload }, { call, put }) {
       try {
         const params = {
           ...payload,
         };
-        const result = yield call(miniprogramcode, params);
+        const result = yield call(getMiniprogramByItemCode, params);
         if (result.code === 200) {
           yield put({
             type: 'update',

@@ -9,8 +9,6 @@ import './index.scss';
 
 const GoodList = (props) => {
   const { dataList } = props;
-  const userInfo = Taro.getStorageSync('userInfo');
-
   // 跳转商品详情
   const goGoodInfo = async (itm) => {
     // if (itm.stock === 0) {
@@ -33,7 +31,7 @@ const GoodList = (props) => {
     //   });
     // }
     Taro.navigateTo({
-      url: `/goodsPackage/goodInfo/index?id=${itm?.id}&invitationCode=${userInfo?.consumerCode}`,
+      url: `/goodsPackage/goodInfo/index?id=${itm?.id}`,
     });
   };
 
@@ -92,7 +90,9 @@ const GoodList = (props) => {
               </View>
               <View className="search-result-content-bottom">
                 <View>
-                  <Text className="lastPrice">{min(item.itemSkuDtos) || '¥0'}</Text>
+                  <Text className="lastPrice">
+                    {item?.isActivityItem ? item?.activityItemPrice : min(item.itemSkuDtos) || '¥0'}
+                  </Text>
                   <Text className="firstPrice">
                     {aPrice(min(item.itemSkuDtos), item.itemSkuDtos)}
                   </Text>

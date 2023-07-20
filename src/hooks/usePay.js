@@ -28,7 +28,7 @@ export default ({ success, error }) => {
         },
         fail: async function () {
           Taro.showToast({
-            title: '支付失败',
+            title: message,
             icon: 'none',
             duration: 2000,
           });
@@ -37,7 +37,7 @@ export default ({ success, error }) => {
         },
       });
     } else {
-      Taro.hideLoading();
+      error?.();
       Taro.showToast({
         title: message,
         icon: 'none',
