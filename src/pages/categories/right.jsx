@@ -151,7 +151,9 @@ const Index = (props) => {
                                     onClick={() => onTap(dto?.id)}
                                   >
                                     <Text style={{ color: '#d9001c', fontSize: 16 }}>
-                                      {`¥${dto?.price}`}
+                                      {dto?.isActivityItem
+                                        ? `¥${dto?.activityItemPrice}`
+                                        : `¥${dto?.price}`}
                                     </Text>
                                     <View>
                                       <Text

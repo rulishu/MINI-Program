@@ -31,6 +31,8 @@ export default {
             },
           });
           Taro.hideLoading();
+        } else {
+          Taro.showLoading({ title: '加载中...', mask: true });
         }
       } catch (err) {
         Taro.hideLoading();
