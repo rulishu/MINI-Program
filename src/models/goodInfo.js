@@ -212,7 +212,7 @@ export default {
             },
           });
           Taro.setStorageSync('submitInfo', result.result);
-          callBack();
+          callBack(result.result);
         } else {
           Taro.showToast({
             title: result.message,
