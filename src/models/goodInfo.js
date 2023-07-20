@@ -6,7 +6,7 @@ import {
   wxpay,
   orderSubmit,
   newConfirm,
-  miniprogramcode,
+  getMiniprogramByItemCode,
   selectCoupons,
   receiveCoupon,
 } from '@/server/goodInfo';
@@ -288,12 +288,12 @@ export default {
     },
 
     // 小程序码
-    *miniprogramcode({ payload }, { call, put }) {
+    *getMiniprogramByItemCode({ payload }, { call, put }) {
       try {
         const params = {
           ...payload,
         };
-        const result = yield call(miniprogramcode, params);
+        const result = yield call(getMiniprogramByItemCode, params);
         if (result.code === 200) {
           yield put({
             type: 'update',

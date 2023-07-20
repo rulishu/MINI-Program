@@ -29,6 +29,11 @@ export const miniprogramcode = (params) => {
   return request.get('/jcgl-user/wx/login/miniprogramcode', params);
 };
 
+// 商品详情小程序码
+export const getMiniprogramByItemCode = (params) => {
+  return request.get(`/jcgl-user/wx/login/miniprogramByItemCode/${params.itemId}`);
+};
+
 // 查询所有优惠券
 export const selectCoupons = (params) => {
   return request.get('/jcgl-mall/app/coupon/select/all', params);
