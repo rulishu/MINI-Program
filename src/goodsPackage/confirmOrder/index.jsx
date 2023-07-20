@@ -188,7 +188,7 @@ const Index = () => {
       cartIds: checkCartData.map((item) => item?.id),
       freight: confirmData?.freight,
       userCouponId: Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
-      callBack: () => {
+      callBack: (orderData) => {
         // 预订单
         let submitDetail = Taro.getStorageSync('submitInfo');
         // 支付
@@ -198,7 +198,7 @@ const Index = () => {
           gatewayId: 2,
           gatewayCode: 'WX_PAY',
           gatewayTerminal: 2,
-          paymentAmount: orderTotalPrice,
+          paymentAmount: orderData?.payPrices?.[0],
           tradeType: 0,
         });
       },
