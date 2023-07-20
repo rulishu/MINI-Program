@@ -121,6 +121,7 @@ export default React.forwardRef(
             ? ''
             : (Math.floor(total / pageSize) < 1 || total === pageSize || refreshHasMore) &&
               (renderEmpty?.() || <Text style={endStyle}>——已到底部——</Text>)}
+          <View style={{ height: '250px' }} />
         </Fragment>
         <View style={{ height: bottomHeight }} />
       </ScrollView>
