@@ -124,7 +124,7 @@ const Index = () => {
           </View>
           {userInfos.createTime && (
             <View className="head-infos-id">
-              <Text>邀请人: 李高锋</Text>
+              <Text>邀请人: {userInfos?.parentName}</Text>
               <Text style={{ marginLeft: 10 }}>
                 加入融辉第 {time(userInfos.createTime) || 0} 天
               </Text>

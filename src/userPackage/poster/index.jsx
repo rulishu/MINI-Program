@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Button, Image } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useShareAppMessage } from '@tarojs/taro';
 import wechat from '../../assets/images/wechat.svg';
 import { useRequest } from 'ahooks';
 import save from '../../assets/images/save.svg';
@@ -8,6 +8,13 @@ import { miniprogramcode } from '@/server/goodInfo';
 import './index.scss';
 
 const Poster = () => {
+  const userInfo = Taro.getStorageSync('userInfo');
+  useShareAppMessage(() => {
+    return {
+      title: '邀请你加入奋斗之露',
+      path: `/pages/login/index?invitationCode=${userInfo?.consumerCode}`,
+    };
+  });
   const [imgUrl, setImgUrl] = useState('');
   const { run } = useRequest(miniprogramcode, {
     manual: true,

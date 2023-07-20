@@ -17,7 +17,6 @@ const Index = () => {
   const btns = ['推荐', '一般', '不推荐'];
 
   const { orderInfo } = useSelector((state) => state.orderDetails);
-
   const params = Taro.getCurrentInstance().router.params;
   useEffect(() => {
     dispatch({
@@ -59,7 +58,7 @@ const Index = () => {
         comment: textareaValue,
         image: imgs,
         mainImage: mainImages,
-        orderId: orderInfo?.orderNumber,
+        orderId: orderInfo?.id,
         rating: active == '推荐' ? 1 : active == '一般' ? 2 : active == '不推荐' ? 3 : '',
         sku: orderInfo.items?.at(0)?.attributes.length >= 2 ? skus?.replace(',', '*') : skus,
         skuId: Number(skuIds),

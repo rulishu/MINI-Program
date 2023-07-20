@@ -125,6 +125,7 @@ const Index = () => {
         payload: {
           orderRefund: true,
           refundType: 'pendingRefund',
+          orderInfoItem: item?.items,
         },
       });
     } else if (item.afterSaleStatus === 1) {
@@ -136,13 +137,14 @@ const Index = () => {
 
   // 申请售后
   const onAfterSales = (item) => {
-    const states = item.items?.at(0).afterSaleStatus;
+    const states = item?.afterSaleStatus;
     if (states === 0) {
       // 申请退款
       dispatch({
         type: 'orderDetails/update',
         payload: {
           orderAfterSales: true,
+          orderInfoItem: [item],
         },
       });
     } else if (states === 1) {
@@ -244,7 +246,7 @@ const Index = () => {
   };
   // 退货退款
   const onStateBtn = (item) => {
-    const states = item.items?.at(0).afterSaleStatus;
+    const states = item?.afterSaleStatus;
     if (states === 0) {
       return '申请退款';
     } else if (states === 1) {
@@ -377,11 +379,25 @@ const Index = () => {
                         {a?.unitPrice}
                       </Text>
                     </View>
+                    {/* 申请售后 */}
+                    {orderStatus === 3 && (
+                      <View className="after-sales">
+                        <Button
+                          shape="square"
+                          style={{ color: '#AAAAAA', fontWeight: 400 }}
+                          plain
+                          type="default"
+                          onClick={() => onAfterSales(a)}
+                        >
+                          <Text style={{ fontSize: 14 }}>{onStateBtn(a)}</Text>
+                        </Button>
+                      </View>
+                    )}
                   </View>
                 </View>
               );
             })}
-            {orderStatus === 3 && (
+            {/* {orderStatus === 3 && (
               <View className="after-sales">
                 <Button
                   shape="square"
@@ -393,7 +409,7 @@ const Index = () => {
                   <Text style={{ fontSize: 14 }}>{onStateBtn(orderInfo)}</Text>
                 </Button>
               </View>
-            )}
+            )} */}
             <Divider style={{ color: '#D7D7D7' }} />
             <View className="address-price">
               <View>

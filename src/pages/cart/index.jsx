@@ -106,6 +106,10 @@ const Index = () => {
     .toFixed(2);
   // 加减
   const onClick = (item, type, num) => {
+    let checkDataIndex = checkData.findIndex((it) => it.id === item?.id);
+    if (checkDataIndex > -1) {
+      checkData[checkDataIndex] = { ...item, goodsAmount: num };
+    }
     dispatch({
       type: 'cart/additionSubtraction',
       payload: {
@@ -119,6 +123,7 @@ const Index = () => {
       },
     });
   };
+
   let skuLockVoList = checkData.map((item) => {
     return {
       count: item?.goodsAmount,
@@ -150,6 +155,9 @@ const Index = () => {
           payload: {
             checkCartData: checkData,
           },
+        });
+        dispatch({
+          type: 'cart/cartGoodsAll',
         });
       }
     },

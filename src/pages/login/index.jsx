@@ -8,15 +8,15 @@ import './index.scss';
 
 const Login = () => {
   const weappySys = Taro.getEnv() === 'WEAPP';
-
+  const params = Taro.getCurrentInstance().router.params;
+  if (params?.invitationCode) {
+    Taro.setStorageSync('invitationCode', params?.invitationCode);
+  }
   return (
     <View class="onLand-container">
       <View class="onLand-container-top">
         <Image width="300px" height="100px" src={log} />
       </View>
-      {/* <View>
-        <Text className="onLand-app-name">圆满通运</Text>
-      </View> */}
       <View className="onLand-container-center">{weappySys && <WeAppy />}</View>
     </View>
   );
