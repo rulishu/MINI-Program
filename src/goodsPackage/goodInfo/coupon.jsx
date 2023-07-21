@@ -24,11 +24,6 @@ const Index = () => {
         onClick={() => {
           const token = Taro.getStorageSync('token');
           if (token === '') {
-            Taro.showToast({
-              title: '请先登录',
-              icon: 'none',
-              duration: 2000,
-            });
             Taro.navigateTo({ url: '/pages/login/index' });
           } else {
             dispatch({

@@ -76,7 +76,7 @@ const Index = () => {
   const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
 
   // 处理确认订单展示数据
-  const orderInfo = shoppingCartVOList.map((item) => item?.cartVOList).flat();
+  const orderInfo = shoppingCartVOList?.map((item) => item?.cartVOList).flat();
   // shoppingCartVOList?.at(0)?.cartVOList.at(0);
 
   const shoppingCartVOLists = orderInfo?.map((item) => {
@@ -121,7 +121,7 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // 限售地区校验,0配送 1不配送,
-  const isDelivery = orderInfo.filter((itm) => itm?.isDelivery === 1); //0没限售地区，!==0是有限售地址
+  const isDelivery = orderInfo?.filter((itm) => itm?.isDelivery === 1); //0没限售地区，!==0是有限售地址
 
   // 选择地址
   const onSelectAddress = () => {
@@ -253,7 +253,7 @@ const Index = () => {
             <View className="address-left-icon">
               <Image src={payAddress} style={{ width: 16, height: 16 }} />
             </View>
-            {curAddress === '添加收货地址' ? (
+            {!currentAddress ? (
               <View className="address-info">
                 <Text>添加收货地址</Text>
               </View>

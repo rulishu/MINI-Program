@@ -259,15 +259,13 @@ export default {
           if (!params?.areaCode) {
             Taro.navigateTo({ url: '/goodsPackage/confirmOrder/index' });
             // 默认地址
-            const defultAddress = result.result.addresses
-              ?.filter((item) => {
-                return item.isDefault === 1;
-              })
-              ?.at(0);
+            const defultAddress =
+              result?.result?.addresses || []?.filter((item) => item?.isDefault === 1);
             // const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
             // 如果没有默认地址，就选择第一个
             const lastAddress =
-              defultAddress === undefined ? result.result.addresses[0] : defultAddress;
+              defultAddress === undefined ? result.result?.addresses[0] : defultAddress?.[0];
+
             Taro.setStorageSync('defultAddress', lastAddress);
             yield put({
               type: 'update',
@@ -279,7 +277,7 @@ export default {
           yield put({
             type: 'update',
             payload: {
-              shoppingCartVOList: result.result.shoppingCartVOList || {},
+              shoppingCartVOList: result.result.shoppingCartVOList,
               couponDtoList: result.result.couponDtoList || [],
               orderToken: result.result.orderToken,
               visible: false,
