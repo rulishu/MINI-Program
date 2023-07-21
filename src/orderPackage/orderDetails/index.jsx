@@ -428,7 +428,7 @@ const Index = () => {
               </View>
               <View>
                 <Text>
-                  包邮
+                  {orderInfo?.freight ? `¥${orderInfo?.freight}` : '包邮'}
                   {/* <Text style={{ fontSize: 12 }}>¥</Text> */}
                 </Text>
               </View>
