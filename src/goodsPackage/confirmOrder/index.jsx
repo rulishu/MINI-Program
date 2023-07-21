@@ -187,6 +187,9 @@ const Index = () => {
       id: queryInfo?.id,
       cartIds: checkCartData.map((item) => item?.id),
       freight: confirmData?.freight,
+      provinceCode: curAddress?.provinceCode,
+      cityCode: curAddress?.cityCode,
+      areaCode: curAddress?.areaCode,
       userCouponId:
         Object.keys(selectedCoupon)?.length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
       callBack: (orderData) => {
@@ -221,9 +224,10 @@ const Index = () => {
           ? (
               Number(orderTotalPrice - selectedCoupon?.price) + Number(confirmData?.freight)
             ).toFixed(2)
-          : electedCoupon.type === 3 &&
+          : selectedCoupon.type === 3 &&
               (
-                Number(orderTotalPrice * selectedCoupon?.price) + Number(confirmData?.freight)
+                Number(orderTotalPrice * (selectedCoupon?.price * 0.1)) +
+                Number(confirmData?.freight)
               ).toFixed(2);
       } else {
         if (idData?.at(0)?.price === undefined) {
