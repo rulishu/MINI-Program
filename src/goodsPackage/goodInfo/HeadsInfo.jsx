@@ -304,6 +304,7 @@ const Index = () => {
             <View
               className="couponDetailBox"
               onClick={() =>
+                couponsList?.length > 0 &&
                 dispatch({ type: 'goodInfo/update', payload: { couponVisible: true } })
               }
             >
