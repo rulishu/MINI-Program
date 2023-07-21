@@ -122,6 +122,34 @@ const Index = () => {
       }
     }
   };
+  // 活动最高价
+  const activePrice = (sma, item) => {
+    if (sma === Infinity) {
+      return;
+    }
+    let price = sma?.replace('¥', '');
+    let str = item
+      ?.filter((a) => {
+        return a.activityPrice === Number(price);
+      })
+      .map((e) => e.referencePrice)
+      .flat();
+    // js 过滤空值
+    let str2 = str?.filter((s) => {
+      return s;
+    });
+    if (str2 === undefined) {
+      return;
+    }
+    // js 最小值
+    let str3 = Math.min(...str2);
+    if (str3?.length === 0 || str3 === undefined || str3 === Infinity) {
+      return;
+    } else {
+      return '¥' + str3?.toString();
+    }
+  };
+
   return (
     <Skeleton animated loading={queryInfo?.mainGraphs ? true : false}>
       <View>
@@ -246,14 +274,19 @@ const Index = () => {
           <View className="detailTextBox">
             <View className="detailTextBox-price">
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
-                {queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
-                {queryInfo?.activityItemSkuDtoList && min(queryInfo?.activityItemSkuDtoList)}
+                {queryInfo?.isActivityItem
+                  ? queryInfo?.activityItemSkuDtoList && min(queryInfo?.activityItemSkuDtoList)
+                  : queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
               <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
-                {queryInfo?.itemSkuDtos &&
-                  aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
-                {queryInfo?.activityItemSkuDtoList &&
-                  aPrice(min(queryInfo?.activityItemSkuDtoList), queryInfo?.activityItemSkuDtoList)}
+                {queryInfo?.isActivityItem
+                  ? queryInfo?.activityItemSkuDtoList &&
+                    activePrice(
+                      min(queryInfo?.activityItemSkuDtoList),
+                      queryInfo?.activityItemSkuDtoList,
+                    )
+                  : queryInfo?.itemSkuDtos &&
+                    aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
             </View>
             <View className="detailTextBox-state">
