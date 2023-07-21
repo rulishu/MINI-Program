@@ -187,6 +187,9 @@ const Index = () => {
       id: queryInfo?.id,
       cartIds: checkCartData.map((item) => item?.id),
       freight: confirmData?.freight,
+      provinceCode: curAddress?.provinceCode,
+      cityCode: curAddress?.cityCode,
+      areaCode: curAddress?.areaCode,
       userCouponId:
         Object.keys(selectedCoupon)?.length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
       callBack: (orderData) => {
