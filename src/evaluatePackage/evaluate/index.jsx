@@ -65,6 +65,7 @@ const Index = () => {
       },
     ];
     if (orderInfo.items.length < 2) {
+      Taro.showLoading({ title: '发布中', mask: true });
       dispatch({
         type: 'evaluate/getAddEvaluation',
         payload: {
