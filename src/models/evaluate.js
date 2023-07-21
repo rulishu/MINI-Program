@@ -46,6 +46,7 @@ export default {
           });
         }
         callBack();
+        Taro.hideLoading();
       } catch (err) {}
     },
 

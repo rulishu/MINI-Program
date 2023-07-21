@@ -313,7 +313,7 @@ const Index = () => {
               <Text>运费</Text>
             </View>
             <View>
-              <Text>{confirmData?.freight || 0}</Text>
+              <Text>{confirmData?.freight ? `¥${confirmData?.freight}` : '包邮'}</Text>
             </View>
           </View>
           <View className="address-price">
@@ -344,7 +344,7 @@ const Index = () => {
                 <Text>运费</Text>
               </View>
               <View>
-                <Text>{confirmData?.freight || 0}</Text>
+                <Text>{confirmData?.freight ? `¥${confirmData?.freight}` : '包邮'}</Text>
               </View>
             </View>
             {!queryInfo?.isActivityItem ? (

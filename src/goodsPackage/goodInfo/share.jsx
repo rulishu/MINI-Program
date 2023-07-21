@@ -2,13 +2,20 @@ import React from 'react';
 import { View, Text } from '@tarojs/components';
 import { Popup, Button } from '@nutui/nutui-react-taro';
 import { useDispatch, useSelector } from 'react-redux';
-import Taro from '@tarojs/taro';
+import Taro, { useShareAppMessage } from '@tarojs/taro';
 import './index.scss';
 
 const Index = () => {
   const { shareVisible, queryInfo } = useSelector((state) => state.goodInfo);
   const dispatch = useDispatch();
   const token = Taro.getStorageSync('token');
+  const userInfo = Taro.getStorageSync('userInfo');
+  useShareAppMessage(() => {
+    return {
+      title: '邀请你加入奋斗之露',
+      path: `/goodsPackage/goodInfo/index?id=${queryInfo?.id}&invitationCode=${userInfo?.consumerCode}`,
+    };
+  });
   // 分享
   const onClickChat = () => {
     // const userInfo = Taro.getStorageSync('userInfo');
@@ -31,7 +38,6 @@ const Index = () => {
 
   // 保存海报
   const onPoster = () => {
-    const userInfo = Taro.getStorageSync('userInfo');
     if (token !== '') {
       dispatch({
         type: 'my/getUserInfos',
@@ -81,14 +87,14 @@ const Index = () => {
         onClose={() => dispatch({ type: 'goodInfo/update', payload: { shareVisible: false } })}
       >
         <View className="share-box">
-          <View className="share-image-item1-info" onClick={() => onClickChat()}>
+          <View className="share-image-item1-info">
             <View className="share-image-item1">
               <Button
+                onClick={onClickChat}
                 shape="square"
-                color="#D7D7D7"
                 className="share-image-item1 share-box-share-botton"
                 open-type={token !== '' ? 'share' : ''}
-              />
+              ></Button>
             </View>
             <View className="share-image-item1-info text">
               <Text>微信</Text>

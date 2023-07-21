@@ -18,6 +18,9 @@ const Index = () => {
       Taro.setStorageSync('invitationCode', params?.scene?.split('%2C')[3]);
     } else {
       goodsId = params?.id;
+      if (params?.invitationCode) {
+        Taro.setStorageSync('invitationCode', params?.invitationCode);
+      }
     }
     dispatch({
       type: 'goodInfo/infoDetails',
