@@ -187,7 +187,8 @@ const Index = () => {
       id: queryInfo?.id,
       cartIds: checkCartData.map((item) => item?.id),
       freight: confirmData?.freight,
-      userCouponId: Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
+      userCouponId:
+        Object.keys(selectedCoupon)?.length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
       callBack: (orderData) => {
         // 预订单
         let submitDetail = Taro.getStorageSync('submitInfo');
