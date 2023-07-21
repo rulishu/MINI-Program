@@ -22,20 +22,30 @@ const Index = () => {
         }
         disabled={data?.userReceiveCount === data?.limitCount ? true : false}
         onClick={() => {
-          dispatch({
-            type: 'goodInfo/receiveCoupon',
-            payload: {
-              couponId: data?.id,
-              callBack: () => {
-                dispatch({
-                  type: 'goodInfo/selectCoupons',
-                  payload: {
-                    id: params?.id,
-                  },
-                });
+          const token = Taro.getStorageSync('token');
+          if (token === '') {
+            Taro.showToast({
+              title: '请先登录',
+              icon: 'none',
+              duration: 2000,
+            });
+            Taro.navigateTo({ url: '/pages/login/index' });
+          } else {
+            dispatch({
+              type: 'goodInfo/receiveCoupon',
+              payload: {
+                couponId: data?.id,
+                callBack: () => {
+                  dispatch({
+                    type: 'goodInfo/selectCoupons',
+                    payload: {
+                      id: params?.id,
+                    },
+                  });
+                },
               },
-            },
-          });
+            });
+          }
         }}
       >
         {data?.userReceiveCount !== data?.limitCount ? '领取' : '已领取'}

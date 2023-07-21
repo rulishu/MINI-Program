@@ -16,7 +16,7 @@ import './index.scss';
 const Index = () => {
   const dispatch = useDispatch();
   const { queryInfo, activeSku, swiperList, couponsList } = useSelector((state) => state.goodInfo);
-  const { evaluationRating, evaluationList } = useSelector((state) => state.evaluate);
+  const { evaluationRating, evaluationTotal } = useSelector((state) => state.evaluate);
   const { cartCount } = useSelector((state) => state.cart);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
@@ -385,7 +385,7 @@ const Index = () => {
                   <View className="commentDetailBox-header">
                     <View>
                       <Text>评价</Text>
-                      <Text>{`(${evaluationList?.length})`}</Text>
+                      <Text>{`(${evaluationTotal})`}</Text>
                     </View>
                     <View style={{ display: 'flex', alignItems: 'center' }}>
                       <Text>查看全部</Text>

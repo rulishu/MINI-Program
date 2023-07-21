@@ -347,7 +347,7 @@ export default {
           });
         } else {
           Taro.showToast({
-            title: '优惠券已到用户可领取上限',
+            title: result.message,
             icon: 'none',
             duration: 2000,
           });

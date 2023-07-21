@@ -10,6 +10,7 @@ export default {
     evaluationRating: [],
     evaluationList: [],
     imagesList: '',
+    evaluationTotal: 0,
   },
 
   effects: {
@@ -27,6 +28,7 @@ export default {
             payload: {
               evaluationRating: evaluationRating,
               evaluationList: result?.result?.records,
+              evaluationTotal: result?.result.total,
             },
           });
         }
