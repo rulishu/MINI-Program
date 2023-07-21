@@ -22,20 +22,25 @@ const Index = () => {
         }
         disabled={data?.userReceiveCount === data?.limitCount ? true : false}
         onClick={() => {
-          dispatch({
-            type: 'goodInfo/receiveCoupon',
-            payload: {
-              couponId: data?.id,
-              callBack: () => {
-                dispatch({
-                  type: 'goodInfo/selectCoupons',
-                  payload: {
-                    id: params?.id,
-                  },
-                });
+          const token = Taro.getStorageSync('token');
+          if (token === '') {
+            Taro.navigateTo({ url: '/pages/login/index' });
+          } else {
+            dispatch({
+              type: 'goodInfo/receiveCoupon',
+              payload: {
+                couponId: data?.id,
+                callBack: () => {
+                  dispatch({
+                    type: 'goodInfo/selectCoupons',
+                    payload: {
+                      id: params?.id,
+                    },
+                  });
+                },
               },
-            },
-          });
+            });
+          }
         }}
       >
         {data?.userReceiveCount !== data?.limitCount ? '领取' : '已领取'}
