@@ -226,7 +226,7 @@ const Index = () => {
             ).toFixed(2)
           : selectedCoupon.type === 3 &&
               (
-                Number(orderTotalPrice * (selectedCoupon?.price * 0.01)) +
+                Number(orderTotalPrice * (selectedCoupon?.price * 0.1)) +
                 Number(confirmData?.freight)
               ).toFixed(2);
       } else {
