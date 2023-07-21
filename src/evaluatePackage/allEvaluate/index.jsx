@@ -60,10 +60,8 @@ const Index = () => {
 
                         <View className="head-size">
                           <Text>{item.createTime}</Text>
+                          <Text style={{ paddingLeft: 2 }}>{item?.orderReceipt}</Text>
                         </View>
-                        {/* <View className="head-size">
-                        <Text>来自{item.address}</Text>
-                      </View> */}
                       </View>
                     </View>
                     <View className="allEvaluate-info-item-mid">{item.comment}</View>
