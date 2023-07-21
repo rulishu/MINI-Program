@@ -378,7 +378,7 @@ const Index = () => {
                             推荐
                           </Tag>
                           <Text>{item?.createTime}</Text>
-                          {/* <Text style={{ paddingLeft: 2 }}>来自四川</Text> */}
+                          <Text>{item?.orderReceipt}</Text>
                         </View>
                       </View>
                       <View className="evaluationInfo">{item?.comment}</View>
