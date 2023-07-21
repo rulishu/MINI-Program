@@ -17,6 +17,7 @@ const Index = () => {
   const closeRef = useRef(null);
 
   useEffect(() => {
+    setCheckData([]);
     if (activeIndex === 3) {
       dispatch({
         type: 'cart/cartGoodsAll',

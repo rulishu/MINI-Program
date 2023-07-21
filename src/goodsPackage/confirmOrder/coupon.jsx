@@ -21,7 +21,7 @@ const Index = () => {
     return (
       <View>
         {data?.available === 0 ? (
-          <View className="checkDisableMargin">
+          <View className="checkDisableMargin" onClick={() => setChecked({})}>
             <View className="checkDisablePadding"></View>
           </View>
         ) : (
