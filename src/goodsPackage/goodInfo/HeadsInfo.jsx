@@ -286,7 +286,9 @@ const Index = () => {
                           if (item?.userReceiveCount > 0) {
                             return (
                               <Tag className="couponDetailBox-content" key={item?.id}>
-                                满{item?.minimumConsumption}减{item?.price}
+                                {item.type === 3
+                                  ? `满${item?.minimumConsumption}打${item?.price}折`
+                                  : `满${item?.minimumConsumption}减${item?.price}`}
                               </Tag>
                             );
                           }
