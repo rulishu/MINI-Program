@@ -17,9 +17,11 @@ const Index = () => {
   const closeRef = useRef(null);
 
   useEffect(() => {
-    dispatch({
-      type: 'cart/cartGoodsAll',
-    });
+    if (activeIndex === 3) {
+      dispatch({
+        type: 'cart/cartGoodsAll',
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
 
@@ -311,7 +313,7 @@ const Index = () => {
             <Checkbox
               textPosition="right"
               label="全选"
-              checked={checkData.length === cartList.length ? true : false}
+              checked={cartList.length !== 0 && checkData.length === cartList.length ? true : false}
               onChange={(val) => handleChange(val, cartList, 'all')}
             />
           </View>
@@ -319,7 +321,10 @@ const Index = () => {
           <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <View className="cartFooterBox-total">
               <View style={{ width: 110 }}>
-                <Text style={{ fontSize: 15, color: '#d9001c' }}> 合计: ¥ {totalPrice}</Text>
+                <Text style={{ fontSize: 15, color: '#d9001c' }}>
+                  {' '}
+                  合计: ¥ {cartList.length === 0 ? Number(0).toFixed(2) : totalPrice}
+                </Text>
               </View>
               <Text style={{ fontSize: 12 }}> 不含运费</Text>
             </View>
@@ -338,7 +343,7 @@ const Index = () => {
                 }
               }}
             >
-              结算({checkData.length})
+              结算({cartList.length === 0 ? 0 : checkData.length})
             </Button>
           </View>
         </View>
