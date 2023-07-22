@@ -57,6 +57,10 @@ page {
             margin:0 0 0 10px;
             font-size: 24px;
             font-weight: bold;
+            white-space:nowrap;        // 强制一行显示
+            overflow:hidden;          // 超出隐藏
+            text-overflow:ellipsis;   // 省略号
+            width:300px;
           }
         }
         .allEvaluate-info-item-title-right{
