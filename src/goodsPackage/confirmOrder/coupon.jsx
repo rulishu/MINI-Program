@@ -7,14 +7,17 @@ import Coupons from '@/component/coupons';
 import './index.scss';
 
 const Index = () => {
-  const { couponOrderVisible, couponDtoList } = useSelector((state) => state.goodInfo);
+  const { couponOrderVisible, couponDtoList, selectedCoupon } = useSelector(
+    (state) => state.goodInfo,
+  );
   const dispatch = useDispatch();
 
   const [checked, setChecked] = useState({});
   useEffect(() => {
-    const idData = couponDtoList.filter((item) => item.selected === 1);
-    setChecked(idData?.at(0));
-  }, []);
+    if (couponOrderVisible === true && selectedCoupon?.id) {
+      setChecked(selectedCoupon);
+    }
+  }, [couponOrderVisible]);
   // eslint-disable-next-line no-unused-vars
 
   const renderButton = (data) => {

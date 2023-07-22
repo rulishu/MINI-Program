@@ -274,14 +274,18 @@ export default {
               },
             });
           }
+          const coupon = result?.result?.couponDtoList.filter(function (item) {
+            return item?.available === 1;
+          });
           yield put({
             type: 'update',
             payload: {
               shoppingCartVOList: result.result.shoppingCartVOList,
-              couponDtoList: result.result.couponDtoList || [],
+              couponDtoList: coupon || [],
               orderToken: result.result.orderToken,
               visible: false,
               confirmData: result.result,
+              selectedCoupon: result?.result?.couponDtoList.find((i) => i.selected === 1),
             },
           });
         }
