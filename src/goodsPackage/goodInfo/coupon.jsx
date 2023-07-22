@@ -22,20 +22,25 @@ const Index = () => {
         }
         disabled={data?.userReceiveCount === data?.limitCount ? true : false}
         onClick={() => {
-          dispatch({
-            type: 'goodInfo/receiveCoupon',
-            payload: {
-              couponId: data?.id,
-              callBack: () => {
-                dispatch({
-                  type: 'goodInfo/selectCoupons',
-                  payload: {
-                    id: params?.id,
-                  },
-                });
+          const token = Taro.getStorageSync('token');
+          if (token === '') {
+            Taro.navigateTo({ url: '/pages/login/index' });
+          } else {
+            dispatch({
+              type: 'goodInfo/receiveCoupon',
+              payload: {
+                couponId: data?.id,
+                callBack: () => {
+                  dispatch({
+                    type: 'goodInfo/selectCoupons',
+                    payload: {
+                      id: params?.id,
+                    },
+                  });
+                },
               },
-            },
-          });
+            });
+          }
         }}
       >
         {data?.userReceiveCount !== data?.limitCount ? '领取' : '已领取'}
@@ -60,9 +65,12 @@ const Index = () => {
               <Coupons
                 key={item?.id}
                 couponData={{
-                  discount: `¥${item?.price}`,
+                  discount: item.type === 3 ? `${item?.price}折` : `¥${item?.price}`,
                   reduction: `满${item?.minimumConsumption}可用`,
-                  title: `满${item?.minimumConsumption}减${item?.price}元券`,
+                  title:
+                    item.type === 3
+                      ? `满${item?.minimumConsumption}打${item?.price}折券`
+                      : `满${item?.minimumConsumption}减${item?.price}元券`,
                   content: item?.name,
                   fistTime: item?.useBeginDate,
                   lastTime: item?.useEndTime,

@@ -76,7 +76,7 @@ const Index = () => {
   const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
 
   // 处理确认订单展示数据
-  const orderInfo = shoppingCartVOList.map((item) => item?.cartVOList).flat();
+  const orderInfo = shoppingCartVOList?.map((item) => item?.cartVOList).flat();
   // shoppingCartVOList?.at(0)?.cartVOList.at(0);
 
   const shoppingCartVOLists = orderInfo?.map((item) => {
@@ -121,7 +121,7 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // 限售地区校验,0配送 1不配送,
-  const isDelivery = orderInfo.filter((itm) => itm?.isDelivery === 1); //0没限售地区，!==0是有限售地址
+  const isDelivery = orderInfo?.filter((itm) => itm?.isDelivery === 1); //0没限售地区，!==0是有限售地址
 
   // 选择地址
   const onSelectAddress = () => {
@@ -187,6 +187,9 @@ const Index = () => {
       id: queryInfo?.id,
       cartIds: checkCartData.map((item) => item?.id),
       freight: confirmData?.freight,
+      provinceCode: curAddress?.provinceCode,
+      cityCode: curAddress?.cityCode,
+      areaCode: curAddress?.areaCode,
       userCouponId:
         Object.keys(selectedCoupon)?.length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
       callBack: (orderData) => {
@@ -221,9 +224,10 @@ const Index = () => {
           ? (
               Number(orderTotalPrice - selectedCoupon?.price) + Number(confirmData?.freight)
             ).toFixed(2)
-          : electedCoupon.type === 3 &&
+          : selectedCoupon.type === 3 &&
               (
-                Number(orderTotalPrice * selectedCoupon?.price) + Number(confirmData?.freight)
+                Number(orderTotalPrice * (selectedCoupon?.price * 0.1)) +
+                Number(confirmData?.freight)
               ).toFixed(2);
       } else {
         if (idData?.at(0)?.price === undefined) {
@@ -249,7 +253,7 @@ const Index = () => {
             <View className="address-left-icon">
               <Image src={payAddress} style={{ width: 16, height: 16 }} />
             </View>
-            {curAddress === '添加收货地址' ? (
+            {!currentAddress ? (
               <View className="address-info">
                 <Text>添加收货地址</Text>
               </View>
@@ -309,7 +313,7 @@ const Index = () => {
               <Text>运费</Text>
             </View>
             <View>
-              <Text>{confirmData?.freight || 0}</Text>
+              <Text>{confirmData?.freight ? `¥${confirmData?.freight}` : '包邮'}</Text>
             </View>
           </View>
           <View className="address-price">
@@ -340,7 +344,7 @@ const Index = () => {
                 <Text>运费</Text>
               </View>
               <View>
-                <Text>{confirmData?.freight || 0}</Text>
+                <Text>{confirmData?.freight ? `¥${confirmData?.freight}` : '包邮'}</Text>
               </View>
             </View>
             {!queryInfo?.isActivityItem ? (

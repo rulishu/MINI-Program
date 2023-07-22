@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import './index.scss';
 
 const Index = () => {
-  const { evaluationList } = useSelector((state) => state.evaluate);
+  const { evaluationList, evaluationTotal } = useSelector((state) => state.evaluate);
   // 返回上一页
   const goOrderList = () => {
     Taro.navigateBack({
@@ -27,7 +27,7 @@ const Index = () => {
                 <Icon size="18" name="rect-left" onTap={() => goOrderList()} />
               </View>
               <View className="navbar-head-right">
-                <Text>全部评价 {`(${evaluationList?.length})`}</Text>
+                <Text>全部评价 {`(${evaluationTotal})`}</Text>
               </View>
             </View>
           }
@@ -60,10 +60,8 @@ const Index = () => {
 
                         <View className="head-size">
                           <Text>{item.createTime}</Text>
+                          <Text style={{ paddingLeft: 2 }}>{item?.orderReceipt}</Text>
                         </View>
-                        {/* <View className="head-size">
-                        <Text>来自{item.address}</Text>
-                      </View> */}
                       </View>
                     </View>
                     <View className="allEvaluate-info-item-mid">{item.comment}</View>

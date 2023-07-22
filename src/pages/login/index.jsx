@@ -12,6 +12,9 @@ const Login = () => {
   if (params?.scene?.split('%')[1]) {
     Taro.setStorageSync('invitationCode', params.scene.split('%')[1]);
   }
+  if (params?.invitationCode) {
+    Taro.setStorageSync('invitationCode', params.invitationCode);
+  }
   return (
     <View class="onLand-container">
       <View class="onLand-container-top">
