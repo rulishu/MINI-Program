@@ -136,7 +136,7 @@ const ListItem = ({ item, keys, orderActive, refresh }) => {
               查看物流
             </Button>
           )}
-          {item.orderStatus === 4 && (
+          {item.orderStatus === 4 && !item.closed && (
             <Button className="bottom-btn" plain type="default" onClick={() => onEvaluate()}>
               评价
             </Button>
