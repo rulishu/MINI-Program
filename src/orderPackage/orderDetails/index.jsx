@@ -274,6 +274,21 @@ const Index = () => {
     Taro.navigateTo({ url: `/evaluatePackage/evaluate/index?id=${Number(orderInfo.id)}` });
   };
 
+  // 商品总价
+  const goodsTotalPrice = (price, freight, coupon) => {
+    // 有优惠卷
+    if (coupon !== undefined) {
+      return (
+        orderInfo?.orderPrice * 1 -
+        orderInfo?.freight * 1 +
+        orderInfo?.couponPrice * 1
+      ).toFixed(2);
+      // 无优惠卷
+    } else {
+      return (orderInfo?.orderPrice * 1 - orderInfo?.freight * 1).toFixed(2);
+    }
+  };
+
   return (
     <>
       <View>
@@ -418,7 +433,11 @@ const Index = () => {
               <View>
                 <Text>
                   <Text style={{ fontSize: 12 }}>¥</Text>
-                  {orderInfo?.orderPrice}
+                  {goodsTotalPrice(
+                    orderInfo?.orderPrice,
+                    orderInfo?.freight,
+                    orderInfo?.couponPrice,
+                  )}
                 </Text>
               </View>
             </View>
@@ -439,8 +458,8 @@ const Index = () => {
               </View>
               <View className="red-text">
                 <Text>
-                  <Text style={{ fontSize: 12 }}>¥</Text>
-                  0.00
+                  <Text style={{ fontSize: 12 }}>-¥</Text>
+                  {orderInfo?.couponPrice || 0.0}
                 </Text>
               </View>
             </View>

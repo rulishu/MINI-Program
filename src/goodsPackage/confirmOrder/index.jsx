@@ -22,7 +22,6 @@ const Index = () => {
     confirmData,
   } = useSelector((state) => state.goodInfo);
   const { checkCartData } = useSelector((state) => state.cart);
-  const receiveCoupon = couponDtoList?.filter((item) => item.available === 1);
   const idData = couponDtoList?.filter((item) => item.selected === 1);
 
   const { payOrder } = usePay({
@@ -359,11 +358,21 @@ const Index = () => {
                 </View>
                 <View className="address-price-right">
                   <View>
-                    <Text style={{ color: '#D9001B' }}>
-                      {receiveCoupon?.length > 0 && idData?.length > 0
-                        ? `新人${idData?.at(0).price}元无门槛优惠券`
-                        : `${receiveCoupon?.length}张可用券`}
-                    </Text>
+                    {selectedCoupon?.id ? (
+                      <Text style={{ color: '#D9001B' }}>
+                        {selectedCoupon.type === 3
+                          ? `满${selectedCoupon?.minimumConsumption}打${selectedCoupon?.price}折`
+                          : `满${selectedCoupon?.minimumConsumption}减${selectedCoupon?.price}`}
+                      </Text>
+                    ) : (
+                      <Text style={{ color: '#D9001B' }}>
+                        {couponDtoList?.filter((item) => item.available === 1)?.length > 0
+                          ? `${
+                              couponDtoList?.filter((item) => item.available === 1)?.length
+                            }张可用券`
+                          : '暂无可用的优惠券'}
+                      </Text>
+                    )}
                   </View>
                   <View className="address-price-right-icon">
                     <Icon name="rect-right" size="16" style={{ marginLeft: 8 }} color="#7F7F7F" />
