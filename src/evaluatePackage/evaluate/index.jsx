@@ -18,29 +18,32 @@ const Index = () => {
     { label: '不推荐', value: 3 },
   ];
 
-  const { orderInfo } = useSelector((state) => state.orderDetails);
+  const { orderInfo } = useSelector((state) => state.evaluate);
   const paramRoute = Taro.getCurrentInstance().router.params;
   useEffect(() => {
     dispatch({
-      type: 'orderDetails/selectPrimaryKey',
+      type: 'evaluate/selectPrimaryKey',
       payload: {
         id: paramRoute?.id,
+        callback: ({ code, result }) => {
+          if (code === 200) {
+            const datas = (result.items || []).filter((item) => !item.evaluateStatus);
+            const list = (datas || []).map((item, idx) => ({
+              ...item,
+              expanded: idx === 0,
+              rating: undefined,
+              comment: '',
+              image: [],
+            }));
+            setGoodsList(list);
+          } else {
+            setGoodsList([]);
+          }
+        },
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const datas = (orderInfo.items || []).filter((item) => !item.evaluateStatus);
-    const list = (datas || []).map((item, idx) => ({
-      ...item,
-      expanded: idx === 0,
-      rating: undefined,
-      comment: '',
-      image: [],
-    }));
-    setGoodsList(list);
-  }, [orderInfo.id]);
 
   // 推荐
   const onBtnState = (event, res, item, code) => {
@@ -60,44 +63,60 @@ const Index = () => {
 
   // 发布
   const release = () => {
-    const skus = orderInfo.items
-      ?.at(0)
-      .attributes.map((attributeItem) => {
-        let str = `${attributeItem.value}${attributeItem.attributeName}`;
-        return str;
-      })
-      .toString();
+    const params = goodsList.map((item) => {
+      const skuList =
+        item.attributes && (item.attributes || []).map((i) => `${i.value}${i.attributeName}`);
+      return {
+        comment: item.comment,
+        image: (item.image || []).join(','),
+        rating: item.rating,
+        mainImage: item.mainGraph,
+        orderId: orderInfo?.id,
+        sku: skuList && skuList.length > 0 ? skuList.join('*') : [],
+        skuId: Number(item.itemId),
+        itemName: item.itemName,
+      };
+    });
 
-    const params = goodsList.map((item) => ({
-      comment: item.comment,
-      image: (item.image?.map((a) => a?.url) || []).join(','),
-      rating: item.rating,
-      mainImage: item.mainGraph,
-      sku: orderInfo.items?.at(0)?.attributes.length >= 2 ? skus?.replace(',', '*') : skus,
-      orderId: orderInfo?.id,
-      skuId: Number(item.itemId),
-    }));
-
+    // 先判断是否有一个选择了等级
     const indexActive = params.findIndex((item) => item.rating);
     if (indexActive === -1) {
-      toast.show('请先评价等级', { placement: 'center', duration: 1000 });
+      Taro.showToast({
+        title: '请先评价等级',
+        icon: 'none',
+        duration: 2000,
+      });
+      return;
+    }
+    // 再判断是否评论了多个却没评论等级
+    const noRate = params.findIndex((item) => !item.rating && (item.comment || item.image));
+    if (noRate !== -1) {
+      const name = params[noRate]?.itemName;
+      Taro.showToast({
+        title: `【${name}】没有选择等级`,
+        icon: 'none',
+        duration: 2000,
+      });
       return;
     }
 
+    // 有部分商品没有评论
     const isAllActive = params.findIndex((item) => !item.rating);
+    // 过滤掉没有评论的商品
+    const goods = params.filter((item) => item.rating);
     if (isAllActive !== -1) {
       dispatch({
         type: 'evaluate/update',
         payload: {
           releaseOpen: true,
-          params,
+          releaseData: goods,
         },
       });
     } else {
       dispatch({
         type: 'evaluate/getAddEvaluation',
         payload: {
-          releaseData: params,
+          releaseData: goods,
           callBack: () => {
             Taro.navigateTo({ url: '/orderPackage/allOrders/index' });
             dispatch({
@@ -137,19 +156,17 @@ const Index = () => {
   };
 
   // 一键好评
-  const onGoodEvaluate = (e, item) => {
+  const onGoodEvaluate = (e) => {
     if (e) {
       e.stopPropagation();
     }
     setGoodsList((prevList) => {
       return prevList.map((goods) => {
-        if (goods.id === item.id) {
-          return {
-            ...goods,
-            expanded: !goods.expanded,
-          };
-        }
-        return goods;
+        return {
+          ...goods,
+          rating: 1,
+          comment: '默认好评',
+        };
       });
     });
   };
