@@ -484,10 +484,7 @@ const Index = () => {
                   </View>
                   <View className="address-price-right">
                     <Text className="address-price-right-text">{a.price}</Text>
-                    <Text
-                      style={{ color: '#A05635', fontSize: 14, marginLeft: 10 }}
-                      onClick={() => onCopy(a)}
-                    >
+                    <Text style={{ color: '#A05635', fontSize: 14 }} onClick={() => onCopy(a)}>
                       {a.title === '订单编号' ? '复制' : ''}
                     </Text>
                   </View>

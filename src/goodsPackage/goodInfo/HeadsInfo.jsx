@@ -309,7 +309,7 @@ const Index = () => {
               }
             >
               <View className="couponDetailBox-layout">
-                <View style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <View style={{ display: 'flex', alignItems: 'center', width: '80%' }}>
                   <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>
                     优惠券
                   </Text>

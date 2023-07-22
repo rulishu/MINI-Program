@@ -189,8 +189,7 @@ const Index = () => {
       provinceCode: curAddress?.provinceCode,
       cityCode: curAddress?.cityCode,
       areaCode: curAddress?.areaCode,
-      userCouponId:
-        Object.keys(selectedCoupon)?.length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
+      userCouponId: selectedCoupon?.id ? selectedCoupon?.id : idData?.[0]?.id,
       callBack: (orderData) => {
         // 预订单
         let submitDetail = Taro.getStorageSync('submitInfo');
