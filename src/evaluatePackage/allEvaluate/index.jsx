@@ -5,6 +5,7 @@ import Taro from '@tarojs/taro';
 import NavBar from '../../component/navBar';
 import { useSelector } from 'react-redux';
 import './index.scss';
+import moment from 'moment';
 
 const Index = () => {
   const { evaluationList, evaluationTotal } = useSelector((state) => state.evaluate);
@@ -59,8 +60,10 @@ const Index = () => {
                         </View>
 
                         <View className="head-size">
-                          <Text>{item.createTime}</Text>
-                          <Text style={{ paddingLeft: 2 }}>{item?.orderReceipt}</Text>
+                          <Text style={{ margin: '0 4px' }}>
+                            {moment(item?.createTime).format('YYYY.MM.DD')}
+                          </Text>
+                          <Text>{'来自' + item?.orderReceipt}</Text>
                         </View>
                       </View>
                     </View>

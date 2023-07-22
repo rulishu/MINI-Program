@@ -12,6 +12,7 @@ import Drawer from './drawer';
 import { min, aPrice } from '@/utils/min';
 import { Countdown, Badge } from '@taroify/core';
 import './index.scss';
+import moment from 'moment';
 
 const Index = () => {
   const dispatch = useDispatch();
@@ -405,14 +406,18 @@ const Index = () => {
                               style={{ width: '20px', height: '20px', background: '#D7D7D7' }}
                             ></Image>
                           </View>
-                          <View style={{ paddingLeft: 5 }}>{item?.consumerName}</View>
+                          <View className="commentDetailBox-content-box-left-name" style={{}}>
+                            {item?.consumerName}
+                          </View>
                         </View>
                         <View className="commentDetailBox-content-box-right">
                           <Tag color="#965A3C" style={{ fontSize: 10 }}>
                             推荐
                           </Tag>
-                          <Text>{item?.createTime}</Text>
-                          <Text style={{ paddingLeft: 2 }}>{item?.orderReceipt}</Text>
+                          <Text style={{ marginLeft: 8, marginRight: 8 }}>
+                            {moment(item?.createTime).format('YYYY.MM.DD')}
+                          </Text>
+                          <Text style={{ paddingLeft: 2 }}>{'来自' + item?.orderReceipt}</Text>
                         </View>
                       </View>
                       <View className="evaluationInfo">{item?.comment}</View>
