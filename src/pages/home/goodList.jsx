@@ -91,7 +91,9 @@ const GoodList = (props) => {
               <View className="search-result-content-bottom">
                 <View>
                   <Text className="lastPrice">
-                    {item?.isActivityItem ? item?.activityItemPrice : min(item.itemSkuDtos) || '¥0'}
+                    {item.isActivityItem === true
+                      ? '¥' + item.activityItemPrice
+                      : min(item.itemSkuDtos)}
                   </Text>
                   <Text className="firstPrice">
                     {aPrice(min(item.itemSkuDtos), item.itemSkuDtos)}

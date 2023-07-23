@@ -79,11 +79,15 @@ const Index = () => {
     Taro.navigateTo({ url: '/orderPackage/afterSales/index' });
   };
   // 售后价格
-  const orderTotalPrice = orderInfoItem
-    ?.reduce((acc, item) => {
-      return acc + item?.totalPrice;
-    }, 0)
-    .toFixed(2);
+  // const orderTotalPrice = orderInfoItem
+  //   ?.reduce((acc, item) => {
+  //     return acc + item?.totalPrice;
+  //   }, 0)
+  //   .toFixed(2);
+
+  // 单个商品退款
+  const onlyGoodsPrice =
+    orderInfoItem?.at(0)?.totalPrice * 1 - orderInfoItem?.at(0)?.couponPrice * 1;
   return (
     <Popup
       visible={orderRefund}
@@ -102,7 +106,7 @@ const Index = () => {
           <View className="popupInfo-pay-num">
             <Text>
               <Text style={{ fontSize: 12 }}>¥</Text>
-              {orderTotalPrice}
+              {orderInfo?.orderStatus === 2 ? orderInfo?.orderPrice : onlyGoodsPrice || '0.00'}
             </Text>
           </View>
         </View>

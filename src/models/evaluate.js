@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import Taro from '@tarojs/taro';
 import { evaluationList, getAddEvaluation, upload } from '@/server/evaluate';
+import { selectPrimaryKey } from '@/server/orderDetails';
 
 export default {
   namespace: 'evaluate',
@@ -10,6 +11,8 @@ export default {
     evaluationRating: [],
     evaluationList: [],
     imagesList: '',
+    evaluationTotal: 0,
+    orderInfo: {},
   },
 
   effects: {
@@ -27,6 +30,7 @@ export default {
             payload: {
               evaluationRating: evaluationRating,
               evaluationList: result?.result?.records,
+              evaluationTotal: result?.result.total,
             },
           });
         }
@@ -46,6 +50,7 @@ export default {
           });
         }
         callBack();
+        Taro.hideLoading();
       } catch (err) {}
     },
 
@@ -67,6 +72,23 @@ export default {
             icon: 'none',
             duration: 2000,
           });
+        }
+      } catch (err) {}
+    },
+
+    // 订单详情
+    *selectPrimaryKey({ payload }, { call, put }) {
+      try {
+        const { callback, id } = payload;
+        const result = yield call(selectPrimaryKey, { id: id });
+        if (result && result.code === 200) {
+          yield put({
+            type: 'update',
+            payload: {
+              orderInfo: result.result || {},
+            },
+          });
+          callback?.(result);
         }
       } catch (err) {}
     },

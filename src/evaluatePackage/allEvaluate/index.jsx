@@ -5,9 +5,11 @@ import Taro from '@tarojs/taro';
 import NavBar from '../../component/navBar';
 import { useSelector } from 'react-redux';
 import './index.scss';
+import moment from 'moment';
+import { renderComment } from '@/utils/min';
 
 const Index = () => {
-  const { evaluationList } = useSelector((state) => state.evaluate);
+  const { evaluationList, evaluationTotal } = useSelector((state) => state.evaluate);
   // 返回上一页
   const goOrderList = () => {
     Taro.navigateBack({
@@ -27,7 +29,7 @@ const Index = () => {
                 <Icon size="18" name="rect-left" onTap={() => goOrderList()} />
               </View>
               <View className="navbar-head-right">
-                <Text>全部评价 {`(${evaluationList?.length})`}</Text>
+                <Text>全部评价 {`(${evaluationTotal})`}</Text>
               </View>
             </View>
           }
@@ -59,14 +61,16 @@ const Index = () => {
                         </View>
 
                         <View className="head-size">
-                          <Text>{item.createTime}</Text>
+                          <Text style={{ margin: '0 4px' }}>
+                            {moment(item?.createTime).format('YYYY.MM.DD')}
+                          </Text>
+                          <Text>{'来自' + item?.orderReceipt}</Text>
                         </View>
-                        {/* <View className="head-size">
-                        <Text>来自{item.address}</Text>
-                      </View> */}
                       </View>
                     </View>
-                    <View className="allEvaluate-info-item-mid">{item.comment}</View>
+                    <View className="allEvaluate-info-item-mid">
+                      {renderComment(item.comment, item.receivingDate)}
+                    </View>
                     <View className="allEvaluate-info-item-foot">
                       {item?.image?.split(',')?.map((a, i) => {
                         if (a.indexOf('https') !== -1) {

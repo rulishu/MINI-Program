@@ -7,21 +7,24 @@ import Coupons from '@/component/coupons';
 import './index.scss';
 
 const Index = () => {
-  const { couponOrderVisible, couponDtoList } = useSelector((state) => state.goodInfo);
+  const { couponOrderVisible, couponDtoList, selectedCoupon } = useSelector(
+    (state) => state.goodInfo,
+  );
   const dispatch = useDispatch();
 
   const [checked, setChecked] = useState({});
   useEffect(() => {
-    const idData = couponDtoList.filter((item) => item.selected === 1);
-    setChecked(idData?.at(0));
-  }, []);
+    if (couponOrderVisible === true && selectedCoupon?.id) {
+      setChecked(selectedCoupon);
+    }
+  }, [couponOrderVisible]);
   // eslint-disable-next-line no-unused-vars
 
   const renderButton = (data) => {
     return (
       <View>
         {data?.available === 0 ? (
-          <View className="checkDisableMargin">
+          <View className="checkDisableMargin" onClick={() => setChecked({})}>
             <View className="checkDisablePadding"></View>
           </View>
         ) : (
@@ -54,9 +57,12 @@ const Index = () => {
               key={item?.id}
               renderButton={renderButton(item)}
               couponData={{
-                discount: `¥${item?.price}`,
+                discount: item.type === 3 ? `${item?.price}折` : `¥${item?.price}`,
                 reduction: `满${item?.minimumConsumption}可用`,
-                title: `满${item?.minimumConsumption}减${item?.price}元券`,
+                title:
+                  item.type === 3
+                    ? `满${item?.minimumConsumption}打${item?.price}折券`
+                    : `满${item?.minimumConsumption}减${item?.price}元券`,
                 content: item?.name,
                 fistTime: item?.useBeginDate,
                 lastTime: item?.useEndTime,

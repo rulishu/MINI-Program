@@ -469,6 +469,13 @@ page {
         align-items: center;
         font-size: 24px;
         font-weight: 400px;
+        .commentDetailBox-content-box-left-name{
+            white-space:nowrap;        // 强制一行显示
+            overflow:hidden;          // 超出隐藏
+            text-overflow:ellipsis;   // 省略号
+            width:200px;
+            margin: 0 5px;
+        }
       }
       .commentDetailBox-content-box-right{
         display: flex;

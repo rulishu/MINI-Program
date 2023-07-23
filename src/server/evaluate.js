@@ -4,7 +4,7 @@ import request from '../utils/request';
 export const evaluationList = (params) => {
   return request.post(
     `/jcgl-mall/app/evaluation/select/page/list?pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
-    params,
+    { ...params, isShow: 1 },
   );
 };
 // 批量创建订单商品评价

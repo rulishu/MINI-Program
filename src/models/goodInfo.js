@@ -259,15 +259,13 @@ export default {
           if (!params?.areaCode) {
             Taro.navigateTo({ url: '/goodsPackage/confirmOrder/index' });
             // 默认地址
-            const defultAddress = result.result.addresses
-              ?.filter((item) => {
-                return item.isDefault === 1;
-              })
-              ?.at(0);
+            const defultAddress =
+              result?.result?.addresses || []?.filter((item) => item?.isDefault === 1);
             // const lastAddress = defultAddress === undefined ? '添加收货地址' : defultAddress;
             // 如果没有默认地址，就选择第一个
             const lastAddress =
-              defultAddress === undefined ? result.result.addresses[0] : defultAddress;
+              defultAddress === undefined ? result.result?.addresses[0] : defultAddress?.[0];
+
             Taro.setStorageSync('defultAddress', lastAddress);
             yield put({
               type: 'update',
@@ -276,14 +274,18 @@ export default {
               },
             });
           }
+          const coupon = result?.result?.couponDtoList.filter(function (item) {
+            return item?.available === 1;
+          });
           yield put({
             type: 'update',
             payload: {
-              shoppingCartVOList: result.result.shoppingCartVOList || {},
-              couponDtoList: result.result.couponDtoList || [],
+              shoppingCartVOList: result.result.shoppingCartVOList,
+              couponDtoList: coupon || [],
               orderToken: result.result.orderToken,
               visible: false,
               confirmData: result.result,
+              selectedCoupon: result?.result?.couponDtoList.find((i) => i.selected === 1),
             },
           });
         }
@@ -347,7 +349,7 @@ export default {
           });
         } else {
           Taro.showToast({
-            title: '优惠券已到用户可领取上限',
+            title: result.message,
             icon: 'none',
             duration: 2000,
           });

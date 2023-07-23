@@ -45,9 +45,12 @@ const Index = (props) => {
           key={item?.id}
           state={activeTab}
           couponData={{
-            discount: `¥${item?.price}`,
+            discount: item.type === 3 ? `${item?.price}折` : `¥${item?.price}`,
             reduction: `满${item?.minimumConsumption}可用`,
-            title: `满${item?.minimumConsumption}减${item?.price}元券`,
+            title:
+              item.type === 3
+                ? `满${item?.minimumConsumption}打${item?.price}折券`
+                : `满${item?.minimumConsumption}减${item?.price}元券`,
             content: item?.name,
             fistTime: moment().format('YYYY-MM-DD', item?.useBeginDate),
             lastTime: moment().format('YYYY-MM-DD', item?.useEndTime),

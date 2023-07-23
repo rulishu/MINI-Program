@@ -22,7 +22,6 @@ const Index = () => {
     confirmData,
   } = useSelector((state) => state.goodInfo);
   const { checkCartData } = useSelector((state) => state.cart);
-  const receiveCoupon = couponDtoList?.filter((item) => item.available === 1);
   const idData = couponDtoList?.filter((item) => item.selected === 1);
 
   const { payOrder } = usePay({
@@ -76,7 +75,7 @@ const Index = () => {
   const curAddress = JSON.stringify(currentAddress) === '{}' ? delAddress : currentAddress;
 
   // 处理确认订单展示数据
-  const orderInfo = shoppingCartVOList.map((item) => item?.cartVOList).flat();
+  const orderInfo = shoppingCartVOList?.map((item) => item?.cartVOList).flat();
   // shoppingCartVOList?.at(0)?.cartVOList.at(0);
 
   const shoppingCartVOLists = orderInfo?.map((item) => {
@@ -121,7 +120,7 @@ const Index = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // 限售地区校验,0配送 1不配送,
-  const isDelivery = orderInfo.filter((itm) => itm?.isDelivery === 1); //0没限售地区，!==0是有限售地址
+  const isDelivery = orderInfo?.filter((itm) => itm?.isDelivery === 1); //0没限售地区，!==0是有限售地址
 
   // 选择地址
   const onSelectAddress = () => {
@@ -187,7 +186,10 @@ const Index = () => {
       id: queryInfo?.id,
       cartIds: checkCartData.map((item) => item?.id),
       freight: confirmData?.freight,
-      userCouponId: Object.keys(selectedCoupon).length > 0 ? selectedCoupon?.id : idData?.at(0)?.id,
+      provinceCode: curAddress?.provinceCode,
+      cityCode: curAddress?.cityCode,
+      areaCode: curAddress?.areaCode,
+      userCouponId: selectedCoupon?.id ? selectedCoupon?.id : idData?.[0]?.id,
       callBack: (orderData) => {
         // 预订单
         let submitDetail = Taro.getStorageSync('submitInfo');
@@ -222,7 +224,8 @@ const Index = () => {
             ).toFixed(2)
           : selectedCoupon.type === 3 &&
               (
-                Number(orderTotalPrice * selectedCoupon?.price) + Number(confirmData?.freight)
+                Number(orderTotalPrice * (selectedCoupon?.price * 0.1)) +
+                Number(confirmData?.freight)
               ).toFixed(2);
       } else {
         if (idData?.at(0)?.price === undefined) {
@@ -248,7 +251,7 @@ const Index = () => {
             <View className="address-left-icon">
               <Image src={payAddress} style={{ width: 16, height: 16 }} />
             </View>
-            {curAddress === '添加收货地址' ? (
+            {!currentAddress ? (
               <View className="address-info">
                 <Text>添加收货地址</Text>
               </View>
@@ -308,7 +311,7 @@ const Index = () => {
               <Text>运费</Text>
             </View>
             <View>
-              <Text>{confirmData?.freight || 0}</Text>
+              <Text>{confirmData?.freight ? `¥${confirmData?.freight}` : '包邮'}</Text>
             </View>
           </View>
           <View className="address-price">
@@ -339,7 +342,7 @@ const Index = () => {
                 <Text>运费</Text>
               </View>
               <View>
-                <Text>{confirmData?.freight || 0}</Text>
+                <Text>{confirmData?.freight ? `¥${confirmData?.freight}` : '包邮'}</Text>
               </View>
             </View>
             {!queryInfo?.isActivityItem ? (
@@ -354,11 +357,21 @@ const Index = () => {
                 </View>
                 <View className="address-price-right">
                   <View>
-                    <Text style={{ color: '#D9001B' }}>
-                      {receiveCoupon?.length > 0 && idData?.length > 0
-                        ? `新人${idData?.at(0).price}元无门槛优惠券`
-                        : `${receiveCoupon?.length}张可用券`}
-                    </Text>
+                    {selectedCoupon?.id ? (
+                      <Text style={{ color: '#D9001B' }}>
+                        {selectedCoupon.type === 3
+                          ? `满${selectedCoupon?.minimumConsumption}打${selectedCoupon?.price}折`
+                          : `满${selectedCoupon?.minimumConsumption}减${selectedCoupon?.price}`}
+                      </Text>
+                    ) : (
+                      <Text style={{ color: '#D9001B' }}>
+                        {couponDtoList?.filter((item) => item.available === 1)?.length > 0
+                          ? `${
+                              couponDtoList?.filter((item) => item.available === 1)?.length
+                            }张可用券`
+                          : '暂无可用的优惠券'}
+                      </Text>
+                    )}
                   </View>
                   <View className="address-price-right-icon">
                     <Icon name="rect-right" size="16" style={{ marginLeft: 8 }} color="#7F7F7F" />

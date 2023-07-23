@@ -258,6 +258,9 @@ const Index = () => {
     }
   };
 
+  // 判断是否展示评价按钮
+  const isEvaluateBtn = orderInfo?.items.filter((ite) => ite.evaluateStatus !== 1);
+
   //仅退款
   const onlyStateBtn = (item) => {
     if (item.afterSaleStatus === 0) {
@@ -272,6 +275,21 @@ const Index = () => {
   // 评价
   const onEvaluate = () => {
     Taro.navigateTo({ url: `/evaluatePackage/evaluate/index?id=${Number(orderInfo.id)}` });
+  };
+
+  // 商品总价
+  const goodsTotalPrice = (price, freight, coupon) => {
+    // 有优惠卷
+    if (coupon !== undefined) {
+      return (
+        orderInfo?.orderPrice * 1 -
+        orderInfo?.freight * 1 +
+        orderInfo?.couponPrice * 1
+      ).toFixed(2);
+      // 无优惠卷
+    } else {
+      return (orderInfo?.orderPrice * 1 - orderInfo?.freight * 1).toFixed(2);
+    }
   };
 
   return (
@@ -418,7 +436,11 @@ const Index = () => {
               <View>
                 <Text>
                   <Text style={{ fontSize: 12 }}>¥</Text>
-                  {orderInfo?.orderPrice}
+                  {goodsTotalPrice(
+                    orderInfo?.orderPrice,
+                    orderInfo?.freight,
+                    orderInfo?.couponPrice,
+                  )}
                 </Text>
               </View>
             </View>
@@ -428,7 +450,7 @@ const Index = () => {
               </View>
               <View>
                 <Text>
-                  包邮
+                  {orderInfo?.freight ? `¥${orderInfo?.freight}` : '包邮'}
                   {/* <Text style={{ fontSize: 12 }}>¥</Text> */}
                 </Text>
               </View>
@@ -439,8 +461,8 @@ const Index = () => {
               </View>
               <View className="red-text">
                 <Text>
-                  <Text style={{ fontSize: 12 }}>¥</Text>
-                  0.00
+                  <Text style={{ fontSize: 12 }}>-¥</Text>
+                  {orderInfo?.couponPrice || 0.0}
                 </Text>
               </View>
             </View>
@@ -465,10 +487,7 @@ const Index = () => {
                   </View>
                   <View className="address-price-right">
                     <Text className="address-price-right-text">{a.price}</Text>
-                    <Text
-                      style={{ color: '#A05635', fontSize: 14, marginLeft: 10 }}
-                      onClick={() => onCopy(a)}
-                    >
+                    <Text style={{ color: '#A05635', fontSize: 14 }} onClick={() => onCopy(a)}>
                       {a.title === '订单编号' ? '复制' : ''}
                     </Text>
                   </View>
@@ -609,16 +628,18 @@ const Index = () => {
                   </Button>
                 </View>
                 <View>
-                  <Button
-                    shape="square"
-                    style={{ color: '#AAAAAA', fontWeight: 400 }}
-                    plain
-                    size="small"
-                    type="default"
-                    onClick={() => onEvaluate()}
-                  >
-                    <Text style={{ fontSize: 14 }}>评价</Text>
-                  </Button>
+                  {isEvaluateBtn.length !== 0 && (
+                    <Button
+                      shape="square"
+                      style={{ color: '#AAAAAA', fontWeight: 400 }}
+                      plain
+                      size="small"
+                      type="default"
+                      onClick={() => onEvaluate()}
+                    >
+                      <Text style={{ fontSize: 14 }}>评价</Text>
+                    </Button>
+                  )}
                 </View>
               </>
             )}

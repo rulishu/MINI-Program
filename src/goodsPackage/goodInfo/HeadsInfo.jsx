@@ -9,14 +9,15 @@ import shareblack from '@/assets/images/shareblack.svg';
 import cart from '@/assets/images/cart.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import Drawer from './drawer';
-import { min, aPrice } from '@/utils/min';
+import { min, aPrice, renderComment } from '@/utils/min';
 import { Countdown, Badge } from '@taroify/core';
 import './index.scss';
+import moment from 'moment';
 
 const Index = () => {
   const dispatch = useDispatch();
   const { queryInfo, activeSku, swiperList, couponsList } = useSelector((state) => state.goodInfo);
-  const { evaluationRating, evaluationList } = useSelector((state) => state.evaluate);
+  const { evaluationRating, evaluationTotal } = useSelector((state) => state.evaluate);
   const { cartCount } = useSelector((state) => state.cart);
   const [navTops, setnavTops] = useState(0);
   const [navLefts, setnavLefts] = useState(0);
@@ -122,6 +123,34 @@ const Index = () => {
       }
     }
   };
+  // 活动最高价
+  const activePrice = (sma, item) => {
+    if (sma === Infinity) {
+      return;
+    }
+    let price = sma?.replace('¥', '');
+    let str = item
+      ?.filter((a) => {
+        return a.activityPrice === Number(price);
+      })
+      .map((e) => e.referencePrice)
+      .flat();
+    // js 过滤空值
+    let str2 = str?.filter((s) => {
+      return s;
+    });
+    if (str2 === undefined) {
+      return;
+    }
+    // js 最小值
+    let str3 = Math.min(...str2);
+    if (str3?.length === 0 || str3 === undefined || str3 === Infinity) {
+      return;
+    } else {
+      return '¥' + str3?.toString();
+    }
+  };
+
   return (
     <Skeleton animated loading={queryInfo?.mainGraphs ? true : false}>
       <View>
@@ -246,14 +275,19 @@ const Index = () => {
           <View className="detailTextBox">
             <View className="detailTextBox-price">
               <Text style={{ color: '#d9001c', fontSize: 24 }}>
-                {queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
-                {queryInfo?.activityItemSkuDtoList && min(queryInfo?.activityItemSkuDtoList)}
+                {queryInfo?.isActivityItem
+                  ? queryInfo?.activityItemSkuDtoList && min(queryInfo?.activityItemSkuDtoList)
+                  : queryInfo?.itemSkuDtos && min(queryInfo?.itemSkuDtos)}
               </Text>
               <Text style={{ color: '#7f7f7f', textDecoration: 'line-through', fontSize: 15 }}>
-                {queryInfo?.itemSkuDtos &&
-                  aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
-                {queryInfo?.activityItemSkuDtoList &&
-                  aPrice(min(queryInfo?.activityItemSkuDtoList), queryInfo?.activityItemSkuDtoList)}
+                {queryInfo?.isActivityItem
+                  ? queryInfo?.activityItemSkuDtoList &&
+                    activePrice(
+                      min(queryInfo?.activityItemSkuDtoList),
+                      queryInfo?.activityItemSkuDtoList,
+                    )
+                  : queryInfo?.itemSkuDtos &&
+                    aPrice(min(queryInfo?.itemSkuDtos), queryInfo?.itemSkuDtos)}
               </Text>
             </View>
             <View className="detailTextBox-state">
@@ -271,11 +305,12 @@ const Index = () => {
             <View
               className="couponDetailBox"
               onClick={() =>
+                couponsList?.length > 0 &&
                 dispatch({ type: 'goodInfo/update', payload: { couponVisible: true } })
               }
             >
               <View className="couponDetailBox-layout">
-                <View style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <View style={{ display: 'flex', alignItems: 'center', width: '80%' }}>
                   <Text style={{ paddingLeft: 15, paddingRight: 15, color: '#7f7f7f' }}>
                     优惠券
                   </Text>
@@ -286,7 +321,9 @@ const Index = () => {
                           if (item?.userReceiveCount > 0) {
                             return (
                               <Tag className="couponDetailBox-content" key={item?.id}>
-                                满{item?.minimumConsumption}减{item?.price}
+                                {item.type === 3
+                                  ? `满${item?.minimumConsumption}打${item?.price}折`
+                                  : `满${item?.minimumConsumption}减${item?.price}`}
                               </Tag>
                             );
                           }
@@ -350,7 +387,7 @@ const Index = () => {
                   <View className="commentDetailBox-header">
                     <View>
                       <Text>评价</Text>
-                      <Text>{`(${evaluationList?.length})`}</Text>
+                      <Text>{`(${evaluationTotal})`}</Text>
                     </View>
                     <View style={{ display: 'flex', alignItems: 'center' }}>
                       <Text>查看全部</Text>
@@ -369,17 +406,23 @@ const Index = () => {
                               style={{ width: '20px', height: '20px', background: '#D7D7D7' }}
                             ></Image>
                           </View>
-                          <View style={{ paddingLeft: 5 }}>{item?.consumerName}</View>
+                          <View className="commentDetailBox-content-box-left-name" style={{}}>
+                            {item?.consumerName}
+                          </View>
                         </View>
                         <View className="commentDetailBox-content-box-right">
                           <Tag color="#965A3C" style={{ fontSize: 10 }}>
                             推荐
                           </Tag>
-                          <Text>{item?.createTime}</Text>
-                          {/* <Text style={{ paddingLeft: 2 }}>来自四川</Text> */}
+                          <Text style={{ marginLeft: 8, marginRight: 8 }}>
+                            {moment(item?.createTime).format('YYYY.MM.DD')}
+                          </Text>
+                          <Text style={{ paddingLeft: 2 }}>{'来自' + item?.orderReceipt}</Text>
                         </View>
                       </View>
-                      <View className="evaluationInfo">{item?.comment}</View>
+                      <View className="evaluationInfo">
+                        {renderComment(item.comment, item.receivingDate)}
+                      </View>
                     </View>
                   );
                 })}
