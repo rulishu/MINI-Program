@@ -176,11 +176,17 @@ const Index = () => {
     setValue(e);
   };
 
+  const number = (orderInfo.items || []).filter(
+    (item) => item.evaluateStatus && Number(item.evaluateStatus) === 1,
+  );
+
   return (
     <View className="evaluate">
       <View className="evaluate-top-title">
         <View>
-          <Text className="text">商品评价（0/{goodsList?.length}）</Text>
+          <Text className="text">
+            商品评价（{number?.length}/{orderInfo?.items?.length}）
+          </Text>
         </View>
         <View onClick={() => onGoodEvaluate()}>
           <Text className="text primary">一键好评</Text>
