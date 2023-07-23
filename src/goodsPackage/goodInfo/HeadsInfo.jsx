@@ -9,7 +9,7 @@ import shareblack from '@/assets/images/shareblack.svg';
 import cart from '@/assets/images/cart.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import Drawer from './drawer';
-import { min, aPrice } from '@/utils/min';
+import { min, aPrice, renderComment } from '@/utils/min';
 import { Countdown, Badge } from '@taroify/core';
 import './index.scss';
 import moment from 'moment';
@@ -420,7 +420,9 @@ const Index = () => {
                           <Text style={{ paddingLeft: 2 }}>{'来自' + item?.orderReceipt}</Text>
                         </View>
                       </View>
-                      <View className="evaluationInfo">{item?.comment}</View>
+                      <View className="evaluationInfo">
+                        {renderComment(item.comment, item.receivingDate)}
+                      </View>
                     </View>
                   );
                 })}

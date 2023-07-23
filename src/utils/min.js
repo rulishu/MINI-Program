@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro';
+import moment from 'moment';
 // 最低价
 export const min = (data) => {
   const datas = data?.filter((vel) => {
@@ -117,4 +118,16 @@ export const fileToBase64 = (filePath) => {
       },
     });
   });
+};
+
+export const renderComment = (value, time) => {
+  const now = moment();
+  const targetDate = moment(time, 'YYYY-MM-DD HH:mm:ss');
+  const daysPassed = now.diff(targetDate, 'days');
+  if (value) {
+    return value;
+  } else if (!daysPassed && daysPassed >= 7) {
+    return '默认好评';
+  }
+  return '此用户没有填写文本';
 };
