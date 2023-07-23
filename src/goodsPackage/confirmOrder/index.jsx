@@ -220,7 +220,7 @@ const Index = () => {
           ? (
               Number(orderTotalPrice - selectedCoupon?.price) + Number(confirmData?.freight)
             ).toFixed(2)
-          : electedCoupon.type === 3 &&
+          : selectedCoupon.type === 3 &&
               (
                 Number(orderTotalPrice * selectedCoupon?.price) + Number(confirmData?.freight)
               ).toFixed(2);
