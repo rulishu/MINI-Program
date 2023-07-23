@@ -6,6 +6,7 @@ import NavBar from '../../component/navBar';
 import { useSelector } from 'react-redux';
 import './index.scss';
 import moment from 'moment';
+import { renderComment } from '@/utils/min';
 
 const Index = () => {
   const { evaluationList, evaluationTotal } = useSelector((state) => state.evaluate);
@@ -67,7 +68,9 @@ const Index = () => {
                         </View>
                       </View>
                     </View>
-                    <View className="allEvaluate-info-item-mid">{item.comment}</View>
+                    <View className="allEvaluate-info-item-mid">
+                      {renderComment(item.comment, item.receivingDate)}
+                    </View>
                     <View className="allEvaluate-info-item-foot">
                       {item?.image?.split(',')?.map((a, i) => {
                         if (a.indexOf('https') !== -1) {

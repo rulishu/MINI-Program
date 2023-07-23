@@ -258,6 +258,9 @@ const Index = () => {
     }
   };
 
+  // 判断是否展示评价按钮
+  const isEvaluateBtn = orderInfo?.items.filter((ite) => ite.evaluateStatus !== 1);
+
   //仅退款
   const onlyStateBtn = (item) => {
     if (item.afterSaleStatus === 0) {
@@ -625,16 +628,18 @@ const Index = () => {
                   </Button>
                 </View>
                 <View>
-                  <Button
-                    shape="square"
-                    style={{ color: '#AAAAAA', fontWeight: 400 }}
-                    plain
-                    size="small"
-                    type="default"
-                    onClick={() => onEvaluate()}
-                  >
-                    <Text style={{ fontSize: 14 }}>评价</Text>
-                  </Button>
+                  {isEvaluateBtn.length !== 0 && (
+                    <Button
+                      shape="square"
+                      style={{ color: '#AAAAAA', fontWeight: 400 }}
+                      plain
+                      size="small"
+                      type="default"
+                      onClick={() => onEvaluate()}
+                    >
+                      <Text style={{ fontSize: 14 }}>评价</Text>
+                    </Button>
+                  )}
                 </View>
               </>
             )}
