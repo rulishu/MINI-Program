@@ -68,7 +68,7 @@ const Index = () => {
         item.attributes && (item.attributes || []).map((i) => `${i.value}${i.attributeName}`);
       return {
         comment: item.comment,
-        image: (item.image || []).join(','),
+        image: (item.image?.map((a) => a?.url) || []).join(','),
         rating: item.rating,
         mainImage: item.mainGraph,
         orderId: orderInfo?.id,
