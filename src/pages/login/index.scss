@@ -33,8 +33,10 @@
     .onload-footer {
       position: fixed;
       bottom: 100px;
+      left:0;
       display: flex;
       justify-content: center;
+      align-items: center;
       width: 100%;
     }
   }
