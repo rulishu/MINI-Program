@@ -24,7 +24,7 @@ const Index = () => {
   const list = [
     {
       title: '我的粉丝',
-      num: 0,
+      num: userInfos.numberOfFans || 0,
       url: '/dealerPackage/myFans/index',
     },
     {
@@ -34,7 +34,7 @@ const Index = () => {
     },
     {
       title: '我的卡劵',
-      num: 0,
+      num: userInfos.numberOfCoupons || 0,
       url: '/goodsPackage/myCoupons/index',
     },
     // {
